@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="100" tileheight="100">
+ <tileset firstgid="1" name="Grass" tilewidth="100" tileheight="100">
+  <image source="newterrain.jpg" width="1352" height="688"/>
+ </tileset>
+ <tileset firstgid="79" name="The_Galibier_forest_by_hyperben2" tilewidth="100" tileheight="100">
+  <image source="The_Galibier_forest_by_hyperben2.png" width="864" height="847"/>
+ </tileset>
+ <tileset firstgid="143" name="MapSample-010" tilewidth="100" tileheight="100">
+  <image source="MapSample-010.jpg" width="864" height="676"/>
+ </tileset>
+ <tileset firstgid="191" name="unledls" tilewidth="100" tileheight="100">
+  <image source="unledls.png" width="576" height="265"/>
+ </tileset>
+ <layer name="Grass" width="50" height="50">
+  <properties>
+   <property name="Speed" value="3"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3DAQkAAAwEofv+pZdjoOCqqaqqqqqqqqqq6vMHV4Re6RAnAAA=
+  </data>
+ </layer>
+ <layer name="Desert" width="50" height="50">
+  <properties>
+   <property name="Life" value="-10"/>
+   <property name="Speed" value="2"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3PAQkAAAjAMNH+nbWFChs8wCMAAAAAAIALcqrlfPjw4cOHDx8+fPjw4cOHj88fDfzdZ+sQJwAA
+  </data>
+ </layer>
+ <layer name="Swamp" width="50" height="50">
+  <properties>
+   <property name="Life" value="-5"/>
+   <property name="Speed" value="2"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAODfAC7KO00QJwAA
+  </data>
+ </layer>
+ <layer name="Mountains" width="50" height="50">
+  <properties>
+   <property name="Speed" value="1"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3PAQ0AMAjAMPxruUhs7KFNJmAz/OjF8tHKRysfrXy08tHKRysfrXy08tHKRysAAAAAgOsWBqWE3RAnAAA=
+  </data>
+ </layer>
+ <layer name="Water" width="50" height="50">
+  <properties>
+   <property name="Speed" value="0"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3PsQkAIBAEwcfabN2+NDb6zENmYAvYKgAAAAB+MK+6xmkF5yMrH1n5yAoAAAB4bwPlOxj+ECcAAA==
+  </data>
+ </layer>
+</map>

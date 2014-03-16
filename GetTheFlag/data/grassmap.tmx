@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="41" height="23" tilewidth="34" tileheight="34">
+ <tileset firstgid="1" name="grass" tilewidth="34" tileheight="34">
+  <image source="grass.png" width="128" height="128"/>
+ </tileset>
+ <tileset firstgid="10" name="rocks" tilewidth="34" tileheight="34">
+  <image source="rocks.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="19" name="newterrain" tilewidth="34" tileheight="34">
+  <image source="newterrain.jpg" width="1352" height="688"/>
+  <tile id="4">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="51">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="82">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="83">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="121">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="122">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="135">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="160">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="161">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="174">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="200">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="213">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="252">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="357">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="358">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="359">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="360">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="361">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="396">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="397">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="398">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="399">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="400">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="401">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="435">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="436">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="437">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="438">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="439">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="440">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="474">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="475">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="476">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="477">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="478">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="479">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="513">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="514">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="515">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="516">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="517">
+   <properties>
+    <property name="terrain" value="hole"/>
+   </properties>
+  </tile>
+  <tile id="602">
+   <properties>
+    <property name="terrain" value="grass"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="799" name="trees" tilewidth="34" tileheight="34">
+  <image source="tilea2.png" width="512" height="384"/>
+  <tile id="10">
+   <properties>
+    <property name="terrain" value="limit"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="terrain" value="trees"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="terrain" value="trees"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="terrain" value="limit"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="terrain" value="limit"/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="terrain" value="mountain"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Layer 0" width="41" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC82X3VNVVRjG995dJ307jQiEEBka0IyJXjQNHuXjEBkU5fShXWJAgWigZPwJCh1CLDGl6c/oQ6tj/Qd9XSplXth9H88z+7eG5ZlTOd3UxW/etddea69nPe+71oHOO5Kk+39Op9iYJMlT/8CY2JclSUkc1Jz9YkuW9zXQ3yQmNG5STMERovuOikbGpWmStMCymBTXxS/iFb1/WPGeLNdnnrxNjXWasynL9Rk/v2dd9E+KJY37TKyJmjSPgbv1vKgxb4q7xNN6rlF8NcvjM+hy+2Xx2r/QaK/eiHy0pj1iBG/GxFU0VmK9P9tXjSl4n34WA2nu2TGRiN28+0OPn6frGr/V8/fiR3D7O+IPsJjkud0baSyq3Y3uRtp3prmeoG0t0mgfezRmXGwQGdouk1/rPaRYVOwXU5HGfvXXkzevu4CWJfGuOEwendtl8trEuFH6PH+z+KRCV2Wua7N8rwNoc27NJbV3KX6huCPL209Euba203hRJH/Bny1oakBTgZy6vxZPaqFUpR7jtnP9EGus6fkMeo6kef357HyKh/Z3f+TjKGtNq+9ExHFwewbcnhVdWe7/OPsportaPQat9rGXnFjPtTSvubfw03VpP32Gtqa59qBxM559qb6yuEL8Cq5EbXNRfJPm3hephUZ8vFrlTAetl5J8fBfn+l6xU7yf5mfauf1J8QNxrsLHCeppBW3lv9AY4tdonOceaaKW66JcV+bZdIo+jTklHiG/lznbGWfkGvelPdwaaXT9ee4NNJSraIu13xSrae5/I+eml/iS1/Y5rcLBNK8L78f15nt7N+cn3I1HqdFmxd+SdY1dnIcbUa7j/JYr2s71r2lejz4/4Q73+X49y+/AMZ778fkU4+qoR98vzrHznZBn16bvxX7iucjHemok+Bg0liti0HmTXI9yNy1xXhY4Q/vQVcLbcEfNc74aORM1+NlEjq3z9yS/O60vrajHbjRWno9yFa1BY4n17ZXvlHZ9qwPaIybxYA9jfdb8G7OLe8eebuBc7yD3CR4HjXXk5j5xPzwQxY0Q9z1ITsfxy+t3VNHodol6PYPf9n0KjU34mRHDPV6T3fpb6Lpx/RfY4zxrnyZnDex/Apy3vdw7S4xZzKp7aA5n63dANzVrv1rwq4Zn53kAL/33xKHs1vtxhLz1oGmROg+/hwXyNck6of6W0F/K1vVVxgJ79rg+9ugzHfJtnc3cic79Wc5MXI/2pBktnl+PlgI6e9HUBB5fS3uJdev+RuMY+w53gOvCd80xtLndmeX3kLXZ13DOg8ZavtFFzovsuQd//G4T9dSHjyPsoZH9LLCPIvuyfv92LTNvnByH+9R6dpLfs/hnXde5y1sq7vAVjWsTj4tHRYe4KLaJ82JanBDt4jGix74jDohV8QLjpnn/rJgTrbz32Lf5vuNH4nkxK2YYc5J1/e5F1g4aW+lvi+YPMndYHBfPMe9D3s3SN8u87eICa81Fms7Tno3edfBdtz/me0PR2kPR+kFjB9+5QFzFn1Z82c74dvw6QBzk/Qz7H6b/JH2trLfCN4bQN4eHg+y7jW+u8H4b3xhG43/9P9/t8Cc9/JUqvA4AAA==
+  </data>
+ </layer>
+</map>

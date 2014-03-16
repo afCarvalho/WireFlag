@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GetTheFlag" basedir=".">
+
+	<property name="src.dir" value="src" />
+	<property name="classes.dir" value="classes" />
+	<property name="lib.dir" value="libraries" />
+
+	<path id="project.classpath">
+		<pathelement location="${classes.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="ibxm.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="lwjgl.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="slick.jar" />
+		</fileset>
+	</path>
+
+
+	<target name="init">
+		<mkdir dir="${classes.dir}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${classes.dir}" />
+	</target>
+
+	<target name="compile" depends="clean,init">
+		<javac destdir="${classes.dir}" optimize="true" includeantruntime="false">
+			<classpath refid="project.classpath" />
+			<src>
+				<pathelement path="${src.dir}" />
+			</src>
+		</javac>
+	</target>
+
+	<target name="run" depends="compile">
+		<echo>current directory: ${basedir}</echo>
+		<java classname="gettheflag.WizardGame" fork="false">
+			<classpath>
+				<path refid="project.classpath" />
+			</classpath>
+
+			<jvmarg value="-Djava.library.path=GetTheFlag/libraries" />
+		</java>
+	</target>
+
+</project>
