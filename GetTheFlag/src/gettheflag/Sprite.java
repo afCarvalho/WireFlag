@@ -97,15 +97,11 @@ public class Sprite implements GameElement {
 
 	public void init() throws SlickException {
 
-		Image[] movementUp = { new Image("data/wmg1_bk1.png"),
-				new Image("data/wmg1_bk2.png") };
-		Image[] movementDown = { new Image("data/wmg1_fr1.png"),
-				new Image("data/wmg1_fr2.png") };
-		Image[] movementLeft = { new Image("data/wmg1_lf1.png"),
-				new Image("data/wmg1_lf2.png") };
-		Image[] movementRight = { new Image("data/wmg1_rt1.png"),
-				new Image("data/wmg1_rt2.png") };
-		int[] duration = { 300, 300 };
+		Image[] movementUp = { new Image("data/grey-back.png") };
+		Image[] movementDown = { new Image("data/grey-front.png") };
+		Image[] movementLeft = { new Image("data/grey-left.png") };
+		Image[] movementRight = { new Image("data/grey-right.png") };
+		int[] duration = { 300 };
 
 		up = new Animation(movementUp, duration, false);
 		down = new Animation(movementDown, duration, false);
