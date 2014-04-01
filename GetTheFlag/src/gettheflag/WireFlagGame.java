@@ -24,8 +24,11 @@ public class WireFlagGame extends BasicGame {
 
 	public static void main(String[] arguments) {
 		try {
+			int maxFPS = 100;
 			AppGameContainer app = new AppGameContainer(new WireFlagGame());
 			app.setDisplayMode(1400, 800, false);
+			app.setTargetFrameRate(maxFPS);
+			//app.setVSync(true);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
