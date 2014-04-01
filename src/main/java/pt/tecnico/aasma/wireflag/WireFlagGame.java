@@ -8,7 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.agents.Sprite;
+import pt.tecnico.aasma.wireflag.agents.Agent;
 import pt.tecnico.aasma.wireflag.environment.Climate;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.Time;
@@ -45,7 +45,7 @@ public class WireFlagGame extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 
 		Random random = new Random();
-		elements = new GameElement[] { new Map(), new Flag(), new Sprite(this),
+		elements = new GameElement[] { new Map(), new Flag(), new Agent(this),
 				new Climate(this), new Time(this) };
 
 		for (GameElement e : elements) {
@@ -102,8 +102,8 @@ public class WireFlagGame extends BasicGame {
 		return (Time) elements[TIME];
 	}
 
-	private Sprite getSprite() {
-		return (Sprite) elements[SPRITE];
+	private Agent getSprite() {
+		return (Agent) elements[SPRITE];
 	}
 
 	public int getMapHeight() {

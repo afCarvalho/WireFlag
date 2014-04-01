@@ -14,7 +14,7 @@ import org.newdawn.slick.geom.Circle;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 
-public class Sprite implements GameElement {
+public class Agent implements GameElement {
 
 	private Animation up;
 	private Animation down;
@@ -28,7 +28,7 @@ public class Sprite implements GameElement {
 	private float y;
 	private WireFlagGame game;
 
-	public Sprite(WireFlagGame game) {
+	public Agent(WireFlagGame game) {
 
 		random = new Random();
 		this.game = game;
