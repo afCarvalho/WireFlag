@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.agents;
+package pt.tecnico.aasma.wireflag.agent;
 
 import java.util.Random;
 
@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
+import pt.tecnico.aasma.wireflag.environment.Map;
 
 public class Agent implements GameElement {
 
@@ -23,79 +24,93 @@ public class Agent implements GameElement {
 	private Animation sprite;
 	private int hp;
 	private int play;
-	private Random random;
 	private float x;
 	private float y;
-	private WireFlagGame game;
+	private int timeElapsed;
+	private Random random;
 
-	public Agent(WireFlagGame game) {
-
+	public Agent() {
 		random = new Random();
-		this.game = game;
-
 	}
 
-	public void update(GameContainer container, int delta) {
+	public void setTimeElapsed(int timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
+
+	public void update() {
 
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
-		Input input = container.getInput();
-		if (/* input.isKeyDown(Input.KEY_UP) */play == 0) {
+		if (play == 0) {
 			sprite = up;
-			if (!game.isBlocked(x, y - delta * 0.05f)) {
-				sprite.update(delta);
-				// The lower the delta the slowest the sprite will animate.
-				y -= delta * 0.05f * game.getTile(x, y - delta * 0.05f);
-				hp -= 1;
-
+			if (!Map.getMap().isBlocked(x, y - timeElapsed * 0.05f)) {
+				moveUp(timeElapsed);
 			} else {
 				play = random.nextInt(4);
 			}
-		} else if (/* input.isKeyDown(Input.KEY_DOWN) */play == 1) {
+		} else if (play == 1) {
 			sprite = down;
-			if (game.getTile(x, y + game.getNTiles() + delta * 0.05f) > 0) {
-				sprite.update(delta);
-				y += delta * 0.05f
-						* game.getTile(x, y + game.getNTiles() + delta * 0.05f);
-				hp -= 1;
-
+			if (!Map.getMap().isBlocked(x,
+					y + Map.getMap().getNTiles() + timeElapsed * 0.05f)) {
+				moveDown(timeElapsed);
 			} else {
 				play = random.nextInt(4);
 			}
-		} else if (/* input.isKeyDown(Input.KEY_LEFT) */play == 2) {
+		} else if (play == 2) {
 			sprite = left;
-			if (game.getTile(x - delta * 0.05f, y) > 0) {
-				sprite.update(delta);
-				x -= delta * 0.05f * game.getTile(x - delta * 0.05f, y);
-				hp -= 1;
-
+			if (!Map.getMap().isBlocked(x - timeElapsed * 0.05f, y)) {
+				moveLeft(timeElapsed);
 			} else {
 				play = random.nextInt(4);
 			}
 
-		} else if (/* input.isKeyDown(Input.KEY_RIGHT) */play == 3) {
+		} else if (play == 3) {
 			sprite = right;
-			if (game.getTile(x + game.getNTiles() + delta * 0.05f, y) > 0) {
-				sprite.update(delta);
-				x += delta * 0.05f
-						* game.getTile(x + game.getNTiles() + delta * 0.05f, y);
-				hp -= 1;
-
+			if (!Map.getMap().isBlocked(
+					x + Map.getMap().getNTiles() + timeElapsed * 0.05f, y)) {
+				moveRight(timeElapsed);
 			} else {
 				play = random.nextInt(4);
 			}
 		}
 
 		if (hp < 200) {
-
 			hp += 500;
-			// Thread.sleep(1000);
 			play = random.nextInt(4);
-
 			return;
 		}
 
+	}
+
+	public void moveDown(int delta ) {
+		sprite.update(delta);
+		y -= delta * 0.05f * Map.getMap().getTileValue(x, y - delta * 0.05f);
+		hp -= 1;
+	}
+
+	public void moveUp(int delta) {
+		sprite.update(delta);
+		y += delta
+				* 0.05f
+				* Map.getMap().getTileValue(x,
+						y + Map.getMap().getNTiles() + delta * 0.05f);
+		hp -= 1;
+	}
+
+	public void moveRight(int delta) {
+		sprite.update(delta);
+		x += delta
+				* 0.05f
+				* Map.getMap().getTileValue(
+						x + Map.getMap().getNTiles() + delta * 0.05f, y);
+		hp -= 1;
+	}
+
+	public void moveLeft(int delta) {
+		sprite.update(delta);
+		x -= delta * 0.05f * Map.getMap().getTileValue(x - delta * 0.05f, y);
+		hp -= 1;
 	}
 
 	public void init() throws SlickException {

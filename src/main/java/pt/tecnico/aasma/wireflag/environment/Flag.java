@@ -1,5 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment;
 
+import java.util.Random;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -14,31 +16,31 @@ public class Flag implements GameElement {
 	private int yCoord;
 
 	public Flag() {
-
 	}
 
 	public void update() {
-
 	}
 
 	@Override
 	public void init() throws SlickException {
 
+		Random random = new Random();
+
 		flag = new Animation(new Image[] { new Image("data/SmallFlag.png") },
 				new int[] { 300 }, false);
 
+		xCoord = random.nextInt(Map.getMap().getMapWidth());
+		yCoord = random.nextInt(Map.getMap().getMapHeight());
+
+		while (Map.getMap().isBlocked(xCoord, yCoord)) {
+			xCoord = random.nextInt(Map.getMap().getMapWidth());
+			yCoord = random.nextInt(Map.getMap().getMapHeight());
+
+		}
 	}
 
 	@Override
 	public void render(Graphics g) {
-
 		flag.draw(xCoord * 1.0f, yCoord * 1.0f);
-
 	}
-
-	public void setCoords(int xCoord, int yCoord) {
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
-	}
-
 }

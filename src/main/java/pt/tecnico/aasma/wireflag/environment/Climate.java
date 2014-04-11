@@ -15,13 +15,9 @@ public class Climate implements GameElement {
 	private String climate = "";
 	private Animation rain;
 	private Random random;
-	private WireFlagGame game;
 
-	public Climate(WireFlagGame game) {
-
+	public Climate() {
 		random = new Random();
-		this.game = game;
-
 	}
 
 	@Override
@@ -46,8 +42,8 @@ public class Climate implements GameElement {
 	public void render(Graphics g) {
 
 		if (climate.equals("rain")) {
-			for (int i = 0; i < game.getMapHeight(); i++)
-				for (int j = 0; j < game.getMapWidth(); j++) {
+			for (int i = 0; i < Map.getMap().getMapHeight(); i++)
+				for (int j = 0; j < Map.getMap().getMapWidth(); j++) {
 					if (i % 50 == 0 && j % 50 == 0)
 						rain.draw(j * 1.0f, i * 1.0f);
 				}

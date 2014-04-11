@@ -8,17 +8,17 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.agents.Agent;
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.Climate;
 import pt.tecnico.aasma.wireflag.environment.Flag;
+import pt.tecnico.aasma.wireflag.environment.Map;
 import pt.tecnico.aasma.wireflag.environment.Time;
-import pt.tecnico.aasma.wireflag.util.Map;
 
 public class WireFlagGame extends BasicGame {
 
 	private static final int MAP = 0;
 	private static final int FLAG = 1;
-	private static final int SPRITE = 2;
+	private static final int AGENT = 2;
 	private static final int CLIMATE = 3;
 	private static final int TIME = 4;
 
@@ -34,7 +34,7 @@ public class WireFlagGame extends BasicGame {
 			AppGameContainer app = new AppGameContainer(new WireFlagGame());
 			app.setDisplayMode(1400, 800, false);
 			app.setTargetFrameRate(maxFPS);
-			//app.setVSync(true);
+			// app.setVSync(true);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -43,38 +43,22 @@ public class WireFlagGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-
-		Random random = new Random();
-		elements = new GameElement[] { new Map(), new Flag(), new Agent(this),
-				new Climate(this), new Time(this) };
+		elements = new GameElement[] { Map.getMap(), new Flag(), new Agent(),
+				new Climate(), new Time() };
 
 		for (GameElement e : elements) {
 			e.init();
 		}
-
-		int xCoord = random.nextInt(getMapWidth());
-		int yCoord = random.nextInt(getMapHeight());
-
-		while (isBlocked(xCoord, yCoord)) {
-			xCoord = random.nextInt(getMapWidth());
-			yCoord = random.nextInt(getMapHeight());
-
-		}
-
-		getFlag().setCoords(xCoord, yCoord);
-
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 
-		getMap().update();
-		getFlag().update();
-		getSprite().update(container, delta);
-		getClimate().update();
-		getTime().update();
-
+		((Agent) getElement(AGENT)).setTimeElapsed(delta);
+		for (GameElement e : elements) {
+			e.update();
+		}
 	}
 
 	public void render(GameContainer container, Graphics g)
@@ -83,47 +67,10 @@ public class WireFlagGame extends BasicGame {
 		for (GameElement e : elements) {
 			e.render(g);
 		}
-
 	}
 
-	private Map getMap() {
-		return (Map) elements[MAP];
-	}
-
-	private Climate getClimate() {
-		return (Climate) elements[CLIMATE];
-	}
-
-	private Flag getFlag() {
-		return (Flag) elements[FLAG];
-	}
-
-	private Time getTime() {
-		return (Time) elements[TIME];
-	}
-
-	private Agent getSprite() {
-		return (Agent) elements[SPRITE];
-	}
-
-	public int getMapHeight() {
-		return getMap().getHeight() * getMap().getTileHeight();
-	}
-
-	public int getMapWidth() {
-		return getMap().getWidth() * getMap().getTileWidth();
-	}
-
-	public boolean isBlocked(float xCoord, float yCoord) {
-		return getMap().getTileType(xCoord, yCoord) == 0;
-	}
-
-	public float getTile(float xCoord, float yCoord) {
-		return getMap().getTileType(xCoord, yCoord);
-	}
-
-	public int getNTiles() {
-		return getMap().getNTiles();
+	private GameElement getElement(int elementPos) {
+		return elements[elementPos];
 	}
 
 }

@@ -12,10 +12,8 @@ public class Time implements GameElement {
 	int hora = 7;
 	int minutos = 0;
 	double segundos = 0;
-	private WireFlagGame game;
 
-	public Time(WireFlagGame game) {
-		this.game = game;
+	public Time() {
 	}
 
 	@Override
@@ -46,8 +44,8 @@ public class Time implements GameElement {
 
 		if (hora > 17 || hora < 6) {
 			g.setColor(new Color(0f, 0f, 0f, 0.6f));
-			Rectangle r = new Rectangle(0, 0, game.getMapWidth(),
-					game.getMapHeight());
+			Rectangle r = new Rectangle(0, 0, Map.getMap().getMapWidth(), Map
+					.getMap().getMapHeight());
 			g.draw(r);
 			g.fill(r);
 		}
