@@ -12,7 +12,7 @@ import pt.tecnico.aasma.wireflag.environment.weather.Weather;
 
 public abstract class Landscape implements GameElement {
 
-	protected final static float NORMALSPD = 1f;
+	protected final static float NORMALSPD = 1.0f;
 	protected final static float REDUCEDSPD = 0.5f;
 	protected final static float VREDUCEDSPD = 0.1f;
 	protected final static float NOSPD = 0f;
@@ -64,21 +64,39 @@ public abstract class Landscape implements GameElement {
 	public void setSunnyWeather() {
 		weather = new Sunny();
 	}
-	
+
 	@Override
-	public void init(){
+	public void init() {
 	}
-	
+
 	@Override
-	public void update(int delta){
+	public void update(int delta) {
+
+		if (hasFire()){
+			fire.update(delta);
+		}
 		
+		if(hasAgent()){
+			agent.update(delta);
+		}	
+		
+		weather.update(delta);
 	}
-	
+
 	@Override
-	public void render(Graphics g){
+	public void render(Graphics g) {
 		weather.render(g);
-		fire.render(g);
-		flag.render(g);
-		agent.render(g);
+		
+		if (hasFire()){
+			fire.render(g);
+		}
+		
+		if(hasFlag()){
+			flag.render(g);
+		}
+		
+		if(hasAgent()){
+			agent.render(g);
+		}		
 	}
 }

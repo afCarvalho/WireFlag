@@ -37,6 +37,8 @@ public class Flag implements GameElement {
 			yCoord = random.nextInt(MapController.getMap().getMapHeight());
 
 		}
+
+		MapController.getMap().getLandscape(xCoord, yCoord).setFlag(this);
 	}
 
 	public void render(Graphics g) {
@@ -47,6 +49,6 @@ public class Flag implements GameElement {
 	@Override
 	public void update(int delta) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

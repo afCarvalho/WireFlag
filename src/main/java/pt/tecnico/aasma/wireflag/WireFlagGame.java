@@ -43,7 +43,7 @@ public class WireFlagGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		elements = new GameElement[] { MapController.getMap(), new Flag(), new Agent(),
+		elements = new GameElement[] { MapController.getMap(),
 				new ClimateController(), new TimeController() };
 
 		for (GameElement e : elements) {

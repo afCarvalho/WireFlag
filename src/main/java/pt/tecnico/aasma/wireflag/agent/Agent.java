@@ -22,7 +22,6 @@ public class Agent implements GameElement {
 	private Animation right;
 	private Animation left;
 	private Animation sprite;
-	private int hp;
 	private int play;
 	private float x;
 	private float y;
@@ -70,35 +69,38 @@ public class Agent implements GameElement {
 			}
 		}
 
-		if (hp < 200) {
-			hp += 500;
-			return;
-		}
-
 	}
 
 	public void moveDown(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		y += delta * 0.05f * MapController.getMap().getTileValue(x, y + delta * 0.05f);
-		hp -= 1;
+		y += delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x, y + delta * 0.05f);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveUp(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		y -= delta * 0.05f * MapController.getMap().getTileValue(x, y - delta * 0.05f);
-		hp -= 1;
+		y -= delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x, y - delta * 0.05f);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveRight(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		x += delta * 0.05f * MapController.getMap().getTileValue(x + delta * 0.05f, y);
-		hp -= 1;
+		x += delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x + delta * 0.05f, y);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveLeft(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		x -= delta * 0.05f * MapController.getMap().getTileValue(x - delta * 0.05f, y);
-		hp -= 1;
+		x -= delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x - delta * 0.05f, y);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void init() throws SlickException {
@@ -117,15 +119,12 @@ public class Agent implements GameElement {
 		sprite = right;
 
 		play = 0;
-		hp = 10000;
 		x = 34f;
 		y = 34f;
-
 	}
 
 	@Override
 	public void render(Graphics g) {
-
 		sprite.draw((int) x, (int) y);
 
 		g.setColor(new Color(1f, 1f, 1f, 0.4f));
@@ -134,7 +133,6 @@ public class Agent implements GameElement {
 		g.draw(circle);
 		// g.setColor(Color.transparent);
 		g.fill(circle);
-
 	}
 
 }

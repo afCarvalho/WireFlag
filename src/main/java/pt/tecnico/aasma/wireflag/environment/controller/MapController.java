@@ -5,6 +5,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.ForestFactory;
@@ -66,22 +68,50 @@ public class MapController implements GameElement {
 				blocked[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
 			}
 		}
+
+		Agent agent = new Agent();
+		agent.init();
+		Flag flag = new Flag();
+		flag.init();
+
+		blocked[0][0].setAgent(agent);
 	}
 
 	@Override
 	public void render(Graphics g) {
 		grassMap.render(0, 0);
+
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				blocked[xAxis][yAxis].render(g);
+			}
+		}
 	}
 
 	public void update(int delta) {
+
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				blocked[xAxis][yAxis].update(delta);
+			}
+		}
+
 	}
 
-	public float getTileValue(float x, float y) {
+	public Landscape getLandscape(float x, float y) {
 
 		int xBlock = (int) x / NTILES;
 		int yBlock = (int) y / NTILES;
 
-		return blocked[xBlock][yBlock].getMovementSpeed();
+		return blocked[xBlock][yBlock];
+	}
+
+	public float getMovementSpeed(float x, float y) {
+		return getLandscape(x, y).getMovementSpeed();
+	}
+
+	public boolean isBlocked(float xCoord, float yCoord) {
+		return getMovementSpeed(xCoord, yCoord) == 0;
 	}
 
 	public int getMapHeight() {
@@ -90,10 +120,6 @@ public class MapController implements GameElement {
 
 	public int getMapWidth() {
 		return grassMap.getWidth() * grassMap.getTileWidth();
-	}
-
-	public boolean isBlocked(float xCoord, float yCoord) {
-		return getTileValue(xCoord, yCoord) == 0;
 	}
 
 	public int getNTiles() {
