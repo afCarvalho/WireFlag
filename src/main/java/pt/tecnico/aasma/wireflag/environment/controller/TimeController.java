@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.controller;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -7,13 +7,13 @@ import org.newdawn.slick.geom.Rectangle;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 
-public class Time implements GameElement {
+public class TimeController implements GameElement {
 
 	int hora = 7;
 	int minutos = 0;
 	int segundos = 0;
 
-	public Time() {
+	public TimeController() {
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Time implements GameElement {
 
 		if (hora > 17 || hora < 6) {
 			g.setColor(new Color(0f, 0f, 0f, 0.6f));
-			Rectangle r = new Rectangle(0, 0, Map.getMap().getMapWidth(), Map
+			Rectangle r = new Rectangle(0, 0, MapController.getMap().getMapWidth(), MapController
 					.getMap().getMapHeight());
 			g.draw(r);
 			g.fill(r);

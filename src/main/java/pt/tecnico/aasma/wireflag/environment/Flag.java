@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Flag implements GameElement {
 
@@ -19,10 +20,6 @@ public class Flag implements GameElement {
 	public Flag() {
 	}
 
-	public void update(int delta) {
-	}
-
-	@Override
 	public void init() throws SlickException {
 
 		Random random = new Random();
@@ -32,19 +29,24 @@ public class Flag implements GameElement {
 		fire = new Animation(new Image[] { new Image("data/fire.png") },
 				new int[] { 300 }, false);
 
-		xCoord = random.nextInt(Map.getMap().getMapWidth());
-		yCoord = random.nextInt(Map.getMap().getMapHeight());
+		xCoord = random.nextInt(MapController.getMap().getMapWidth());
+		yCoord = random.nextInt(MapController.getMap().getMapHeight());
 
-		while (Map.getMap().isBlocked(xCoord, yCoord)) {
-			xCoord = random.nextInt(Map.getMap().getMapWidth());
-			yCoord = random.nextInt(Map.getMap().getMapHeight());
+		while (MapController.getMap().isBlocked(xCoord, yCoord)) {
+			xCoord = random.nextInt(MapController.getMap().getMapWidth());
+			yCoord = random.nextInt(MapController.getMap().getMapHeight());
 
 		}
 	}
 
-	@Override
 	public void render(Graphics g) {
 		flag.draw(xCoord * 1.0f, yCoord * 1.0f);
 		fire.draw(xCoord * 1.0f, yCoord * 1.0f);
+	}
+
+	@Override
+	public void update(int delta) {
+		// TODO Auto-generated method stub
+		
 	}
 }

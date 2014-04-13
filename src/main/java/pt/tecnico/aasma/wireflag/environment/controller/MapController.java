@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.controller;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -15,7 +15,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 
-public class Map implements GameElement {
+public class MapController implements GameElement {
 
 	public enum LandscapeType {
 		DESERT("desert", new DesertFactory()), FOREST("trees",
@@ -47,12 +47,12 @@ public class Map implements GameElement {
 		}
 	}
 
-	private static final Map INSTANCE = new Map();
+	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
 	private static Landscape[][] blocked;
 	private final static int NTILES = 34;
 
-	private Map() {
+	private MapController() {
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class Map implements GameElement {
 		return NTILES;
 	}
 
-	public static Map getMap() {
+	public static MapController getMap() {
 		return INSTANCE;
 	}
 

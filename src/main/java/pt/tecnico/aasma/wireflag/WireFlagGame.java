@@ -9,10 +9,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.environment.Climate;
 import pt.tecnico.aasma.wireflag.environment.Flag;
-import pt.tecnico.aasma.wireflag.environment.Map;
-import pt.tecnico.aasma.wireflag.environment.Time;
+import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 
 public class WireFlagGame extends BasicGame {
 
@@ -43,8 +43,8 @@ public class WireFlagGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		elements = new GameElement[] { Map.getMap(), new Flag(), new Agent(),
-				new Climate(), new Time() };
+		elements = new GameElement[] { MapController.getMap(), new Flag(), new Agent(),
+				new ClimateController(), new TimeController() };
 
 		for (GameElement e : elements) {
 			e.init();

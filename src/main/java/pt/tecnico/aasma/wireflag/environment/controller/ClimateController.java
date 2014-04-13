@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.controller;
 
 import java.util.Random;
 
@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 
-public class Climate implements GameElement {
+public class ClimateController implements GameElement {
 
 	private String climate = "";
 	private Animation rain;
@@ -19,7 +19,7 @@ public class Climate implements GameElement {
 	private int xCoord;
 	private int yCoord;
 
-	public Climate() {
+	public ClimateController() {
 		random = new Random();
 	}
 
@@ -40,13 +40,13 @@ public class Climate implements GameElement {
 				else {
 					climate = "rain";
 
-					xCoord = random.nextInt(Map.getMap().getMapWidth());
-					yCoord = random.nextInt(Map.getMap().getMapHeight());
+					xCoord = random.nextInt(MapController.getMap().getMapWidth());
+					yCoord = random.nextInt(MapController.getMap().getMapHeight());
 
-					while (xCoord > Map.getMap().getMapWidth() - 100
-							|| yCoord > Map.getMap().getMapHeight() - 100) {
-						xCoord = random.nextInt(Map.getMap().getMapWidth());
-						yCoord = random.nextInt(Map.getMap().getMapHeight());
+					while (xCoord > MapController.getMap().getMapWidth() - 100
+							|| yCoord > MapController.getMap().getMapHeight() - 100) {
+						xCoord = random.nextInt(MapController.getMap().getMapWidth());
+						yCoord = random.nextInt(MapController.getMap().getMapHeight());
 					}
 
 				}

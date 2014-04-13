@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
-import pt.tecnico.aasma.wireflag.environment.Map;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
 
@@ -39,22 +39,22 @@ public class Agent implements GameElement {
 
 		if (play == 0) {
 			sprite = up;
-			if (!Map.getMap().isBlocked(x, y - delta * 0.05f)) {
+			if (!MapController.getMap().isBlocked(x, y - delta * 0.05f)) {
 				moveUp(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 1) {
 			sprite = down;
-			if (!Map.getMap().isBlocked(x,
-					y + Map.getMap().getNTiles() + delta * 0.05f)) {
+			if (!MapController.getMap().isBlocked(x,
+					y + MapController.getMap().getNTiles() + delta * 0.05f)) {
 				moveDown(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 2) {
 			sprite = left;
-			if (!Map.getMap().isBlocked(x - delta * 0.05f, y)) {
+			if (!MapController.getMap().isBlocked(x - delta * 0.05f, y)) {
 				moveLeft(delta);
 			} else {
 				play = random.nextInt(4);
@@ -62,8 +62,8 @@ public class Agent implements GameElement {
 
 		} else if (play == 3) {
 			sprite = right;
-			if (!Map.getMap().isBlocked(
-					x + Map.getMap().getNTiles() + delta * 0.05f, y)) {
+			if (!MapController.getMap().isBlocked(
+					x + MapController.getMap().getNTiles() + delta * 0.05f, y)) {
 				moveRight(delta);
 			} else {
 				play = random.nextInt(4);
@@ -79,25 +79,25 @@ public class Agent implements GameElement {
 
 	public void moveDown(int delta) {
 		sprite.update(delta);
-		y += delta * 0.05f * Map.getMap().getTileValue(x, y + delta * 0.05f);
+		y += delta * 0.05f * MapController.getMap().getTileValue(x, y + delta * 0.05f);
 		hp -= 1;
 	}
 
 	public void moveUp(int delta) {
 		sprite.update(delta);
-		y -= delta * 0.05f * Map.getMap().getTileValue(x, y - delta * 0.05f);
+		y -= delta * 0.05f * MapController.getMap().getTileValue(x, y - delta * 0.05f);
 		hp -= 1;
 	}
 
 	public void moveRight(int delta) {
 		sprite.update(delta);
-		x += delta * 0.05f * Map.getMap().getTileValue(x + delta * 0.05f, y);
+		x += delta * 0.05f * MapController.getMap().getTileValue(x + delta * 0.05f, y);
 		hp -= 1;
 	}
 
 	public void moveLeft(int delta) {
 		sprite.update(delta);
-		x -= delta * 0.05f * Map.getMap().getTileValue(x - delta * 0.05f, y);
+		x -= delta * 0.05f * MapController.getMap().getTileValue(x - delta * 0.05f, y);
 		hp -= 1;
 	}
 
