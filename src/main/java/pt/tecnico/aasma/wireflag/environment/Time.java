@@ -11,7 +11,7 @@ public class Time implements GameElement {
 
 	int hora = 7;
 	int minutos = 0;
-	double segundos = 0;
+	int segundos = 0;
 
 	public Time() {
 	}
@@ -21,12 +21,12 @@ public class Time implements GameElement {
 
 	}
 
-	public void update() {
-		segundos += 1;
+	public void update(int delta) {
+		segundos += delta;
 
-		if (segundos == 1000) {
+		if (segundos > 60) {
 			segundos = 0;
-			minutos += 10;
+			minutos += 1;
 
 		}
 

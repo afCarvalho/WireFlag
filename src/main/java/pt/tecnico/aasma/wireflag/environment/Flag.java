@@ -12,13 +12,14 @@ import pt.tecnico.aasma.wireflag.GameElement;
 public class Flag implements GameElement {
 
 	private Animation flag;
+	private Animation fire;
 	private int xCoord;
 	private int yCoord;
 
 	public Flag() {
 	}
 
-	public void update() {
+	public void update(int delta) {
 	}
 
 	@Override
@@ -27,6 +28,8 @@ public class Flag implements GameElement {
 		Random random = new Random();
 
 		flag = new Animation(new Image[] { new Image("data/SmallFlag.png") },
+				new int[] { 300 }, false);
+		fire = new Animation(new Image[] { new Image("data/fire.png") },
 				new int[] { 300 }, false);
 
 		xCoord = random.nextInt(Map.getMap().getMapWidth());
@@ -42,5 +45,6 @@ public class Flag implements GameElement {
 	@Override
 	public void render(Graphics g) {
 		flag.draw(xCoord * 1.0f, yCoord * 1.0f);
+		fire.draw(xCoord * 1.0f, yCoord * 1.0f);
 	}
 }

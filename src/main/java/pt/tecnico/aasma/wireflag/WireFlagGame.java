@@ -55,12 +55,12 @@ public class WireFlagGame extends BasicGame {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 
-		((Agent) getElement(AGENT)).setTimeElapsed(delta);
 		for (GameElement e : elements) {
-			e.update();
+			e.update(delta);
 		}
 	}
 
+	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 
@@ -68,9 +68,4 @@ public class WireFlagGame extends BasicGame {
 			e.render(g);
 		}
 	}
-
-	private GameElement getElement(int elementPos) {
-		return elements[elementPos];
-	}
-
 }

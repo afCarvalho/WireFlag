@@ -26,41 +26,36 @@ public class Agent implements GameElement {
 	private int play;
 	private float x;
 	private float y;
-	private int timeElapsed;
 	private Random random;
 
 	public Agent() {
 		random = new Random();
 	}
 
-	public void setTimeElapsed(int timeElapsed) {
-		this.timeElapsed = timeElapsed;
-	}
-
-	public void update() {
+	public void update(int delta) {
 
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
 		if (play == 0) {
 			sprite = up;
-			if (!Map.getMap().isBlocked(x, y - timeElapsed * 0.05f)) {
-				moveUp(timeElapsed);
+			if (!Map.getMap().isBlocked(x, y - delta * 0.05f)) {
+				moveUp(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 1) {
 			sprite = down;
 			if (!Map.getMap().isBlocked(x,
-					y + Map.getMap().getNTiles() + timeElapsed * 0.05f)) {
-				moveDown(timeElapsed);
+					y + Map.getMap().getNTiles() + delta * 0.05f)) {
+				moveDown(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 2) {
 			sprite = left;
-			if (!Map.getMap().isBlocked(x - timeElapsed * 0.05f, y)) {
-				moveLeft(timeElapsed);
+			if (!Map.getMap().isBlocked(x - delta * 0.05f, y)) {
+				moveLeft(delta);
 			} else {
 				play = random.nextInt(4);
 			}
@@ -68,8 +63,8 @@ public class Agent implements GameElement {
 		} else if (play == 3) {
 			sprite = right;
 			if (!Map.getMap().isBlocked(
-					x + Map.getMap().getNTiles() + timeElapsed * 0.05f, y)) {
-				moveRight(timeElapsed);
+					x + Map.getMap().getNTiles() + delta * 0.05f, y)) {
+				moveRight(delta);
 			} else {
 				play = random.nextInt(4);
 			}
@@ -77,33 +72,26 @@ public class Agent implements GameElement {
 
 		if (hp < 200) {
 			hp += 500;
-			play = random.nextInt(4);
 			return;
 		}
 
 	}
 
-	public void moveDown(int delta ) {
+	public void moveDown(int delta) {
 		sprite.update(delta);
-		y -= delta * 0.05f * Map.getMap().getTileValue(x, y - delta * 0.05f);
+		y += delta * 0.05f * Map.getMap().getTileValue(x, y + delta * 0.05f);
 		hp -= 1;
 	}
 
 	public void moveUp(int delta) {
 		sprite.update(delta);
-		y += delta
-				* 0.05f
-				* Map.getMap().getTileValue(x,
-						y + Map.getMap().getNTiles() + delta * 0.05f);
+		y -= delta * 0.05f * Map.getMap().getTileValue(x, y - delta * 0.05f);
 		hp -= 1;
 	}
 
 	public void moveRight(int delta) {
 		sprite.update(delta);
-		x += delta
-				* 0.05f
-				* Map.getMap().getTileValue(
-						x + Map.getMap().getNTiles() + delta * 0.05f, y);
+		x += delta * 0.05f * Map.getMap().getTileValue(x + delta * 0.05f, y);
 		hp -= 1;
 	}
 
