@@ -9,9 +9,9 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 
 public class TimeController implements GameElement {
 
-	int hora = 7;
-	int minutos = 0;
-	int segundos = 0;
+	int hours = 7;
+	int minutes = 0;
+	int seconds = 0;
 
 	public TimeController() {
 	}
@@ -22,35 +22,35 @@ public class TimeController implements GameElement {
 	}
 
 	public void update(int delta) {
-		segundos += delta;
+		seconds += delta;
 
-		if (segundos > 60) {
-			segundos = 0;
-			minutos += 1;
-
+		if (seconds > 60) {
+			seconds = 0;
+			minutes += 1;
 		}
 
-		if (minutos == 60) {
-			minutos = 0;
-			hora += 1;
+		if (minutes == 60) {
+			minutes = 0;
+			hours += 1;
 		}
 
-		if (hora == 24)
-			hora = 0;
+		if (hours == 24)
+			hours = 0;
 	}
 
 	@Override
 	public void render(Graphics g) {
 
-		if (hora > 17 || hora < 6) {
+		if (hours > 17 || hours < 6) {
 			g.setColor(new Color(0f, 0f, 0f, 0.6f));
-			Rectangle r = new Rectangle(0, 0, MapController.getMap().getMapWidth(), MapController
-					.getMap().getMapHeight());
+			Rectangle r = new Rectangle(0, 0, MapController.getMap()
+					.getMapWidth(), MapController.getMap().getMapHeight());
 			g.draw(r);
 			g.fill(r);
 		}
-
-		g.drawString("Hora: " + hora + "h : " + minutos + " min ", 20f, 400f);
+		g.setColor(new Color(1f, 1f, 1f, 1f));
+		g.drawString("Hora: " + hours + "h : " + minutes + " min ", 35f,
+				MapController.getMap().getMapWidth() / 2);
 
 	}
 

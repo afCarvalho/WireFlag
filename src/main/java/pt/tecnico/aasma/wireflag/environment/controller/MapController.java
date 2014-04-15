@@ -51,7 +51,7 @@ public class MapController implements GameElement {
 
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
-	private static Landscape[][] blocked;
+	private static Landscape[][] tileMatrix;
 	private final static int NTILES = 34;
 
 	private MapController() {
@@ -61,11 +61,11 @@ public class MapController implements GameElement {
 	public void init() throws SlickException {
 
 		grassMap = new TiledMap("data/grassmap.tmx");
-		blocked = new Landscape[grassMap.getWidth()][grassMap.getHeight()];
+		tileMatrix = new Landscape[grassMap.getWidth()][grassMap.getHeight()];
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				blocked[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
+				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
 			}
 		}
 
@@ -74,7 +74,7 @@ public class MapController implements GameElement {
 		Flag flag = new Flag();
 		flag.init();
 
-		blocked[0][0].setAgent(agent);
+		tileMatrix[0][0].setAgent(agent);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class MapController implements GameElement {
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				blocked[xAxis][yAxis].render(g);
+				tileMatrix[xAxis][yAxis].render(g);
 			}
 		}
 	}
@@ -92,7 +92,7 @@ public class MapController implements GameElement {
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				blocked[xAxis][yAxis].update(delta);
+				tileMatrix[xAxis][yAxis].update(delta);
 			}
 		}
 
@@ -100,10 +100,10 @@ public class MapController implements GameElement {
 
 	public Landscape getLandscape(float x, float y) {
 
-		int xBlock = (int) x / NTILES;
-		int yBlock = (int) y / NTILES;
+		int xCoord = (int) x / NTILES;
+		int yCoord = (int) y / NTILES;
 
-		return blocked[xBlock][yBlock];
+		return tileMatrix[xCoord][yCoord];
 	}
 
 	public float getMovementSpeed(float x, float y) {

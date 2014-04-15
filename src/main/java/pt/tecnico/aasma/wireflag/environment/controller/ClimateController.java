@@ -40,13 +40,17 @@ public class ClimateController implements GameElement {
 				else {
 					climate = "rain";
 
-					xCoord = random.nextInt(MapController.getMap().getMapWidth());
-					yCoord = random.nextInt(MapController.getMap().getMapHeight());
+					xCoord = random.nextInt(MapController.getMap()
+							.getMapWidth());
+					yCoord = random.nextInt(MapController.getMap()
+							.getMapHeight());
 
 					while (xCoord > MapController.getMap().getMapWidth() - 100
 							|| yCoord > MapController.getMap().getMapHeight() - 100) {
-						xCoord = random.nextInt(MapController.getMap().getMapWidth());
-						yCoord = random.nextInt(MapController.getMap().getMapHeight());
+						xCoord = random.nextInt(MapController.getMap()
+								.getMapWidth());
+						yCoord = random.nextInt(MapController.getMap()
+								.getMapHeight());
 					}
 
 				}
@@ -74,7 +78,6 @@ public class ClimateController implements GameElement {
 		 * Map.getMap().getMapWidth(); j++) { if (i % 50 == 0 && j % 50 == 0)
 		 * rain.draw(j * 1.0f, i * 1.0f); } }
 		 */
-
 	}
 
 }

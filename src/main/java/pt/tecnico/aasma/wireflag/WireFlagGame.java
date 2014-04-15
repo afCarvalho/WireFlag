@@ -1,26 +1,16 @@
 package pt.tecnico.aasma.wireflag;
 
-import java.util.Random;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 
 public class WireFlagGame extends BasicGame {
-
-	private static final int MAP = 0;
-	private static final int FLAG = 1;
-	private static final int AGENT = 2;
-	private static final int CLIMATE = 3;
-	private static final int TIME = 4;
 
 	private GameElement[] elements;
 
