@@ -20,6 +20,11 @@ public abstract class Landscape implements GameElement {
 	protected Flag flag;
 	protected Agent agent;
 	protected Fire fire;
+	
+	public Landscape(float movementSpeed) {
+		this.movementSpeed = movementSpeed;
+		weather = new Sunny();
+	}
 
 	public boolean hasAgent() {
 		return agent != null;
@@ -43,11 +48,6 @@ public abstract class Landscape implements GameElement {
 
 	public void setOnFire(Fire fire) {
 		this.fire = fire;
-	}
-
-	public Landscape(float movementSpeed) {
-		this.movementSpeed = movementSpeed;
-		weather = new Sunny();
 	}
 
 	public float getMovementSpeed() {

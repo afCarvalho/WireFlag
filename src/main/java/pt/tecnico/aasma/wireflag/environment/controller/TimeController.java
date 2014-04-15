@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.WireFlagGame;
 
 public class TimeController implements GameElement {
 

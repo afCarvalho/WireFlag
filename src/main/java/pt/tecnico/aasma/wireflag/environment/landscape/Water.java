@@ -12,5 +12,4 @@ public class Water extends Landscape {
 	public void setExtremeWeather() {
 		weather = new ThunderStorm();
 	}
-
 }
