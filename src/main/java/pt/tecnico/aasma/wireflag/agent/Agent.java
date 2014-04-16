@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.agents;
+package pt.tecnico.aasma.wireflag.agent;
 
 import java.util.Random;
 
@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
 
@@ -21,81 +22,85 @@ public class Agent implements GameElement {
 	private Animation right;
 	private Animation left;
 	private Animation sprite;
-	private int hp;
 	private int play;
-	private Random random;
 	private float x;
 	private float y;
-	private WireFlagGame game;
+	private Random random;
 
-	public Agent(WireFlagGame game) {
-
+	public Agent() {
 		random = new Random();
-		this.game = game;
-
 	}
 
-	public void update(GameContainer container, int delta) {
+	public void update(int delta) {
 
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
-		Input input = container.getInput();
-		if (/* input.isKeyDown(Input.KEY_UP) */play == 0) {
+		if (play == 0) {
 			sprite = up;
-			if (!game.isBlocked(x, y - delta * 0.05f)) {
-				sprite.update(delta);
-				// The lower the delta the slowest the sprite will animate.
-				y -= delta * 0.05f * game.getTile(x, y - delta * 0.05f);
-				hp -= 1;
-
+			if (!MapController.getMap().isBlocked(x, y - delta * 0.05f)) {
+				moveUp(delta);
 			} else {
 				play = random.nextInt(4);
 			}
-		} else if (/* input.isKeyDown(Input.KEY_DOWN) */play == 1) {
+		} else if (play == 1) {
 			sprite = down;
-			if (game.getTile(x, y + game.getNTiles() + delta * 0.05f) > 0) {
-				sprite.update(delta);
-				y += delta * 0.05f
-						* game.getTile(x, y + game.getNTiles() + delta * 0.05f);
-				hp -= 1;
-
+			if (!MapController.getMap().isBlocked(x,
+					y + MapController.getMap().getNTiles() + delta * 0.05f)) {
+				moveDown(delta);
 			} else {
 				play = random.nextInt(4);
 			}
-		} else if (/* input.isKeyDown(Input.KEY_LEFT) */play == 2) {
+		} else if (play == 2) {
 			sprite = left;
-			if (game.getTile(x - delta * 0.05f, y) > 0) {
-				sprite.update(delta);
-				x -= delta * 0.05f * game.getTile(x - delta * 0.05f, y);
-				hp -= 1;
-
+			if (!MapController.getMap().isBlocked(x - delta * 0.05f, y)) {
+				moveLeft(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 
-		} else if (/* input.isKeyDown(Input.KEY_RIGHT) */play == 3) {
+		} else if (play == 3) {
 			sprite = right;
-			if (game.getTile(x + game.getNTiles() + delta * 0.05f, y) > 0) {
-				sprite.update(delta);
-				x += delta * 0.05f
-						* game.getTile(x + game.getNTiles() + delta * 0.05f, y);
-				hp -= 1;
-
+			if (!MapController.getMap().isBlocked(
+					x + MapController.getMap().getNTiles() + delta * 0.05f, y)) {
+				moveRight(delta);
 			} else {
 				play = random.nextInt(4);
 			}
 		}
 
-		if (hp < 200) {
+	}
 
-			hp += 500;
-			// Thread.sleep(1000);
-			play = random.nextInt(4);
+	public void moveDown(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
+		sprite.update(delta);
+		y += delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x, y + delta * 0.05f);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
+	}
 
-			return;
-		}
+	public void moveUp(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
+		sprite.update(delta);
+		y -= delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x, y - delta * 0.05f);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
+	}
 
+	public void moveRight(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
+		sprite.update(delta);
+		x += delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x + delta * 0.05f, y);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
+	}
+
+	public void moveLeft(int delta) {
+		MapController.getMap().getLandscape(x, y).setAgent(null);
+		sprite.update(delta);
+		x -= delta * 0.05f
+				* MapController.getMap().getMovementSpeed(x - delta * 0.05f, y);
+		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void init() throws SlickException {
@@ -114,15 +119,12 @@ public class Agent implements GameElement {
 		sprite = right;
 
 		play = 0;
-		hp = 10000;
 		x = 34f;
 		y = 34f;
-
 	}
 
 	@Override
 	public void render(Graphics g) {
-
 		sprite.draw((int) x, (int) y);
 
 		g.setColor(new Color(1f, 1f, 1f, 0.4f));
@@ -131,7 +133,6 @@ public class Agent implements GameElement {
 		g.draw(circle);
 		// g.setColor(Color.transparent);
 		g.fill(circle);
-
 	}
 
 }

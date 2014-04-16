@@ -1,132 +1,61 @@
 package pt.tecnico.aasma.wireflag;
 
-import java.io.IOException;
-import java.util.Random;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.agents.Agent;
-import pt.tecnico.aasma.wireflag.environment.Climate;
-import pt.tecnico.aasma.wireflag.environment.Flag;
-import pt.tecnico.aasma.wireflag.environment.Time;
-import pt.tecnico.aasma.wireflag.util.Map;
+import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 
 public class WireFlagGame extends BasicGame {
 
-	private static final int MAP = 0;
-	private static final int FLAG = 1;
-	private static final int SPRITE = 2;
-	private static final int CLIMATE = 3;
-	private static final int TIME = 4;
-
 	private GameElement[] elements;
 
-	public WireFlagGame() throws IOException {
+	public WireFlagGame() {
 		super("Wired-Flag");
 	}
-	
+
 	public static void main(String[] arguments) {
 		try {
-			int maxFPS = 60;
+			int maxFPS = 100;
 			AppGameContainer app = new AppGameContainer(new WireFlagGame());
 			app.setDisplayMode(1400, 800, false);
 			app.setTargetFrameRate(maxFPS);
-			//app.setVSync(true);
+			// app.setVSync(true);
 			app.start();
 		} catch (SlickException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-
-		Random random = new Random();
-		elements = new GameElement[] { new Map(), new Flag(), new Agent(this),
-				new Climate(this), new Time(this) };
+		elements = new GameElement[] { MapController.getMap(),
+				new ClimateController(), new TimeController() };
 
 		for (GameElement e : elements) {
 			e.init();
 		}
-
-		int xCoord = random.nextInt(getMapWidth());
-		int yCoord = random.nextInt(getMapHeight());
-
-		while (isBlocked(xCoord, yCoord)) {
-			xCoord = random.nextInt(getMapWidth());
-			yCoord = random.nextInt(getMapHeight());
-
-		}
-
-		getFlag().setCoords(xCoord, yCoord);
-
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 
-		getMap().update();
-		getFlag().update();
-		getSprite().update(container, delta);
-		getClimate().update();
-		getTime().update();
-
+		for (GameElement e : elements) {
+			e.update(delta);
+		}
 	}
 
+	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 
 		for (GameElement e : elements) {
 			e.render(g);
 		}
-
 	}
-
-	private Map getMap() {
-		return (Map) elements[MAP];
-	}
-
-	private Climate getClimate() {
-		return (Climate) elements[CLIMATE];
-	}
-
-	private Flag getFlag() {
-		return (Flag) elements[FLAG];
-	}
-
-	private Time getTime() {
-		return (Time) elements[TIME];
-	}
-
-	private Agent getSprite() {
-		return (Agent) elements[SPRITE];
-	}
-
-	public int getMapHeight() {
-		return getMap().getHeight() * getMap().getTileHeight();
-	}
-
-	public int getMapWidth() {
-		return getMap().getWidth() * getMap().getTileWidth();
-	}
-
-	public boolean isBlocked(float xCoord, float yCoord) {
-		return getMap().getTileType(xCoord, yCoord) == 0;
-	}
-
-	public float getTile(float xCoord, float yCoord) {
-		return getMap().getTileType(xCoord, yCoord);
-	}
-
-	public int getNTiles() {
-		return getMap().getNTiles();
-	}
-
 }
