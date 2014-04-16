@@ -18,6 +18,10 @@ public abstract class Weather implements GameElement {
 		this.yCoord = yCoord;
 	}
 
+	public boolean isExtremeWeather() {
+		return duration > 0;
+	}
+
 	@Override
 	public abstract void init() throws SlickException;
 
@@ -28,7 +32,7 @@ public abstract class Weather implements GameElement {
 
 	@Override
 	public void render(Graphics g) {
-		for (int x = xCoord; x < x + MapController.getMap().getTileWidth(); x++){
+		for (int x = xCoord; x < x + MapController.getMap().getTileWidth(); x++) {
 			for (int y = yCoord; y < y + MapController.getMap().getTileHeight(); y++) {
 				// draw(x, y);
 			}

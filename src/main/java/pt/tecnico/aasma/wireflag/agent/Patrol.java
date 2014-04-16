@@ -2,8 +2,8 @@ package pt.tecnico.aasma.wireflag.agent;
 
 public class Patrol extends Agent {
 
-	public Patrol() {
-		super(HIGHSPD, LOWATCK);
+	public Patrol(int teamId) {
+		super(HIGHSPD, LOWATCK, teamId);
 		// TODO Auto-generated constructor stub
 	}
 
