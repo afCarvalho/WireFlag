@@ -4,13 +4,13 @@ import pt.tecnico.aasma.wireflag.environment.weather.Rainy;
 
 public class Plain extends Landscape {
 
-	public Plain() {
-		super(NORMALSPD);
+	public Plain(int xCoord, int yCoord) {
+		super(NORMALSPD, yCoord, yCoord);
 	}
 
 	@Override
-	public void setExtremeWeather() {
-		weather = new Rainy();
+	public void setExtremeWeather(int duration) {
+		weather = new Rainy(duration, xCoord, yCoord);
 	}
 
 }

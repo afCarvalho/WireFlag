@@ -4,12 +4,12 @@ import pt.tecnico.aasma.wireflag.environment.weather.SandStorm;
 
 public class Desert extends Landscape {
 
-	public Desert() {
-		super(REDUCEDSPD);
+	public Desert(int xCoord, int yCoord) {
+		super(REDUCEDSPD, xCoord, yCoord);
 	}
 
 	@Override
-	public void setExtremeWeather() {
-		weather = new SandStorm();
+	public void setExtremeWeather(int duration) {
+		weather = new SandStorm(duration, xCoord, yCoord);
 	}
 }

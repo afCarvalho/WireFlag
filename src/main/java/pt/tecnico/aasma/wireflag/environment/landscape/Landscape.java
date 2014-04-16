@@ -20,10 +20,12 @@ public abstract class Landscape implements GameElement {
 	protected Flag flag;
 	protected Agent agent;
 	protected Fire fire;
-	
-	public Landscape(float movementSpeed) {
+	protected int xCoord;
+	protected int yCoord;
+
+	public Landscape(float movementSpeed, int xCoord, int yCoord) {
 		this.movementSpeed = movementSpeed;
-		weather = new Sunny();
+		weather = new Sunny(0, xCoord, yCoord);
 	}
 
 	public boolean hasAgent() {
@@ -58,10 +60,10 @@ public abstract class Landscape implements GameElement {
 		return weather;
 	}
 
-	public abstract void setExtremeWeather();
+	public abstract void setExtremeWeather(int duration);
 
 	public void setSunnyWeather() {
-		weather = new Sunny();
+		weather = new Sunny(0, xCoord, yCoord);
 	}
 
 	@Override
@@ -71,31 +73,31 @@ public abstract class Landscape implements GameElement {
 	@Override
 	public void update(int delta) {
 
-		if (hasFire()){
+		if (hasFire()) {
 			fire.update(delta);
 		}
-		
-		if(hasAgent()){
+
+		if (hasAgent()) {
 			agent.update(delta);
-		}	
-		
+		}
+
 		weather.update(delta);
 	}
 
 	@Override
 	public void render(Graphics g) {
 		weather.render(g);
-		
-		if (hasFire()){
+
+		if (hasFire()) {
 			fire.render(g);
 		}
-		
-		if(hasFlag()){
+
+		if (hasFlag()) {
 			flag.render(g);
 		}
-		
-		if(hasAgent()){
+
+		if (hasAgent()) {
 			agent.render(g);
-		}		
+		}
 	}
 }

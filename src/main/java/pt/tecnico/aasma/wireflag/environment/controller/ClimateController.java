@@ -12,8 +12,7 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 
 public class ClimateController implements GameElement {
 
-	private String climate = "";
-	private Animation rain;
+
 	private Random random;
 	private int pressure;
 	private int xCoord;
@@ -25,34 +24,29 @@ public class ClimateController implements GameElement {
 
 	@Override
 	public void init() throws SlickException {
-
-		rain = new Animation(new Image[] { new Image("data/rain.png") },
-				new int[] { 300 }, false);
-
 	}
 
 	public void update(int delta) {
 		pressure += delta;
 		if (pressure > 1000) {
 			if (random.nextInt(delta) > 5) {
-				if (climate.equals("rain"))
-					climate = "sun";
-				else {
-					climate = "rain";
 
-					xCoord = random.nextInt(MapController.getMap()
-							.getMapWidth());
-					yCoord = random.nextInt(MapController.getMap()
-							.getMapHeight());
+				xCoord = random.nextInt(MapController.getMap().getMapWidth());
+				yCoord = random.nextInt(MapController.getMap().getMapHeight());
+				int NTiles = MapController.getMap().getNTiles();
 
-					while (xCoord > MapController.getMap().getMapWidth() - 100
-							|| yCoord > MapController.getMap().getMapHeight() - 100) {
-						xCoord = random.nextInt(MapController.getMap()
-								.getMapWidth());
-						yCoord = random.nextInt(MapController.getMap()
-								.getMapHeight());
+				while (xCoord > NTiles - 5 || yCoord > NTiles - 5) {
+					xCoord = random.nextInt(NTiles);
+					yCoord = random.nextInt(NTiles);
+				}
+
+				int duration = random.nextInt(100000);
+
+				for (int x = 0; x < xCoord + 5; x++) {
+					for (int y = 0; y < yCoord + 5; y++) {
+						MapController.getMap().getLandscape(x, y)
+								.setExtremeWeather(duration);
 					}
-
 				}
 
 			}
@@ -63,14 +57,15 @@ public class ClimateController implements GameElement {
 	@Override
 	public void render(Graphics g) {
 
-		if (climate.equals("rain")) {
-
-			for (int i = xCoord; i < xCoord + 100; i++)
-				for (int j = yCoord; j < yCoord + 100; j++)
-					if (i % 30 == 0 && j % 30 == 0)
-						rain.draw(i * 1.0f, j * 1.0f);
-
-		}
+		/*
+		 * if (climate.equals("rain")) {
+		 * 
+		 * for (int i = xCoord; i < xCoord + 100; i++) for (int j = yCoord; j <
+		 * yCoord + 100; j++) if (i % 30 == 0 && j % 30 == 0) rain.draw(i *
+		 * 1.0f, j * 1.0f);
+		 * 
+		 * }
+		 */
 
 		/*
 		 * if (climate.equals("rain")) { for (int i = 0; i <

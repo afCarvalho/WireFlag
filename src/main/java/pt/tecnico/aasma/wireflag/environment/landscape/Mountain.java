@@ -4,12 +4,12 @@ import pt.tecnico.aasma.wireflag.environment.weather.SnowStorm;
 
 public class Mountain extends Landscape {
 
-	public Mountain() {
-		super(VREDUCEDSPD);
+	public Mountain(int xCoord, int yCoord) {
+		super(VREDUCEDSPD, yCoord, yCoord);
 	}
 
 	@Override
-	public void setExtremeWeather() {
-		weather = new SnowStorm();
+	public void setExtremeWeather(int duration) {
+		weather = new SnowStorm(duration, xCoord, yCoord);
 	}
 }

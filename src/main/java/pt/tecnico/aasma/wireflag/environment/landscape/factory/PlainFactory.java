@@ -6,7 +6,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.Plain;
 public class PlainFactory extends LandscapeFactory {
 
 	@Override
-	public Landscape createLandscape() {
-		return new Plain();
+	public Landscape createLandscape(int xCoord, int yCoord) {
+		return new Plain(yCoord, yCoord);
 	}
 }

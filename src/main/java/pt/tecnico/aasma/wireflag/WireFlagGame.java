@@ -15,7 +15,7 @@ public class WireFlagGame extends BasicGame {
 	private GameElement[] elements;
 
 	public WireFlagGame() {
-		super("Wired-Flag");
+		super("WireFlag");
 	}
 
 	public static void main(String[] arguments) {

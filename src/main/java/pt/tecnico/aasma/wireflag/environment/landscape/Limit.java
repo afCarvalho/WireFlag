@@ -4,12 +4,12 @@ import pt.tecnico.aasma.wireflag.environment.weather.Rainy;
 
 public class Limit extends Landscape {
 
-	public Limit() {
-		super(0);
+	public Limit(int xCoord, int yCoord) {
+		super(0, yCoord, yCoord);
 	}
 
 	@Override
-	public void setExtremeWeather() {
-		weather = new Rainy();
+	public void setExtremeWeather(int duration) {
+		weather = new Rainy(duration, xCoord, yCoord);
 	}
 }

@@ -34,18 +34,18 @@ public class MapController implements GameElement {
 			this.factory = factory;
 		}
 
-		public static Landscape getTileLandscape(String landscapeName)
-				throws LandscapeNotFoundException {
+		public static Landscape getTileLandscape(String landscapeName,
+				int xCoord, int yCoord) throws LandscapeNotFoundException {
 
 			for (LandscapeType land : LandscapeType.values()) {
 				if (land.name.equals(landscapeName))
-					return land.getLandscape();
+					return land.getLandscape(xCoord, yCoord);
 			}
 			throw new LandscapeNotFoundException(landscapeName);
 		}
 
-		public Landscape getLandscape() {
-			return factory.createLandscape();
+		public Landscape getLandscape(int xCoord, int yCoord) {
+			return factory.createLandscape(xCoord, yCoord);
 		}
 	}
 
@@ -122,6 +122,14 @@ public class MapController implements GameElement {
 		return grassMap.getWidth() * grassMap.getTileWidth();
 	}
 
+	public int getTileWidth() {
+		return grassMap.getTileWidth();
+	}
+	
+	public int getTileHeight() {
+		return grassMap.getTileHeight();
+	}
+
 	public int getNTiles() {
 		return NTILES;
 	}
@@ -134,7 +142,7 @@ public class MapController implements GameElement {
 		try {
 			int tileID = grassMap.getTileId(xCoord, yCoord, 0);
 			String value = grassMap.getTileProperty(tileID, "terrain", "grass");
-			return LandscapeType.getTileLandscape(value);
+			return LandscapeType.getTileLandscape(value, xCoord, yCoord);
 		} catch (LandscapeNotFoundException e) {
 			System.out.println(e.toString());
 			System.exit(0);
