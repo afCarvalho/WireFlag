@@ -6,6 +6,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.Builder;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
@@ -69,7 +70,7 @@ public class MapController implements GameElement {
 			}
 		}
 
-		Agent agent = new Agent();
+		Agent agent = new Builder();
 		agent.init();
 		Flag flag = new Flag();
 		flag.init();
