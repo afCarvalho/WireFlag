@@ -24,7 +24,7 @@ public class Flag implements GameElement {
 	@Override
 	public void init() throws SlickException {
 
-		flag = new Animation(new Image[] { new Image("data/SmallFlag.png") },
+		flag = new Animation(new Image[] { new Image(System.getProperty("data") + "SmallFlag.png") },
 				new int[] { 300 }, false);
 
 	}

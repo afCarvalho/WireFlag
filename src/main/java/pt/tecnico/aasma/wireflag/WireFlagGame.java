@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.newdawn.slick.AppGameContainer;
@@ -24,19 +25,21 @@ public class WireFlagGame extends BasicGame {
 
 	private GameElement[] elements;
 
-	public WireFlagGame() {
+	public WireFlagGame() throws IOException {
 		super("Wired-Flag");
 	}
-
+	
 	public static void main(String[] arguments) {
 		try {
-			int maxFPS = 100;
+			int maxFPS = 60;
 			AppGameContainer app = new AppGameContainer(new WireFlagGame());
 			app.setDisplayMode(1400, 800, false);
 			app.setTargetFrameRate(maxFPS);
 			//app.setVSync(true);
 			app.start();
 		} catch (SlickException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -100,10 +100,10 @@ public class Agent implements GameElement {
 
 	public void init() throws SlickException {
 
-		Image[] movementUp = { new Image("data/grey-back.png") };
-		Image[] movementDown = { new Image("data/grey-front.png") };
-		Image[] movementLeft = { new Image("data/grey-left.png") };
-		Image[] movementRight = { new Image("data/grey-right.png") };
+		Image[] movementUp = { new Image(System.getProperty("data") + "grey-back.png") };
+		Image[] movementDown = { new Image(System.getProperty("data") + "grey-front.png") };
+		Image[] movementLeft = { new Image(System.getProperty("data") + "grey-left.png") };
+		Image[] movementRight = { new Image(System.getProperty("data") + "grey-right.png") };
 		int[] duration = { 300 };
 
 		up = new Animation(movementUp, duration, false);

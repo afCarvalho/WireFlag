@@ -27,7 +27,7 @@ public class Climate implements GameElement {
 	@Override
 	public void init() throws SlickException {
 
-		rain = new Animation(new Image[] { new Image("data/rain.png") },
+		rain = new Animation(new Image[] { new Image(System.getProperty("data") + "rain.png") },
 				new int[] { 300 }, false);
 
 	}

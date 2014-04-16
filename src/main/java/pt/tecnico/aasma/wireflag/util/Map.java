@@ -20,7 +20,7 @@ public class Map implements GameElement {
 
 		nTiles = 34;
 
-		grassMap = new TiledMap("data/grassmap.tmx");
+		grassMap = new TiledMap(System.getProperty("data") + "grassmap.tmx");
 
 		// build a collision map based on tile properties in the TileD map
 		blocked = new float[grassMap.getWidth()][grassMap.getHeight()];

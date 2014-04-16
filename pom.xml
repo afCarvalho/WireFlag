@@ -96,11 +96,6 @@
 			<systemPath>${java.home}/lib/javaws.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>org.jcraft</groupId>
-			<artifactId>jorbis</artifactId>
-			<version>0.0.17</version>
-		</dependency>
-		<dependency>
 			<groupId>com.ninjacave</groupId>
 			<artifactId>slick</artifactId>
 			<version>2013.06.03</version>
