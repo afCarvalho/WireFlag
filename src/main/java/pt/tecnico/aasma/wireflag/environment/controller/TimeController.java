@@ -67,10 +67,10 @@ public class TimeController implements GameElement {
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		
 		if (days > 0) {
-			g.drawString(" Time: " + days + "d" + hours + "h" + minutes + "m", 35f,
+			g.drawString(" Time: " + days + "d " + hours + "h " + minutes + "m", 35f,
 					MapController.getMap().getMapWidth() / 2);
 		} else {
-			g.drawString("Time: " + hours + "h" + minutes + "m", 35f,
+			g.drawString("Time: " + hours + "h " + minutes + "m", 35f,
 					MapController.getMap().getMapWidth() / 2);
 		}
 		
