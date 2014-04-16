@@ -9,8 +9,8 @@ import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 public abstract class Weather implements GameElement {
 
 	private int duration;
-	protected int xCoord;
-	protected int yCoord;
+	private int xCoord;
+	private int yCoord;
 
 	public Weather(int duration, int xCoord, int yCoord) {
 		this.duration = duration;
@@ -18,6 +18,10 @@ public abstract class Weather implements GameElement {
 		this.yCoord = yCoord;
 
 		//System.out.println(" xWeather " + xCoord + " yWeather " + yCoord);
+	}
+
+	public boolean isExtremeWeather() {
+		return duration > 0;
 	}
 
 	@Override

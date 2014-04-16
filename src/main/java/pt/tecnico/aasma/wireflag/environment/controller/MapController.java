@@ -1,5 +1,8 @@
 package pt.tecnico.aasma.wireflag.environment.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -7,6 +10,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.Builder;
+import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
@@ -70,7 +74,7 @@ public class MapController implements GameElement {
 			}
 		}
 
-		Agent agent = new Builder();
+		Agent agent = new Builder(1);
 		agent.init();
 		Flag flag = new Flag();
 		flag.init();
@@ -87,7 +91,6 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis].render(g);
 			}
 		}
-
 	}
 
 	public void update(int delta) {
@@ -97,9 +100,9 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis].update(delta);
 			}
 		}
-
 	}
 
+/* converte coord do agente em coord dos tiles */
 	public Landscape getLandscape(float x, float y, boolean convert) {
 
 		if (convert) {
@@ -153,5 +156,42 @@ public class MapController implements GameElement {
 			System.exit(0);
 		}
 		return null;
+	}
+
+	public List<Perception> getPerceptions(int teamId, float x, float y) {
+		List<Perception> list = new ArrayList<Perception>();
+
+		Landscape landscape = getLandscape(x, y,true);
+
+		if (landscape.hasFlag()) {
+			Perception perception = new Perception(x, y);
+			perception.setFlag(true);
+			list.add(perception);
+		}
+
+		if (landscape.hasAgent()) {
+			if (landscape.getAgent().isEnemy(teamId)) {
+				Perception perception = new Perception(x, y);
+				perception.setEnemy(true);
+				list.add(perception);
+			}
+		}
+
+		// ver se o start point da equipa coincide com a poicao que se esta a
+		// ver
+
+		if (landscape.hasAnimal()) {
+			Perception perception = new Perception(x, y);
+			perception.setAnimal(true);
+			list.add(perception);
+		}
+
+		if (landscape.getWeather().isExtremeWeather()) {
+			Perception perception = new Perception(x, y);
+			perception.setExtremeWeather(true);
+			list.add(perception);
+		}
+
+		return list;
 	}
 }

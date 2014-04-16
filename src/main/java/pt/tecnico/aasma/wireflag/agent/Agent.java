@@ -4,15 +4,12 @@ import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
@@ -33,16 +30,21 @@ public class Agent implements GameElement {
 	private Animation left;
 	private Animation sprite;
 	private int play;
+
+	private int teamId;
 	private float x;
 	private float y;
 	private Random random;
 	private float agentSpeed;
 	private float agentAttack;
+	private int fatigue;
+	private int life;
 
-	public Agent(float agentSpeed, float agentAttack) {
+	public Agent(float agentSpeed, float agentAttack, int teamId) {
 		random = new Random();
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
+		this.teamId = teamId;
 	}
 
 	public void update(int delta) {
@@ -89,13 +91,6 @@ public class Agent implements GameElement {
 		sprite.update(delta);
 		y += delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(x, y + delta);
-
-		/*
-		 * x+= delta*AgentSpeed()*TileSpeed(delta)
-		 * 
-		 * precisa da velocidade para calcular a posicao porque anda varias
-		 * vezes dentro do mesmo tile (para nao andar aos pulos)
-		 */
 
 		MapController.getMap().getLandscape(x, y, true).setAgent(this);
 	}
@@ -156,4 +151,7 @@ public class Agent implements GameElement {
 		g.fill(circle);
 	}
 
+	public boolean isEnemy(int teamId) {
+		return this.teamId != teamId;
+	}
 }

@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.Animal;
 import pt.tecnico.aasma.wireflag.environment.Fire;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
@@ -16,13 +17,15 @@ public abstract class Landscape implements GameElement {
 	protected final static float REDUCEDSPD = 0.5f;
 	protected final static float VREDUCEDSPD = 0.1f;
 	protected final static float NOSPD = 0f;
+
+	protected int xCoord;
+	protected int yCoord;
 	protected float movementSpeed;
 	protected Weather weather;
 	protected Flag flag;
 	protected Agent agent;
 	protected Fire fire;
-	protected int xCoord;
-	protected int yCoord;
+	protected Animal animal;
 
 	public Landscape(float movementSpeed, int xCoord, int yCoord) {
 		this.movementSpeed = movementSpeed;
@@ -43,6 +46,10 @@ public abstract class Landscape implements GameElement {
 		return fire != null;
 	}
 
+	public boolean hasAnimal() {
+		return animal != null;
+	}
+
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
@@ -55,6 +62,10 @@ public abstract class Landscape implements GameElement {
 		this.fire = fire;
 	}
 
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+
 	public float getMovementSpeed() {
 		return movementSpeed;
 	}
@@ -64,6 +75,9 @@ public abstract class Landscape implements GameElement {
 	}
 
 	public abstract void setExtremeWeather(int duration) throws SlickException;
+	public Agent getAgent() {
+		return agent;
+	}
 
 	public void setSunnyWeather() {
 		weather = new Sunny(0, xCoord, yCoord);
