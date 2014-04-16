@@ -16,8 +16,6 @@ public abstract class Weather implements GameElement {
 		this.duration = duration;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
-
-		//System.out.println(" xWeather " + xCoord + " yWeather " + yCoord);
 	}
 
 	public boolean isExtremeWeather() {
@@ -41,8 +39,8 @@ public abstract class Weather implements GameElement {
 			for (int y = yCoord * MapController.getMap().getTileHeight(); y < yCoord
 					* MapController.getMap().getTileHeight()
 					+ MapController.getMap().getTileHeight(); y++) {
-				//System.out.println( x + " " + y);
-				draw(x, y);
+				if (x % 25 == 0 && y % 25 == 0)
+					draw(x, y);
 			}
 		}
 	}

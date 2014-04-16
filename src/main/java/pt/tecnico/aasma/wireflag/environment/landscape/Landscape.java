@@ -75,6 +75,7 @@ public abstract class Landscape implements GameElement {
 	}
 
 	public abstract void setExtremeWeather(int duration) throws SlickException;
+
 	public Agent getAgent() {
 		return agent;
 	}
@@ -99,6 +100,9 @@ public abstract class Landscape implements GameElement {
 		}
 
 		weather.update(delta);
+		if (!weather.isExtremeWeather()) {
+			setSunnyWeather();
+		}
 	}
 
 	@Override

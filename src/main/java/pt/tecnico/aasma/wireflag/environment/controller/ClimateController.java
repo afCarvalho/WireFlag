@@ -27,26 +27,26 @@ public class ClimateController implements GameElement {
 
 	public void update(int delta) throws SlickException {
 		pressure += delta;
-		if (pressure > 1000) {
+		if (pressure > 10000) {
 			if (random.nextInt(delta) > 5) {
 
 				int width = MapController.getMap().getMapWidth()
 						/ MapController.getMap().getTileWidth();
-				int heigth = MapController.getMap().getTileHeight()
+				int heigth = MapController.getMap().getMapHeight()
 						/ MapController.getMap().getTileHeight();
 
 				xCoord = random.nextInt(width);
 				yCoord = random.nextInt(heigth);
 
-				while (xCoord > width - 5 || yCoord > heigth - 5) {
+				while (xCoord > width - 4 || yCoord > heigth - 4) {
 					xCoord = random.nextInt(width);
 					yCoord = random.nextInt(heigth);
 				}
 
-				int duration = random.nextInt(100000);
+				int duration = random.nextInt(10000);
 
-				for (int x = xCoord; x < xCoord + 5; x++) {
-					for (int y = yCoord; y < yCoord + 5; y++) {
+				for (int x = xCoord; x < xCoord + 4; x++) {
+					for (int y = yCoord; y < yCoord + 4; y++) {
 						MapController.getMap().getLandscape(x, y, false)
 								.setExtremeWeather(duration);
 					}
