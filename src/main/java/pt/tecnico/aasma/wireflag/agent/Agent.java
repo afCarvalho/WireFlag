@@ -85,7 +85,7 @@ public class Agent implements GameElement {
 	}
 
 	public void moveDown(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+		MapController.getMap().getLandscape(x, y, true).setAgent(null);
 		sprite.update(delta);
 		y += delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(x, y + delta);
@@ -97,31 +97,31 @@ public class Agent implements GameElement {
 		 * vezes dentro do mesmo tile (para nao andar aos pulos)
 		 */
 
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+		MapController.getMap().getLandscape(x, y, true).setAgent(this);
 	}
 
 	public void moveUp(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+		MapController.getMap().getLandscape(x, y, true).setAgent(null);
 		sprite.update(delta);
 		y -= delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(x, y - delta);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+		MapController.getMap().getLandscape(x, y, true).setAgent(this);
 	}
 
 	public void moveRight(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+		MapController.getMap().getLandscape(x, y, true).setAgent(null);
 		sprite.update(delta);
 		x += delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(x + delta, y);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+		MapController.getMap().getLandscape(x, y, true).setAgent(this);
 	}
 
 	public void moveLeft(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+		MapController.getMap().getLandscape(x, y, true).setAgent(null);
 		sprite.update(delta);
 		x -= delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(x - delta, y);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+		MapController.getMap().getLandscape(x, y, true).setAgent(this);
 	}
 
 	public void init() throws SlickException {

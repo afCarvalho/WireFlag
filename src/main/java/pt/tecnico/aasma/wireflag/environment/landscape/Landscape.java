@@ -1,6 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.landscape;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
@@ -26,6 +27,8 @@ public abstract class Landscape implements GameElement {
 	public Landscape(float movementSpeed, int xCoord, int yCoord) {
 		this.movementSpeed = movementSpeed;
 		weather = new Sunny(0, xCoord, yCoord);
+		this.xCoord = xCoord;
+		this.yCoord = yCoord;
 	}
 
 	public boolean hasAgent() {
@@ -60,7 +63,7 @@ public abstract class Landscape implements GameElement {
 		return weather;
 	}
 
-	public abstract void setExtremeWeather(int duration);
+	public abstract void setExtremeWeather(int duration) throws SlickException;
 
 	public void setSunnyWeather() {
 		weather = new Sunny(0, xCoord, yCoord);

@@ -38,7 +38,7 @@ public class Flag implements GameElement {
 
 		}
 
-		MapController.getMap().getLandscape(xCoord, yCoord).setFlag(this);
+		MapController.getMap().getLandscape(xCoord, yCoord, true).setFlag(this);
 	}
 
 	public void render(Graphics g) {

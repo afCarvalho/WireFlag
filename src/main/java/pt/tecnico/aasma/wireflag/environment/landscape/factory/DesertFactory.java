@@ -7,6 +7,6 @@ public class DesertFactory extends LandscapeFactory {
 
 	@Override
 	public Landscape createLandscape(int xCoord, int yCoord) {
-		return new Desert(yCoord, yCoord);
+		return new Desert(xCoord, yCoord);
 	}
 }

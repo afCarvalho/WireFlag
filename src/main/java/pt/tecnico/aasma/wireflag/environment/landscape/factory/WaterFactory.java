@@ -7,6 +7,6 @@ public class WaterFactory extends LandscapeFactory {
 
 	@Override
 	public Landscape createLandscape(int xCoord, int yCoord) {
-		return new Water(yCoord, yCoord);
+		return new Water(xCoord, yCoord);
 	}
 }

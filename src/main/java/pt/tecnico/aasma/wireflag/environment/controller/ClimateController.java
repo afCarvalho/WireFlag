@@ -12,7 +12,6 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 
 public class ClimateController implements GameElement {
 
-
 	private Random random;
 	private int pressure;
 	private int xCoord;
@@ -26,31 +25,34 @@ public class ClimateController implements GameElement {
 	public void init() throws SlickException {
 	}
 
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 		pressure += delta;
 		if (pressure > 1000) {
 			if (random.nextInt(delta) > 5) {
 
-				xCoord = random.nextInt(MapController.getMap().getMapWidth());
-				yCoord = random.nextInt(MapController.getMap().getMapHeight());
-				int NTiles = MapController.getMap().getNTiles();
+				int width = MapController.getMap().getMapWidth()
+						/ MapController.getMap().getTileWidth();
+				int heigth = MapController.getMap().getTileHeight()
+						/ MapController.getMap().getTileHeight();
 
-				while (xCoord > NTiles - 5 || yCoord > NTiles - 5) {
-					xCoord = random.nextInt(NTiles);
-					yCoord = random.nextInt(NTiles);
+				xCoord = random.nextInt(width);
+				yCoord = random.nextInt(heigth);
+
+				while (xCoord > width - 5 || yCoord > heigth - 5) {
+					xCoord = random.nextInt(width);
+					yCoord = random.nextInt(heigth);
 				}
 
 				int duration = random.nextInt(100000);
 
-				for (int x = 0; x < xCoord + 5; x++) {
-					for (int y = 0; y < yCoord + 5; y++) {
-						MapController.getMap().getLandscape(x, y)
+				for (int x = xCoord; x < xCoord + 5; x++) {
+					for (int y = yCoord; y < yCoord + 5; y++) {
+						MapController.getMap().getLandscape(x, y, false)
 								.setExtremeWeather(duration);
 					}
 				}
-
+				pressure = 0;
 			}
-			pressure = 0;
 		}
 	}
 

@@ -25,7 +25,7 @@ public class MapController implements GameElement {
 				new ForestFactory()), HOLE("hole", new LimitFactory()), MOUNTAIN(
 				"mountain", new MountainFactory()), WATER("water",
 				new WaterFactory()), LIMIT("limit", new LimitFactory()), PLAIN(
-				"grass", new PlainFactory());
+				"plain", new PlainFactory());
 
 		private String name;
 		private LandscapeFactory factory;
@@ -87,6 +87,7 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis].render(g);
 			}
 		}
+
 	}
 
 	public void update(int delta) {
@@ -99,16 +100,19 @@ public class MapController implements GameElement {
 
 	}
 
-	public Landscape getLandscape(float x, float y) {
+	public Landscape getLandscape(float x, float y, boolean convert) {
 
-		int xCoord = (int) x / NTILES;
-		int yCoord = (int) y / NTILES;
-
-		return tileMatrix[xCoord][yCoord];
+		if (convert) {
+			int xCoord = (int) x / NTILES;
+			int yCoord = (int) y / NTILES;
+			return tileMatrix[xCoord][yCoord];
+		} else {
+			return tileMatrix[(int) x][(int) y];
+		}
 	}
 
 	public float getMovementSpeed(float x, float y) {
-		return getLandscape(x, y).getMovementSpeed();
+		return getLandscape(x, y, true).getMovementSpeed();
 	}
 
 	public boolean isBlocked(float xCoord, float yCoord) {
@@ -126,7 +130,7 @@ public class MapController implements GameElement {
 	public int getTileWidth() {
 		return grassMap.getTileWidth();
 	}
-	
+
 	public int getTileHeight() {
 		return grassMap.getTileHeight();
 	}
@@ -142,7 +146,7 @@ public class MapController implements GameElement {
 	private Landscape getLandscapeType(int xCoord, int yCoord) {
 		try {
 			int tileID = grassMap.getTileId(xCoord, yCoord, 0);
-			String value = grassMap.getTileProperty(tileID, "terrain", "grass");
+			String value = grassMap.getTileProperty(tileID, "terrain", "plain");
 			return LandscapeType.getTileLandscape(value, xCoord, yCoord);
 		} catch (LandscapeNotFoundException e) {
 			System.out.println(e.toString());

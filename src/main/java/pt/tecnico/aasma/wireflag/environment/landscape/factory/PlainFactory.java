@@ -7,6 +7,6 @@ public class PlainFactory extends LandscapeFactory {
 
 	@Override
 	public Landscape createLandscape(int xCoord, int yCoord) {
-		return new Plain(yCoord, yCoord);
+		return new Plain(xCoord, yCoord);
 	}
 }

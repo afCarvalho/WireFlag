@@ -10,7 +10,7 @@ public class Rainy extends Weather {
 	private Animation rain;
 
 	public Rainy(int duration, int xCoord, int yCoord) {
-		super(duration, yCoord, yCoord);
+		super(duration, xCoord, yCoord);
 	}
 
 	@Override

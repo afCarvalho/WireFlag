@@ -7,6 +7,6 @@ public class LimitFactory extends LandscapeFactory {
 
 	@Override
 	public Landscape createLandscape(int xCoord, int yCoord) {
-		return new Limit(yCoord, yCoord);
+		return new Limit(xCoord, yCoord);
 	}
 }
