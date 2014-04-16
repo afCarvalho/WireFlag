@@ -1,4 +1,0 @@
-[submodule "data"]
-	path = WireFlagLibs
-	url = git@github.com:castalheiro/WireFlagLibs.git
-	branch = nolibs
