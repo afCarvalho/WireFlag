@@ -17,6 +17,16 @@ import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
 
+	/* speed */
+	protected final static float LOWSPD = 1.0f;
+	protected final static float NORMALSPD = 0.005f;
+	protected final static float HIGHSPD = 0.1f;
+
+	/* attack */
+	protected final static float LOWATCK = 1.0f;
+	protected final static float NORMALATCK = 2.0f;
+	protected final static float HIGHTATCK = 3.0f;
+
 	private Animation up;
 	private Animation down;
 	private Animation right;
@@ -26,9 +36,13 @@ public class Agent implements GameElement {
 	private float x;
 	private float y;
 	private Random random;
+	private float agentSpeed;
+	private float agentAttack;
 
-	public Agent() {
+	public Agent(float agentSpeed, float agentAttack) {
 		random = new Random();
+		this.agentSpeed = agentSpeed;
+		this.agentAttack = agentAttack;
 	}
 
 	public void update(int delta) {
@@ -68,38 +82,45 @@ public class Agent implements GameElement {
 				play = random.nextInt(4);
 			}
 		}
-
 	}
 
 	public void moveDown(int delta) {
 		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		y += delta * 0.05f
-				* MapController.getMap().getMovementSpeed(x, y + delta * 0.05f);
+		y += delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(x, y + delta);
+
+		/*
+		 * x+= delta*AgentSpeed()*TileSpeed(delta)
+		 * 
+		 * precisa da velocidade para calcular a posicao porque anda varias
+		 * vezes dentro do mesmo tile (para nao andar aos pulos)
+		 */
+
 		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveUp(int delta) {
 		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		y -= delta * 0.05f
-				* MapController.getMap().getMovementSpeed(x, y - delta * 0.05f);
+		y -= delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(x, y - delta);
 		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveRight(int delta) {
 		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		x += delta * 0.05f
-				* MapController.getMap().getMovementSpeed(x + delta * 0.05f, y);
+		x += delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(x + delta, y);
 		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
 	public void moveLeft(int delta) {
 		MapController.getMap().getLandscape(x, y).setAgent(null);
 		sprite.update(delta);
-		x -= delta * 0.05f
-				* MapController.getMap().getMovementSpeed(x - delta * 0.05f, y);
+		x -= delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(x - delta, y);
 		MapController.getMap().getLandscape(x, y).setAgent(this);
 	}
 
@@ -119,8 +140,8 @@ public class Agent implements GameElement {
 		sprite = right;
 
 		play = 0;
-		x = 34f;
-		y = 34f;
+		x = 550f;
+		y = 600f;
 	}
 
 	@Override
