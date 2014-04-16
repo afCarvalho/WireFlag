@@ -8,7 +8,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.WireFlagGame;
 
 public class ClimateController implements GameElement {
 
