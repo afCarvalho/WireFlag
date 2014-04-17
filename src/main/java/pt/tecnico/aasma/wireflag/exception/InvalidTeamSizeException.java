@@ -10,12 +10,12 @@ public class InvalidTeamSizeException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/** The unique identifier of the team. */
-	private String identifier;
+	private int identifier;
 
 	/** The size of the team members. */
 	private int size;
 
-	public InvalidTeamSizeException(String identifier, int size) {
+	public InvalidTeamSizeException(int identifier, int size) {
 		this.identifier = identifier;
 		this.size = size;
 	}
@@ -25,7 +25,7 @@ public class InvalidTeamSizeException extends Exception {
 	 *
 	 * @return the identifier
 	 */
-	public String getIdentifier() {
+	public int getIdentifier() {
 		return this.identifier;
 	}
 	

@@ -9,7 +9,7 @@ import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 
 public class HierarchicalTeam extends Team {
 
-	public HierarchicalTeam(String identifier, Agent leader, List<Agent> members)
+	public HierarchicalTeam(int identifier, Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
 		super(identifier, leader, members);
 		// TODO Auto-generated constructor stub

@@ -10,14 +10,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-<<<<<<< HEAD
-import pt.tecnico.aasma.wireflag.agent.team.Team;
-=======
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
->>>>>>> Stable
+import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public class Agent implements GameElement {
 
@@ -30,7 +27,7 @@ public class Agent implements GameElement {
 	protected final static float LOWATCK = 1.0f;
 	protected final static float NORMALATCK = 2.0f;
 	protected final static float HIGHTATCK = 3.0f;
-	
+
 	/* life 0-100 */
 	protected final static int VLOW_LIFE = 10;
 	protected final static int LOW_LIFE = 20;
@@ -40,12 +37,12 @@ public class Agent implements GameElement {
 	protected final static int HIGH_FATIGUE = 80;
 	protected final static int LOW_FATIGUE = 0;
 
-    /** The agent's team. */
+	/** The agent's team. */
 	private Team team;
-    
+
 	/** The agent's identifier. */
-	private String identifier;
-    
+	private int identifier;
+
 	private Animation up;
 	private Animation down;
 	private Animation right;
@@ -61,19 +58,17 @@ public class Agent implements GameElement {
 	private int fatigue;
 	private int life;
 
-	private Architecture arquitecture;
+	private Architecture architecture;
 
-
-	public Agent(String identifier, float agentSpeed, float agentAttack,
-                 Architecture arquitecture) {
+	public Agent(int identifier, float agentSpeed, float agentAttack,
+			Architecture architecture) {
 		this.identifier = identifier;
 		random = new Random();
 		this.life = FULL_LIFE;
 		this.fatigue = LOW_FATIGUE;
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
-		this.teamId = teamId;
-		this.arquitecture = arquitecture;
+		this.architecture = architecture;
 	}
 
 	/**
@@ -87,21 +82,24 @@ public class Agent implements GameElement {
 	 *            the agent speed
 	 * @param attack
 	 *            the agent attack strength
+	 * @param architecture
+	 *            the agent architectural style
 	 */
-	public Agent(String identifier, Team team, float speed, float attack) {
-		this(identifier, speed, attack);
+	public Agent(int identifier, Team team, float speed, float attack,
+			Architecture architecture) {
+		this(identifier, speed, attack, architecture);
 		this.team = team;
 	}
-	
+
 	/**
 	 * Obtains the agent identifier.
 	 * 
 	 * @return the identifier
 	 */
-	public final String getIdentifier() {
+	public final int getIdentifier() {
 		return identifier;
 	}
-	
+
 	/**
 	 * Obtains the agent's team.
 	 * 
@@ -110,17 +108,17 @@ public class Agent implements GameElement {
 	public final Team getTeam() {
 		return team;
 	}
-	
+
 	/**
 	 * Changes the agent's team.
 	 * 
-	 * @param team the new team
+	 * @param team
+	 *            the new team
 	 */
 	public final void setTeam(Team team) {
 		team.removeMember(this);
 		this.team = team;
 	}
-
 
 	public boolean hasLowLife() {
 		return life <= LOW_LIFE;
@@ -193,7 +191,7 @@ public class Agent implements GameElement {
 	}
 
 	public void update(int delta) {
-		arquitecture.makeAction(this, delta);
+		architecture.makeAction(this, delta);
 	}
 
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {

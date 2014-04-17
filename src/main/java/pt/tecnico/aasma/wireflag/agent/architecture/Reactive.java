@@ -18,7 +18,7 @@ public class Reactive extends Architecture {
 		MapPosition pos = MapController.getMap().getMapPosition(agent.getPos());
 
 		List<Perception> perceptions = MapController.getMap().getPerceptions(
-				agent.getTeamId(), pos);
+				agent.getTeam().getIdentifier(), pos);
 
 		// TODO em obras...
 

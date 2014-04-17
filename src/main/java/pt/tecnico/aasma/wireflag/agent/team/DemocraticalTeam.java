@@ -9,7 +9,7 @@ import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 
 public class DemocraticalTeam extends Team {
 
-	public DemocraticalTeam(String identifier, Agent leader, List<Agent> members)
+	public DemocraticalTeam(int identifier, Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
 		super(identifier, leader, members);
 		// TODO Auto-generated constructor stub

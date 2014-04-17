@@ -5,7 +5,9 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 /**
  * The class Team represents a generic team. A team is composed by a leader and
@@ -28,11 +30,11 @@ public abstract class Team {
 	private List<Agent> members;
 
 	/** The unique identifier of the team. */
-	private String identifier;
+	private int identifier;
     
 	private MapPosition teamPosition;
 
-	public Team(String identifier, Agent leader, List<Agent> members)
+	public Team(int identifier, Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
 		this.identifier = identifier;
 		this.leader = leader;
@@ -99,7 +101,7 @@ public abstract class Team {
 	 * 
 	 * @return the identifier
 	 */
-	public final String getIdentifier() {
+	public final int getIdentifier() {
 		return identifier;
 	}
     

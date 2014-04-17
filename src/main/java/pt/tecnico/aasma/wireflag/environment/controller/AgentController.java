@@ -3,59 +3,65 @@ package pt.tecnico.aasma.wireflag.environment.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
-import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
-import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
+import pt.tecnico.aasma.wireflag.agent.type.Doctor;
+import pt.tecnico.aasma.wireflag.agent.type.Patrol;
+import pt.tecnico.aasma.wireflag.agent.type.Soldier;
+import sun.management.resources.agent;
 
 public class AgentController implements GameElement {
 
-	private int actualTeamId;
+	private int currentIdentifier;
 
-	private List<Team> teams = new ArrayList<Team>();
+	private List<Agent> agents = new ArrayList<Agent>();
 
 	public AgentController() {
-		actualTeamId = 0;
+		currentIdentifier = 0;
 	}
 
-	public int getNextTeamId() {
-		return actualTeamId++;
+	public int getNextIdentifier() {
+		return currentIdentifier++;
 	}
 
-	public Team getTeam(int teamId) {
-		for (Team team : teams) {
-			if (team.getId() == teamId) {
-				return team;
+	/**
+	 * Gets the list of agents in game.
+	 * 
+	 * @return the agents
+	 */
+	public final List<Agent> getAgents() {
+		return agents;
+	}
+
+	public Agent getAgent(int identifier) {
+		for (Agent agent : agents) {
+			if (agent.getIdentifier() == identifier) {
+				return agent;
 			}
 		}
 		return null;
 	}
 
-	public void addTeam(Team team) {
-		teams.add(team);
+	public void addAgent(Agent agent) {
+		agents.add(agent);
 	}
 
 	@Override
 	public void init() throws SlickException {
-		int teamSize = 1;
-		Team team1 = new DemocraticalTeam(getNextTeamId());
-		team1.init(teamSize);
+		agents.add(new Soldier(getNextIdentifier(), new Reactive()));
+		agents.add(new Builder(getNextIdentifier(), new Reactive()));
+		agents.add(new Doctor(getNextIdentifier(), new Reactive()));
+		agents.add(new Patrol(getNextIdentifier(), new Reactive()));
+		agents.add(new Soldier(getNextIdentifier(), new Reactive()));
 
-		Agent builder1 = new Builder(team1.getId(), new Reactive());
-		builder1.init(); // put builde1 in team1's start point
-		MapController.getMap().getLandscape(team1.getTeamPosition())
-				.setAgent(builder1);
-		team1.addAgent(builder1);
-
-		addTeam(team1);
-
+		for (Agent agent : agents) {
+			agent.init();
+		}
 	}
 
 	public void update(int delta) {

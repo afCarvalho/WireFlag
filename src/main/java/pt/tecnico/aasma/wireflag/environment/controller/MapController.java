@@ -9,18 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.Builder;
-import pt.tecnico.aasma.wireflag.agent.Doctor;
-import pt.tecnico.aasma.wireflag.agent.Patrol;
-import pt.tecnico.aasma.wireflag.agent.Soldier;
-import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
-import pt.tecnico.aasma.wireflag.agent.team.Team;
-import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
-import pt.tecnico.aasma.wireflag.agent.type.Builder;
 import pt.tecnico.aasma.wireflag.environment.EndPoint;
-import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.Flag;
+import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.ForestFactory;
@@ -29,7 +20,6 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
-import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -85,30 +75,9 @@ public class MapController implements GameElement {
 			}
 		}
 		
-		Agent leader = new Builder("1");
-		List<Agent> agents = new ArrayList<Agent>();
-		agents.add(new Builder("2"));
-		agents.add(new Doctor("3"));
-		agents.add(new Patrol("4"));
-		agents.add(new Soldier("5"));
-		try {
-			Team team = new DemocraticalTeam("team1", leader, agents);
-		} catch (InvalidTeamSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		Flag flag = new Flag();
 		flag.init();
 		
-		for (int i = 0; i < agents.size(); i++) {
-			tileMatrix[0][i+1].setAgent(agents.get(i));
-		}
-
-		tileMatrix[0][0].setAgent(leader);
-
-		Flag flag = new Flag();
-		flag.init();
 		EndPoint endPoint = new EndPoint();
 		endPoint.init();
 	}
