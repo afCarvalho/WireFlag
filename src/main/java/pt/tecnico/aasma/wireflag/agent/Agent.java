@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.agent.architecture.Arquitecture;
+import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
@@ -41,10 +41,10 @@ public class Agent implements GameElement {
 	private int fatigue;
 	private int life;
 
-	private Arquitecture arquitecture;
+	private Architecture arquitecture;
 
 	public Agent(float agentSpeed, float agentAttack, int teamId,
-			Arquitecture arquitecture) {
+			Architecture arquitecture) {
 		random = new Random();
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
