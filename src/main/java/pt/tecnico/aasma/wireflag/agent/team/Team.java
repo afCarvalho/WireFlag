@@ -2,6 +2,8 @@ package pt.tecnico.aasma.wireflag.agent.team;
 
 import java.util.List;
 
+import org.newdawn.slick.SlickException;
+
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 
@@ -28,14 +30,20 @@ public abstract class Team {
 	/** The unique identifier of the team. */
 	private String identifier;
 
-	public Team(String identifier, Agent leader, List<Agent> members) throws InvalidTeamSizeException {
+	public Team(String identifier, Agent leader, List<Agent> members)
+			throws InvalidTeamSizeException, SlickException {
 		this.identifier = identifier;
 		this.leader = leader;
-		
+
 		if (members.size() < MINIMUM_TEAM_SIZE) {
 			throw new InvalidTeamSizeException(identifier, members.size());
 		}
 		this.members = members;
+		
+		leader.init();
+		for (Agent agent : members) {
+			agent.init();
+		}
 	}
 
 	/**
@@ -48,13 +56,6 @@ public abstract class Team {
 	}
 
 	/**
-	 * Sets the new team leader.
-	 *
-	 * @param leader the new leader
-	 */
-	public abstract void setLeader(Agent leader);
-
-	/**
 	 * Gets the list of members.
 	 * 
 	 * @return the members
@@ -62,17 +63,33 @@ public abstract class Team {
 	public final List<Agent> getMembers() {
 		return members;
 	}
-	
+
 	/**
 	 * Adds a new member to the team.
-	 *
-	 * @param agent the agent to be added
+	 * 
+	 * @param agent
+	 *            the agent to be added
 	 */
 	public final void addMember(Agent agent) {
 		if (members.contains(agent)) {
 			return;
 		}
 		members.add(agent);
+	}
+
+	/**
+	 * Removes the member. If it is the leader then it's elected a new one.
+	 * 
+	 * @param agent
+	 *            the member to be removed
+	 */
+	public final void removeMember(Agent agent) {
+		if (leader.equals(agent)) {
+			electLeader();
+			return;
+		}
+
+		members.remove(agent);
 	}
 
 	/**
@@ -83,11 +100,16 @@ public abstract class Team {
 	public final String getIdentifier() {
 		return identifier;
 	}
-	
+
+	/**
+	 * Elects a new leader.
+	 */
+	protected abstract void electLeader();
+
 	/**
 	 * Votes according to type of teams.
-	 *
+	 * 
 	 * @return the result of the voting
 	 */
-	public abstract boolean vote();
+	protected abstract boolean vote();
 }

@@ -2,8 +2,8 @@ package pt.tecnico.aasma.wireflag.agent;
 
 public class Soldier extends Agent {
 
-	public Soldier() {
-		super(NORMALSPD, HIGHTATCK);
+	public Soldier(String identifier) {
+		super(identifier, NORMALSPD, HIGHTATCK);
 		// TODO Auto-generated constructor stub
 	}
 

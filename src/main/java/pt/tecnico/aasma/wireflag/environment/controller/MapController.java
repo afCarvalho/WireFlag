@@ -1,5 +1,8 @@
 package pt.tecnico.aasma.wireflag.environment.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -7,6 +10,11 @@ import org.newdawn.slick.tiled.TiledMap;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.Builder;
+import pt.tecnico.aasma.wireflag.agent.Doctor;
+import pt.tecnico.aasma.wireflag.agent.Patrol;
+import pt.tecnico.aasma.wireflag.agent.Soldier;
+import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
+import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
@@ -16,6 +24,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
+import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 
 public class MapController implements GameElement {
@@ -69,13 +78,28 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
 			}
 		}
-
-		Agent agent = new Builder();
-		agent.init();
+		
+		Agent leader = new Builder("1");
+		List<Agent> agents = new ArrayList<Agent>();
+		agents.add(new Builder("2"));
+		agents.add(new Doctor("3"));
+		agents.add(new Patrol("4"));
+		agents.add(new Soldier("5"));
+		try {
+			Team team = new DemocraticalTeam("team1", leader, agents);
+		} catch (InvalidTeamSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Flag flag = new Flag();
 		flag.init();
+		
+		for (int i = 0; i < agents.size(); i++) {
+			tileMatrix[0][i+1].setAgent(agents.get(i));
+		}
 
-		tileMatrix[0][0].setAgent(agent);
+		tileMatrix[0][0].setAgent(leader);
 	}
 
 	@Override

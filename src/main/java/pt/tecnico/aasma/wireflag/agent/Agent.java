@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
@@ -24,6 +25,12 @@ public class Agent implements GameElement {
 	protected final static float NORMALATCK = 2.0f;
 	protected final static float HIGHTATCK = 3.0f;
 
+	/** The agent's team. */
+	private Team team;
+
+	/** The agent's identifier. */
+	private String identifier;
+
 	private Animation up;
 	private Animation down;
 	private Animation right;
@@ -36,10 +43,56 @@ public class Agent implements GameElement {
 	private float agentSpeed;
 	private float agentAttack;
 
-	public Agent(float agentSpeed, float agentAttack) {
+	public Agent(String identifier, float agentSpeed, float agentAttack) {
+		this.identifier = identifier;
 		random = new Random();
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
+	}
+
+	/**
+	 * Instantiates a new agent with team.
+	 * 
+	 * @param identifier
+	 *            the agent identifier
+	 * @param team
+	 *            the team of the agent
+	 * @param speed
+	 *            the agent speed
+	 * @param attack
+	 *            the agent attack strength
+	 */
+	public Agent(String identifier, Team team, float speed, float attack) {
+		this(identifier, speed, attack);
+		this.team = team;
+	}
+	
+	/**
+	 * Obtains the agent identifier.
+	 * 
+	 * @return the identifier
+	 */
+	public final String getIdentifier() {
+		return identifier;
+	}
+	
+	/**
+	 * Obtains the agent's team.
+	 * 
+	 * @return the identifier
+	 */
+	public final Team getTeam() {
+		return team;
+	}
+	
+	/**
+	 * Changes the agent's team.
+	 * 
+	 * @param team the new team
+	 */
+	public final void setTeam(Team team) {
+		team.removeMember(this);
+		this.team = team;
 	}
 
 	public void update(int delta) {
@@ -123,10 +176,14 @@ public class Agent implements GameElement {
 
 	public void init() throws SlickException {
 
-		Image[] movementUp = { new Image(System.getProperty("data") + "grey-back.png") };
-		Image[] movementDown = { new Image(System.getProperty("data") + "grey-front.png") };
-		Image[] movementLeft = { new Image(System.getProperty("data") + "grey-left.png") };
-		Image[] movementRight = { new Image(System.getProperty("data") + "grey-right.png") };
+		Image[] movementUp = { new Image(System.getProperty("data")
+				+ "grey-back.png") };
+		Image[] movementDown = { new Image(System.getProperty("data")
+				+ "grey-front.png") };
+		Image[] movementLeft = { new Image(System.getProperty("data")
+				+ "grey-left.png") };
+		Image[] movementRight = { new Image(System.getProperty("data")
+				+ "grey-right.png") };
 		int[] duration = { 300 };
 
 		up = new Animation(movementUp, duration, false);
