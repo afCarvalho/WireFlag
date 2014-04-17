@@ -83,6 +83,8 @@ public abstract class Landscape implements GameElement {
 	public void setSunnyWeather() {
 		weather = new Sunny(0, xCoord, yCoord);
 	}
+	
+	public abstract boolean isInflammable();
 
 	@Override
 	public void init() {

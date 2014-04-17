@@ -2,6 +2,7 @@ package pt.tecnico.aasma.wireflag.environment.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -21,6 +22,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
+import pt.tecnico.aasma.wireflag.util.Position;
 
 public class MapController implements GameElement {
 
@@ -57,7 +59,6 @@ public class MapController implements GameElement {
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
 	private static Landscape[][] tileMatrix;
-	private final static int NTILES = 34;
 
 	private MapController() {
 	}
@@ -102,24 +103,36 @@ public class MapController implements GameElement {
 		}
 	}
 
-/* converte coord do agente em coord dos tiles */
-	public Landscape getLandscape(float x, float y, boolean convert) {
-
-		if (convert) {
-			int xCoord = (int) x / NTILES;
-			int yCoord = (int) y / NTILES;
-			return tileMatrix[xCoord][yCoord];
-		} else {
-			return tileMatrix[(int) x][(int) y];
-		}
+	/* converte coord do agente em coord dos tiles */
+	public Landscape getLandscape(Position p) {
+		return tileMatrix[p.getX()][p.getY()];
 	}
 
-	public float getMovementSpeed(float x, float y) {
-		return getLandscape(x, y, true).getMovementSpeed();
+	public Position getMapPosition(Position p) {
+		int xPos = (int) p.getX() / getNHorizontalTiles();
+		int yPos = (int) p.getY() / getNVerticalTiles();
+		return new Position(xPos, yPos);
 	}
 
-	public boolean isBlocked(float xCoord, float yCoord) {
-		return getMovementSpeed(xCoord, yCoord) == 0;
+	public float getMovementSpeed(Position p) {
+		return getLandscape(p).getMovementSpeed();
+	}
+
+	public void setExtremeWeather(Position p) throws SlickException {
+		Random r = new Random();
+		getLandscape(p).setExtremeWeather(r.nextInt(10000));
+	}
+
+	public boolean isBlocked(Position p) {
+		return getMovementSpeed(p) == 0;
+	}
+
+	public int getNHorizontalTiles() {
+		return grassMap.getWidth();
+	}
+
+	public int getNVerticalTiles() {
+		return grassMap.getHeight();
 	}
 
 	public int getMapHeight() {
@@ -138,8 +151,12 @@ public class MapController implements GameElement {
 		return grassMap.getTileHeight();
 	}
 
-	public int getNTiles() {
-		return NTILES;
+	public Position getRandomPosition() {
+		Random r = new Random();
+
+		int x = r.nextInt(getNHorizontalTiles());
+		int y = r.nextInt(getNVerticalTiles());
+		return new Position(x, y);
 	}
 
 	public static MapController getMap() {
@@ -158,20 +175,20 @@ public class MapController implements GameElement {
 		return null;
 	}
 
-	public List<Perception> getPerceptions(int teamId, float x, float y) {
+	public List<Perception> getPerceptions(int teamId, Position pos) {
 		List<Perception> list = new ArrayList<Perception>();
 
-		Landscape landscape = getLandscape(x, y,true);
+		Landscape landscape = getLandscape(getMapPosition(pos));
 
 		if (landscape.hasFlag()) {
-			Perception perception = new Perception(x, y);
+			Perception perception = new Perception(pos);
 			perception.setFlag(true);
 			list.add(perception);
 		}
 
 		if (landscape.hasAgent()) {
 			if (landscape.getAgent().isEnemy(teamId)) {
-				Perception perception = new Perception(x, y);
+				Perception perception = new Perception(pos);
 				perception.setEnemy(true);
 				list.add(perception);
 			}
@@ -181,13 +198,13 @@ public class MapController implements GameElement {
 		// ver
 
 		if (landscape.hasAnimal()) {
-			Perception perception = new Perception(x, y);
+			Perception perception = new Perception(pos);
 			perception.setAnimal(true);
 			list.add(perception);
 		}
 
 		if (landscape.getWeather().isExtremeWeather()) {
-			Perception perception = new Perception(x, y);
+			Perception perception = new Perception(pos);
 			perception.setExtremeWeather(true);
 			list.add(perception);
 		}

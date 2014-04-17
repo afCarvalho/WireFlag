@@ -16,4 +16,9 @@ public class Plain extends Landscape {
 		weather.init();
 	}
 
+	@Override
+	public boolean isInflammable() {
+		return true;
+	}
+
 }

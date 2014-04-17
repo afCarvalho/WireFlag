@@ -15,4 +15,9 @@ public class Mountain extends Landscape {
 		weather = new SnowStorm(duration, xCoord, yCoord);
 		weather.init();
 	}
+
+	@Override
+	public boolean isInflammable() {
+		return false;
+	}
 }

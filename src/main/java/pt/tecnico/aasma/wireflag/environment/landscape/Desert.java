@@ -15,4 +15,9 @@ public class Desert extends Landscape {
 		weather = new SandStorm(duration, xCoord, yCoord);
 		weather.init();
 	}
+
+	@Override
+	public boolean isInflammable() {
+		return false;
+	}
 }

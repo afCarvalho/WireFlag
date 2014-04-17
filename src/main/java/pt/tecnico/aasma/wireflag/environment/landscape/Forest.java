@@ -16,4 +16,9 @@ public class Forest extends Landscape {
 		weather.init();
 	}
 
+	@Override
+	public boolean isInflammable() {
+		return true;
+	}
+
 }

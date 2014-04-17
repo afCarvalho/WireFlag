@@ -15,4 +15,9 @@ public class Water extends Landscape {
 		weather = new ThunderStorm(duration, xCoord, yCoord);
 		weather.init();
 	}
+
+	@Override
+	public boolean isInflammable() {
+		return false;
+	}
 }
