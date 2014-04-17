@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.object;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
@@ -32,7 +32,11 @@ public class Flag implements GameElement {
 	}
 
 	public void render(Graphics g) {
-		flag.draw(flagPosition.getX(), flagPosition.getY());
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		flag.draw(flagPosition.getX() * tileWidth, flagPosition.getY()
+				* tileHeight);
 	}
 
 	@Override

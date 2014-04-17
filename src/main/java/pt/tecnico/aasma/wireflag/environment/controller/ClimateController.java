@@ -8,7 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.environment.Fire;
+import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class ClimateController implements GameElement {
@@ -16,8 +16,9 @@ public class ClimateController implements GameElement {
 	private Random random;
 	private int pressure;
 	private int dryness;
-	private MapPosition firePosition;
+	private MapPosition firePos;
 	private boolean activeFire;
+	private int fireDuration;
 
 	public ClimateController() {
 		random = new Random();
@@ -47,15 +48,17 @@ public class ClimateController implements GameElement {
 			pressure = 0;
 		}
 
-		if (dryness % 1000 == 0) {
+		if (dryness % 100 == 0) {
 			createFire();
 		}
 	}
 
 	public void createClimateEvent() throws SlickException {
+
 		MapPosition p = MapController.getMap().getRandomPosition();
 		int width = MapController.getMap().getNHorizontalTiles();
 		int height = MapController.getMap().getNVerticalTiles();
+		int duration = new Random().nextInt(10000);
 
 		while (p.getX() > width - 4 || p.getY() > height - 4) {
 			p = MapController.getMap().getRandomPosition();
@@ -63,36 +66,44 @@ public class ClimateController implements GameElement {
 
 		for (int x = p.getX(); x < p.getX() + 4; x++) {
 			for (int y = p.getY(); y < p.getY() + 4; y++) {
-				MapController.getMap().setExtremeWeather(new MapPosition(x, y));
+				MapController.getMap().getLandscape(new MapPosition(x, y))
+						.setExtremeWeather(duration);
 			}
 		}
 	}
 
 	public void createFire() throws SlickException {
 
-		if (!activeFire && dryness > 10000) {
-			firePosition = MapController.getMap().getRandomPosition();
+		if ((!activeFire && dryness > 1000) || (activeFire && dryness > 25000)) {
+			firePos = MapController.getMap().getRandomPosition();
 			dryness = 0;
+			fireDuration = random.nextInt(10000);
+			updateFire();
 		} else if (activeFire) {
 
-			int increment = 0;
+			int incr = 0;
 
 			if (random.nextInt(2) == 0) {
-				increment++;
+				incr++;
 			} else {
-				increment--;
+				incr--;
 			}
 
 			if (random.nextInt(2) == 0) {
-				firePosition.setX(firePosition.getX() + increment);
+				firePos = new MapPosition(firePos.getX() + incr, firePos.getY());
 			} else {
-				firePosition.setY(firePosition.getY() + increment);
+				firePos = new MapPosition(firePos.getX(), firePos.getY() + incr);
 			}
+
+			updateFire();
 		}
 
-		activeFire = MapController.getMap().getLandscape(firePosition)
+	}
+
+	public void updateFire() throws SlickException {
+		activeFire = MapController.getMap().getLandscape(firePos)
 				.isInflammable()
-				&& !MapController.getMap().getLandscape(firePosition).hasFire();
+				&& !MapController.getMap().getLandscape(firePos).hasFire();
 
 		if (activeFire) {
 			setFire();
@@ -100,11 +111,9 @@ public class ClimateController implements GameElement {
 	}
 
 	public void setFire() throws SlickException {
-
-		Fire fire = new Fire(firePosition);
+		Fire fire = new Fire(fireDuration, firePos);
 		fire.init();
-
-		MapController.getMap().getLandscape(firePosition).setOnFire(fire);
+		MapController.getMap().getLandscape(firePos).setOnFire(fire);
 	}
 
 	@Override

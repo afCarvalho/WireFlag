@@ -5,12 +5,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
+
 public class Rainy extends Weather {
 
 	private Animation rain;
 
-	public Rainy(int duration, int xCoord, int yCoord) {
-		super(duration, xCoord, yCoord);
+	public Rainy(int duration, MapPosition position) {
+		super(duration, position);
 	}
 
 	@Override
@@ -21,7 +24,7 @@ public class Rainy extends Weather {
 
 	@Override
 	public void draw(int x, int y) {
-		rain.draw(x*1.0f,y*1.0f);
+		rain.draw(x, y);
 	}
 
 }

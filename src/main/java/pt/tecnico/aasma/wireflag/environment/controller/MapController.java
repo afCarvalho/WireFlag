@@ -9,8 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.environment.EndPoint;
-import pt.tecnico.aasma.wireflag.environment.Flag;
+import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
+import pt.tecnico.aasma.wireflag.agent.type.Builder;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
@@ -20,6 +21,8 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
+import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
+import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -41,18 +44,18 @@ public class MapController implements GameElement {
 			this.factory = factory;
 		}
 
+		public Landscape createLandscape(MapPosition pos) {
+			return factory.createLandscape(pos);
+		}
+
 		public static Landscape getTileLandscape(String landscapeName,
-				int xCoord, int yCoord) throws LandscapeNotFoundException {
+				MapPosition pos) throws SlickException {
 
 			for (LandscapeType land : LandscapeType.values()) {
 				if (land.name.equals(landscapeName))
-					return land.getLandscape(xCoord, yCoord);
+					return land.createLandscape(pos);
 			}
 			throw new LandscapeNotFoundException(landscapeName);
-		}
-
-		public Landscape getLandscape(int xCoord, int yCoord) {
-			return factory.createLandscape(xCoord, yCoord);
 		}
 	}
 
@@ -74,10 +77,9 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
 			}
 		}
-		
+
 		Flag flag = new Flag();
 		flag.init();
-		
 		EndPoint endPoint = new EndPoint();
 		endPoint.init();
 	}
@@ -108,26 +110,11 @@ public class MapController implements GameElement {
 	}
 
 	public Landscape getLandscape(WorldPosition p) {
-		return getLandscape(getMapPosition(p.getX(), p.getY()));
-	}
-
-	public MapPosition getMapPosition(float x, float y) {
-		int xPos = (int) x / getNHorizontalTiles();
-		int yPos = (int) y / getNVerticalTiles();
-		return new MapPosition(xPos, yPos);
-	}
-
-	public MapPosition getMapPosition(WorldPosition p) {
-		return getMapPosition(p.getX(), p.getY());
+		return getLandscape(p.getMapPosition());
 	}
 
 	public float getMovementSpeed(MapPosition p) {
 		return getLandscape(p).getMovementSpeed();
-	}
-
-	public void setExtremeWeather(MapPosition p) throws SlickException {
-		Random r = new Random();
-		getLandscape(p).setExtremeWeather(r.nextInt(10000));
 	}
 
 	public boolean isBlocked(MapPosition p) {
@@ -170,16 +157,10 @@ public class MapController implements GameElement {
 		return INSTANCE;
 	}
 
-	private Landscape getLandscapeType(int xCoord, int yCoord) {
-		try {
-			int tileID = grassMap.getTileId(xCoord, yCoord, 0);
-			String value = grassMap.getTileProperty(tileID, "terrain", "plain");
-			return LandscapeType.getTileLandscape(value, xCoord, yCoord);
-		} catch (LandscapeNotFoundException e) {
-			System.out.println(e.toString());
-			System.exit(0);
-		}
-		return null;
+	private Landscape getLandscapeType(int x, int y) throws SlickException {
+		int tileID = grassMap.getTileId(x, y, 0);
+		String value = grassMap.getTileProperty(tileID, "terrain", "plain");
+		return LandscapeType.getTileLandscape(value, new MapPosition(x, y));
 	}
 
 	/* for each tile is created a perception */
