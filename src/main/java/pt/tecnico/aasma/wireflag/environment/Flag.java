@@ -24,9 +24,9 @@ public class Flag implements GameElement {
 
 		Random random = new Random();
 
-		flag = new Animation(new Image[] { new Image("data/SmallFlag.png") },
+		flag = new Animation(new Image[] { new Image(System.getProperty("data") + "SmallFlag.png") },
 				new int[] { 300 }, false);
-		fire = new Animation(new Image[] { new Image("data/fire.png") },
+		fire = new Animation(new Image[] { new Image(System.getProperty("data") + "fire.png") },
 				new int[] { 300 }, false);
 
 		xCoord = random.nextInt(MapController.getMap().getMapWidth());

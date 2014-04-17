@@ -15,51 +15,30 @@
 	</properties>
 
 	<build>
+		<defaultGoal>clean package compile exec:exec</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
-					<mainClass>pt.tecnico.aasma.wireflag.WireFlagGame</mainClass>
+					<executable>java</executable>
+					<arguments>
+						<argument>-d64</argument>
+						<argument>-Djava.library.path=${project.build.directory}/natives/</argument>
+						<argument>-Ddata=/resources/data/</argument>
+						<argument>-classpath</argument>
+						<classpath />
+						<argument>pt.tecnico.aasma.wireflag.WireFlagGame</argument>
+					</arguments>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.7</version>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.m2e</groupId>
-				<artifactId>lifecycle-mapping</artifactId>
-				<version>1.0.0</version>
-				<configuration>
-					<lifecycleMappingMetadata>
-						<pluginExecutions>
-							<!-- copy-dependency plugin -->
-							<pluginExecution>
-								<pluginExecutionFilter>
-									<groupId>org.apache.maven.plugins</groupId>
-									<artifactId>maven-dependency-plugin</artifactId>
-									<versionRange>[1.0.0,)</versionRange>
-									<goals>
-										<goal>copy-dependencies</goal>
-									</goals>
-								</pluginExecutionFilter>
-								<action>
-									<ignore />
-								</action>
-							</pluginExecution>
-						</pluginExecutions>
-					</lifecycleMappingMetadata>
-				</configuration>
-			</plugin>
+
 			<plugin>
 				<groupId>com.googlecode.mavennatives</groupId>
 				<artifactId>maven-nativedependencies-plugin</artifactId>
@@ -67,13 +46,34 @@
 				<executions>
 					<execution>
 						<id>unpacknatives</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<nativesTargetDir>${natives}</nativesTargetDir>
+					<separateDirs>false</separateDirs>
+				</configuration>
 			</plugin>
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<dependencies>
@@ -94,11 +94,6 @@
 			<version>5.0</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/javaws.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>org.jcraft</groupId>
-			<artifactId>jorbis</artifactId>
-			<version>0.0.17</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ninjacave</groupId>
