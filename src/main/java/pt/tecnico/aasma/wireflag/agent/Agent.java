@@ -18,8 +18,8 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Agent implements GameElement {
 
 	/* speed */
-	protected final static float LOWSPD = 1.0f;
-	protected final static float NORMALSPD = 0.005f;
+	protected final static float LOWSPD = 0.01f;
+	protected final static float NORMALSPD = 0.05f;
 	protected final static float HIGHSPD = 0.1f;
 
 	/* attack */
@@ -86,6 +86,7 @@ public class Agent implements GameElement {
 
 	public void randomMovement(int delta) {
 
+		delta=Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
 
 		if (random.nextInt(10000) > 9990)
@@ -94,7 +95,7 @@ public class Agent implements GameElement {
 		if (play == 0) {
 			sprite = up;
 			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() - delta).getMapPosition();
+					agentPos.getY() - 2 * delta).getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveUp(delta, nextPos, oldPos);
@@ -104,7 +105,7 @@ public class Agent implements GameElement {
 		} else if (play == 1) {
 			sprite = down;
 			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() + delta).getMapPosition();
+					agentPos.getY() + 2 * delta).getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveDown(delta, nextPos, oldPos);
@@ -113,8 +114,9 @@ public class Agent implements GameElement {
 			}
 		} else if (play == 2) {
 			sprite = left;
-			MapPosition nextPos = new WorldPosition(agentPos.getX() - delta,
-					agentPos.getY()).getMapPosition();
+			MapPosition nextPos = new WorldPosition(
+					agentPos.getX() - 2 * delta, agentPos.getY())
+					.getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveLeft(delta, nextPos, oldPos);
@@ -124,8 +126,9 @@ public class Agent implements GameElement {
 
 		} else if (play == 3) {
 			sprite = right;
-			MapPosition nextPos = new WorldPosition(agentPos.getX() + delta,
-					agentPos.getY()).getMapPosition();
+			MapPosition nextPos = new WorldPosition(
+					agentPos.getX() + 2 * delta, agentPos.getY())
+					.getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveRight(delta, nextPos, oldPos);

@@ -27,8 +27,11 @@ public class Fire implements GameElement {
 
 	@Override
 	public void render(Graphics g) {
-		fire.draw(firePosition.getX() * MapController.getMap().getTileWidth(), firePosition.getY()
-				* MapController.getMap().getTileHeight());
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		fire.draw(firePosition.getX() * tileWidth, firePosition.getY()
+				* tileHeight);
 
 	}
 

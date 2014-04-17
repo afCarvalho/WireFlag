@@ -11,15 +11,14 @@ import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.Fire;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class ClimateController implements GameElement {
+public class EventController implements GameElement {
 
 	private Random random;
-	private int pressure;
 	private int dryness;
 	private MapPosition firePos;
 	private boolean activeFire;
 
-	public ClimateController() {
+	public EventController() {
 		random = new Random();
 		activeFire = false;
 	}
@@ -31,42 +30,13 @@ public class ClimateController implements GameElement {
 	public void update(int delta) throws SlickException {
 
 		if (random.nextInt(10) < 8) {
-			pressure += delta;
-		} else {
-			pressure -= delta;
-		}
-
-		if (random.nextInt(10) < 8) {
 			dryness += delta;
 		} else {
 			dryness -= delta;
 		}
 
-		if (pressure > 10000) {
-			createClimateEvent();
-			pressure = 0;
-		}
-
 		if (dryness % 1000 == 0) {
 			createFire();
-		}
-	}
-
-	public void createClimateEvent() throws SlickException {
-		MapPosition p = MapController.getMap().getRandomPosition();
-		int width = MapController.getMap().getNHorizontalTiles();
-		int height = MapController.getMap().getNVerticalTiles();
-		int duration = new Random().nextInt(10000);
-
-		while (p.getX() > width - 4 || p.getY() > height - 4) {
-			p = MapController.getMap().getRandomPosition();
-		}
-
-		for (int x = p.getX(); x < p.getX() + 4; x++) {
-			for (int y = p.getY(); y < p.getY() + 4; y++) {
-				MapController.getMap().getLandscape(new MapPosition(x, y))
-						.setExtremeWeather(duration);
-			}
 		}
 	}
 

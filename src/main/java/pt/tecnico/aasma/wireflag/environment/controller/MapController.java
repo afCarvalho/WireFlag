@@ -106,6 +106,15 @@ public class MapController implements GameElement {
 
 	/* converte coord do agente em coord dos tiles */
 	public Landscape getLandscape(MapPosition p) {
+		if (p.getX() - 1 >= getNHorizontalTiles()
+				|| p.getY() - 1 >= getNVerticalTiles()) {
+			try {
+				Thread.sleep(500000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return tileMatrix[p.getX()][p.getY()];
 	}
 
@@ -115,11 +124,6 @@ public class MapController implements GameElement {
 
 	public float getMovementSpeed(MapPosition p) {
 		return getLandscape(p).getMovementSpeed();
-	}
-
-	public void setExtremeWeather(MapPosition p) throws SlickException {
-		Random r = new Random();
-		getLandscape(p).setExtremeWeather(r.nextInt(10000));
 	}
 
 	public boolean isBlocked(MapPosition p) {
