@@ -77,8 +77,6 @@ public class MapController implements GameElement {
 			}
 		}
 
-		Agent agent = new Builder(1);
-		agent.init();
 		Flag flag = new Flag();
 		flag.init();
 		EndPoint endPoint = new EndPoint();
@@ -176,12 +174,53 @@ public class MapController implements GameElement {
 		}
 		return null;
 	}
+	
+	/* for each tile is created a perception */
+	public Perception getTilePerception(int teamId, float x, float y) {
+		Landscape landscape = getLandscape(x, y, true);
 
-	public List<Perception> getPerceptions(int teamId, Position pos) {
+		Perception perception = new Perception(x, y);
 
+		if (landscape.hasFlag()) {
+			perception.setFlag(true);
+		}
+
+		if (landscape.hasAgent()) {
+			if (landscape.getAgent().isEnemy(teamId)) {
+				perception.setEnemy(true);
+			}
+		}
+
+		if (landscape.hasEndPoint()) {
+			perception.setEndPoint(true);
+		}
+
+		if (landscape.hasAnimal()) {
+			perception.setAnimal(true);
+		}
+
+		if (TimeController.isNight()) {
+			perception.setNight(true);
+		}
+
+		if (landscape.hasFire()) {
+			perception.setFire(true);
+
+		}
+
+		if (landscape.getWeather().isExtremeWeather()) {
+			perception.setExtremeWeather(true);
+		}
+
+		return perception;
 	}
 
 	public List<Perception> getPerceptions(int teamId, float x, float y) {
+		List<Perception> list = new ArrayList<Perception>();
 
+		// TODO apply this code to each tile on field of vision
+		list.add(getTilePerception(teamId, x, y));
+
+		return list;
 	}
 }
