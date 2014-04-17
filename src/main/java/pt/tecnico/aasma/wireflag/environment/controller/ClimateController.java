@@ -14,8 +14,10 @@ public class ClimateController implements GameElement {
 
 	private Random random;
 	private int pressure;
-	private int xCoord;
-	private int yCoord;
+	private int dryness;
+	private int xFireCoord;
+	private int yFireCoord;
+	private boolean activeFire;
 
 	public ClimateController() {
 		random = new Random();
@@ -26,55 +28,60 @@ public class ClimateController implements GameElement {
 	}
 
 	public void update(int delta) throws SlickException {
-		pressure += delta;
+
+		if (random.nextInt(10) < 8) {
+			pressure += delta;
+		} else {
+			pressure -= delta;
+		}
+
+		if (random.nextInt(10) < 8) {
+			dryness += delta;
+		} else {
+			dryness -= delta;
+		}
+
 		if (pressure > 10000) {
-			if (random.nextInt(delta) > 5) {
+			createClimateEvent();
+			pressure = 0;
+		}
 
-				int width = MapController.getMap().getMapWidth()
-						/ MapController.getMap().getTileWidth();
-				int heigth = MapController.getMap().getMapHeight()
-						/ MapController.getMap().getTileHeight();
+		if (dryness > 10000) {
+			createFireEvent();
+			dryness = 0;
+		}
+	}
 
-				xCoord = random.nextInt(width);
-				yCoord = random.nextInt(heigth);
+	public void createClimateEvent() throws SlickException {
+		int width = MapController.getMap().getMapWidth()
+				/ MapController.getMap().getTileWidth();
+		int heigth = MapController.getMap().getMapHeight()
+				/ MapController.getMap().getTileHeight();
 
-				while (xCoord > width - 4 || yCoord > heigth - 4) {
-					xCoord = random.nextInt(width);
-					yCoord = random.nextInt(heigth);
-				}
+		int xCoord = random.nextInt(width);
+		int yCoord = random.nextInt(heigth);
 
-				int duration = random.nextInt(10000);
+		while (xCoord > width - 4 || yCoord > heigth - 4) {
+			xCoord = random.nextInt(width);
+			yCoord = random.nextInt(heigth);
+		}
 
-				for (int x = xCoord; x < xCoord + 4; x++) {
-					for (int y = yCoord; y < yCoord + 4; y++) {
-						MapController.getMap().getLandscape(x, y, false)
-								.setExtremeWeather(duration);
-					}
-				}
-				pressure = 0;
+		int duration = random.nextInt(10000);
+
+		for (int x = xCoord; x < xCoord + 4; x++) {
+			for (int y = yCoord; y < yCoord + 4; y++) {
+				MapController.getMap().getLandscape(x, y, false)
+						.setExtremeWeather(duration);
 			}
 		}
 	}
 
+	public void createFireEvent() {
+
+	}
+
 	@Override
 	public void render(Graphics g) {
-
-		/*
-		 * if (climate.equals("rain")) {
-		 * 
-		 * for (int i = xCoord; i < xCoord + 100; i++) for (int j = yCoord; j <
-		 * yCoord + 100; j++) if (i % 30 == 0 && j % 30 == 0) rain.draw(i *
-		 * 1.0f, j * 1.0f);
-		 * 
-		 * }
-		 */
-
-		/*
-		 * if (climate.equals("rain")) { for (int i = 0; i <
-		 * Map.getMap().getMapHeight(); i++) for (int j = 0; j <
-		 * Map.getMap().getMapWidth(); j++) { if (i % 50 == 0 && j % 50 == 0)
-		 * rain.draw(j * 1.0f, i * 1.0f); } }
-		 */
 	}
 
 }
