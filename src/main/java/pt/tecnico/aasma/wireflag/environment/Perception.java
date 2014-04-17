@@ -7,7 +7,7 @@ public class Perception {
 	private Position position;
 	private boolean flag;
 	private boolean enemy;
-	private boolean startPoint;
+	private boolean endPoint;
 	private boolean animal;
 	private boolean night;
 	private boolean fire;
@@ -15,7 +15,14 @@ public class Perception {
 	private boolean extremeWeather;
 
 	public Perception(Position position) {
-		this.position = position;
+	this.position = position;
+		this.flag = false;
+		this.enemy = false;
+		this.endPoint = false;
+		this.animal = false;
+		this.night = false;
+		this.fire = false;
+		this.extremeWeather = false;
 	}
 
 	public boolean hasFlag() {
@@ -34,12 +41,12 @@ public class Perception {
 		this.enemy = value;
 	}
 
-	public boolean hasStartPoint() {
-		return startPoint;
+	public boolean hasEndPoint() {
+		return endPoint;
 	}
 
-	public void setStartPoint(boolean value) {
-		this.startPoint = value;
+	public void setEndPoint(boolean value) {
+		this.endPoint = value;
 	}
 
 	public boolean hasAnimal() {

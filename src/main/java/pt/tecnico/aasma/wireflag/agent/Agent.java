@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 public class Agent implements GameElement {
@@ -40,11 +41,15 @@ public class Agent implements GameElement {
 	private int fatigue;
 	private int life;
 
-	public Agent(float agentSpeed, float agentAttack, int teamId) {
+	private Architecture arquitecture;
+
+	public Agent(float agentSpeed, float agentAttack, int teamId,
+			Architecture arquitecture) {
 		random = new Random();
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
+		this.arquitecture = arquitecture;
 	}
 
 	public void update(int delta) {
@@ -121,10 +126,14 @@ public class Agent implements GameElement {
 
 	public void init() throws SlickException {
 
-		Image[] movementUp = { new Image(System.getProperty("data") + "grey-back.png") };
-		Image[] movementDown = { new Image(System.getProperty("data") + "grey-front.png") };
-		Image[] movementLeft = { new Image(System.getProperty("data") + "grey-left.png") };
-		Image[] movementRight = { new Image(System.getProperty("data") + "grey-right.png") };
+		Image[] movementUp = { new Image(System.getProperty("data")
+				+ "grey-back.png") };
+		Image[] movementDown = { new Image(System.getProperty("data")
+				+ "grey-front.png") };
+		Image[] movementLeft = { new Image(System.getProperty("data")
+				+ "grey-left.png") };
+		Image[] movementRight = { new Image(System.getProperty("data")
+				+ "grey-right.png") };
 		int[] duration = { 300 };
 
 		up = new Animation(movementUp, duration, false);

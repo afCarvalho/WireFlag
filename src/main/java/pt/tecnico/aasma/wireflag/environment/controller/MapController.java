@@ -10,7 +10,9 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.Builder;
+import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
+import pt.tecnico.aasma.wireflag.agent.type.Builder;
+import pt.tecnico.aasma.wireflag.environment.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -79,8 +81,8 @@ public class MapController implements GameElement {
 		agent.init();
 		Flag flag = new Flag();
 		flag.init();
-
-		tileMatrix[0][0].setAgent(agent);
+		EndPoint endPoint = new EndPoint();
+		endPoint.init();
 	}
 
 	@Override
@@ -176,39 +178,10 @@ public class MapController implements GameElement {
 	}
 
 	public List<Perception> getPerceptions(int teamId, Position pos) {
-		List<Perception> list = new ArrayList<Perception>();
 
-		Landscape landscape = getLandscape(getMapPosition(pos));
+	}
 
-		if (landscape.hasFlag()) {
-			Perception perception = new Perception(pos);
-			perception.setFlag(true);
-			list.add(perception);
-		}
+	public List<Perception> getPerceptions(int teamId, float x, float y) {
 
-		if (landscape.hasAgent()) {
-			if (landscape.getAgent().isEnemy(teamId)) {
-				Perception perception = new Perception(pos);
-				perception.setEnemy(true);
-				list.add(perception);
-			}
-		}
-
-		// ver se o start point da equipa coincide com a poicao que se esta a
-		// ver
-
-		if (landscape.hasAnimal()) {
-			Perception perception = new Perception(pos);
-			perception.setAnimal(true);
-			list.add(perception);
-		}
-
-		if (landscape.getWeather().isExtremeWeather()) {
-			Perception perception = new Perception(pos);
-			perception.setExtremeWeather(true);
-			list.add(perception);
-		}
-
-		return list;
 	}
 }
