@@ -8,8 +8,19 @@ import pt.tecnico.aasma.wireflag.GameElement;
 
 public class TimeController implements GameElement {
 
-	private static int hours = 7;
+	/** The starting hour of the game */
+	private static final int INITIAL_HOUR = 7;
+
+	/** The days counter */
+	private static int days = 0;
+
+	/** The hours counter */
+	private static int hours = INITIAL_HOUR;
+
+	/** The minutes counter */
 	private static int minutes = 0;
+
+	/** The seconds counter */
 	private static int seconds = 0;
 
 	public TimeController() {
@@ -37,8 +48,10 @@ public class TimeController implements GameElement {
 			hours += 1;
 		}
 
-		if (hours == 24)
+		if (hours == 24) {
 			hours = 0;
+			days++;
+		}
 	}
 
 	@Override
@@ -52,9 +65,14 @@ public class TimeController implements GameElement {
 			g.fill(r);
 		}
 		g.setColor(new Color(1f, 1f, 1f, 1f));
-		g.drawString("Hora: " + hours + "h : " + minutes + " min ", 35f,
-				MapController.getMap().getMapWidth() / 2);
 
+		if (days > 0) {
+			g.drawString(
+					" Time: " + days + "d " + hours + "h " + minutes + "m",
+					35f, MapController.getMap().getMapWidth() / 2);
+		} else {
+			g.drawString("Time: " + hours + "h " + minutes + "m", 35f,
+					MapController.getMap().getMapWidth() / 2);
+		}
 	}
-
 }

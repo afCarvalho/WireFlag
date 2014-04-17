@@ -66,7 +66,7 @@ public class MapController implements GameElement {
 	@Override
 	public void init() throws SlickException {
 
-		grassMap = new TiledMap("data/grassmap.tmx");
+		grassMap = new TiledMap(System.getProperty("data") + "grassmap.tmx");
 		tileMatrix = new Landscape[grassMap.getWidth()][grassMap.getHeight()];
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
