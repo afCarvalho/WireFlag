@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
@@ -34,7 +35,8 @@ public class WireFlagGame extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		elements = new GameElement[] { MapController.getMap(),
-				new ClimateController(), new TimeController() };
+				new ClimateController(), new TimeController(),
+				new AgentController() };
 
 		for (GameElement e : elements) {
 			e.init();

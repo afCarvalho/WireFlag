@@ -10,24 +10,24 @@ public class TimeController implements GameElement {
 
 	/** The starting hour of the game */
 	private static final int INITIAL_HOUR = 7;
-	
+
 	/** The days counter */
-	private int days;
-	
+	private static int days = 0;
+
 	/** The hours counter */
-	private int hours;
-	
+	private static int hours = INITIAL_HOUR;
+
 	/** The minutes counter */
-	private int minutes;
-	
+	private static int minutes = 0;
+
 	/** The seconds counter */
-	private int seconds;
+	private static int seconds = 0;
 
 	public TimeController() {
-		this.days = 0;
-		this.hours = INITIAL_HOUR;
-		this.minutes = 0;
-		this.seconds = 0;
+	}
+
+	public static boolean isNight() {
+		return hours < 6 || (hours >= 18 && minutes > 0);
 	}
 
 	@Override
@@ -65,15 +65,14 @@ public class TimeController implements GameElement {
 			g.fill(r);
 		}
 		g.setColor(new Color(1f, 1f, 1f, 1f));
-		
+
 		if (days > 0) {
-			g.drawString(" Time: " + days + "d " + hours + "h " + minutes + "m", 35f,
-					MapController.getMap().getMapWidth() / 2);
+			g.drawString(
+					" Time: " + days + "d " + hours + "h " + minutes + "m",
+					35f, MapController.getMap().getMapWidth() / 2);
 		} else {
 			g.drawString("Time: " + hours + "h " + minutes + "m", 35f,
 					MapController.getMap().getMapWidth() / 2);
 		}
-		
-
 	}
 }

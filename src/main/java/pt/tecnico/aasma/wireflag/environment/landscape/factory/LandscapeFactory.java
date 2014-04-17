@@ -4,6 +4,6 @@ import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 
 public abstract class LandscapeFactory {
 
-	public abstract Landscape createLandscape();
+	public abstract Landscape createLandscape(int xCoord, int yCoord);
 
 }

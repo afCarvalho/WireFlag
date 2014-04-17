@@ -26,5 +26,4 @@ public class AnarchicalTeam extends Team {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

@@ -29,6 +29,8 @@ public abstract class Team {
 
 	/** The unique identifier of the team. */
 	private String identifier;
+    
+	private MapPosition teamPosition;
 
 	public Team(String identifier, Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
@@ -100,6 +102,14 @@ public abstract class Team {
 	public final String getIdentifier() {
 		return identifier;
 	}
+    
+    public MapPosition getTeamPosition() {
+		return teamPosition;
+	}
+    
+	public void setTeamPosition(MapPosition teamPosition) {
+		this.teamPosition = teamPosition;
+	}
 
 	/**
 	 * Elects a new leader.
@@ -112,4 +122,16 @@ public abstract class Team {
 	 * @return the result of the voting
 	 */
 	protected abstract boolean vote();
+    
+    public void init(int teamSize) {
+		int width = MapController.getMap().getNHorizontalTiles();
+		int height = MapController.getMap().getNVerticalTiles();
+		teamPosition = MapController.getMap().getRandomPosition();
+        
+		// verifies if it is inside the limits
+		while (teamPosition.getX() > width - teamSize
+               || teamPosition.getY() > height - teamSize) {
+			teamPosition = MapController.getMap().getRandomPosition();
+		}
+	}
 }

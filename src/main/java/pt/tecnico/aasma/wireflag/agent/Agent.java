@@ -10,8 +10,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
+<<<<<<< HEAD
 import pt.tecnico.aasma.wireflag.agent.team.Team;
+=======
+import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+>>>>>>> Stable
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Agent implements GameElement {
 
@@ -24,30 +30,50 @@ public class Agent implements GameElement {
 	protected final static float LOWATCK = 1.0f;
 	protected final static float NORMALATCK = 2.0f;
 	protected final static float HIGHTATCK = 3.0f;
+	
+	/* life 0-100 */
+	protected final static int VLOW_LIFE = 10;
+	protected final static int LOW_LIFE = 20;
+	protected final static int FULL_LIFE = 100;
 
-	/** The agent's team. */
+	/* fatigue 0-100 */
+	protected final static int HIGH_FATIGUE = 80;
+	protected final static int LOW_FATIGUE = 0;
+
+    /** The agent's team. */
 	private Team team;
-
+    
 	/** The agent's identifier. */
 	private String identifier;
-
+    
 	private Animation up;
 	private Animation down;
 	private Animation right;
 	private Animation left;
 	private Animation sprite;
 	private int play;
-	private float x;
-	private float y;
+
+	private int teamId;
+	private WorldPosition agentPos;
 	private Random random;
 	private float agentSpeed;
 	private float agentAttack;
+	private int fatigue;
+	private int life;
 
-	public Agent(String identifier, float agentSpeed, float agentAttack) {
+	private Architecture arquitecture;
+
+
+	public Agent(String identifier, float agentSpeed, float agentAttack,
+                 Architecture arquitecture) {
 		this.identifier = identifier;
 		random = new Random();
+		this.life = FULL_LIFE;
+		this.fatigue = LOW_FATIGUE;
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
+		this.teamId = teamId;
+		this.arquitecture = arquitecture;
 	}
 
 	/**
@@ -95,87 +121,122 @@ public class Agent implements GameElement {
 		this.team = team;
 	}
 
-	public void update(int delta) {
+
+	public boolean hasLowLife() {
+		return life <= LOW_LIFE;
+	}
+
+	public boolean hasVeryLowLife() {
+		return life <= VLOW_LIFE;
+	}
+
+	public boolean hasFatigue() {
+		return fatigue >= HIGH_FATIGUE;
+	}
+
+	public boolean isEnemy(int teamId) {
+		return this.teamId != teamId;
+	}
+
+	public void randomMovement(int delta) {
+		MapPosition oldPos = MapController.getMap().getMapPosition(
+				agentPos.getX(), agentPos.getY());
 
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
 		if (play == 0) {
 			sprite = up;
-			if (!MapController.getMap().isBlocked(x, y - delta * 0.05f)) {
-				moveUp(delta);
+			MapPosition nextPos = MapController.getMap().getMapPosition(
+					agentPos.getX(), agentPos.getY() - delta);
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveUp(delta, nextPos, oldPos);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 1) {
 			sprite = down;
-			if (!MapController.getMap().isBlocked(x,
-					y + MapController.getMap().getNTiles() + delta * 0.05f)) {
-				moveDown(delta);
+			MapPosition nextPos = MapController.getMap().getMapPosition(
+					agentPos.getX(), agentPos.getY() + delta);
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveDown(delta, nextPos, oldPos);
 			} else {
 				play = random.nextInt(4);
 			}
 		} else if (play == 2) {
 			sprite = left;
-			if (!MapController.getMap().isBlocked(x - delta * 0.05f, y)) {
-				moveLeft(delta);
+			MapPosition nextPos = MapController.getMap().getMapPosition(
+					agentPos.getX() - delta, agentPos.getY());
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveLeft(delta, nextPos, oldPos);
 			} else {
 				play = random.nextInt(4);
 			}
 
 		} else if (play == 3) {
 			sprite = right;
-			if (!MapController.getMap().isBlocked(
-					x + MapController.getMap().getNTiles() + delta * 0.05f, y)) {
-				moveRight(delta);
+			MapPosition nextPos = MapController.getMap().getMapPosition(
+					agentPos.getX() + delta, agentPos.getY());
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveRight(delta, nextPos, oldPos);
 			} else {
 				play = random.nextInt(4);
 			}
 		}
 	}
 
-	public void moveDown(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
-		sprite.update(delta);
-		y += delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(x, y + delta);
-
-		/*
-		 * x+= delta*AgentSpeed()*TileSpeed(delta)
-		 * 
-		 * precisa da velocidade para calcular a posicao porque anda varias
-		 * vezes dentro do mesmo tile (para nao andar aos pulos)
-		 */
-
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+	public WorldPosition getPos() {
+		return agentPos;
 	}
 
-	public void moveUp(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
-		sprite.update(delta);
-		y -= delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(x, y - delta);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+	public void update(int delta) {
+		arquitecture.makeAction(this, delta);
 	}
 
-	public void moveRight(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
+		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		sprite.update(delta);
-		x += delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(x + delta, y);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+
+		agentPos.setY(agentPos.getY() + delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(newPos));
+
+		MapController.getMap().getLandscape(agentPos).setAgent(this);
 	}
 
-	public void moveLeft(int delta) {
-		MapController.getMap().getLandscape(x, y).setAgent(null);
+	public void moveUp(int delta, MapPosition newPos, MapPosition oldPos) {
+		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		sprite.update(delta);
-		x -= delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(x - delta, y);
-		MapController.getMap().getLandscape(x, y).setAgent(this);
+
+		agentPos.setY(agentPos.getY() - delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(newPos));
+
+		MapController.getMap().getLandscape(agentPos).setAgent(this);
+	}
+
+	public void moveRight(int delta, MapPosition newPos, MapPosition oldPos) {
+		MapController.getMap().getLandscape(oldPos).setAgent(null);
+		sprite.update(delta);
+
+		agentPos.setX(agentPos.getX() + delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(newPos));
+
+		MapController.getMap().getLandscape(agentPos).setAgent(this);
+	}
+
+	public void moveLeft(int delta, MapPosition newPos, MapPosition oldPos) {
+		MapController.getMap().getLandscape(oldPos).setAgent(null);
+		sprite.update(delta);
+
+		agentPos.setX(agentPos.getX() - delta * agentSpeed
+				* MapController.getMap().getMovementSpeed(newPos));
+
+		MapController.getMap().getLandscape(agentPos).setAgent(this);
 	}
 
 	public void init() throws SlickException {
-
 		Image[] movementUp = { new Image(System.getProperty("data")
 				+ "grey-back.png") };
 		Image[] movementDown = { new Image(System.getProperty("data")
@@ -194,20 +255,19 @@ public class Agent implements GameElement {
 		sprite = right;
 
 		play = 0;
-		x = 550f;
-		y = 600f;
+		agentPos = new WorldPosition(550f, 600f);
 	}
 
 	@Override
 	public void render(Graphics g) {
-		sprite.draw((int) x, (int) y);
+		sprite.draw(agentPos.getX(), agentPos.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 0.4f));
-		Circle circle = new Circle(x + 15, y + 15, 40.5f);
+		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
+				40.5f);
 
 		g.draw(circle);
 		// g.setColor(Color.transparent);
 		g.fill(circle);
 	}
-
 }

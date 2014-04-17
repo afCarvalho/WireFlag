@@ -6,7 +6,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 public class DesertFactory extends LandscapeFactory {
 
 	@Override
-	public Landscape createLandscape() {
-		return new Desert();
+	public Landscape createLandscape(int xCoord, int yCoord) {
+		return new Desert(xCoord, yCoord);
 	}
 }
