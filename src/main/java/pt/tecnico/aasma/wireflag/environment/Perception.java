@@ -1,10 +1,10 @@
 package pt.tecnico.aasma.wireflag.environment;
 
-import pt.tecnico.aasma.wireflag.util.Position;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Perception {
 
-	private Position position;
+	private MapPosition position;
 	private boolean flag;
 	private boolean enemy;
 	private boolean endPoint;
@@ -14,7 +14,7 @@ public class Perception {
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
 
-	public Perception(Position position) {
+	public Perception(MapPosition position) {
 	this.position = position;
 		this.flag = false;
 		this.enemy = false;

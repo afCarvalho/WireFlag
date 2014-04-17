@@ -1,6 +1,6 @@
 package pt.tecnico.aasma.wireflag.util;
 
-public class Position {
+public class MapPosition {
 
 	private int x;
 	private int y;
@@ -13,7 +13,7 @@ public class Position {
 		this.y = y;
 	}
 
-	public Position(int x, int y) {
+	public MapPosition(int x, int y) {
 		this.setX(x);
 		this.y = y;
 	}

@@ -24,7 +24,8 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
-import pt.tecnico.aasma.wireflag.util.Position;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public class MapController implements GameElement {
 
@@ -104,26 +105,34 @@ public class MapController implements GameElement {
 	}
 
 	/* converte coord do agente em coord dos tiles */
-	public Landscape getLandscape(Position p) {
+	public Landscape getLandscape(MapPosition p) {
 		return tileMatrix[p.getX()][p.getY()];
 	}
 
-	public Position getMapPosition(Position p) {
-		int xPos = (int) p.getX() / getNHorizontalTiles();
-		int yPos = (int) p.getY() / getNVerticalTiles();
-		return new Position(xPos, yPos);
+	public Landscape getLandscape(WorldPosition p) {
+		return getLandscape(getMapPosition(p.getX(), p.getY()));
 	}
 
-	public float getMovementSpeed(Position p) {
+	public MapPosition getMapPosition(float x, float y) {
+		int xPos = (int) x / getNHorizontalTiles();
+		int yPos = (int) y / getNVerticalTiles();
+		return new MapPosition(xPos, yPos);
+	}
+
+	public MapPosition getMapPosition(WorldPosition p) {
+		return getMapPosition(p.getX(), p.getY());
+	}
+
+	public float getMovementSpeed(MapPosition p) {
 		return getLandscape(p).getMovementSpeed();
 	}
 
-	public void setExtremeWeather(Position p) throws SlickException {
+	public void setExtremeWeather(MapPosition p) throws SlickException {
 		Random r = new Random();
 		getLandscape(p).setExtremeWeather(r.nextInt(10000));
 	}
 
-	public boolean isBlocked(Position p) {
+	public boolean isBlocked(MapPosition p) {
 		return getMovementSpeed(p) == 0;
 	}
 
@@ -151,12 +160,12 @@ public class MapController implements GameElement {
 		return grassMap.getTileHeight();
 	}
 
-	public Position getRandomPosition() {
+	public MapPosition getRandomPosition() {
 		Random r = new Random();
 
 		int x = r.nextInt(getNHorizontalTiles());
 		int y = r.nextInt(getNVerticalTiles());
-		return new Position(x, y);
+		return new MapPosition(x, y);
 	}
 
 	public static MapController getMap() {
@@ -174,12 +183,12 @@ public class MapController implements GameElement {
 		}
 		return null;
 	}
-	
-	/* for each tile is created a perception */
-	public Perception getTilePerception(int teamId, float x, float y) {
-		Landscape landscape = getLandscape(x, y, true);
 
-		Perception perception = new Perception(x, y);
+	/* for each tile is created a perception */
+	public Perception getTilePerception(int teamId, MapPosition pos) {
+		Landscape landscape = getLandscape(pos);
+
+		Perception perception = new Perception(pos);
 
 		if (landscape.hasFlag()) {
 			perception.setFlag(true);
@@ -215,11 +224,11 @@ public class MapController implements GameElement {
 		return perception;
 	}
 
-	public List<Perception> getPerceptions(int teamId, float x, float y) {
+	public List<Perception> getPerceptions(int teamId, MapPosition pos) {
 		List<Perception> list = new ArrayList<Perception>();
 
 		// TODO apply this code to each tile on field of vision
-		list.add(getTilePerception(teamId, x, y));
+		list.add(getTilePerception(teamId, pos));
 
 		return list;
 	}

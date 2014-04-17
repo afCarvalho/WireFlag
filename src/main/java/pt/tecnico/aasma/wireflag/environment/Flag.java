@@ -7,12 +7,12 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.util.Position;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Flag implements GameElement {
 
 	private Animation flag;
-	private Position flagPosition;
+	private MapPosition flagPosition;
 
 	public Flag() {
 	}

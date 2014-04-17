@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 
 public abstract class Team {
 
 	private int id;
-
-	private float initialX;
-	private float initialY;
-
+	private MapPosition teamPosition;
 	private List<Agent> agentsList = new ArrayList<Agent>();
 
 	public Team(int id) {
@@ -21,19 +19,14 @@ public abstract class Team {
 	}
 
 	public void init(int teamSize) {
-		Random random = new Random();
-
-		int width = MapController.getMap().getMapWidth()
-				/ MapController.getMap().getTileWidth();
-		int height = MapController.getMap().getMapHeight()
-				/ MapController.getMap().getTileHeight();
-		initialX = random.nextInt(width);
-		initialY = random.nextInt(height);
+		int width = MapController.getMap().getNHorizontalTiles();
+		int height = MapController.getMap().getNVerticalTiles();
+		teamPosition = MapController.getMap().getRandomPosition();
 
 		// verifies if it is inside the limits
-		while (initialX > width - teamSize || initialY > height - teamSize) {
-			initialX = random.nextInt(width);
-			initialY = random.nextInt(height);
+		while (teamPosition.getX() > width - teamSize
+				|| teamPosition.getY() > height - teamSize) {
+			teamPosition = MapController.getMap().getRandomPosition();
 		}
 	}
 
@@ -41,12 +34,12 @@ public abstract class Team {
 		return id;
 	}
 
-	public float getInitialX() {
-		return initialX;
+	public MapPosition getTeamPosition() {
+		return teamPosition;
 	}
 
-	public float getInitialY() {
-		return initialY;
+	public void setTeamPosition(MapPosition teamPosition) {
+		this.teamPosition = teamPosition;
 	}
 
 	public void addAgent(Agent agent) {

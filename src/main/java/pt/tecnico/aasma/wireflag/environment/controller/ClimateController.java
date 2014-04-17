@@ -9,14 +9,14 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.Fire;
-import pt.tecnico.aasma.wireflag.util.Position;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class ClimateController implements GameElement {
 
 	private Random random;
 	private int pressure;
 	private int dryness;
-	private Position firePosition;
+	private MapPosition firePosition;
 	private boolean activeFire;
 
 	public ClimateController() {
@@ -53,7 +53,7 @@ public class ClimateController implements GameElement {
 	}
 
 	public void createClimateEvent() throws SlickException {
-		Position p = MapController.getMap().getRandomPosition();
+		MapPosition p = MapController.getMap().getRandomPosition();
 		int width = MapController.getMap().getNHorizontalTiles();
 		int height = MapController.getMap().getNVerticalTiles();
 
@@ -63,7 +63,7 @@ public class ClimateController implements GameElement {
 
 		for (int x = p.getX(); x < p.getX() + 4; x++) {
 			for (int y = p.getY(); y < p.getY() + 4; y++) {
-				MapController.getMap().setExtremeWeather(new Position(x, y));
+				MapController.getMap().setExtremeWeather(new MapPosition(x, y));
 			}
 		}
 	}

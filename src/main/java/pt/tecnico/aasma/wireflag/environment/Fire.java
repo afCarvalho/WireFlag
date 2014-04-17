@@ -7,14 +7,14 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.util.Position;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Fire implements GameElement {
 
 	private Animation fire;
-	private Position firePosition;
+	private MapPosition firePosition;
 
-	public Fire(Position firePosition) {
+	public Fire(MapPosition firePosition) {
 		this.firePosition = firePosition;
 	}
 

@@ -50,8 +50,7 @@ public class AgentController implements GameElement {
 
 		Agent builder1 = new Builder(team1.getId(), new Reactive());
 		builder1.init(); // put builde1 in team1's start point
-		MapController.getMap()
-				.getLandscape(team1.getInitialX(), team1.getInitialY(), false)
+		MapController.getMap().getLandscape(team1.getTeamPosition())
 				.setAgent(builder1);
 		team1.addAgent(builder1);
 

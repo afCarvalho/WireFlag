@@ -5,6 +5,7 @@ import java.util.List;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Reactive extends Architecture {
 
@@ -13,8 +14,11 @@ public class Reactive extends Architecture {
 	}
 
 	public void makeAction(Agent agent, int delta) {
+
+		MapPosition pos = MapController.getMap().getMapPosition(agent.getPos());
+
 		List<Perception> perceptions = MapController.getMap().getPerceptions(
-				agent.getTeamId(), agent.getX(), agent.getY());
+				agent.getTeamId(), pos);
 
 		// TODO em obras...
 

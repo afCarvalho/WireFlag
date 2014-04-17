@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class EndPoint implements GameElement {
 
@@ -23,21 +24,16 @@ public class EndPoint implements GameElement {
 
 		Random random = new Random();
 
-		endPoint = new Animation(
-				new Image[] { new Image("data/palace.png") },
+		endPoint = new Animation(new Image[] { new Image("data/palace.png") },
 				new int[] { 300 }, false);
 
-		xCoord = random.nextInt(MapController.getMap().getMapWidth());
-		yCoord = random.nextInt(MapController.getMap().getMapHeight());
+		MapPosition pos = MapController.getMap().getRandomPosition();
 
-		while (MapController.getMap().isBlocked(xCoord, yCoord)) {
-			xCoord = random.nextInt(MapController.getMap().getMapWidth());
-			yCoord = random.nextInt(MapController.getMap().getMapHeight());
-
+		while (MapController.getMap().isBlocked(pos)) {
+			pos = MapController.getMap().getRandomPosition();
 		}
 
-		MapController.getMap().getLandscape(xCoord, yCoord, true)
-				.setEndPoint(this);
+		MapController.getMap().getLandscape(pos).setEndPoint(this);
 	}
 
 	public void render(Graphics g) {
