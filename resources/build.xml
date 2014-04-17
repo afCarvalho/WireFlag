@@ -2,10 +2,11 @@
 
 <project name="WireFlag" basedir=".">
 
-	<property name="wireflag.dir" value="../WireFlag"/>
+	<property name="wireflag.dir" value="../WireFlag" />
 	<property name="src.dir" value="${wireflag.dir}/src" />
 	<property name="bin.dir" value="${wireflag.dir}/bin" />
 	<property name="lib.dir" value="libs" />
+	<property name="data" value="data/" />
 
 	<path id="project.classpath">
 		<pathelement location="${bin.dir}" />
@@ -37,6 +38,7 @@
 				<path refid="project.classpath" />
 			</classpath>
 			<jvmarg value="-Djava.library.path=${wireflag.dir}/target/natives" />
+			<sysproperty key="data" value="${data}" />
 		</java>
 	</target>
 

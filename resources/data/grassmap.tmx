@@ -244,7 +244,7 @@
   </tile>
   <tile id="602">
    <properties>
-    <property name="terrain" value="grass"/>
+    <property name="terrain" value="plain"/>
    </properties>
   </tile>
  </tileset>
