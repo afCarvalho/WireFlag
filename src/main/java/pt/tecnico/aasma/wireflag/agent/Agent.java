@@ -25,6 +25,15 @@ public class Agent implements GameElement {
 	protected final static float NORMALATCK = 2.0f;
 	protected final static float HIGHTATCK = 3.0f;
 
+	/* life 0-100 */
+	protected final static int VLOW_LIFE = 10;
+	protected final static int LOW_LIFE = 20;
+	protected final static int FULL_LIFE = 100;
+
+	/* fatigue 0-100 */
+	protected final static int HIGH_FATIGUE = 80;
+	protected final static int LOW_FATIGUE = 0;
+
 	private Animation up;
 	private Animation down;
 	private Animation right;
@@ -46,14 +55,43 @@ public class Agent implements GameElement {
 	public Agent(float agentSpeed, float agentAttack, int teamId,
 			Architecture arquitecture) {
 		random = new Random();
+		this.life = FULL_LIFE;
+		this.fatigue = LOW_FATIGUE;
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
 		this.arquitecture = arquitecture;
 	}
 
-	public void update(int delta) {
+	public int getTeamId() {
+		return teamId;
+	}
 
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public boolean hasLowLife() {
+		return life <= LOW_LIFE;
+	}
+
+	public boolean hasVeryLowLife() {
+		return life <= VLOW_LIFE;
+	}
+
+	public boolean hasFatigue() {
+		return fatigue >= HIGH_FATIGUE;
+	}
+
+	public boolean isEnemy(int teamId) {
+		return this.teamId != teamId;
+	}
+
+	public void randomMovement(int delta) {
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
@@ -89,6 +127,11 @@ public class Agent implements GameElement {
 				play = random.nextInt(4);
 			}
 		}
+	}
+
+	public void update(int delta) {
+
+		arquitecture.makeAction(this, delta);
 	}
 
 	public void moveDown(int delta) {
@@ -158,9 +201,5 @@ public class Agent implements GameElement {
 		g.draw(circle);
 		// g.setColor(Color.transparent);
 		g.fill(circle);
-	}
-
-	public boolean isEnemy(int teamId) {
-		return this.teamId != teamId;
 	}
 }
