@@ -9,8 +9,8 @@ import org.newdawn.slick.geom.Rectangle;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.Builder;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
+import pt.tecnico.aasma.wireflag.agent.type.Builder;
 
 public class AgentController implements GameElement {
 
@@ -24,6 +24,15 @@ public class AgentController implements GameElement {
 
 	public int getNextTeamId(Agent agent) {
 		return actualTeamId++;
+	}
+	
+	public Team getTeam(int teamId){
+		for (Team team : teams) {
+			if(team.getId() == teamId){
+				return team;
+			}
+		}
+		return null;
 	}
 
 	public void addTeam(Team team) {

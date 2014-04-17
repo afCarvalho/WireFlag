@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.Animal;
+import pt.tecnico.aasma.wireflag.environment.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.Fire;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
@@ -23,6 +24,7 @@ public abstract class Landscape implements GameElement {
 	protected float movementSpeed;
 	protected Weather weather;
 	protected Flag flag;
+	protected EndPoint endPoint;
 	protected Agent agent;
 	protected Fire fire;
 	protected Animal animal;
@@ -42,6 +44,10 @@ public abstract class Landscape implements GameElement {
 		return flag != null;
 	}
 
+	public boolean hasEndPoint() {
+		return endPoint != null;
+	}
+
 	public boolean hasFire() {
 		return fire != null;
 	}
@@ -56,6 +62,10 @@ public abstract class Landscape implements GameElement {
 
 	public void setFlag(Flag flag) {
 		this.flag = flag;
+	}
+
+	public void setEndPoint(EndPoint endPoint) {
+		this.endPoint = endPoint;
 	}
 
 	public void setOnFire(Fire fire) {
@@ -117,6 +127,10 @@ public abstract class Landscape implements GameElement {
 			flag.render(g);
 		}
 
+		if (hasEndPoint()) {
+			endPoint.render(g);
+		}
+		
 		if (hasAgent()) {
 			agent.render(g);
 		}

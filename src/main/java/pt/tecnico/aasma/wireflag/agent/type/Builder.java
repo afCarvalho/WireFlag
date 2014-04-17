@@ -1,4 +1,6 @@
-package pt.tecnico.aasma.wireflag.agent;
+package pt.tecnico.aasma.wireflag.agent.type;
+
+import pt.tecnico.aasma.wireflag.agent.Agent;
 
 public class Builder extends Agent {
 

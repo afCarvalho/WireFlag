@@ -9,7 +9,8 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.Builder;
+import pt.tecnico.aasma.wireflag.agent.type.Builder;
+import pt.tecnico.aasma.wireflag.environment.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -78,6 +79,8 @@ public class MapController implements GameElement {
 		agent.init();
 		Flag flag = new Flag();
 		flag.init();
+		EndPoint endPoint = new EndPoint();
+		endPoint.init();
 
 		tileMatrix[0][0].setAgent(agent);
 	}
@@ -102,7 +105,7 @@ public class MapController implements GameElement {
 		}
 	}
 
-/* converte coord do agente em coord dos tiles */
+	/* converte coord do agente em coord dos tiles */
 	public Landscape getLandscape(float x, float y, boolean convert) {
 
 		if (convert) {
@@ -161,36 +164,43 @@ public class MapController implements GameElement {
 	public List<Perception> getPerceptions(int teamId, float x, float y) {
 		List<Perception> list = new ArrayList<Perception>();
 
-		Landscape landscape = getLandscape(x, y,true);
+		Landscape landscape = getLandscape(x, y, true);
+
+		/* for each tile is created a perception */
+		Perception perception = new Perception(x, y);
 
 		if (landscape.hasFlag()) {
-			Perception perception = new Perception(x, y);
 			perception.setFlag(true);
-			list.add(perception);
 		}
 
 		if (landscape.hasAgent()) {
 			if (landscape.getAgent().isEnemy(teamId)) {
-				Perception perception = new Perception(x, y);
 				perception.setEnemy(true);
-				list.add(perception);
 			}
 		}
 
-		// ver se o start point da equipa coincide com a poicao que se esta a
-		// ver
+		if (landscape.hasEndPoint()) {
+			perception.setEndPoint(true);
+		}
 
 		if (landscape.hasAnimal()) {
-			Perception perception = new Perception(x, y);
 			perception.setAnimal(true);
-			list.add(perception);
+		}
+
+		if (TimeController.isNight()) {
+			perception.setNight(true);
+		}
+
+		if (landscape.hasFire()) {
+			perception.setFire(true);
+
 		}
 
 		if (landscape.getWeather().isExtremeWeather()) {
-			Perception perception = new Perception(x, y);
 			perception.setExtremeWeather(true);
-			list.add(perception);
 		}
+
+		list.add(perception);
 
 		return list;
 	}

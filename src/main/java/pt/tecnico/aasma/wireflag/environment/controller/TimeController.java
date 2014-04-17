@@ -8,11 +8,15 @@ import pt.tecnico.aasma.wireflag.GameElement;
 
 public class TimeController implements GameElement {
 
-	int hours = 7;
-	int minutes = 0;
-	int seconds = 0;
+	private static int hours = 7;
+	private static int minutes = 0;
+	private static int seconds = 0;
 
 	public TimeController() {
+	}
+
+	public static boolean isNight() {
+		return hours < 6 || (hours >= 18 && minutes > 0);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ public class Perception {
 	private float y;
 	private boolean flag;
 	private boolean enemy;
-	private boolean startPoint;
+	private boolean endPoint;
 	private boolean animal;
 	private boolean night;
 	private boolean fire;
@@ -16,6 +16,13 @@ public class Perception {
 	public Perception(float x, float y) {
 		this.x = x;
 		this.y = y;
+		this.flag = false;
+		this.enemy = false;
+		this.endPoint = false;
+		this.animal = false;
+		this.night = false;
+		this.fire = false;
+		this.extremeWeather = false;
 	}
 
 	public float getX() {
@@ -42,12 +49,12 @@ public class Perception {
 		this.enemy = value;
 	}
 
-	public boolean hasStartPoint() {
-		return startPoint;
+	public boolean hasEndPoint() {
+		return endPoint;
 	}
 
-	public void setStartPoint(boolean value) {
-		this.startPoint = value;
+	public void setEndPoint(boolean value) {
+		this.endPoint = value;
 	}
 
 	public boolean hasAnimal() {
