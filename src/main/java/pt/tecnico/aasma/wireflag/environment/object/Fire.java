@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.object;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
@@ -13,16 +13,17 @@ public class Fire implements GameElement {
 
 	private Animation fire;
 	private MapPosition firePosition;
+	int duration;
 
-	public Fire(MapPosition firePosition) {
+	public Fire(int duration, MapPosition firePosition) {
 		this.firePosition = firePosition;
+		this.duration = duration;
 	}
 
 	@Override
 	public void init() throws SlickException {
 		fire = new Animation(new Image[] { new Image(System.getProperty("data")
 				+ "fire.png") }, new int[] { 300 }, false);
-
 	}
 
 	@Override
@@ -32,13 +33,15 @@ public class Fire implements GameElement {
 
 		fire.draw(firePosition.getX() * tileWidth, firePosition.getY()
 				* tileHeight);
-
 	}
 
 	@Override
 	public void update(int delta) {
-		// TODO Auto-generated method stub
-
+		if (duration > 0)
+			duration--;
 	}
 
+	public boolean isActive() {
+		return duration > 0;
+	}
 }

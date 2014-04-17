@@ -5,17 +5,16 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public abstract class Weather implements GameElement {
 
 	private int duration;
-	private int xCoord;
-	private int yCoord;
+	private MapPosition weatherPos;
 
-	public Weather(int duration, int xCoord, int yCoord) {
+	public Weather(int duration, MapPosition weatherPos) {
 		this.duration = duration;
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
+		this.weatherPos = weatherPos;
 	}
 
 	public boolean isExtremeWeather() {
@@ -27,18 +26,21 @@ public abstract class Weather implements GameElement {
 
 	@Override
 	public void update(int delta) {
-		duration--;
+		if (duration > 0)
+			duration--;
 	}
 
 	@Override
 	public void render(Graphics g) {
 
-		for (int x = xCoord * MapController.getMap().getTileWidth(); x < xCoord
-				* MapController.getMap().getTileWidth()
-				+ MapController.getMap().getTileWidth(); x++) {
-			for (int y = yCoord * MapController.getMap().getTileHeight(); y < yCoord
-					* MapController.getMap().getTileHeight()
-					+ MapController.getMap().getTileHeight(); y++) {
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		int tileXPosition = weatherPos.getX() * tileWidth;
+		int tileYPosition = weatherPos.getY() * tileHeight;
+
+		for (int x = tileXPosition; x < tileXPosition + tileWidth; x++) {
+			for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
 				if (x % 25 == 0 && y % 25 == 0)
 					draw(x, y);
 			}

@@ -1,15 +1,16 @@
 package pt.tecnico.aasma.wireflag.exception;
 
-public class LandscapeNotFoundException extends Exception {
+import org.newdawn.slick.SlickException;
+
+public class LandscapeNotFoundException extends SlickException {
 
 	private static final long serialVersionUID = 1L;
-	private String landscapeName;
 
 	public LandscapeNotFoundException(String landscapeName) {
-		this.landscapeName = landscapeName;
+		super(getMessage(landscapeName));
 	}
 
-	public String getMessage() {
+	private static String getMessage(String landscapeName) {
 		return "Landscape with name " + landscapeName + " was not found";
 	}
 }

@@ -8,7 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
-import pt.tecnico.aasma.wireflag.environment.Fire;
+import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class ClimateController implements GameElement {
@@ -18,6 +18,7 @@ public class ClimateController implements GameElement {
 	private int dryness;
 	private MapPosition firePos;
 	private boolean activeFire;
+	private int fireDuration;
 
 	public ClimateController() {
 		random = new Random();
@@ -47,12 +48,13 @@ public class ClimateController implements GameElement {
 			pressure = 0;
 		}
 
-		if (dryness % 1000 == 0) {
+		if (dryness % 100 == 0) {
 			createFire();
 		}
 	}
 
 	public void createClimateEvent() throws SlickException {
+
 		MapPosition p = MapController.getMap().getRandomPosition();
 		int width = MapController.getMap().getNHorizontalTiles();
 		int height = MapController.getMap().getNVerticalTiles();
@@ -72,9 +74,10 @@ public class ClimateController implements GameElement {
 
 	public void createFire() throws SlickException {
 
-		if (!activeFire && dryness > 10000) {
+		if ((!activeFire && dryness > 1000) || (activeFire && dryness > 25000)) {
 			firePos = MapController.getMap().getRandomPosition();
 			dryness = 0;
+			fireDuration = random.nextInt(10000);
 			updateFire();
 		} else if (activeFire) {
 
@@ -108,7 +111,7 @@ public class ClimateController implements GameElement {
 	}
 
 	public void setFire() throws SlickException {
-		Fire fire = new Fire(firePos);
+		Fire fire = new Fire(fireDuration, firePos);
 		fire.init();
 		MapController.getMap().getLandscape(firePos).setOnFire(fire);
 	}

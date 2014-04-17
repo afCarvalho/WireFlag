@@ -5,12 +5,13 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.environment.Animal;
-import pt.tecnico.aasma.wireflag.environment.EndPoint;
-import pt.tecnico.aasma.wireflag.environment.Fire;
-import pt.tecnico.aasma.wireflag.environment.Flag;
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
+import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
+import pt.tecnico.aasma.wireflag.environment.object.Fire;
+import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public abstract class Landscape implements GameElement {
 
@@ -19,8 +20,7 @@ public abstract class Landscape implements GameElement {
 	protected final static float VREDUCEDSPD = 0.1f;
 	protected final static float NOSPD = 0f;
 
-	protected int xCoord;
-	protected int yCoord;
+	protected MapPosition landscapePos;
 	protected float movementSpeed;
 	protected Weather weather;
 	protected Flag flag;
@@ -29,11 +29,10 @@ public abstract class Landscape implements GameElement {
 	protected Fire fire;
 	protected Animal animal;
 
-	public Landscape(float movementSpeed, int xCoord, int yCoord) {
+	public Landscape(float movementSpeed, MapPosition position) {
 		this.movementSpeed = movementSpeed;
-		weather = new Sunny(0, xCoord, yCoord);
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
+		this.landscapePos = position;
+		setSunnyWeather();
 	}
 
 	public boolean hasAgent() {
@@ -91,9 +90,9 @@ public abstract class Landscape implements GameElement {
 	}
 
 	public void setSunnyWeather() {
-		weather = new Sunny(0, xCoord, yCoord);
+		weather = new Sunny(0, landscapePos);
 	}
-	
+
 	public abstract boolean isInflammable();
 
 	@Override
@@ -107,13 +106,20 @@ public abstract class Landscape implements GameElement {
 			fire.update(delta);
 		}
 
+		if (hasFire() && !fire.isActive()) {
+			fire = null;
+		}
+
 		if (hasAgent()) {
 			agent.update(delta);
 		}
 
 		weather.update(delta);
+
 		if (!weather.isExtremeWeather()) {
 			setSunnyWeather();
+		} else {
+			fire = null;
 		}
 	}
 
@@ -132,7 +138,7 @@ public abstract class Landscape implements GameElement {
 		if (hasEndPoint()) {
 			endPoint.render(g);
 		}
-		
+
 		if (hasAgent()) {
 			agent.render(g);
 		}

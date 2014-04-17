@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.object;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;

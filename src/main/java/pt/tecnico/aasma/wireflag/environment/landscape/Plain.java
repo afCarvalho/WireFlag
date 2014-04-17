@@ -3,16 +3,17 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.weather.Rainy;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Plain extends Landscape {
 
-	public Plain(int xCoord, int yCoord) {	
-		super(NORMALSPD, xCoord, yCoord);
+	public Plain(MapPosition position) {
+		super(NORMALSPD, position);
 	}
 
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
-		weather = new Rainy(duration, xCoord, yCoord);
+		weather = new Rainy(duration, landscapePos);
 		weather.init();
 	}
 

@@ -12,9 +12,7 @@ import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
-import pt.tecnico.aasma.wireflag.environment.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.Perception;
-import pt.tecnico.aasma.wireflag.environment.Flag;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.ForestFactory;
@@ -23,6 +21,8 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
+import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
+import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -44,18 +44,18 @@ public class MapController implements GameElement {
 			this.factory = factory;
 		}
 
+		public Landscape createLandscape(MapPosition pos) {
+			return factory.createLandscape(pos);
+		}
+
 		public static Landscape getTileLandscape(String landscapeName,
-				int xCoord, int yCoord) throws LandscapeNotFoundException {
+				MapPosition pos) throws SlickException {
 
 			for (LandscapeType land : LandscapeType.values()) {
 				if (land.name.equals(landscapeName))
-					return land.getLandscape(xCoord, yCoord);
+					return land.createLandscape(pos);
 			}
 			throw new LandscapeNotFoundException(landscapeName);
-		}
-
-		public Landscape getLandscape(int xCoord, int yCoord) {
-			return factory.createLandscape(xCoord, yCoord);
 		}
 	}
 
@@ -106,15 +106,6 @@ public class MapController implements GameElement {
 
 	/* converte coord do agente em coord dos tiles */
 	public Landscape getLandscape(MapPosition p) {
-		if (p.getX() - 1 >= getNHorizontalTiles()
-				|| p.getY() - 1 >= getNVerticalTiles()) {
-			try {
-				Thread.sleep(500000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		return tileMatrix[p.getX()][p.getY()];
 	}
 
@@ -166,16 +157,10 @@ public class MapController implements GameElement {
 		return INSTANCE;
 	}
 
-	private Landscape getLandscapeType(int xCoord, int yCoord) {
-		try {
-			int tileID = grassMap.getTileId(xCoord, yCoord, 0);
-			String value = grassMap.getTileProperty(tileID, "terrain", "plain");
-			return LandscapeType.getTileLandscape(value, xCoord, yCoord);
-		} catch (LandscapeNotFoundException e) {
-			System.out.println(e.toString());
-			System.exit(0);
-		}
-		return null;
+	private Landscape getLandscapeType(int x, int y) throws SlickException {
+		int tileID = grassMap.getTileId(x, y, 0);
+		String value = grassMap.getTileProperty(tileID, "terrain", "plain");
+		return LandscapeType.getTileLandscape(value, new MapPosition(x, y));
 	}
 
 	/* for each tile is created a perception */

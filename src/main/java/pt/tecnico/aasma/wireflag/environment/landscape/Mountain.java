@@ -3,16 +3,17 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.weather.SnowStorm;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Mountain extends Landscape {
 
-	public Mountain(int xCoord, int yCoord) {
-		super(VREDUCEDSPD, xCoord, yCoord);
+	public Mountain(MapPosition position) {
+		super(VREDUCEDSPD, position);
 	}
 
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
-		weather = new SnowStorm(duration, xCoord, yCoord);
+		weather = new SnowStorm(duration, landscapePos);
 		weather.init();
 	}
 
