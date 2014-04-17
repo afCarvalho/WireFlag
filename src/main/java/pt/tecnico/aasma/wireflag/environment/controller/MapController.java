@@ -9,6 +9,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.GameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
 import pt.tecnico.aasma.wireflag.environment.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.Perception;
@@ -75,14 +76,10 @@ public class MapController implements GameElement {
 			}
 		}
 
-		Agent agent = new Builder(1);
-		agent.init();
 		Flag flag = new Flag();
 		flag.init();
 		EndPoint endPoint = new EndPoint();
 		endPoint.init();
-
-		tileMatrix[0][0].setAgent(agent);
 	}
 
 	@Override
@@ -161,12 +158,10 @@ public class MapController implements GameElement {
 		return null;
 	}
 
-	public List<Perception> getPerceptions(int teamId, float x, float y) {
-		List<Perception> list = new ArrayList<Perception>();
-
+	/* for each tile is created a perception */
+	public Perception getTilePerception(int teamId, float x, float y) {
 		Landscape landscape = getLandscape(x, y, true);
 
-		/* for each tile is created a perception */
 		Perception perception = new Perception(x, y);
 
 		if (landscape.hasFlag()) {
@@ -200,7 +195,14 @@ public class MapController implements GameElement {
 			perception.setExtremeWeather(true);
 		}
 
-		list.add(perception);
+		return perception;
+	}
+
+	public List<Perception> getPerceptions(int teamId, float x, float y) {
+		List<Perception> list = new ArrayList<Perception>();
+
+		// TODO apply this code to each tile on field of vision
+		list.add(getTilePerception(teamId, x, y));
 
 		return list;
 	}
