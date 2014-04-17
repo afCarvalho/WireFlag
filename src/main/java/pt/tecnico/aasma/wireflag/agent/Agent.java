@@ -86,16 +86,15 @@ public class Agent implements GameElement {
 
 	public void randomMovement(int delta) {
 
-		MapPosition oldPos = MapController.getMap().getMapPosition(
-				agentPos.getX(), agentPos.getY());
+		MapPosition oldPos = agentPos.getMapPosition();
 
 		if (random.nextInt(10000) > 9990)
 			play = random.nextInt(4);
 
 		if (play == 0) {
 			sprite = up;
-			MapPosition nextPos = MapController.getMap().getMapPosition(
-					agentPos.getX(), agentPos.getY() - delta);
+			MapPosition nextPos = new WorldPosition(agentPos.getX(),
+					agentPos.getY() - delta).getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveUp(delta, nextPos, oldPos);
@@ -104,8 +103,9 @@ public class Agent implements GameElement {
 			}
 		} else if (play == 1) {
 			sprite = down;
-			MapPosition nextPos = MapController.getMap().getMapPosition(
-					agentPos.getX(), agentPos.getY() + delta);
+			MapPosition nextPos = new WorldPosition(agentPos.getX(),
+					agentPos.getY() + delta).getMapPosition();
+
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveDown(delta, nextPos, oldPos);
 			} else {
@@ -113,8 +113,8 @@ public class Agent implements GameElement {
 			}
 		} else if (play == 2) {
 			sprite = left;
-			MapPosition nextPos = MapController.getMap().getMapPosition(
-					agentPos.getX() - delta, agentPos.getY());
+			MapPosition nextPos = new WorldPosition(agentPos.getX() - delta,
+					agentPos.getY()).getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveLeft(delta, nextPos, oldPos);
@@ -124,8 +124,8 @@ public class Agent implements GameElement {
 
 		} else if (play == 3) {
 			sprite = right;
-			MapPosition nextPos = MapController.getMap().getMapPosition(
-					agentPos.getX() + delta, agentPos.getY());
+			MapPosition nextPos = new WorldPosition(agentPos.getX() + delta,
+					agentPos.getY()).getMapPosition();
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveRight(delta, nextPos, oldPos);

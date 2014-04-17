@@ -110,17 +110,7 @@ public class MapController implements GameElement {
 	}
 
 	public Landscape getLandscape(WorldPosition p) {
-		return getLandscape(getMapPosition(p.getX(), p.getY()));
-	}
-
-	public MapPosition getMapPosition(float x, float y) {
-		int xPos = (int) x / getNHorizontalTiles();
-		int yPos = (int) y / getNVerticalTiles();
-		return new MapPosition(xPos, yPos);
-	}
-
-	public MapPosition getMapPosition(WorldPosition p) {
-		return getMapPosition(p.getX(), p.getY());
+		return getLandscape(p.getMapPosition());
 	}
 
 	public float getMovementSpeed(MapPosition p) {

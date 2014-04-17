@@ -73,6 +73,7 @@ public class ClimateController implements GameElement {
 		if (!activeFire && dryness > 10000) {
 			firePosition = MapController.getMap().getRandomPosition();
 			dryness = 0;
+			updateFire();
 		} else if (activeFire) {
 
 			int increment = 0;
@@ -88,8 +89,13 @@ public class ClimateController implements GameElement {
 			} else {
 				firePosition.setY(firePosition.getY() + increment);
 			}
+
+			updateFire();
 		}
 
+	}
+
+	public void updateFire() throws SlickException {
 		activeFire = MapController.getMap().getLandscape(firePosition)
 				.isInflammable()
 				&& !MapController.getMap().getLandscape(firePosition).hasFire();
@@ -100,10 +106,8 @@ public class ClimateController implements GameElement {
 	}
 
 	public void setFire() throws SlickException {
-
 		Fire fire = new Fire(firePosition);
 		fire.init();
-
 		MapController.getMap().getLandscape(firePosition).setOnFire(fire);
 	}
 

@@ -14,30 +14,30 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class EndPoint implements GameElement {
 
 	private Animation endPoint;
-	private int xCoord;
-	private int yCoord;
+	private MapPosition flagPos;
 
 	public EndPoint() {
 	}
 
 	public void init() throws SlickException {
 
-		Random random = new Random();
-
 		endPoint = new Animation(new Image[] { new Image("data/palace.png") },
 				new int[] { 300 }, false);
 
-		MapPosition pos = MapController.getMap().getRandomPosition();
+		flagPos = MapController.getMap().getRandomPosition();
 
-		while (MapController.getMap().isBlocked(pos)) {
-			pos = MapController.getMap().getRandomPosition();
+		while (MapController.getMap().isBlocked(flagPos)) {
+			flagPos = MapController.getMap().getRandomPosition();
 		}
 
-		MapController.getMap().getLandscape(pos).setEndPoint(this);
+		MapController.getMap().getLandscape(flagPos).setEndPoint(this);
 	}
 
 	public void render(Graphics g) {
-		endPoint.draw(xCoord * 1.0f, yCoord * 1.0f);
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		endPoint.draw(flagPos.getX() * tileWidth, flagPos.getY() * tileHeight);
 	}
 
 	@Override
