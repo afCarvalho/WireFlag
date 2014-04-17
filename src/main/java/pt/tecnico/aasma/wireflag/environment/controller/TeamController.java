@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.team.AnarchicalTeam;
+import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.HierarchicalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
@@ -74,21 +75,6 @@ public class TeamController {
 	}
 
 	/**
-	 * Updates the team reference in each member upon team creation.
-	 * 
-	 * @param leader
-	 *            the team leader
-	 * @param members
-	 *            the team members
-	 */
-	private void updateTeamReference(Agent leader, List<Agent> members) {
-		leader.setTeam(lastTeam);
-		for (Agent agent : members) {
-			agent.setTeam(lastTeam);
-		}
-	}
-
-	/**
 	 * Creates a new anarchical team and assigns a new identifier.
 	 * 
 	 * @param leader
@@ -101,7 +87,6 @@ public class TeamController {
 	public void createAnarchicalTeam(Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
 		addTeam(new AnarchicalTeam(generateNewIdentifier(), leader, members));
-		updateTeamReference(leader, members);
 	}
 
 	/**
@@ -116,8 +101,7 @@ public class TeamController {
 	 */
 	public void createDemocraticalTeam(Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
-		addTeam(new AnarchicalTeam(generateNewIdentifier(), leader, members));
-		updateTeamReference(leader, members);
+		addTeam(new DemocraticalTeam(generateNewIdentifier(), leader, members));
 	}
 
 	/**
@@ -133,6 +117,5 @@ public class TeamController {
 	public void createHierarchicalTeam(Agent leader, List<Agent> members)
 			throws InvalidTeamSizeException, SlickException {
 		addTeam(new HierarchicalTeam(generateNewIdentifier(), leader, members));
-		updateTeamReference(leader, members);
 	}
 }

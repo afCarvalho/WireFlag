@@ -44,9 +44,9 @@ public abstract class Team {
 		}
 		this.members = members;
 		
-		leader.init();
-		for (Agent agent : members) {
-			agent.init();
+		leader.setTeam(this);
+		for (Agent agent : this.members) {
+			agent.setTeam(this);
 		}
 	}
 

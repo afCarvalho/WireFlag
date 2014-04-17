@@ -24,7 +24,8 @@ public class EndPoint implements GameElement {
 
 		Random random = new Random();
 
-		endPoint = new Animation(new Image[] { new Image("data/palace.png") },
+		endPoint = new Animation(new Image[] { new Image(
+				System.getProperty("data") + "palace.png") },
 				new int[] { 300 }, false);
 
 		MapPosition pos = MapController.getMap().getRandomPosition();

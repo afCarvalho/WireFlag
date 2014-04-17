@@ -116,7 +116,6 @@ public class Agent implements GameElement {
 	 *            the new team
 	 */
 	public final void setTeam(Team team) {
-		team.removeMember(this);
 		this.team = team;
 	}
 
