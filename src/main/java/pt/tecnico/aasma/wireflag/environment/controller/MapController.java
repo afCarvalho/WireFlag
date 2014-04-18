@@ -77,11 +77,6 @@ public class MapController implements GameElement {
 				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
 			}
 		}
-
-		Flag flag = new Flag();
-		flag.init();
-		EndPoint endPoint = new EndPoint();
-		endPoint.init();
 	}
 
 	@Override
@@ -95,7 +90,7 @@ public class MapController implements GameElement {
 		}
 	}
 
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {

@@ -75,6 +75,10 @@ public abstract class Landscape implements GameElement {
 		this.animal = animal;
 	}
 
+	public void killAnimal() {
+		animal.kill();
+	}
+
 	public float getMovementSpeed() {
 		return movementSpeed;
 	}
@@ -100,10 +104,18 @@ public abstract class Landscape implements GameElement {
 	}
 
 	@Override
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 
 		if (hasFire()) {
 			fire.update(delta);
+		}
+
+		if (hasAnimal()) {
+			if (animal.isAlive() && !hasFire()) {
+				animal.update(delta);
+			} else {
+				animal = null;
+			}
 		}
 
 		if (hasFire() && !fire.isActive()) {
@@ -129,6 +141,10 @@ public abstract class Landscape implements GameElement {
 
 		if (hasFire()) {
 			fire.render(g);
+		}
+
+		if (hasAnimal()) {
+			animal.render(g);
 		}
 
 		if (hasFlag()) {

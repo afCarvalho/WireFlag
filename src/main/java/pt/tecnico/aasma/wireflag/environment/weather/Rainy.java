@@ -18,8 +18,8 @@ public class Rainy extends Weather {
 
 	@Override
 	public void init() throws SlickException {
-		rain = new Animation(new Image[] { new Image("data/rain.png") },
-				new int[] { 300 }, false);
+		rain = new Animation(new Image[] { new Image(System.getProperty("weather")
+				+ "rain.png") }, new int[] { 300 }, false);
 	}
 
 	@Override
