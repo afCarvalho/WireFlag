@@ -44,6 +44,16 @@ public abstract class Team {
 		}
 		this.members = members;
 		
+		int width = MapController.getMap().getNHorizontalTiles();
+		int height = MapController.getMap().getNVerticalTiles();
+		teamPosition = MapController.getMap().getRandomPosition();
+		
+		// verifies if it is inside the limits
+		while (teamPosition.getX() > width - members.size() -1
+				|| teamPosition.getY() > height - members.size() -1) {
+			teamPosition = MapController.getMap().getRandomPosition();
+		}
+
 		leader.setTeam(this);
 		for (Agent agent : this.members) {
 			agent.setTeam(this);

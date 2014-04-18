@@ -42,11 +42,14 @@ public class WireFlagGame extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		TeamController teamController = new TeamController();
 		AgentController agentController = new AgentController();
-		agentController.init();
 
 		elements = new GameElement[] { MapController.getMap(),
 				new ClimateController(), new TimeController(), agentController };
 
+		for (GameElement element : elements) {
+			element.init();
+		}
+		
 		Agent leader = agentController.getAgents().get(0);
 		List<Agent> members = agentController.getAgents().subList(1,
 				agentController.getAgents().size());
@@ -64,12 +67,6 @@ public class WireFlagGame extends BasicGame {
 		} catch (InvalidTeamSizeException e1) {
 			e1.printStackTrace();
 		}
-
-		for (int i = 0; i < elements.length - 1; i++) {
-			elements[i].init();
-		}
-
-
 	}
 
 	@Override
