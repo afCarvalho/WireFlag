@@ -5,30 +5,19 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class Flag implements GameElement {
+public class Flag implements IGameElement {
 
 	private Animation flag;
 	private MapPosition flagPosition;
 
-	public Flag() {
-	}
-
-	public void init() throws SlickException {
-
-		flag = new Animation(new Image[] { new Image(System.getProperty("object")
-				+ "SmallFlag.png") }, new int[] { 300 }, false);
-
-		flagPosition = MapController.getMap().getRandomPosition();
-
-		while (MapController.getMap().isBlocked(flagPosition)) {
-			flagPosition = MapController.getMap().getRandomPosition();
-		}
-
-		MapController.getMap().getLandscape(flagPosition).setFlag(this);
+	public Flag(MapPosition flagPosition) {
+		flag = AnimationLoader.getLoader().getFlag();
+		this.flagPosition = flagPosition;
 	}
 
 	public void render(Graphics g) {

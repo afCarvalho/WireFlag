@@ -9,13 +9,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class Agent implements GameElement {
+public abstract class Agent implements IGameElement {
 
 	/* speed */
 	protected final static float LOWSPD = 0.01f;
@@ -36,11 +37,11 @@ public class Agent implements GameElement {
 	protected final static int HIGH_FATIGUE = 80;
 	protected final static int LOW_FATIGUE = 0;
 
-	private Animation up;
-	private Animation down;
-	private Animation right;
-	private Animation left;
-	private Animation sprite;
+	protected Animation up;
+	protected Animation down;
+	protected Animation right;
+	protected Animation left;
+	protected Animation sprite;
 	private int play;
 
 	private int teamId;
@@ -62,6 +63,10 @@ public class Agent implements GameElement {
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
 		this.arquitecture = arquitecture;
+
+		play = 0;
+		agentPos = new WorldPosition(550f, 600f);
+
 	}
 
 	public int getTeamId() {
@@ -86,7 +91,7 @@ public class Agent implements GameElement {
 
 	public void randomMovement(int delta) {
 
-		delta=Math.min(delta, 20);
+		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
 
 		if (random.nextInt(10000) > 9990)
@@ -157,6 +162,7 @@ public class Agent implements GameElement {
 	}
 
 	public void moveUp(int delta, MapPosition newPos, MapPosition oldPos) {
+		System.out.println(newPos + " " + oldPos);
 		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		sprite.update(delta);
 
@@ -186,31 +192,9 @@ public class Agent implements GameElement {
 		MapController.getMap().getLandscape(agentPos).setAgent(this);
 	}
 
-	public void init() throws SlickException {
-
-		Image[] movementUp = { new Image(System.getProperty("agent")
-				+ "grey-back.png") };
-		Image[] movementDown = { new Image(System.getProperty("agent")
-				+ "grey-front.png") };
-		Image[] movementLeft = { new Image(System.getProperty("agent")
-				+ "grey-left.png") };
-		Image[] movementRight = { new Image(System.getProperty("agent")
-				+ "grey-right.png") };
-		int[] duration = { 300 };
-
-		up = new Animation(movementUp, duration, false);
-		down = new Animation(movementDown, duration, false);
-		left = new Animation(movementLeft, duration, false);
-		right = new Animation(movementRight, duration, false);
-
-		sprite = right;
-
-		play = 0;
-		agentPos = new WorldPosition(550f, 600f);
-	}
-
 	@Override
 	public void render(Graphics g) {
+		System.out.println(sprite);
 		sprite.draw(agentPos.getX(), agentPos.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 0.4f));

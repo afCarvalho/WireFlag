@@ -15,7 +15,6 @@ public class Limit extends Landscape {
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new Sunny(0, landscapePos);
-		weather.init();
 	}
 
 	@Override

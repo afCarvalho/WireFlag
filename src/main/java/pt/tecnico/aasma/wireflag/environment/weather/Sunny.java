@@ -10,12 +10,6 @@ public class Sunny extends Weather {
 	}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void draw(int x, int y) {
 		// TODO Auto-generated method stub
 

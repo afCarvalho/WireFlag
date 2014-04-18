@@ -14,7 +14,6 @@ public class Plain extends Landscape {
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new Rainy(duration, landscapePos);
-		weather.init();
 	}
 
 	@Override

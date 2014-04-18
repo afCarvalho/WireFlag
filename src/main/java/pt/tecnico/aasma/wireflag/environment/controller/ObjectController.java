@@ -3,32 +3,44 @@ package pt.tecnico.aasma.wireflag.environment.controller;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class ObjectController implements GameElement {
+public class ObjectController implements IController {
 
-	private Flag flag;
-	private EndPoint endPoint;
 	private Animal[] animals;
 
 	public ObjectController() {
-		flag = new Flag();
-		endPoint = new EndPoint();
 		animals = new Animal[10];
 	}
 
 	@Override
 	public void init() throws SlickException {
-		flag.init();
-		endPoint.init();
 
 		for (int i = 0; i < animals.length; i++) {
 			animals[i] = createAnimal();
 		}
+
+		MapPosition endPos = MapController.getMap().getRandomPosition();
+
+		while (MapController.getMap().isBlocked(endPos)) {
+			endPos = MapController.getMap().getRandomPosition();
+		}
+
+		MapController.getMap().getLandscape(endPos)
+				.setEndPoint(new EndPoint(endPos));
+
+		MapPosition flagPos = MapController.getMap().getRandomPosition();
+
+		while (MapController.getMap().isBlocked(flagPos)) {
+			flagPos = MapController.getMap().getRandomPosition();
+		}
+
+		MapController.getMap().getLandscape(flagPos).setFlag(new Flag(flagPos));
+
 	}
 
 	public void update(int delta) throws SlickException {
@@ -51,10 +63,8 @@ public class ObjectController implements GameElement {
 		while (MapController.getMap().isBlocked(animalPos)) {
 			animalPos = MapController.getMap().getRandomPosition();
 		}
-		
-		Animal animal = new Animal(animalPos);
-		animal.init();
 
+		Animal animal = new Animal(animalPos);
 		MapController.getMap().getLandscape(animalPos).setAnimal(animal);
 
 		return animal;

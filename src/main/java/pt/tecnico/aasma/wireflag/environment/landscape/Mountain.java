@@ -14,7 +14,6 @@ public class Mountain extends Landscape {
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new SnowStorm(duration, landscapePos);
-		weather.init();
 	}
 
 	@Override

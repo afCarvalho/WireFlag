@@ -14,7 +14,6 @@ public class Water extends Landscape {
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new ThunderStorm(duration, landscapePos);
-		weather.init();
 	}
 
 	@Override

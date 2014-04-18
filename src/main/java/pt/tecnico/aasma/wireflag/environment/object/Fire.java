@@ -5,11 +5,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class Fire implements GameElement {
+public class Fire implements IGameElement {
 
 	private Animation fire;
 	private MapPosition firePosition;
@@ -18,12 +19,7 @@ public class Fire implements GameElement {
 	public Fire(int duration, MapPosition firePosition) {
 		this.firePosition = firePosition;
 		this.duration = duration;
-	}
-
-	@Override
-	public void init() throws SlickException {
-		fire = new Animation(new Image[] { new Image(System.getProperty("object")
-				+ "fire.png") }, new int[] { 300 }, false);
+		fire=AnimationLoader.getLoader().getFire();
 	}
 
 	@Override

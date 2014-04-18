@@ -4,6 +4,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class ThunderStorm extends Weather {
@@ -12,13 +13,7 @@ public class ThunderStorm extends Weather {
 
 	public ThunderStorm(int duration, MapPosition position) {
 		super(duration, position);
-	}
-
-	@Override
-	public void init() throws SlickException {
-		thunderStorm = new Animation(new Image[] { new Image(
-				System.getProperty("weather") + "thunder.png") }, new int[] { 300 },
-				false);
+		AnimationLoader.getLoader().getThunderStorm();
 	}
 
 	@Override

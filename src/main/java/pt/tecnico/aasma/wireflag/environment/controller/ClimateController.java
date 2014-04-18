@@ -7,11 +7,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class ClimateController implements GameElement {
+public class ClimateController implements IController {
 
 	private Random random;
 	private int pressure;
@@ -112,7 +112,6 @@ public class ClimateController implements GameElement {
 
 	public void setFire() throws SlickException {
 		Fire fire = new Fire(fireDuration, firePos);
-		fire.init();
 		MapController.getMap().getLandscape(firePos).setOnFire(fire);
 	}
 

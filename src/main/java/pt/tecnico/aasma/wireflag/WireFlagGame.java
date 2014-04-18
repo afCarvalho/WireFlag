@@ -8,13 +8,15 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
+import pt.tecnico.aasma.wireflag.environment.controller.IController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.ObjectController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 
 public class WireFlagGame extends BasicGame {
 
-	private GameElement[] elements;
+	private IController[] elements;
 
 	public WireFlagGame() {
 		super("WireFlag");
@@ -35,11 +37,13 @@ public class WireFlagGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		elements = new GameElement[] { MapController.getMap(),
+		elements = new IController[] { MapController.getMap(),
 				new ClimateController(), new TimeController(),
 				new AgentController(), new ObjectController() };
 
-		for (GameElement e : elements) {
+		AnimationLoader.getLoader().loadImages();
+
+		for (IController e : elements) {
 			e.init();
 		}
 	}
@@ -48,7 +52,7 @@ public class WireFlagGame extends BasicGame {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 
-		for (GameElement e : elements) {
+		for (IGameElement e : elements) {
 			e.update(delta);
 		}
 	}
@@ -57,7 +61,7 @@ public class WireFlagGame extends BasicGame {
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 
-		for (GameElement e : elements) {
+		for (IGameElement e : elements) {
 			e.render(g);
 		}
 	}

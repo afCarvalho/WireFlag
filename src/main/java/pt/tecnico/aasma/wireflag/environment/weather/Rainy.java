@@ -6,6 +6,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Rainy extends Weather {
@@ -14,12 +15,7 @@ public class Rainy extends Weather {
 
 	public Rainy(int duration, MapPosition position) {
 		super(duration, position);
-	}
-
-	@Override
-	public void init() throws SlickException {
-		rain = new Animation(new Image[] { new Image(System.getProperty("weather")
-				+ "rain.png") }, new int[] { 300 }, false);
+		rain = AnimationLoader.getLoader().getRain();
 	}
 
 	@Override

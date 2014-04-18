@@ -3,7 +3,7 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
@@ -13,7 +13,7 @@ import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public abstract class Landscape implements GameElement {
+public abstract class Landscape implements IGameElement {
 
 	protected final static float NORMALSPD = 1.0f;
 	protected final static float REDUCEDSPD = 0.5f;
@@ -98,10 +98,6 @@ public abstract class Landscape implements GameElement {
 	}
 
 	public abstract boolean isInflammable();
-
-	@Override
-	public void init() {
-	}
 
 	@Override
 	public void update(int delta) throws SlickException {

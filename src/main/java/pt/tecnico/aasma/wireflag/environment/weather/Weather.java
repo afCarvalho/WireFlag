@@ -3,11 +3,11 @@ package pt.tecnico.aasma.wireflag.environment.weather;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public abstract class Weather implements GameElement {
+public abstract class Weather implements IGameElement {
 
 	private int duration;
 	private MapPosition weatherPos;
@@ -20,9 +20,6 @@ public abstract class Weather implements GameElement {
 	public boolean isExtremeWeather() {
 		return duration > 0;
 	}
-
-	@Override
-	public abstract void init() throws SlickException;
 
 	@Override
 	public void update(int delta) {

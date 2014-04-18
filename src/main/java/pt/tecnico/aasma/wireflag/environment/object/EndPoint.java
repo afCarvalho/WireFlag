@@ -7,38 +7,26 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
-public class EndPoint implements GameElement {
+public class EndPoint implements IGameElement {
 
 	private Animation endPoint;
-	private MapPosition flagPos;
+	private MapPosition endPos;
 
-	public EndPoint() {
-	}
-
-	public void init() throws SlickException {
-
-		endPoint = new Animation(new Image[] { new Image(System.getProperty("object")
-				+ "endpoint.png") },
-				new int[] { 300 }, false);
-
-		flagPos = MapController.getMap().getRandomPosition();
-
-		while (MapController.getMap().isBlocked(flagPos)) {
-			flagPos = MapController.getMap().getRandomPosition();
-		}
-
-		MapController.getMap().getLandscape(flagPos).setEndPoint(this);
+	public EndPoint(MapPosition endPos) {
+		endPoint = AnimationLoader.getLoader().getEndPoint();
+		this.endPos = endPos;
 	}
 
 	public void render(Graphics g) {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
 
-		endPoint.draw(flagPos.getX() * tileWidth, flagPos.getY() * tileHeight);
+		endPoint.draw(endPos.getX() * tileWidth, endPos.getY() * tileHeight);
 	}
 
 	@Override

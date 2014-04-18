@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
@@ -27,7 +27,7 @@ import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
-public class MapController implements GameElement {
+public class MapController implements IController {
 
 	public enum LandscapeType {
 		DESERT("desert", new DesertFactory()), FOREST("trees",

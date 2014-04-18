@@ -14,7 +14,6 @@ public class Desert extends Landscape {
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new SandStorm(duration, landscapePos);
-		weather.init();
 	}
 
 	@Override

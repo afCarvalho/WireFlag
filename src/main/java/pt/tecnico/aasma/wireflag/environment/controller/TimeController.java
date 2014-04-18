@@ -4,9 +4,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-import pt.tecnico.aasma.wireflag.GameElement;
+import pt.tecnico.aasma.wireflag.IGameElement;
 
-public class TimeController implements GameElement {
+public class TimeController implements IController {
 
 	/** The starting hour of the game */
 	private static final int INITIAL_HOUR = 7;
