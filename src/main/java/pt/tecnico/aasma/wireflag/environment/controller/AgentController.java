@@ -14,6 +14,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class AgentController implements GameElement {
 
@@ -60,6 +61,17 @@ public class AgentController implements GameElement {
 
 	public void update(int delta) {
 
+		/* if an agent is dead is removed from the team and from the map */
+		for (Team team : teams) {
+			for (Agent agent : team.getAgents()) {
+				if (!agent.isAlive()) {
+					team.removeAgent(agent);
+					MapPosition agentPos = agent.getPos().getMapPosition();
+					MapController.getMap().getLandscape(agentPos)
+							.setAgent(null);
+				}
+			}
+		}
 	}
 
 	@Override

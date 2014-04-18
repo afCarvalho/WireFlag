@@ -84,6 +84,11 @@ public class Agent implements GameElement {
 		return this.teamId != teamId;
 	}
 
+	/* returns true if the agent is alive */
+	public boolean isAlive() {
+		return life > 0;
+	}
+
 	public void randomMovement(int delta) {
 
 		/* to avoid the agent get out of the matrix */
@@ -202,10 +207,6 @@ public class Agent implements GameElement {
 		return agentPos;
 	}
 
-	public void update(int delta) {
-		arquitecture.makeAction(this, delta);
-	}
-
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
 		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		sprite.update(delta);
@@ -267,6 +268,10 @@ public class Agent implements GameElement {
 
 		play = 0;
 		agentPos = new WorldPosition(550f, 600f);
+	}
+
+	public void update(int delta) {
+		arquitecture.makeAction(this, delta);
 	}
 
 	@Override

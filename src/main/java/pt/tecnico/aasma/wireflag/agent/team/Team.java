@@ -42,7 +42,15 @@ public abstract class Team {
 		this.teamPosition = teamPosition;
 	}
 
+	public List<Agent> getAgents() {
+		return agentsList;
+	}
+
 	public void addAgent(Agent agent) {
 		agentsList.add(agent);
+	}
+	
+	public void removeAgent(Agent agent) {
+		agentsList.remove(agent);
 	}
 }
