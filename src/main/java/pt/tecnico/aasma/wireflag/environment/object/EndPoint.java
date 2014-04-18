@@ -21,7 +21,8 @@ public class EndPoint implements GameElement {
 
 	public void init() throws SlickException {
 
-		endPoint = new Animation(new Image[] { new Image("data/palace.png") },
+		endPoint = new Animation(new Image[] { new Image(System.getProperty("object")
+				+ "endpoint.png") },
 				new int[] { 300 }, false);
 
 		flagPos = MapController.getMap().getRandomPosition();

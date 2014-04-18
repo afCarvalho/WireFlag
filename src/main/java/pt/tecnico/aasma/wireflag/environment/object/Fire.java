@@ -22,7 +22,7 @@ public class Fire implements GameElement {
 
 	@Override
 	public void init() throws SlickException {
-		fire = new Animation(new Image[] { new Image(System.getProperty("data")
+		fire = new Animation(new Image[] { new Image(System.getProperty("object")
 				+ "fire.png") }, new int[] { 300 }, false);
 	}
 

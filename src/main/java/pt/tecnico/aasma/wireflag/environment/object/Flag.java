@@ -19,7 +19,7 @@ public class Flag implements GameElement {
 
 	public void init() throws SlickException {
 
-		flag = new Animation(new Image[] { new Image(System.getProperty("data")
+		flag = new Animation(new Image[] { new Image(System.getProperty("object")
 				+ "SmallFlag.png") }, new int[] { 300 }, false);
 
 		flagPosition = MapController.getMap().getRandomPosition();
