@@ -13,7 +13,7 @@ public class ThunderStorm extends Weather {
 
 	public ThunderStorm(int duration, MapPosition position) {
 		super(duration, position);
-		AnimationLoader.getLoader().getThunderStorm();
+		thunderStorm = AnimationLoader.getLoader().getThunderStorm();
 	}
 
 	@Override

@@ -99,7 +99,6 @@ public class MapController implements IController {
 		}
 	}
 
-	/* converte coord do agente em coord dos tiles */
 	public Landscape getLandscape(MapPosition p) {
 		return tileMatrix[p.getX()][p.getY()];
 	}
