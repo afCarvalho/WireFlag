@@ -9,7 +9,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Limit extends Landscape {
 
 	public Limit(MapPosition position) {
-		super(0, position,REDUCEDVSB);
+		super(0, position, REDUCEDVSB, VHIGHFATIGUE);
 	}
 
 	@Override

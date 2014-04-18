@@ -8,7 +8,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Desert extends Landscape {
 
 	public Desert(MapPosition position) {
-		super(REDUCEDSPD, position,NORMALVSB);
+		super(REDUCEDSPD, position, NORMALVSB, VHIGHFATIGUE);
 	}
 
 	@Override

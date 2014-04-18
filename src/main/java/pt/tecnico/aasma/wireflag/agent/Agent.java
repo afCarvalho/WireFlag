@@ -86,6 +86,10 @@ public abstract class Agent implements IGameElement {
 		fatigue = Math.max((100 - life), fatigue - value);
 	}
 
+	public void increaseFatigue(int value) {
+		fatigue = Math.min(fatigue + value, 100);
+	}
+
 	public boolean hasLowLife() {
 		return life <= LOW_LIFE;
 	}
@@ -297,7 +301,7 @@ public abstract class Agent implements IGameElement {
 				agentPos.getY() + 30);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
-				(100 - fatigue) * 1.0f / 100, 0.4f));
+				((100 - fatigue) * 1.0f) / 100, 0.4f));
 		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
 				getVisibilityRange() * MapController.getMap().getTileWidth());
 

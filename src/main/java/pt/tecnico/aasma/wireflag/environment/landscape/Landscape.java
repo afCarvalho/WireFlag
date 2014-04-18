@@ -24,6 +24,10 @@ public abstract class Landscape implements IGameElement {
 	protected final static int REDUCEDVSB = -1;
 	protected final static int HIGHVSB = 1;
 
+	protected final static int VHIGHFATIGUE = 5;
+	protected final static int HIGHFATIGUE = 3;
+	protected final static int NORMALFATIGUE = 1;
+
 	protected MapPosition landscapePos;
 	protected float movementSpeed;
 	protected Weather weather;
@@ -33,12 +37,15 @@ public abstract class Landscape implements IGameElement {
 	protected Fire fire;
 	protected Animal animal;
 	protected int visibility;
+	protected int fatigue;
 
-	public Landscape(float movementSpeed, MapPosition position, int visibility) {
+	public Landscape(float movementSpeed, MapPosition position, int visibility,
+			int fatigue) {
 		this.movementSpeed = movementSpeed;
 		this.landscapePos = position;
 		setSunnyWeather();
 		this.visibility = visibility;
+		this.fatigue = fatigue;
 	}
 
 	public boolean hasAgent() {
@@ -63,6 +70,8 @@ public abstract class Landscape implements IGameElement {
 
 	public void setAgent(Agent agent) {
 		this.agent = agent;
+		if (hasAgent())
+			agent.increaseFatigue(fatigue);
 	}
 
 	public void setFlag(Flag flag) {

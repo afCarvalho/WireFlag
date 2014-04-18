@@ -8,7 +8,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Plain extends Landscape {
 
 	public Plain(MapPosition position) {
-		super(NORMALSPD, position, NORMALVSB);
+		super(NORMALSPD, position, NORMALVSB, NORMALFATIGUE);
 	}
 
 	@Override
