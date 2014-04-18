@@ -23,9 +23,9 @@ public class Agent implements GameElement {
 	protected final static float HIGHSPD = 0.1f;
 
 	/* attack */
-	protected final static float LOWATCK = 1.0f;
-	protected final static float NORMALATCK = 2.0f;
-	protected final static float HIGHTATCK = 3.0f;
+	protected final static int LOWATCK = 10;
+	protected final static int NORMALATCK = 20;
+	protected final static int HIGHTATCK = 30;
 
 	/* life 0-100 */
 	protected final static int VLOW_LIFE = 10;
@@ -47,13 +47,13 @@ public class Agent implements GameElement {
 	private WorldPosition agentPos;
 	private Random random;
 	private float agentSpeed;
-	private float agentAttack;
+	private int agentAttack;
 	private int fatigue;
 	private int life;
 
 	private Architecture arquitecture;
 
-	public Agent(float agentSpeed, float agentAttack, int teamId,
+	public Agent(float agentSpeed, int agentAttack, int teamId,
 			Architecture arquitecture) {
 		random = new Random();
 		this.life = FULL_LIFE;
@@ -64,8 +64,14 @@ public class Agent implements GameElement {
 		this.arquitecture = arquitecture;
 	}
 
+	/* returns the agent's team id */
 	public int getTeamId() {
 		return teamId;
+	}
+
+	/* decrement value in agent's life */
+	public void decrementLife(int value) {
+		life -= value;
 	}
 
 	public boolean hasLowLife() {
@@ -245,6 +251,10 @@ public class Agent implements GameElement {
 				* MapController.getMap().getMovementSpeed(newPos));
 
 		MapController.getMap().getLandscape(agentPos).setAgent(this);
+	}
+
+	public void attack(Agent agent) {
+		agent.decrementLife(agentAttack);
 	}
 
 	public void init() throws SlickException {
