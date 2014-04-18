@@ -86,7 +86,9 @@ public class Agent implements GameElement {
 
 	public void randomMovement(int delta) {
 
-		delta=Math.min(delta, 20);
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
+
 		MapPosition oldPos = agentPos.getMapPosition();
 
 		if (random.nextInt(10000) > 9990)
@@ -134,6 +136,64 @@ public class Agent implements GameElement {
 				moveRight(delta, nextPos, oldPos);
 			} else {
 				play = random.nextInt(4);
+			}
+		}
+	}
+
+	/* agent approaches tile identified by mapPos */
+	public void approachTile(int delta, MapPosition mapPos) {
+
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
+
+		MapPosition oldPos = agentPos.getMapPosition();
+
+		/* if the agent is left to the position, moves to the right */
+		if (oldPos.isLeft(mapPos)) {
+			sprite = right;
+			MapPosition nextPos = new WorldPosition(
+					agentPos.getX() + 2 * delta, agentPos.getY())
+					.getMapPosition();
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveRight(delta, nextPos, oldPos);
+				return;
+			}
+		}
+
+		/* if the agent is right to the position, moves to the left */
+		if (oldPos.isRight(mapPos)) {
+			sprite = left;
+			MapPosition nextPos = new WorldPosition(
+					agentPos.getX() - 2 * delta, agentPos.getY())
+					.getMapPosition();
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveLeft(delta, nextPos, oldPos);
+				return;
+			}
+		}
+
+		/* if the agent is ahead to the position, moves down */
+		if (oldPos.isAhead(mapPos)) {
+			sprite = down;
+			MapPosition nextPos = new WorldPosition(agentPos.getX(),
+					agentPos.getY() + 2 * delta).getMapPosition();
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveDown(delta, nextPos, oldPos);
+				return;
+			}
+		}
+
+		/* if the agent is behind to the position, moves up */
+		if (oldPos.isBehind(mapPos)) {
+			sprite = up;
+			MapPosition nextPos = new WorldPosition(agentPos.getX(),
+					agentPos.getY() - 2 * delta).getMapPosition();
+
+			if (!MapController.getMap().isBlocked(nextPos)) {
+				moveUp(delta, nextPos, oldPos);
 			}
 		}
 	}

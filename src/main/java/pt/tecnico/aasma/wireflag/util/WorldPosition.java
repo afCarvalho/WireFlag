@@ -2,6 +2,7 @@ package pt.tecnico.aasma.wireflag.util;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
+/* Position dividing the map in pixels: 1400x800 */
 public class WorldPosition {
 
 	private float x;
@@ -28,6 +29,7 @@ public class WorldPosition {
 		this.x = x;
 	}
 
+	/* converts a WorldPosition into a MapPosition */
 	public MapPosition getMapPosition() {
 
 		int tileWidth = MapController.getMap().getTileWidth();
