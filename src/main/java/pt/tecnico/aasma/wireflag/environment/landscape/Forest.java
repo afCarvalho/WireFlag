@@ -8,7 +8,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Forest extends Landscape {
 
 	public Forest(MapPosition position) {
-		super(REDUCEDSPD, position);
+		super(REDUCEDSPD, position, REDUCEDVSB);
 	}
 
 	@Override

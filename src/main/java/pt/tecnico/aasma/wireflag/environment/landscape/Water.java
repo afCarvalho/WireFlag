@@ -8,7 +8,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Water extends Landscape {
 
 	public Water(MapPosition position) {
-		super(VREDUCEDSPD, position);
+		super(VREDUCEDSPD, position, REDUCEDVSB);
 	}
 
 	@Override

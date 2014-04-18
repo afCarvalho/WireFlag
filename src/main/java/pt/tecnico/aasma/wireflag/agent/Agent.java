@@ -12,6 +12,8 @@ import org.newdawn.slick.geom.Circle;
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
+import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
@@ -75,8 +77,13 @@ public abstract class Agent implements IGameElement {
 	}
 
 	/* decrement value in agent's life */
-	public void decrementLife(int value) {
+	public void decreaseLife(int value) {
 		life -= value;
+		fatigue = Math.max((100 - life), fatigue);
+	}
+
+	public void decreaseFatigue(int value) {
+		fatigue = Math.max((100 - life), fatigue - value);
 	}
 
 	public boolean hasLowLife() {
@@ -107,8 +114,9 @@ public abstract class Agent implements IGameElement {
 
 		MapPosition oldPos = agentPos.getMapPosition();
 
-		if (random.nextInt(10000) > 9990)
+		if (random.nextInt(10000) > 9990) {
 			play = random.nextInt(4);
+		}
 
 		if (play == 0) {
 			sprite = up;
@@ -259,23 +267,41 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void attack(Agent agent) {
-		agent.decrementLife(agentAttack);
+		agent.decreaseLife(agentAttack);
 	}
 
 	public void update(int delta) {
 		arquitecture.makeAction(this, delta);
 	}
 
+	public int getVisibilityRange() {
+		int visibility = 2;
+		visibility += MapController.getMap().getLandscape(agentPos)
+				.getVisibility();
+
+		if (TimeController.getTime().isNight())
+			visibility--;
+
+		return visibility;
+	}
+
 	@Override
 	public void render(Graphics g) {
 		sprite.draw(agentPos.getX(), agentPos.getY());
 
-		g.setColor(new Color(1f, 1f, 1f, 0.4f));
+		g.setColor(new Color(1f, 1f, 1f, 1f));
+		g.drawString("hp:" + life, agentPos.getX() + 3, agentPos.getY() - 20);
+
+		g.setColor(new Color(1f, 1f, 1f, 1f));
+		g.drawString("fp:" + fatigue + "", agentPos.getX() + 3,
+				agentPos.getY() + 30);
+
+		g.setColor(new Color(1f, life * 1.0f / 100,
+				(100 - fatigue) * 1.0f / 100, 0.4f));
 		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
-				40.5f);
+				getVisibilityRange() * MapController.getMap().getTileWidth());
 
 		g.draw(circle);
-		// g.setColor(Color.transparent);
 		g.fill(circle);
 	}
 }

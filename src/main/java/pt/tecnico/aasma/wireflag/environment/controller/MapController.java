@@ -181,7 +181,7 @@ public class MapController implements IController {
 			perception.setAnimal(true);
 		}
 
-		if (TimeController.isNight()) {
+		if (TimeController.getTime().isNight()) {
 			perception.setNight(true);
 		}
 

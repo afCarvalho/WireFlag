@@ -8,7 +8,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Mountain extends Landscape {
 
 	public Mountain(MapPosition position) {
-		super(VREDUCEDSPD, position);
+		super(VREDUCEDSPD, position, HIGHVSB);
 	}
 
 	@Override

@@ -20,6 +20,10 @@ public abstract class Landscape implements IGameElement {
 	protected final static float VREDUCEDSPD = 0.1f;
 	protected final static float NOSPD = 0f;
 
+	protected final static int NORMALVSB = 0;
+	protected final static int REDUCEDVSB = -1;
+	protected final static int HIGHVSB = 1;
+
 	protected MapPosition landscapePos;
 	protected float movementSpeed;
 	protected Weather weather;
@@ -28,11 +32,13 @@ public abstract class Landscape implements IGameElement {
 	protected Agent agent;
 	protected Fire fire;
 	protected Animal animal;
+	protected int visibility;
 
-	public Landscape(float movementSpeed, MapPosition position) {
+	public Landscape(float movementSpeed, MapPosition position, int visibility) {
 		this.movementSpeed = movementSpeed;
 		this.landscapePos = position;
 		setSunnyWeather();
+		this.visibility = visibility;
 	}
 
 	public boolean hasAgent() {
@@ -154,5 +160,9 @@ public abstract class Landscape implements IGameElement {
 		if (hasAgent()) {
 			agent.render(g);
 		}
+	}
+
+	public int getVisibility() {
+		return visibility;
 	}
 }

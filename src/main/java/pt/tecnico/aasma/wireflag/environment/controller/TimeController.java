@@ -8,25 +8,35 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 
 public class TimeController implements IController {
 
+	private static final TimeController INSTANCE = new TimeController();
+
 	/** The starting hour of the game */
 	private static final int INITIAL_HOUR = 7;
 
 	/** The days counter */
-	private static int days = 0;
+	private static int days;
 
 	/** The hours counter */
-	private static int hours = INITIAL_HOUR;
+	private static int hours;
 
 	/** The minutes counter */
-	private static int minutes = 0;
+	private static int minutes;
 
 	/** The seconds counter */
-	private static int seconds = 0;
+	private static int seconds;
 
 	public TimeController() {
+		days = 0;
+		hours = INITIAL_HOUR;
+		minutes = 0;
+		seconds = 0;
 	}
 
-	public static boolean isNight() {
+	public static TimeController getTime() {
+		return INSTANCE;
+	}
+
+	public boolean isNight() {
 		return hours < 6 || (hours >= 18 && minutes > 0);
 	}
 
