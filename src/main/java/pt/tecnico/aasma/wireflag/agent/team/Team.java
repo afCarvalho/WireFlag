@@ -6,6 +6,7 @@ import java.util.Random;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 
 public abstract class Team {
@@ -42,14 +43,26 @@ public abstract class Team {
 		this.teamPosition = teamPosition;
 	}
 
+	private void increaseTeamPositionX() {
+		this.teamPosition.setX(teamPosition.getX() + 1);
+	}
+
 	public List<Agent> getAgents() {
 		return agentsList;
 	}
 
 	public void addAgent(Agent agent) {
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileWidth();
 		agentsList.add(agent);
+		agent.setPos(new WorldPosition(teamPosition.getX() * tileWidth,
+				teamPosition.getY() * tileHeight));
+		agent.setTeamId(id);
+		MapController.getMap().getLandscape(teamPosition).setAgent(agent);
+		MapController.getMap().increaseNAliveAgents(1);
+		increaseTeamPositionX();
 	}
-	
+
 	public void removeAgent(Agent agent) {
 		agentsList.remove(agent);
 	}

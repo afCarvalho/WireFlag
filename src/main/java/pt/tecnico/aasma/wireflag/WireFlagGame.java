@@ -17,17 +17,15 @@ import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 
 public class WireFlagGame extends BasicGame {
 
-	private IController[] elements;
+	private static IController[] elements;
 
 	public WireFlagGame() {
 		super("WireFlag");
 	}
 
 	public static void win(int teamId) {
-		// TODO
-		// Animation win = AnimationLoader.getLoader().getWin();
-		// win.draw(0, 0);
-		// app.pause
+		elements = new IController[] { AgentController.getAgents() };
+		AgentController.getAgents().endGame(teamId);
 	}
 
 	public static void main(String[] arguments) {
@@ -47,7 +45,7 @@ public class WireFlagGame extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		elements = new IController[] { MapController.getMap(),
 				new ClimateController(), TimeController.getTime(),
-				new AgentController(), new ObjectController() };
+				AgentController.getAgents(), new ObjectController() };
 
 		AnimationLoader.getLoader().loadImages();
 

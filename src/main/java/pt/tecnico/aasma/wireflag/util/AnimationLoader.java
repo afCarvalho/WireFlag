@@ -12,7 +12,7 @@ public class AnimationLoader {
 
 	private Animation rain, sand, snow, thunder, goat, pig, end, fire, flag,
 			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
-			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill;
+			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill, cross;
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
@@ -115,6 +115,9 @@ public class AnimationLoader {
 				new Image(agent + "d_right4.png") }, duration4, false);
 
 		ill = new Animation(new Image[] { new Image(agent + "ill.png") },
+				duration1, false);
+
+		cross = new Animation(new Image[] { new Image(agent + "cross.png") },
 				duration1, false);
 
 	}
@@ -249,5 +252,9 @@ public class AnimationLoader {
 
 	public Animation getIll() {
 		return ill;
+	}
+
+	public Animation getCross() {
+		return cross;
 	}
 }

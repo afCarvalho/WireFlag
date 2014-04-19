@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
+import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
@@ -62,6 +63,7 @@ public class MapController implements IController {
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
 	private Landscape[][] tileMatrix;
+	private int nAliveAgents;
 
 	private MapController() {
 	}
@@ -96,6 +98,10 @@ public class MapController implements IController {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 				tileMatrix[xAxis][yAxis].update(delta);
 			}
+		}
+
+		if (nAliveAgents == 0) {
+			WireFlagGame.win(-1);
 		}
 	}
 
@@ -159,6 +165,10 @@ public class MapController implements IController {
 		int tileID = grassMap.getTileId(x, y, 0);
 		String value = grassMap.getTileProperty(tileID, "terrain", "plain");
 		return LandscapeType.getTileLandscape(value, new MapPosition(x, y));
+	}
+
+	public void increaseNAliveAgents(int nAliveAgents) {
+		this.nAliveAgents += nAliveAgents;
 	}
 
 	/* for each tile is created a perception */

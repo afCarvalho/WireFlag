@@ -11,6 +11,7 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
+import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -52,7 +53,7 @@ public abstract class Agent implements IGameElement {
 	private int fatigue;
 	private int life;
 	private boolean isIll;
-	private boolean hasFlag;
+	private Flag flag;
 
 	private Architecture arquitecture;
 
@@ -64,13 +65,12 @@ public abstract class Agent implements IGameElement {
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
-		this.setHasFlag(false);
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
 		this.isIll = false;
 		play = 0;
-		agentPos = new WorldPosition(550f, 600f);
+		// agentPos = new WorldPosition(550f, 600f);
 
 	}
 
@@ -79,8 +79,17 @@ public abstract class Agent implements IGameElement {
 		return teamId;
 	}
 
+	public void setTeamId(int id) {
+		this.teamId = id;
+	}
+
 	public WorldPosition getPos() {
 		return agentPos;
+	}
+
+	public void setPos(WorldPosition pos) {
+		agentPos = pos;
+		sprite = down;
 	}
 
 	/* decrement value in agent's life */
@@ -90,7 +99,7 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void increaseLife(int value) {
-		life += value;
+		life = Math.min(life + value, 100);
 	}
 
 	public void decreaseFatigue(int value) {
@@ -129,24 +138,32 @@ public abstract class Agent implements IGameElement {
 	public void setIll(boolean isIll) {
 		this.isIll = isIll;
 	}
-	
+
 	public boolean hasFlag() {
-		return hasFlag;
+		return flag != null;
 	}
 
-	public void setHasFlag(boolean hasFlag) {
-		this.hasFlag = hasFlag;
-	}
+	/*
+	 * public void setHasFlag(boolean hasFlag) { this.hasFlag = hasFlag; }
+	 */
 
 	/* when agent stops */
 	public void stop() {
-		life += 1;
-		fatigue = Math.min(100, fatigue + 5);
+		increaseLife(1);
+		fatigue = Math.min(100, fatigue - 5);
+		fatigue = Math.max(fatigue, 0);
 	}
 
 	public float getAgentSpeed(MapPosition pos) {
 		return agentSpeed * (100 - fatigue) * 1.0f / 100
 				* MapController.getMap().getMovementSpeed(pos);
+	}
+
+	public void dropFlag() {
+		if (hasFlag()) {
+			MapController.getMap().getLandscape(agentPos).setFlag(flag);
+			flag = null;
+		}
 	}
 
 	public void move(int delta) {
@@ -337,6 +354,7 @@ public abstract class Agent implements IGameElement {
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		g.drawString("fp:" + fatigue + "", agentPos.getX() + 3,
 				agentPos.getY() + 30);
+		g.drawString("T" + teamId, agentPos.getX() - 25, agentPos.getY() + 30);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
