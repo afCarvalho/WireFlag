@@ -17,6 +17,15 @@ public class Reactive extends Architecture {
 		// TODO Auto-generated constructor stub
 	}
 
+	public boolean reactivePerception0(Agent agent, List<Perception> perceptions) {
+		// TODO
+		return false;
+	}
+
+	public void doAction0(Agent agent, int delta) {
+		// TODO
+	}
+
 	public boolean reactivePerception1(Agent agent, List<Perception> perceptions) {
 		// TODO
 		return false;
@@ -178,33 +187,38 @@ public class Reactive extends Architecture {
 		// TODO
 	}
 
+	/*
+	 * Rule: Position ahead blocked. Returns true if the agent can move ahead,
+	 * and false otherwise.
+	 */
 	public boolean reactivePerception18(Agent agent,
 			List<Perception> perceptions) {
-		// TODO
+
+		MapPosition actualPosition = agent.getPos().getMapPosition();
+		MapPosition aheadPosition = actualPosition
+				.getAhedPosition(actualPosition);
+
+		if (MapController.getMap().isBlocked(aheadPosition)) {
+			return true;
+		}
+
 		return false;
 	}
 
+	/* position ahead blocked */
 	public void doAction18(Agent agent, int delta) {
-		// TODO
+		agent.moveDifferentDirection(delta);
 	}
 
+	/* true case */
 	public boolean reactivePerception19(Agent agent,
-			List<Perception> perceptions) {
-		// TODO
-		return false;
-	}
-
-	public void doAction19(Agent agent, int delta) {
-		// TODO
-	}
-
-	public boolean reactivePerception20(Agent agent,
 			List<Perception> perceptions) {
 		return true;
 	}
 
-	public void doAction20(Agent agent, int delta) {
-		agent.randomMovement(delta);
+	/* true case */
+	public void doAction19(Agent agent, int delta) {
+		agent.moveSameDirection(delta);
 	}
 
 	public void makeAction(Agent agent, int delta) {
@@ -212,10 +226,8 @@ public class Reactive extends Architecture {
 		List<Perception> perceptions = MapController.getMap().getPerceptions(
 				agent.getTeamId(), agent.getPos().getMapPosition());
 
-		// TODO em obras...
-
 		/* if a behavior is applicable then do the correspondent action */
-		for (int i = 0; i <= BEHAVIOR_SIZE; i++) {
+		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
 			try {
 				Boolean result = (Boolean) this
 						.getClass()
