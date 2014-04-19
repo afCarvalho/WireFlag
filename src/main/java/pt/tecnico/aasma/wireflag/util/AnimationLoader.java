@@ -11,7 +11,8 @@ public class AnimationLoader {
 	private static final AnimationLoader INSTANCE = new AnimationLoader();
 
 	private Animation rain, sand, snow, thunder, goat, pig, end, fire, flag,
-			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, ill;
+			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
+			b_down, b_left, b_right, ill;
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
@@ -28,6 +29,7 @@ public class AnimationLoader {
 	public void loadImages() throws SlickException {
 
 		int[] duration1 = { 300 };
+		int[] duration3 = { 300, 300, 300 };
 		int[] duration4 = { 300, 300, 300, 300 };
 
 		rain = new Animation(new Image[] { new Image(weather + "rain.png") },
@@ -53,16 +55,33 @@ public class AnimationLoader {
 				new Image[] { new Image(object + "SmallFlag.png") }, duration1,
 				false);
 
-		s_up = new Animation(new Image[] { new Image(agent + "s_back.png") },
-				duration1, false);
-		s_down = new Animation(
-				new Image[] { new Image(agent + "s_front.png") }, duration1,
-				false);
-		s_left = new Animation(new Image[] { new Image(agent + "s_left.png") },
-				duration1, false);
-		s_right = new Animation(
-				new Image[] { new Image(agent + "s_right.png") }, duration1,
-				false);
+		s_up = new Animation(new Image[] { new Image(agent + "s_back1.png"),
+				new Image(agent + "s_back2.png"),
+				new Image(agent + "s_back3.png") }, duration3, false);
+		s_down = new Animation(new Image[] { new Image(agent + "s_front1.png"),
+				new Image(agent + "s_front2.png"),
+				new Image(agent + "s_front3.png") }, duration3, false);
+		s_left = new Animation(new Image[] { new Image(agent + "s_left1.png"),
+				new Image(agent + "s_left2.png"),
+				new Image(agent + "s_left3.png") }, duration3, false);
+		s_right = new Animation(new Image[] {
+				new Image(agent + "s_right1.png"),
+				new Image(agent + "s_right2.png"),
+				new Image(agent + "s_right3.png") }, duration3, false);
+
+		b_up = new Animation(new Image[] { new Image(agent + "b_back1.png"),
+				new Image(agent + "b_back2.png"),
+				new Image(agent + "b_back3.png") }, duration3, false);
+		b_down = new Animation(new Image[] { new Image(agent + "b_front1.png"),
+				new Image(agent + "b_front2.png"),
+				new Image(agent + "b_front3.png") }, duration3, false);
+		b_left = new Animation(new Image[] { new Image(agent + "b_left1.png"),
+				new Image(agent + "b_left2.png"),
+				new Image(agent + "b_left3.png") }, duration3, false);
+		b_right = new Animation(new Image[] {
+				new Image(agent + "b_right1.png"),
+				new Image(agent + "b_right2.png"),
+				new Image(agent + "b_right3.png") }, duration3, false);
 
 		d_up = new Animation(new Image[] { new Image(agent + "d_back1.png"),
 				new Image(agent + "d_back2.png"),
@@ -180,23 +199,19 @@ public class AnimationLoader {
 	 *************************/
 
 	public Animation getBuilderUp() {
-		// TODO Auto-generated method stub
-		return null;
+		return b_up;
 	}
 
 	public Animation getBuilderDown() {
-		// TODO Auto-generated method stub
-		return null;
+		return b_down;
 	}
 
 	public Animation getBuilderRight() {
-		// TODO Auto-generated method stub
-		return null;
+		return b_right;
 	}
 
 	public Animation getBuilderLeft() {
-		// TODO Auto-generated method stub
-		return null;
+		return b_left;
 	}
 
 	/*************************

@@ -112,7 +112,11 @@ public class MapController implements IController {
 	}
 
 	public boolean isBlocked(MapPosition p) {
-		return getMovementSpeed(p) == 0;
+		return getMovementSpeed(p) == 0
+				|| getLandscape(p).hasAnimal()
+				|| getLandscape(p).hasAgent()
+				&& !getLandscape(p).getAgent().getPos().getMapPosition()
+						.isSamePosition(p);
 	}
 
 	public int getNHorizontalTiles() {
