@@ -124,8 +124,16 @@ public abstract class Agent implements IGameElement {
 		this.isIll = isIll;
 	}
 
+	public float getAgentSpeed(MapPosition pos) {
+		return agentSpeed * (100 - fatigue) * 1.0f / 100
+				* MapController.getMap().getMovementSpeed(pos);
+	}
+
 	public void move(int delta) {
 		MapPosition oldPos = agentPos.getMapPosition();
+
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
 
 		if (play == 0) {
 			sprite = up;
@@ -253,30 +261,22 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setY(agentPos.getY() + delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(newPos));
-
+		agentPos.setY(agentPos.getY() + delta * getAgentSpeed(newPos));
 		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveUp(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setY(agentPos.getY() - delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(newPos));
-
+		agentPos.setY(agentPos.getY() - delta * getAgentSpeed(newPos));
 		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveRight(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setX(agentPos.getX() + delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(newPos));
-
+		agentPos.setX(agentPos.getX() + delta * getAgentSpeed(newPos));
 		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveLeft(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setX(agentPos.getX() - delta * agentSpeed
-				* MapController.getMap().getMovementSpeed(newPos));
-
+		agentPos.setX(agentPos.getX() - delta * getAgentSpeed(newPos));
 		changePosition(delta, oldPos, newPos);
 	}
 
