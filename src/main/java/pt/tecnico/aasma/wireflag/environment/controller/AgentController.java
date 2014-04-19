@@ -14,6 +14,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
+import pt.tecnico.aasma.wireflag.agent.type.Doctor;
 import pt.tecnico.aasma.wireflag.agent.type.Soldier;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -50,7 +51,7 @@ public class AgentController implements IController {
 		Team team1 = new DemocraticalTeam(getNextTeamId());
 		team1.init(teamSize);
 
-		Agent builder1 = new Soldier(team1.getId(), new Reactive());
+		Agent builder1 = new Doctor(team1.getId(), new Reactive());
 		MapController.getMap().getLandscape(team1.getTeamPosition())
 				.setAgent(builder1);
 		team1.addAgent(builder1);
@@ -60,18 +61,6 @@ public class AgentController implements IController {
 	}
 
 	public void update(int delta) {
-
-		/* if an agent is dead is removed from the team and from the map */
-		/*for (Team team : teams) {
-			for (Agent agent : team.getAgents()) {
-				if (!agent.isAlive()) {
-					team.removeAgent(agent);
-					MapPosition agentPos = agent.getPos().getMapPosition();
-					MapController.getMap().getLandscape(agentPos)
-							.setAgent(null);
-				}
-			}
-		}*/
 	}
 
 	@Override

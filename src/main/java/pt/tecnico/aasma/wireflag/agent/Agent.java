@@ -66,7 +66,7 @@ public abstract class Agent implements IGameElement {
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
-		this.setIll(true);
+		this.setIll(false);
 		play = 0;
 		agentPos = new WorldPosition(550f, 600f);
 
@@ -75,6 +75,10 @@ public abstract class Agent implements IGameElement {
 	/* returns the agent's team id */
 	public int getTeamId() {
 		return teamId;
+	}
+
+	public WorldPosition getPos() {
+		return agentPos;
 	}
 
 	/* decrement value in agent's life */
@@ -233,10 +237,6 @@ public abstract class Agent implements IGameElement {
 				moveUp(delta, nextPos, oldPos);
 			}
 		}
-	}
-
-	public WorldPosition getPos() {
-		return agentPos;
 	}
 
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {

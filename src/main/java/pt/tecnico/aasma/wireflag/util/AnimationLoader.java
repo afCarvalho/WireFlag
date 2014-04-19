@@ -27,55 +27,63 @@ public class AnimationLoader {
 
 	public void loadImages() throws SlickException {
 
-		int[] duration = { 300 };
+		int[] duration1 = { 300 };
+		int[] duration4 = { 300, 300, 300, 300 };
 
 		rain = new Animation(new Image[] { new Image(weather + "rain.png") },
-				duration, false);
+				duration1, false);
 		sand = new Animation(new Image[] { new Image(weather + "sand.png") },
-				duration, false);
+				duration1, false);
 		snow = new Animation(new Image[] { new Image(weather + "snow.png") },
-				duration, false);
+				duration1, false);
 		thunder = new Animation(
-				new Image[] { new Image(weather + "thunder.png") }, duration,
+				new Image[] { new Image(weather + "thunder.png") }, duration1,
 				false);
 
 		goat = new Animation(new Image[] { new Image(animal + "goat.png") },
-				duration, false);
+				duration1, false);
 		pig = new Animation(new Image[] { new Image(animal + "pig.png") },
-				duration, false);
+				duration1, false);
 
 		end = new Animation(new Image[] { new Image(object + "endpoint.png") },
-				duration, false);
+				duration1, false);
 		fire = new Animation(new Image[] { new Image(object + "fire.png") },
-				duration, false);
+				duration1, false);
 		flag = new Animation(
-				new Image[] { new Image(object + "SmallFlag.png") }, duration,
+				new Image[] { new Image(object + "SmallFlag.png") }, duration1,
 				false);
 
 		s_up = new Animation(new Image[] { new Image(agent + "s_back.png") },
-				duration, false);
+				duration1, false);
 		s_down = new Animation(
-				new Image[] { new Image(agent + "s_front.png") }, duration,
+				new Image[] { new Image(agent + "s_front.png") }, duration1,
 				false);
 		s_left = new Animation(new Image[] { new Image(agent + "s_left.png") },
-				duration, false);
+				duration1, false);
 		s_right = new Animation(
-				new Image[] { new Image(agent + "s_right.png") }, duration,
+				new Image[] { new Image(agent + "s_right.png") }, duration1,
 				false);
 
-		d_up = new Animation(new Image[] { new Image(agent + "d_back.png") },
-				duration, false);
-		d_down = new Animation(
-				new Image[] { new Image(agent + "d_front.png") }, duration,
-				false);
-		d_left = new Animation(new Image[] { new Image(agent + "d_left.png") },
-				duration, false);
-		d_right = new Animation(
-				new Image[] { new Image(agent + "d_right.png") }, duration,
-				false);
+		d_up = new Animation(new Image[] { new Image(agent + "d_back1.png"),
+				new Image(agent + "d_back2.png"),
+				new Image(agent + "d_back3.png"),
+				new Image(agent + "d_back4.png") }, duration4, false);
+		d_down = new Animation(new Image[] { new Image(agent + "d_front1.png"),
+				new Image(agent + "d_front2.png"),
+				new Image(agent + "d_front3.png"),
+				new Image(agent + "d_front4.png") }, duration4, false);
+		d_left = new Animation(new Image[] { new Image(agent + "d_left1.png"),
+				new Image(agent + "d_left2.png"),
+				new Image(agent + "d_left3.png"),
+				new Image(agent + "d_left4.png") }, duration4, false);
+		d_right = new Animation(new Image[] {
+				new Image(agent + "d_right1.png"),
+				new Image(agent + "d_right2.png"),
+				new Image(agent + "d_right3.png"),
+				new Image(agent + "d_right4.png") }, duration4, false);
 
 		ill = new Animation(new Image[] { new Image(agent + "ill.png") },
-				duration, false);
+				duration1, false);
 
 	}
 
