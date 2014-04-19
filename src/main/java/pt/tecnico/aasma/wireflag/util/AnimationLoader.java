@@ -12,7 +12,7 @@ public class AnimationLoader {
 
 	private Animation rain, sand, snow, thunder, goat, pig, end, fire, flag,
 			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
-			b_down, b_left, b_right, ill;
+			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill;
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
@@ -82,6 +82,20 @@ public class AnimationLoader {
 				new Image(agent + "b_right1.png"),
 				new Image(agent + "b_right2.png"),
 				new Image(agent + "b_right3.png") }, duration3, false);
+
+		p_up = new Animation(new Image[] { new Image(agent + "p_back1.png"),
+				new Image(agent + "p_back2.png"),
+				new Image(agent + "p_back3.png") }, duration3, false);
+		p_down = new Animation(new Image[] { new Image(agent + "p_front1.png"),
+				new Image(agent + "p_front2.png"),
+				new Image(agent + "p_front3.png") }, duration3, false);
+		p_left = new Animation(new Image[] { new Image(agent + "p_left1.png"),
+				new Image(agent + "p_left2.png"),
+				new Image(agent + "p_left3.png") }, duration3, false);
+		p_right = new Animation(new Image[] {
+				new Image(agent + "p_right1.png"),
+				new Image(agent + "p_right2.png"),
+				new Image(agent + "p_right3.png") }, duration3, false);
 
 		d_up = new Animation(new Image[] { new Image(agent + "d_back1.png"),
 				new Image(agent + "d_back2.png"),
@@ -175,22 +189,18 @@ public class AnimationLoader {
 	 *************************/
 
 	public Animation getDoctorUp() {
-		// TODO Auto-generated method stub
 		return d_up;
 	}
 
 	public Animation getDoctorDown() {
-		// TODO Auto-generated method stub
 		return d_down;
 	}
 
 	public Animation getDoctorRight() {
-		// TODO Auto-generated method stub
 		return d_right;
 	}
 
 	public Animation getDoctorLeft() {
-		// TODO Auto-generated method stub
 		return d_left;
 	}
 
@@ -219,23 +229,19 @@ public class AnimationLoader {
 	 *************************/
 
 	public Animation getPatrolUp() {
-		// TODO Auto-generated method stub
-		return null;
+		return p_up;
 	}
 
 	public Animation getPatrolLeft() {
-		// TODO Auto-generated method stub
-		return null;
+		return p_left;
 	}
 
 	public Animation getPatrolRight() {
-		// TODO Auto-generated method stub
-		return null;
+		return p_right;
 	}
 
 	public Animation getPatrolDown() {
-		// TODO Auto-generated method stub
-		return null;
+		return p_down;
 	}
 
 	/*************************
