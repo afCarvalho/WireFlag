@@ -201,6 +201,9 @@ public class MapController implements IController {
 		return perception;
 	}
 
+	/*
+	 * returns a list with a perception for each tile in the agent's visibility
+	 */
 	public List<Perception> getPerceptions(int teamId, MapPosition pos,
 			int visibility) {
 		List<Perception> list = new ArrayList<Perception>();
@@ -208,11 +211,11 @@ public class MapController implements IController {
 		int x = pos.getX();
 		int y = pos.getY();
 
-		for (int i = y + visibility; i >= y - visibility && i >= 0
-				&& i <= getMapHeight(); i--) {
+		for (int j = y + visibility; j >= y - visibility && j > 0
+				&& j < getNVerticalTiles(); j--) {
 
-			for (int j = x - visibility; j <= x + visibility && j >= 0
-					&& j <= getMapWidth(); j++) {
+			for (int i = x - visibility; i <= x + visibility && i > 0
+					&& i < getNHorizontalTiles(); i++) {
 
 				list.add(getTilePerception(teamId, new MapPosition(i, j)));
 			}

@@ -54,7 +54,6 @@ public class AnimationLoader {
 		flag = new Animation(
 				new Image[] { new Image(object + "SmallFlag.png") }, duration1,
 				false);
-
 		s_up = new Animation(new Image[] { new Image(agent + "s_back1.png"),
 				new Image(agent + "s_back2.png"),
 				new Image(agent + "s_back3.png") }, duration3, false);
