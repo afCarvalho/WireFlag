@@ -15,7 +15,7 @@ public class Perception {
 	private boolean extremeWeather;
 
 	public Perception(MapPosition position) {
-	this.position = position;
+		this.position = position;
 		this.flag = false;
 		this.enemy = false;
 		this.endPoint = false;
@@ -23,6 +23,10 @@ public class Perception {
 		this.night = false;
 		this.fire = false;
 		this.extremeWeather = false;
+	}
+
+	public MapPosition getPosition() {
+		return position;
 	}
 
 	public boolean hasFlag() {

@@ -124,16 +124,8 @@ public abstract class Agent implements IGameElement {
 		this.isIll = isIll;
 	}
 
-	public void randomMovement(int delta) {
-
-		/* to avoid the agent get out of the matrix */
-		delta = Math.min(delta, 20);
-
+	public void move(int delta) {
 		MapPosition oldPos = agentPos.getMapPosition();
-
-		if (random.nextInt(10000) > 9990) {
-			play = random.nextInt(4);
-		}
 
 		if (play == 0) {
 			sprite = up;
@@ -179,6 +171,36 @@ public abstract class Agent implements IGameElement {
 				play = random.nextInt(4);
 			}
 		}
+	}
+
+	/* agent move to a different direction */
+	public void moveDifferentDirection(int delta) {
+
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
+
+		int oldPlay = play;
+		while (oldPlay == play) {
+			play = random.nextInt(4);
+		}
+
+		move(delta);
+	}
+
+	/*
+	 * agent moves to the same direction, but change it from time to time to
+	 * don't walk just in a straight line
+	 */
+	public void moveSameDirection(int delta) {
+
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
+
+		if (random.nextInt(10000) > 9990) {
+			play = random.nextInt(10);
+		}
+
+		move(delta);
 	}
 
 	/* agent approaches tile identified by mapPos */

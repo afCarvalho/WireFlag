@@ -17,6 +17,6 @@ public class Hybrid extends Architecture {
 		// TODO em obras...
 
 		// no ultimo caso true
-		agent.randomMovement(delta);
+		agent.moveSameDirection(delta);
 	}
 }

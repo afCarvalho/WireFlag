@@ -27,6 +27,10 @@ public class MapPosition {
 		this.x = x;
 	}
 
+	public MapPosition getAhedPosition(MapPosition pos) {
+		return new MapPosition(pos.getX(), pos.y + 1);
+	}
+
 	/* returns true if position, pos, is the left position of this position */
 	public boolean isCloseOnLeft(MapPosition pos) {
 		return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
