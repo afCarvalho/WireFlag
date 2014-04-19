@@ -201,11 +201,22 @@ public class MapController implements IController {
 		return perception;
 	}
 
-	public List<Perception> getPerceptions(int teamId, MapPosition pos) {
+	public List<Perception> getPerceptions(int teamId, MapPosition pos,
+			int visibility) {
 		List<Perception> list = new ArrayList<Perception>();
 
-		// TODO apply this code to each tile on field of vision
-		list.add(getTilePerception(teamId, pos));
+		int x = pos.getX();
+		int y = pos.getY();
+
+		for (int i = y + visibility; i >= y - visibility && i >= 0
+				&& i <= getMapHeight(); i--) {
+
+			for (int j = x - visibility; j <= x + visibility && j >= 0
+					&& j <= getMapWidth(); j++) {
+
+				list.add(getTilePerception(teamId, new MapPosition(i, j)));
+			}
+		}
 
 		return list;
 	}

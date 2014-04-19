@@ -224,10 +224,10 @@ public class Reactive extends Architecture {
 	public void makeAction(Agent agent, int delta) {
 
 		List<Perception> perceptions = MapController.getMap().getPerceptions(
-				agent.getTeamId(), agent.getPos().getMapPosition());
+				agent.getTeamId(), agent.getPos().getMapPosition(),
+				agent.getVisibilityRange());
 
 		/* if a behavior is applicable then do the correspondent action */
-
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
 			try {
 				Boolean result = (Boolean) this

@@ -66,7 +66,7 @@ public abstract class Agent implements IGameElement {
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
-		this.setIll(false);
+		this.isIll = false;
 		play = 0;
 		agentPos = new WorldPosition(550f, 600f);
 
@@ -134,8 +134,6 @@ public abstract class Agent implements IGameElement {
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveUp(delta, nextPos, oldPos);
-			} else {
-				play = random.nextInt(4);
 			}
 		} else if (play == 1) {
 			sprite = down;
@@ -144,8 +142,6 @@ public abstract class Agent implements IGameElement {
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveDown(delta, nextPos, oldPos);
-			} else {
-				play = random.nextInt(4);
 			}
 		} else if (play == 2) {
 			sprite = left;
@@ -155,10 +151,7 @@ public abstract class Agent implements IGameElement {
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveLeft(delta, nextPos, oldPos);
-			} else {
-				play = random.nextInt(4);
 			}
-
 		} else if (play == 3) {
 			sprite = right;
 			MapPosition nextPos = new WorldPosition(
@@ -167,8 +160,6 @@ public abstract class Agent implements IGameElement {
 
 			if (!MapController.getMap().isBlocked(nextPos)) {
 				moveRight(delta, nextPos, oldPos);
-			} else {
-				play = random.nextInt(4);
 			}
 		}
 	}
@@ -196,7 +187,7 @@ public abstract class Agent implements IGameElement {
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
 
-		if (random.nextInt(10000) > 9990) {
+		if (random.nextInt(1000) > 990) {
 			play = random.nextInt(10);
 		}
 
