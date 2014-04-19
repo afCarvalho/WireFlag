@@ -77,6 +77,10 @@ public abstract class Agent implements IGameElement {
 		return teamId;
 	}
 
+	public WorldPosition getPos() {
+		return agentPos;
+	}
+
 	/* decrement value in agent's life */
 	public void decreaseLife(int value) {
 		life -= value;
@@ -235,10 +239,6 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public WorldPosition getPos() {
-		return agentPos;
-	}
-
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
 		agentPos.setY(agentPos.getY() + delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(newPos));
@@ -316,7 +316,7 @@ public abstract class Agent implements IGameElement {
 		g.fill(circle);
 
 		if (isIll()) {
-			ill.draw(agentPos.getX()+10, agentPos.getY()+40);
+			ill.draw(agentPos.getX() + 10, agentPos.getY() + 40);
 		}
 	}
 }

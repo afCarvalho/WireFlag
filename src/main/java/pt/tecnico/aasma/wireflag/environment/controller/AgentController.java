@@ -63,13 +63,19 @@ public class AgentController implements IController {
 
 		/* if an agent is dead is removed from the team and from the map */
 		for (Team team : teams) {
+			List<Agent> removeAgents = new ArrayList<Agent>();
 			for (Agent agent : team.getAgents()) {
 				if (!agent.isAlive()) {
-					team.removeAgent(agent);
+					removeAgents.add(agent);
+					/* remove agent from the map */
 					MapPosition agentPos = agent.getPos().getMapPosition();
 					MapController.getMap().getLandscape(agentPos)
 							.setAgent(null);
 				}
+			}
+			/* remove agent from the team */
+			for (Agent agent : removeAgents) {
+				team.removeAgent(agent);
 			}
 		}
 	}
