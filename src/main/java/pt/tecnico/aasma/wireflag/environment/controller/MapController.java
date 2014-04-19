@@ -61,7 +61,7 @@ public class MapController implements IController {
 
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
-	private static Landscape[][] tileMatrix;
+	private Landscape[][] tileMatrix;
 
 	private MapController() {
 	}

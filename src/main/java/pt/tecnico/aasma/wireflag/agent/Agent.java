@@ -66,7 +66,7 @@ public abstract class Agent implements IGameElement {
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
-		this.setIll(false);
+		this.setIll(true);
 		play = 0;
 		agentPos = new WorldPosition(550f, 600f);
 
@@ -316,7 +316,7 @@ public abstract class Agent implements IGameElement {
 		g.fill(circle);
 
 		if (isIll()) {
-			ill.draw(agentPos.getX()+10, agentPos.getY()+40);
+			ill.draw(agentPos.getX(), agentPos.getY());
 		}
 	}
 }

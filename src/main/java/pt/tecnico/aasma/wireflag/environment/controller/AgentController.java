@@ -62,7 +62,7 @@ public class AgentController implements IController {
 	public void update(int delta) {
 
 		/* if an agent is dead is removed from the team and from the map */
-		for (Team team : teams) {
+		/*for (Team team : teams) {
 			for (Agent agent : team.getAgents()) {
 				if (!agent.isAlive()) {
 					team.removeAgent(agent);
@@ -71,7 +71,7 @@ public class AgentController implements IController {
 							.setAgent(null);
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override

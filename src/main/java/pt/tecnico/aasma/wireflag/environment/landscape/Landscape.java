@@ -150,11 +150,15 @@ public abstract class Landscape implements IGameElement {
 		if (hasFire() && !fire.isActive()) {
 			fire = null;
 		}
+		
+		if (hasAgent() && !agent.isAlive()) {
+			setAgent(null);
+		}
 
 		if (hasAgent()) {
 			agent.update(delta);
 		}
-
+		
 		weather.update(delta);
 
 		if (!weather.isExtremeWeather()) {

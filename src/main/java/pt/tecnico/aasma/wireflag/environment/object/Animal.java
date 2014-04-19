@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
@@ -21,7 +20,6 @@ public class Animal implements IGameElement {
 	private MapPosition animalPos;
 	private int type;
 	private final int PIG = 0;
-	private final int GOAT = 1;
 
 	public Animal(MapPosition pos) {
 		random = new Random();
@@ -62,6 +60,5 @@ public class Animal implements IGameElement {
 		if (random.nextInt(100) > 95) {
 			protein--;
 		}
-
 	}
 }

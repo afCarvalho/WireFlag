@@ -1,11 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.object;
 
-import java.util.Random;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
