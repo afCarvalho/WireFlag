@@ -52,6 +52,7 @@ public abstract class Agent implements IGameElement {
 	private int fatigue;
 	private int life;
 	private boolean isIll;
+	private boolean hasFlag;
 
 	private Architecture arquitecture;
 
@@ -63,6 +64,7 @@ public abstract class Agent implements IGameElement {
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
+		this.setHasFlag(false);
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
@@ -85,6 +87,10 @@ public abstract class Agent implements IGameElement {
 	public void decreaseLife(int value) {
 		life -= value;
 		fatigue = Math.max((100 - life), fatigue);
+	}
+
+	public void increaseLife(int value) {
+		life += value;
 	}
 
 	public void decreaseFatigue(int value) {
@@ -123,8 +129,26 @@ public abstract class Agent implements IGameElement {
 	public void setIll(boolean isIll) {
 		this.isIll = isIll;
 	}
+	
+	public boolean hasFlag() {
+		return hasFlag;
+	}
+
+	public void setHasFlag(boolean hasFlag) {
+		this.hasFlag = hasFlag;
+	}
+
+	/* when agent stops */
+	public void stop() {
+		life += 1;
+		fatigue = Math.min(100, fatigue + 5);
+	}
 
 	public void move(int delta) {
+
+		/* to avoid the agent get out of the matrix */
+		delta = Math.min(delta, 20);
+
 		MapPosition oldPos = agentPos.getMapPosition();
 
 		if (play == 0) {
@@ -167,9 +191,6 @@ public abstract class Agent implements IGameElement {
 	/* agent move to a different direction */
 	public void moveDifferentDirection(int delta) {
 
-		/* to avoid the agent get out of the matrix */
-		delta = Math.min(delta, 20);
-
 		int oldPlay = play;
 		while (oldPlay == play) {
 			play = random.nextInt(4);
@@ -184,11 +205,8 @@ public abstract class Agent implements IGameElement {
 	 */
 	public void moveSameDirection(int delta) {
 
-		/* to avoid the agent get out of the matrix */
-		delta = Math.min(delta, 20);
-
-		if (random.nextInt(1000) > 990) {
-			play = random.nextInt(10);
+		if (random.nextInt(10000) > 9990) {
+			play = random.nextInt(4);
 		}
 
 		move(delta);

@@ -3,6 +3,7 @@ package pt.tecnico.aasma.wireflag.agent.architecture;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
@@ -11,55 +12,116 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Reactive extends Architecture {
 
 	/* total number of behaviors */
-	protected final static int BEHAVIOR_SIZE = 21;
+	protected final static int BEHAVIOR_SIZE = 20;
 
 	public Reactive() {
-		// TODO Auto-generated constructor stub
+		// Nothing to do here
 	}
 
+	/* agent has the flag and is on the end point */
 	public boolean reactivePerception0(Agent agent, List<Perception> perceptions) {
-		// TODO
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		for (Perception perception : perceptions) {
+			if (perception.getPosition().isSamePosition(actualPos)) {
+				return agent.hasFlag() && perception.hasEndPoint();
+			}
+		}
+
 		return false;
 	}
 
-	public void doAction0(Agent agent, int delta) {
-		// TODO
+	public void doAction0(Agent agent, int delta, List<Perception> perceptions) {
+		WireFlagGame.win(agent.getTeamId());
 	}
 
+	/* agent stop if has very low life */
 	public boolean reactivePerception1(Agent agent, List<Perception> perceptions) {
-		// TODO
-		return false;
+		return agent.hasVeryLowLife();
 	}
 
-	public void doAction1(Agent agent, int delta) {
-		// TODO
+	public void doAction1(Agent agent, int delta, List<Perception> perceptions) {
+		agent.stop();
 	}
 
+	/* agent stop if has extreme fatigue */
 	public boolean reactivePerception2(Agent agent, List<Perception> perceptions) {
-		// TODO
-		return false;
+		return agent.hasFatigue();
 	}
 
-	public void doAction2(Agent agent, int delta) {
-		// TODO
+	public void doAction2(Agent agent, int delta, List<Perception> perceptions) {
+		agent.stop();
 	}
 
+	/*
+	 * when an animal is in the ahead, left, right or behind position and the
+	 * agent has low or very low life it is devoured
+	 */
 	public boolean reactivePerception3(Agent agent, List<Perception> perceptions) {
-		// TODO
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		if (agent.hasLowLife()) {
+			for (Perception perception : perceptions) {
+				if (actualPos.isJustAhead(perception.getPosition())
+						|| actualPos.isJustBehind(perception.getPosition())
+						|| actualPos.isCloseOnLeft(perception.getPosition())
+						|| actualPos.isCloseOnRight(perception.getPosition())) {
+					return perception.hasAnimal();
+				}
+			}
+		}
+
 		return false;
 	}
 
-	public void doAction3(Agent agent, int delta) {
-		// TODO
+	public void doAction3(Agent agent, int delta, List<Perception> perceptions) {
+		MapPosition actualPos = agent.getPos().getMapPosition();
+		int killResult = 0;
+
+		for (Perception perception : perceptions) {
+			if (actualPos.isJustAhead(perception.getPosition())
+					|| actualPos.isJustBehind(perception.getPosition())
+					|| actualPos.isCloseOnLeft(perception.getPosition())
+					|| actualPos.isCloseOnRight(perception.getPosition())) {
+				killResult = MapController.getMap()
+						.getLandscape(perception.getPosition()).killAnimal();
+			}
+		}
+
+		agent.increaseLife(killResult);
 	}
 
+	/*
+	 * if an agent has low life and an animal is in it´s visibility then agent
+	 * approaches the animal position
+	 */
 	public boolean reactivePerception4(Agent agent, List<Perception> perceptions) {
-		// TODO
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		for (Perception perception : perceptions) {
+			if (actualPos.isAhead(perception.getPosition())
+					|| actualPos.isBehind(perception.getPosition())
+					|| actualPos.isLeft(perception.getPosition())
+					|| actualPos.isRight(perception.getPosition())) {
+				return perception.hasAnimal();
+			}
+		}
+
 		return false;
 	}
 
-	public void doAction4(Agent agent, int delta) {
-		// TODO
+	public void doAction4(Agent agent, int delta, List<Perception> perceptions) {
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		for (Perception perception : perceptions) {
+			if (actualPos.isJustAhead(perception.getPosition())
+					|| actualPos.isJustBehind(perception.getPosition())
+					|| actualPos.isCloseOnLeft(perception.getPosition())
+					|| actualPos.isCloseOnRight(perception.getPosition())) {
+				agent.approachTile(delta, perception.getPosition());
+				return;
+			}
+		}
 	}
 
 	public boolean reactivePerception5(Agent agent, List<Perception> perceptions) {
@@ -67,7 +129,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction5(Agent agent, int delta) {
+	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -76,7 +138,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction6(Agent agent, int delta) {
+	public void doAction6(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -85,7 +147,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction7(Agent agent, int delta) {
+	public void doAction7(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -94,7 +156,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction8(Agent agent, int delta) {
+	public void doAction8(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -103,7 +165,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction9(Agent agent, int delta) {
+	public void doAction9(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -113,7 +175,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction10(Agent agent, int delta) {
+	public void doAction10(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -123,7 +185,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction11(Agent agent, int delta) {
+	public void doAction11(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -133,7 +195,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction12(Agent agent, int delta) {
+	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -143,7 +205,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction13(Agent agent, int delta) {
+	public void doAction13(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -153,7 +215,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction14(Agent agent, int delta) {
+	public void doAction14(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -163,7 +225,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction15(Agent agent, int delta) {
+	public void doAction15(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -173,7 +235,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction16(Agent agent, int delta) {
+	public void doAction16(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -183,7 +245,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction17(Agent agent, int delta) {
+	public void doAction17(Agent agent, int delta, List<Perception> perceptions) {
 		// TODO
 	}
 
@@ -206,7 +268,7 @@ public class Reactive extends Architecture {
 	}
 
 	/* position ahead blocked */
-	public void doAction18(Agent agent, int delta) {
+	public void doAction18(Agent agent, int delta, List<Perception> perceptions) {
 		agent.moveDifferentDirection(delta);
 	}
 
@@ -217,7 +279,7 @@ public class Reactive extends Architecture {
 	}
 
 	/* true case */
-	public void doAction19(Agent agent, int delta) {
+	public void doAction19(Agent agent, int delta, List<Perception> perceptions) {
 		agent.moveSameDirection(delta);
 	}
 
@@ -239,8 +301,9 @@ public class Reactive extends Architecture {
 				if (result) {
 					this.getClass()
 							.getDeclaredMethod("doAction" + i, Agent.class,
-									int.class)
-							.invoke(this, new Object[] { agent, delta });
+									int.class, List.class)
+							.invoke(this,
+									new Object[] { agent, delta, perceptions });
 					return;
 				}
 			} catch (IllegalArgumentException e) {
@@ -261,5 +324,4 @@ public class Reactive extends Architecture {
 			}
 		}
 	}
-
 }

@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -20,6 +21,13 @@ public class WireFlagGame extends BasicGame {
 
 	public WireFlagGame() {
 		super("WireFlag");
+	}
+
+	public static void win(int teamId) {
+		// TODO
+		// Animation win = AnimationLoader.getLoader().getWin();
+		// win.draw(0, 0);
+		// app.pause
 	}
 
 	public static void main(String[] arguments) {
