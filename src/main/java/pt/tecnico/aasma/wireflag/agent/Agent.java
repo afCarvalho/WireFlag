@@ -5,18 +5,15 @@ import java.util.Random;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
-import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public abstract class Agent implements IGameElement {
 
@@ -44,6 +41,7 @@ public abstract class Agent implements IGameElement {
 	protected Animation right;
 	protected Animation left;
 	protected Animation sprite;
+	protected Animation ill;
 	private int play;
 
 	private int teamId;
@@ -53,6 +51,7 @@ public abstract class Agent implements IGameElement {
 	private int agentAttack;
 	private int fatigue;
 	private int life;
+	private boolean isIll;
 
 	private Architecture arquitecture;
 
@@ -66,6 +65,8 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.arquitecture = arquitecture;
 
+		ill = AnimationLoader.getLoader().getIll();
+		this.setIll(false);
 		play = 0;
 		agentPos = new WorldPosition(550f, 600f);
 
@@ -109,6 +110,14 @@ public abstract class Agent implements IGameElement {
 	/* returns true if the agent is alive */
 	public boolean isAlive() {
 		return life > 0;
+	}
+
+	public boolean isIll() {
+		return isIll;
+	}
+
+	public void setIll(boolean isIll) {
+		this.isIll = isIll;
 	}
 
 	public void randomMovement(int delta) {
@@ -231,43 +240,41 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
-		MapController.getMap().getLandscape(oldPos).setAgent(null);
-		sprite.update(delta);
-
 		agentPos.setY(agentPos.getY() + delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(newPos));
 
-		MapController.getMap().getLandscape(agentPos).setAgent(this);
+		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveUp(int delta, MapPosition newPos, MapPosition oldPos) {
-		MapController.getMap().getLandscape(oldPos).setAgent(null);
-		sprite.update(delta);
-
 		agentPos.setY(agentPos.getY() - delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(newPos));
 
-		MapController.getMap().getLandscape(agentPos).setAgent(this);
+		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveRight(int delta, MapPosition newPos, MapPosition oldPos) {
-		MapController.getMap().getLandscape(oldPos).setAgent(null);
-		sprite.update(delta);
-
 		agentPos.setX(agentPos.getX() + delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(newPos));
 
-		MapController.getMap().getLandscape(agentPos).setAgent(this);
+		changePosition(delta, oldPos, newPos);
 	}
 
 	public void moveLeft(int delta, MapPosition newPos, MapPosition oldPos) {
-		MapController.getMap().getLandscape(oldPos).setAgent(null);
-		sprite.update(delta);
-
 		agentPos.setX(agentPos.getX() - delta * agentSpeed
 				* MapController.getMap().getMovementSpeed(newPos));
 
+		changePosition(delta, oldPos, newPos);
+	}
+
+	public void changePosition(int delta, MapPosition oldPos, MapPosition newPos) {
+		sprite.update(delta);
+		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		MapController.getMap().getLandscape(agentPos).setAgent(this);
+
+		if (!oldPos.isSamePosition(agentPos.getMapPosition())) {
+			MapController.getMap().getLandscape(agentPos).takePenalty();
+		}
 	}
 
 	public void attack(Agent agent) {
@@ -307,5 +314,9 @@ public abstract class Agent implements IGameElement {
 
 		g.draw(circle);
 		g.fill(circle);
+
+		if (isIll()) {
+			ill.draw(agentPos.getX()+10, agentPos.getY()+40);
+		}
 	}
 }

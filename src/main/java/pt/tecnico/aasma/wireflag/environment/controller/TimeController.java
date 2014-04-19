@@ -4,28 +4,26 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-import pt.tecnico.aasma.wireflag.IGameElement;
-
 public class TimeController implements IController {
 
 	private static final TimeController INSTANCE = new TimeController();
 
 	/** The starting hour of the game */
-	private static final int INITIAL_HOUR = 7;
+	private final int INITIAL_HOUR = 7;
 
 	/** The days counter */
-	private static int days;
+	private int days;
 
 	/** The hours counter */
-	private static int hours;
+	private int hours;
 
 	/** The minutes counter */
-	private static int minutes;
+	private int minutes;
 
 	/** The seconds counter */
-	private static int seconds;
+	private int seconds;
 
-	public TimeController() {
+	private TimeController() {
 		days = 0;
 		hours = INITIAL_HOUR;
 		minutes = 0;

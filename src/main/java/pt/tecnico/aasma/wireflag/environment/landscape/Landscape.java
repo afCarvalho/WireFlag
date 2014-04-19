@@ -1,5 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.landscape;
 
+import java.util.Random;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -26,7 +28,7 @@ public abstract class Landscape implements IGameElement {
 
 	protected final static int VHIGHFATIGUE = 5;
 	protected final static int HIGHFATIGUE = 3;
-	protected final static int NORMALFATIGUE = 1;
+	protected final static int NORMALFATIGUE = 2;
 
 	protected MapPosition landscapePos;
 	protected float movementSpeed;
@@ -70,8 +72,6 @@ public abstract class Landscape implements IGameElement {
 
 	public void setAgent(Agent agent) {
 		this.agent = agent;
-		if (hasAgent())
-			agent.increaseFatigue(fatigue);
 	}
 
 	public void setFlag(Flag flag) {
@@ -110,6 +110,24 @@ public abstract class Landscape implements IGameElement {
 
 	public void setSunnyWeather() {
 		weather = new Sunny(0, landscapePos);
+	}
+
+	public void takePenalty() {
+		agent.increaseFatigue(fatigue);
+		if (hasFire()) {
+			agent.decreaseLife(20);
+		}
+		if (getWeather().isExtremeWeather()) {
+			agent.decreaseLife(getWeather().getLifeDamage());
+
+			if (new Random().nextInt(100) > 80) {
+				agent.setIll(true);
+			}
+		}
+		
+		if(agent.isIll()){
+			agent.decreaseLife(15);
+		}
 	}
 
 	public abstract boolean isInflammable();
