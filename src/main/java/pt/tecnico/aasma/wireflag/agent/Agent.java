@@ -64,7 +64,7 @@ public abstract class Agent implements IGameElement {
 	private boolean isIll;
 	private Flag flag;
 
-	private Architecture arquitecture;
+	private Architecture architecture;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture) {
@@ -75,7 +75,7 @@ public abstract class Agent implements IGameElement {
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
 		this.agentId = agentId;
-		this.arquitecture = arquitecture;
+		this.architecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
 		this.isIll = false;
@@ -216,7 +216,10 @@ public abstract class Agent implements IGameElement {
 
 	/* agent move to a different direction */
 	public void moveDifferentDirection(int delta) {
-		direction = random.nextInt(4);
+		int oldDirection = direction;
+		while (direction == oldDirection) {
+			direction = random.nextInt(4);
+		}
 		move(delta);
 	}
 
@@ -325,7 +328,7 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void update(int delta) {
-		arquitecture.makeAction(this, delta);
+		architecture.makeAction(this, delta);
 	}
 
 	@Override

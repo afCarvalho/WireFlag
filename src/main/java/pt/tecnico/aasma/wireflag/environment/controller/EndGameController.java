@@ -35,7 +35,6 @@ public class EndGameController implements IController {
 
 	public void increaseNAliveAgents() {
 		this.nAliveAgents++;
-		System.out.println(nAliveAgents);
 	}
 
 	public void decreaseNAliveAgents() {
@@ -60,7 +59,7 @@ public class EndGameController implements IController {
 		TimeController.getTime().setHours(0);
 
 		for (Team team : AgentController.getAgents().getTeams()) {
-			for (Agent agent : team.getAgents()) {
+			for (Agent agent : team.getMembers()) {
 				agent.setPos(new WorldPosition(x += 3 * tileWidth, y));
 				MapController.getMap().getLandscape(new WorldPosition(x, y))
 						.setVisibility(-1);
@@ -83,17 +82,17 @@ public class EndGameController implements IController {
 
 		for (Team team : AgentController.getAgents().getTeams()) {
 			g.setColor(new Color(1f, 1f, 1f, 1f));
-			if (team.getId() == winnerTeam) {
-				ttf.drawString(x, y, "Team " + team.getId() + " Won",
+			if (team.getID() == winnerTeam) {
+				ttf.drawString(x, y, "Team " + team.getID() + " Won",
 						Color.green);
 			} else {
-				ttf.drawString(x, y, "Team " + team.getId() + " Lost",
+				ttf.drawString(x, y, "Team " + team.getID() + " Lost",
 						Color.red);
 			}
 
 			y += 5 * MapController.getMap().getTileWidth();
 
-			for (Agent agent : team.getAgents()) {
+			for (Agent agent : team.getMembers()) {
 				agent.render(g);
 				WorldPosition agentPos = agent.getPos();
 				if (!agent.isAlive()) {

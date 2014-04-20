@@ -14,6 +14,7 @@ import pt.tecnico.aasma.wireflag.agent.type.Builder;
 import pt.tecnico.aasma.wireflag.agent.type.Doctor;
 import pt.tecnico.aasma.wireflag.agent.type.Patrol;
 import pt.tecnico.aasma.wireflag.agent.type.Soldier;
+import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 
 public class AgentController implements IController {
 
@@ -37,46 +38,52 @@ public class AgentController implements IController {
 		return teams;
 	}
 
-	public Team getTeam(int teamId) {
-		for (Team team : teams) {
-			if (team.getId() == teamId) {
-				return team;
-			}
-		}
-		return null;
-	}
-
 	public void addTeam(Team team) {
 		teams.add(team);
 	}
 
 	@Override
-	public void init() throws SlickException {
-		int teamSize = 5;
+	public void init() throws SlickException, InvalidTeamSizeException {
 
-		Team team1 = new DemocraticalTeam(getNextTeamId());
-		team1.init(teamSize);
-		Agent doctor1 = new Doctor(team1.getId(), 0, new Reactive());
-		Agent builder1 = new Builder(team1.getId(), 1, new Reactive());
-		Agent patrol1 = new Patrol(team1.getId(), 2, new Reactive());
-		Agent soldier1 = new Soldier(team1.getId(), 3, new Reactive());
-		team1.addAgent(builder1);
-		team1.addAgent(doctor1);
-		team1.addAgent(patrol1);
-		team1.addAgent(soldier1);
-		addTeam(team1);
+		Team t1 = new DemocraticalTeam(getNextTeamId());
+		Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive());
+		Agent b1 = new Builder(t1.getID(), t1.getMemberID(), new Reactive());
+		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive());
+		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(), new Reactive());
+		t1.addAgent(b1);
+		t1.addAgent(d1);
+		t1.addAgent(p1);
+		t1.addAgent(s1);
+		t1.setTeamUp();
+		addTeam(t1);
 
-		Team team2 = new DemocraticalTeam(getNextTeamId());
-		team2.init(teamSize);
-		Agent doctor2 = new Doctor(team2.getId(), 0, new Reactive());
-		Agent builder2 = new Builder(team2.getId(), 1, new Reactive());
-		Agent patrol2 = new Patrol(team2.getId(), 2, new Reactive());
-		Agent soldier2 = new Soldier(team2.getId(), 3, new Reactive());
-		team2.addAgent(builder2);
-		team2.addAgent(doctor2);
-		team2.addAgent(patrol2);
-		team2.addAgent(soldier2);
-		addTeam(team2);
+		Team t2 = new DemocraticalTeam(getNextTeamId());
+		Agent d2 = new Doctor(t2.getID(), t2.getMemberID(), new Reactive());
+		Agent b2 = new Builder(t2.getID(), t2.getMemberID(), new Reactive());
+		Agent p2 = new Patrol(t2.getID(), t2.getMemberID(), new Reactive());
+		Agent s2 = new Soldier(t2.getID(), t2.getMemberID(), new Reactive());
+		t2.addAgent(b2);
+		t2.addAgent(d2);
+		t2.addAgent(p2);
+		t2.addAgent(s2);
+		t2.setTeamUp();
+		addTeam(t2);
+
+		/*
+		 * Agent leader = agentController.getAgents().get(0); List<Agent>
+		 * members = agentController.getAgents().subList(1,
+		 * agentController.getAgents().size());
+		 * 
+		 * try { teamController.createDemocraticalTeam(leader, members); Team
+		 * team = teamController.getTeams().get(0);
+		 * 
+		 * MapController.getMap().getLandscape(team.getTeamPosition())
+		 * .setAgent(team.getLeader()); for (Agent agent : team.getMembers()) {
+		 * MapController.getMap().getLandscape(team.getTeamPosition())
+		 * .setAgent(agent); } } catch (InvalidTeamSizeException e1) {
+		 * e1.printStackTrace(); }
+		 */
+
 	}
 
 	public void update(int delta) {
