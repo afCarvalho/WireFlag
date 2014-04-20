@@ -8,11 +8,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import pt.tecnico.aasma.wireflag.IGameElement;
-import pt.tecnico.aasma.wireflag.WireFlagGame;
-import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
-import pt.tecnico.aasma.wireflag.agent.type.Builder;
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
@@ -22,8 +17,6 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
-import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
-import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -63,7 +56,7 @@ public class MapController implements IController {
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
 	private Landscape[][] tileMatrix;
-	private int nAliveAgents;
+
 
 	private MapController() {
 	}
@@ -93,15 +86,10 @@ public class MapController implements IController {
 	}
 
 	public void update(int delta) throws SlickException {
-
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 				tileMatrix[xAxis][yAxis].update(delta);
 			}
-		}
-
-		if (nAliveAgents == 0) {
-			WireFlagGame.win(-1);
 		}
 	}
 
@@ -118,11 +106,8 @@ public class MapController implements IController {
 	}
 
 	public boolean isBlocked(MapPosition p) {
-		return getMovementSpeed(p) == 0
-				|| getLandscape(p).hasAnimal()
-				|| getLandscape(p).hasAgent()
-				&& !getLandscape(p).getAgent().getPos().getMapPosition()
-						.isSamePosition(p);
+		Landscape land = getLandscape(p);
+		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}
 
 	public int getNHorizontalTiles() {
@@ -165,10 +150,6 @@ public class MapController implements IController {
 		int tileID = grassMap.getTileId(x, y, 0);
 		String value = grassMap.getTileProperty(tileID, "terrain", "plain");
 		return LandscapeType.getTileLandscape(value, new MapPosition(x, y));
-	}
-
-	public void increaseNAliveAgents(int nAliveAgents) {
-		this.nAliveAgents += nAliveAgents;
 	}
 
 	/* for each tile is created a perception */

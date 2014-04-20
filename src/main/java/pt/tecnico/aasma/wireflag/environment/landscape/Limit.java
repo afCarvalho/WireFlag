@@ -2,7 +2,6 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.environment.weather.Rainy;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 

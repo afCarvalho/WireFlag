@@ -2,12 +2,12 @@ package pt.tecnico.aasma.wireflag.agent.team;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
-import pt.tecnico.aasma.wireflag.agent.Agent;
 
 public abstract class Team {
 
@@ -59,7 +59,7 @@ public abstract class Team {
 				teamPosition.getY() * tileHeight));
 		agent.setTeamId(id);
 		MapController.getMap().getLandscape(teamPosition).setAgent(agent);
-		MapController.getMap().increaseNAliveAgents(1);
+		EndGameController.getEnd().increaseNAliveAgents();
 		increaseTeamPositionX();
 	}
 

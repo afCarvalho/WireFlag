@@ -6,13 +6,13 @@ import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 
 public class Soldier extends Agent {
 
-	public Soldier(int teamId, Architecture arquitecture) {
-		super(NORMALSPD, HIGHTATCK, teamId, arquitecture);
+	public Soldier(int teamId, int agentId, Architecture arquitecture) {
+		super(NORMALSPD, HIGHTATCK, teamId, agentId, arquitecture);
 		up = AnimationLoader.getLoader().getSoldierUp();
 		down = AnimationLoader.getLoader().getSoldierDown();
 		right = AnimationLoader.getLoader().getSoldierRight();
 		left = AnimationLoader.getLoader().getSoldierLeft();
-		
+
 		sprite = right;
 	}
 

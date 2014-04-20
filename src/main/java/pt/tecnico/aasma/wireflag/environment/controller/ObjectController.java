@@ -3,7 +3,6 @@ package pt.tecnico.aasma.wireflag.environment.controller;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;

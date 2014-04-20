@@ -34,8 +34,40 @@ public class TimeController implements IController {
 		return INSTANCE;
 	}
 
+	public int getDays() {
+		return days;
+	}
+
+	public int getHours() {
+		return hours;
+	}
+
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setDays(int days) {
+		this.days = days;
+	}
+
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}
+
 	public boolean isNight() {
-		return hours < 6 || (hours >= 18 && minutes > 0);
+		return hours < 6 || hours > 17;
 	}
 
 	@Override

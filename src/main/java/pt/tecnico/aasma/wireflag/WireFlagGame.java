@@ -1,6 +1,5 @@
 package pt.tecnico.aasma.wireflag;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -9,6 +8,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.ClimateController;
+import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.IController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.ObjectController;
@@ -24,8 +24,8 @@ public class WireFlagGame extends BasicGame {
 	}
 
 	public static void win(int teamId) {
-		elements = new IController[] { AgentController.getAgents() };
-		AgentController.getAgents().endGame(teamId);
+		elements = new IController[] { EndGameController.getEnd() };
+		EndGameController.getEnd().endGame(teamId);
 	}
 
 	public static void main(String[] arguments) {

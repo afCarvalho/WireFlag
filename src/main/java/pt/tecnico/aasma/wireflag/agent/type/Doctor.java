@@ -6,13 +6,13 @@ import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 
 public class Doctor extends Agent {
 
-	public Doctor(int teamId, Architecture arquitecture) {
-		super(NORMALSPD, LOWATCK, teamId, arquitecture);
+	public Doctor(int teamId, int agentId, Architecture arquitecture) {
+		super(NORMALSPD, LOWATCK, teamId, agentId, arquitecture);
 		up = AnimationLoader.getLoader().getDoctorUp();
 		down = AnimationLoader.getLoader().getDoctorDown();
 		right = AnimationLoader.getLoader().getDoctorRight();
 		left = AnimationLoader.getLoader().getDoctorLeft();
-		
+
 		sprite = right;
 	}
 

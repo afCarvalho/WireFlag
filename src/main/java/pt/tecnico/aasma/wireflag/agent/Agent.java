@@ -11,6 +11,7 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
+import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
@@ -37,15 +38,23 @@ public abstract class Agent implements IGameElement {
 	protected final static int HIGH_FATIGUE = 80;
 	protected final static int LOW_FATIGUE = 0;
 
+	/* direction */
+	public final static int UP = 0;
+	public final static int DOWN = 1;
+	public final static int RIGHT = 2;
+	public final static int LEFT = 3;
+
 	protected Animation up;
 	protected Animation down;
 	protected Animation right;
 	protected Animation left;
 	protected Animation sprite;
 	protected Animation ill;
-	private int play;
+	private int direction;
 
 	private int teamId;
+	private int agentId;
+
 	private WorldPosition agentPos;
 	private Random random;
 	private float agentSpeed;
@@ -57,7 +66,7 @@ public abstract class Agent implements IGameElement {
 
 	private Architecture arquitecture;
 
-	public Agent(float agentSpeed, int agentAttack, int teamId,
+	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture) {
 		random = new Random();
 		this.life = FULL_LIFE;
@@ -65,11 +74,12 @@ public abstract class Agent implements IGameElement {
 		this.agentSpeed = agentSpeed;
 		this.agentAttack = agentAttack;
 		this.teamId = teamId;
+		this.agentId = agentId;
 		this.arquitecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
 		this.isIll = false;
-		play = 0;
+		direction = UP;
 		// agentPos = new WorldPosition(550f, 600f);
 
 	}
@@ -92,10 +102,22 @@ public abstract class Agent implements IGameElement {
 		sprite = down;
 	}
 
+	public int getAgentId() {
+		return agentId;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setAgentId(int agentId) {
+		this.agentId = agentId;
+	}
+
 	/* decrement value in agent's life */
 	public void decreaseLife(int value) {
-		life -= value;
-		fatigue = Math.max((100 - life), fatigue);
+		life = Math.max(0, life - value);
+		// fatigue = Math.max((100 - life), fatigue);
 	}
 
 	public void increaseLife(int value) {
@@ -103,7 +125,7 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void decreaseFatigue(int value) {
-		fatigue = Math.max((100 - life), fatigue - value);
+		fatigue = Math.max(0, fatigue - value);
 	}
 
 	public void increaseFatigue(int value) {
@@ -166,61 +188,35 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
+	public boolean isBlocked(MapPosition p) {
+		Landscape land = MapController.getMap().getLandscape(p);
+		boolean posBlocked = MapController.getMap().isBlocked(p);
+
+		return posBlocked
+				&& (!land.hasAgent() || land.hasAgent()
+						&& land.getAgent().getAgentId() != getAgentId() || land
+						.getAgent().getTeamId() != getTeamId());
+	}
+
 	public void move(int delta) {
 
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
-
 		MapPosition oldPos = agentPos.getMapPosition();
-
-		/* to avoid the agent get out of the matrix */
-		delta = Math.min(delta, 20);
-
-		if (play == 0) {
-			sprite = up;
-			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() - 2 * delta).getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveUp(delta, nextPos, oldPos);
-			}
-		} else if (play == 1) {
-			sprite = down;
-			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() + 2 * delta).getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveDown(delta, nextPos, oldPos);
-			}
-		} else if (play == 2) {
-			sprite = left;
-			MapPosition nextPos = new WorldPosition(
-					agentPos.getX() - 2 * delta, agentPos.getY())
-					.getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveLeft(delta, nextPos, oldPos);
-			}
-		} else if (play == 3) {
-			sprite = right;
-			MapPosition nextPos = new WorldPosition(
-					agentPos.getX() + 2 * delta, agentPos.getY())
-					.getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveRight(delta, nextPos, oldPos);
-			}
+		if (direction == UP) {
+			moveUp(delta, oldPos);
+		} else if (direction == DOWN) {
+			moveDown(delta, oldPos);
+		} else if (direction == LEFT) {
+			moveLeft(delta, oldPos);
+		} else if (direction == RIGHT) {
+			moveRight(delta, oldPos);
 		}
 	}
 
 	/* agent move to a different direction */
 	public void moveDifferentDirection(int delta) {
-
-		int oldPlay = play;
-		while (oldPlay == play) {
-			play = random.nextInt(4);
-		}
-
+		direction = random.nextInt(4);
 		move(delta);
 	}
 
@@ -229,11 +225,9 @@ public abstract class Agent implements IGameElement {
 	 * don't walk just in a straight line
 	 */
 	public void moveSameDirection(int delta) {
-
 		if (random.nextInt(10000) > 9990) {
-			play = random.nextInt(4);
+			direction = random.nextInt(4);
 		}
-
 		move(delta);
 	}
 
@@ -242,77 +236,67 @@ public abstract class Agent implements IGameElement {
 
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
-
 		MapPosition oldPos = agentPos.getMapPosition();
-
 		/* if the agent is left to the position, moves to the right */
 		if (oldPos.isLeft(mapPos)) {
-			sprite = right;
-			MapPosition nextPos = new WorldPosition(
-					agentPos.getX() + 2 * delta, agentPos.getY())
-					.getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveRight(delta, nextPos, oldPos);
-				return;
-			}
-		}
-
+			moveRight(delta, oldPos);
+		} else
 		/* if the agent is right to the position, moves to the left */
 		if (oldPos.isRight(mapPos)) {
-			sprite = left;
-			MapPosition nextPos = new WorldPosition(
-					agentPos.getX() - 2 * delta, agentPos.getY())
-					.getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveLeft(delta, nextPos, oldPos);
-				return;
-			}
-		}
-
+			moveLeft(delta, oldPos);
+		} else
 		/* if the agent is ahead to the position, moves down */
 		if (oldPos.isAhead(mapPos)) {
-			sprite = down;
-			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() + 2 * delta).getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveDown(delta, nextPos, oldPos);
-				return;
-			}
-		}
-
+			moveDown(delta, oldPos);
+		} else
 		/* if the agent is behind to the position, moves up */
 		if (oldPos.isBehind(mapPos)) {
-			sprite = up;
-			MapPosition nextPos = new WorldPosition(agentPos.getX(),
-					agentPos.getY() - 2 * delta).getMapPosition();
-
-			if (!MapController.getMap().isBlocked(nextPos)) {
-				moveUp(delta, nextPos, oldPos);
-			}
+			moveUp(delta, oldPos);
 		}
 	}
 
-	public void moveDown(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setY(agentPos.getY() + delta * getAgentSpeed(newPos));
-		changePosition(delta, oldPos, newPos);
+	public void moveDown(int delta, MapPosition oldPos) {
+		sprite = down;
+		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
+				+ 2 * delta).getMapPosition();
+
+		if (!isBlocked(newPos)) {
+			agentPos.setY(agentPos.getY() + delta * getAgentSpeed(newPos));
+			changePosition(delta, oldPos, newPos);
+		}
 	}
 
-	public void moveUp(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setY(agentPos.getY() - delta * getAgentSpeed(newPos));
-		changePosition(delta, oldPos, newPos);
+	public void moveUp(int delta, MapPosition oldPos) {
+		sprite = up;
+		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
+				- 2 * delta).getMapPosition();
+
+		if (!isBlocked(newPos)) {
+			agentPos.setY(agentPos.getY() - delta * getAgentSpeed(newPos));
+			changePosition(delta, oldPos, newPos);
+		}
 	}
 
-	public void moveRight(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setX(agentPos.getX() + delta * getAgentSpeed(newPos));
-		changePosition(delta, oldPos, newPos);
+	public void moveRight(int delta, MapPosition oldPos) {
+		sprite = right;
+		MapPosition newPos = new WorldPosition(agentPos.getX() + 2 * delta,
+				agentPos.getY()).getMapPosition();
+
+		if (!isBlocked(newPos)) {
+			agentPos.setX(agentPos.getX() + delta * getAgentSpeed(newPos));
+			changePosition(delta, oldPos, newPos);
+		}
 	}
 
-	public void moveLeft(int delta, MapPosition newPos, MapPosition oldPos) {
-		agentPos.setX(agentPos.getX() - delta * getAgentSpeed(newPos));
-		changePosition(delta, oldPos, newPos);
+	public void moveLeft(int delta, MapPosition oldPos) {
+		sprite = left;
+		MapPosition newPos = new WorldPosition(agentPos.getX() - 2 * delta,
+				agentPos.getY()).getMapPosition();
+
+		if (!isBlocked(newPos)) {
+			agentPos.setX(agentPos.getX() - delta * getAgentSpeed(newPos));
+			changePosition(delta, oldPos, newPos);
+		}
 	}
 
 	public void changePosition(int delta, MapPosition oldPos, MapPosition newPos) {
@@ -329,10 +313,6 @@ public abstract class Agent implements IGameElement {
 		agent.decreaseLife(agentAttack);
 	}
 
-	public void update(int delta) {
-		arquitecture.makeAction(this, delta);
-	}
-
 	public int getVisibilityRange() {
 		int visibility = 2;
 		visibility += MapController.getMap().getLandscape(agentPos)
@@ -344,17 +324,20 @@ public abstract class Agent implements IGameElement {
 		return visibility;
 	}
 
+	public void update(int delta) {
+		arquitecture.makeAction(this, delta);
+	}
+
 	@Override
 	public void render(Graphics g) {
 		sprite.draw(agentPos.getX(), agentPos.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		g.drawString("hp:" + life, agentPos.getX() + 3, agentPos.getY() - 20);
-
-		g.setColor(new Color(1f, 1f, 1f, 1f));
-		g.drawString("fp:" + fatigue + "", agentPos.getX() + 3,
-				agentPos.getY() + 30);
-		g.drawString("T" + teamId, agentPos.getX() - 25, agentPos.getY() + 30);
+		g.drawString("fp:" + Math.max((100 - life), fatigue) + "",
+				agentPos.getX() + 3, agentPos.getY() + 30);
+		g.drawString("T" + getTeamId() + "A" + getAgentId(),
+				agentPos.getX() - 40, agentPos.getY() + 30);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));

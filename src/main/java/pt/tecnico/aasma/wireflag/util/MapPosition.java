@@ -1,5 +1,7 @@
 package pt.tecnico.aasma.wireflag.util;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
+
 /* Position dividing the map in tiles :41x23 */
 public class MapPosition {
 
@@ -27,8 +29,19 @@ public class MapPosition {
 		this.x = x;
 	}
 
-	public MapPosition getAhedPosition(MapPosition pos) {
-		return new MapPosition(pos.getX(), pos.y + 1);
+	public MapPosition getAhedPosition(int direction) {
+		if (direction == Agent.DOWN) {
+			return new MapPosition(getX(), getY() + 1);
+		} else if (direction == Agent.UP) {
+			return new MapPosition(getX(), getY() - 1);
+		} else if (direction == Agent.RIGHT) {
+			return new MapPosition(getX() + 1, getY());
+		} else if (direction == Agent.LEFT) {
+			return new MapPosition(getX() - 1, getY());
+		} else {
+			return new MapPosition(-1, -1);
+		}
+
 	}
 
 	/* returns true if position, pos, is the left position of this position */

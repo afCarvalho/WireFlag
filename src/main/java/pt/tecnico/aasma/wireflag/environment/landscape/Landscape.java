@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Fire;
@@ -154,7 +154,7 @@ public abstract class Landscape implements IGameElement {
 
 		if (hasAgent() && !agent.isAlive()) {
 			agent.dropFlag();
-			MapController.getMap().increaseNAliveAgents(-1);
+			EndGameController.getEnd().decreaseNAliveAgents();
 			setAgent(null);
 		}
 
@@ -198,5 +198,9 @@ public abstract class Landscape implements IGameElement {
 
 	public int getVisibility() {
 		return visibility;
+	}
+
+	public void setVisibility(int visibility) {
+		this.visibility = visibility;
 	}
 }

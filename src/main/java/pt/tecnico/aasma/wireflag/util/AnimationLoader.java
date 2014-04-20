@@ -4,8 +4,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
-
 public class AnimationLoader {
 
 	private static final AnimationLoader INSTANCE = new AnimationLoader();

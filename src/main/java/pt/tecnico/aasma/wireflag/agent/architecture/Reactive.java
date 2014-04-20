@@ -41,6 +41,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction1(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 1");
 		agent.stop();
 	}
 
@@ -50,6 +51,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction2(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 2");
 		agent.stop();
 	}
 
@@ -75,6 +77,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction3(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 3");
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		int killResult = 0;
 
@@ -111,6 +114,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction4(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 4");
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		for (Perception perception : perceptions) {
@@ -130,6 +134,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 5");
 		// TODO
 	}
 
@@ -139,6 +144,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction6(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 6");
 		// TODO
 	}
 
@@ -148,6 +154,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction7(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 7");
 		// TODO
 	}
 
@@ -157,6 +164,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction8(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 8");
 		// TODO
 	}
 
@@ -166,6 +174,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction9(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 9");
 		// TODO
 	}
 
@@ -176,6 +185,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction10(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 10");
 		// TODO
 	}
 
@@ -186,6 +196,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction11(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 11");
 		// TODO
 	}
 
@@ -196,6 +207,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 12");
 		// TODO
 	}
 
@@ -206,6 +218,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction13(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 13");
 		// TODO
 	}
 
@@ -216,6 +229,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction14(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 14");
 		// TODO
 	}
 
@@ -226,6 +240,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction15(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 15");
 		// TODO
 	}
 
@@ -236,6 +251,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction16(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 16");
 		// TODO
 	}
 
@@ -246,6 +262,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction17(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 17");
 		// TODO
 	}
 
@@ -257,8 +274,8 @@ public class Reactive extends Architecture {
 			List<Perception> perceptions) {
 
 		MapPosition actualPosition = agent.getPos().getMapPosition();
-		MapPosition aheadPosition = actualPosition
-				.getAhedPosition(actualPosition);
+		MapPosition aheadPosition = actualPosition.getAhedPosition(agent
+				.getDirection());
 
 		if (MapController.getMap().isBlocked(aheadPosition)) {
 			return true;
@@ -269,6 +286,7 @@ public class Reactive extends Architecture {
 
 	/* position ahead blocked */
 	public void doAction18(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 18");
 		agent.moveDifferentDirection(delta);
 	}
 
@@ -280,6 +298,7 @@ public class Reactive extends Architecture {
 
 	/* true case */
 	public void doAction19(Agent agent, int delta, List<Perception> perceptions) {
+		//System.out.println("action 19");
 		agent.moveSameDirection(delta);
 	}
 
