@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.environment;
+package pt.tecnico.aasma.wireflag.environment.perception;
 
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -7,6 +7,9 @@ public class Perception {
 	private MapPosition position;
 	private boolean flag;
 	private boolean enemy;
+	private boolean tiredAgent;
+	private boolean injuredAgent;
+	private int agentAttack;
 	private boolean endPoint;
 	private boolean animal;
 	private boolean night;
@@ -31,6 +34,10 @@ public class Perception {
 
 	public MapPosition getPosition() {
 		return position;
+	}
+
+	public int getAgentAttack() {
+		return agentAttack;
 	}
 
 	/***************
@@ -65,6 +72,18 @@ public class Perception {
 		this.extremeWeather = extremeWeather;
 	}
 
+	public void setTiredAgent(boolean tiredAgent) {
+		this.tiredAgent = tiredAgent;
+	}
+
+	public void setInjuredAgent(boolean injuredAgent) {
+		this.injuredAgent = injuredAgent;
+	}
+
+	public void setAgentAttack(int agentAttack) {
+		this.agentAttack = agentAttack;
+	}
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -95,5 +114,13 @@ public class Perception {
 
 	public boolean hasExtremeWeather() {
 		return extremeWeather;
+	}
+
+	public boolean hasTiredAgent() {
+		return tiredAgent;
+	}
+
+	public boolean hasInjuredAgent() {
+		return injuredAgent;
 	}
 }

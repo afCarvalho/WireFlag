@@ -136,14 +136,15 @@ public abstract class Team {
 	}
 
 	public boolean isValidTeamPosition() {
-
 		int x = teamPosition.getX();
 		int y = teamPosition.getY();
+		int nTiles = MapController.getMap().getNHorizontalTiles();
 		boolean res = true;
 
 		for (int i = 0; i < members.size(); i++) {
-			res = !MapController.getMap().isBlocked(new MapPosition(x + i, y))
-					&& res;
+			res = (x + i < nTiles)
+					&& !MapController.getMap().isBlocked(
+							new MapPosition(x + i, y)) && res;
 		}
 		return res;
 	}

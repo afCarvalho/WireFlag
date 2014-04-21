@@ -101,6 +101,10 @@ public abstract class Agent implements IGameElement {
 		return direction;
 	}
 
+	public int getAgentAttack() {
+		return agentAttack;
+	}
+
 	public float getAgentSpeed(MapPosition pos) {
 		return agentSpeed * (100 - fatigue) * 1.0f / 100
 				* MapController.getMap().getMovementSpeed(pos);
