@@ -2,10 +2,7 @@ package pt.tecnico.aasma.wireflag.agent;
 
 import java.util.List;
 
-import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
-import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
-import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Action {
@@ -15,9 +12,9 @@ public class Action {
 	private int intention;
 	private int action;
 
-	private static int MOVE_ACTION = 0;
-	private static int STOP_ACTION = 1;
-	private static int HABILITY_ACTION = 2;
+	public static int MOVE_ACTION = 0;
+	public static int STOP_ACTION = 1;
+	public static int HABILITY_ACTION = 2;
 
 	public Action(Action action, Perception p, int intention) {
 		this.ancestor = action;
@@ -27,6 +24,10 @@ public class Action {
 
 	public MapPosition getPos() {
 		return perception.getPosition();
+	}
+
+	public Perception getPerception() {
+		return perception;
 	}
 
 	public double getValue(InternalState state, Agent a) {
@@ -76,16 +77,16 @@ public class Action {
 		return landUtility + stopUtility + habilityUtility;
 	}
 
-	private int getAction() {
+	public int getAction() {
 		return action;
 	}
 
-	public void getActionsList(List<Integer> actions) {
+	public void getActionsList(List<Action> actions) {
 
 		if (actions.size() == 0) {
-			actions.add(action);
+			actions.add(this);
 		}
-		actions.add(ancestor.getAction());
+		actions.add(ancestor);
 	}
 
 	/*************************

@@ -22,10 +22,43 @@ public class Deliberative extends Architecture {
 
 	public void makeAction(Agent agent, int delta) {
 
-		// TODO em obras...
+		updateInternalState(agent);
+		List<Action> actions = plan(getIntentions(agent), agent.getPos()
+				.getMapPosition(), agent.getVisibilityRange(), agent);
 
-		// no ultimo caso true
-		agent.moveSameDirection(delta);
+		for (int i = 0; i < actions.size(); i++) {
+			if (actions.get(i).getAction() == Action.STOP_ACTION) {
+				agent.stop();
+			} else if (actions.get(i).getAction() == Action.HABILITY_ACTION) {
+
+			} else if (actions.get(i).getAction() == Action.MOVE_ACTION) {
+
+				if (actions.get(i).getPerception().hasFlag()) {
+					agent.catchFlag();
+				}
+
+				if (actions.get(i).getPerception().hasEndPoint()) {
+					agent.dropFlag();
+				}
+
+				if (actions.get(i + 1).getPerception().hasEnemy()) {
+					agent.attack(MapController.getMap()
+							.getLandscape(actions.get(i + 1).getPos())
+							.getAgent());
+				}
+
+				if (actions.get(i + 1).getPerception().hasAnimal()) {
+					agent.increaseLife(MapController.getMap()
+							.getLandscape(actions.get(i + 1).getPos())
+							.killAnimal());
+				}
+
+				agent.approachTile(delta, actions.get(i + 1).getPos());
+
+			}
+
+		}
+
 	}
 
 	public void updateInternalState(Agent agent) {
@@ -120,9 +153,9 @@ public class Deliberative extends Architecture {
 			}
 		}
 
-		ArrayList<Integer> acList = new ArrayList<Integer>();
+		ArrayList<Action> acList = new ArrayList<Action>();
 		bestAction.getActionsList(acList);
 
-		return null;
+		return acList;
 	}
 }
