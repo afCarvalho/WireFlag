@@ -181,6 +181,6 @@ public class MapPosition {
 
 	/* returns true if position, pos, is this position */
 	public boolean isSamePosition(MapPosition pos) {
-		return this.y - pos.getY() == 0 && this.x - pos.getX() == 0;
+		return this.y == pos.getY() && this.x == pos.getX();
 	}
 }

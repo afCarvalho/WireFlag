@@ -25,6 +25,7 @@ public class Reactive extends Architecture {
 				return perception;
 			}
 		}
+
 		return null;
 	}
 
@@ -594,6 +595,9 @@ public class Reactive extends Architecture {
 						.invoke(this, new Object[] { agent, perceptions });
 
 				if (result) {
+					if (i == 18) {
+						System.err.println("18 begin!!!!!!!!!");
+					}
 					// Debug begin
 					// System.out.println("perception true: " + i);
 					// Debug end
@@ -604,7 +608,10 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-					System.out.println("action done: " + i);
+					if (i == 18) {
+						System.err.println("18 end !!!!!!!!!!!!!!");
+					}
+					System.err.println("action done: " + i);
 					// Debug end
 					return;
 				}
