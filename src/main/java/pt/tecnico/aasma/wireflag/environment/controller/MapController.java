@@ -130,13 +130,7 @@ public class MapController implements IController {
 
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = getLandscape(p);
-		
-		//Debug begin
-		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
-		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
-		System.out.println("land.hasAgent(): " + land.hasAgent());
-		//Debug end
-		
+
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}
 
