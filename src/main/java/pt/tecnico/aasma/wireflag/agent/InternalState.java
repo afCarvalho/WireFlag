@@ -76,31 +76,36 @@ public class InternalState {
 		return endPos != null;
 	}
 
-	public boolean hasEnemyClose(Agent a) {
+	public int hasEnemyClose(Agent a) {
+		int result = 0;
 		for (Perception p : perceptions) {
 			if (p.hasEnemy() && !(p.getAgentAttack() > a.getAgentAttack())
 					|| (p.hasInjuredAgent() && !a.hasLowLife())) {
-				return true;
+				result++;
 			}
 		}
-		return false;
+		return result;
 	}
 
-	public boolean hasWeakTeamMember() {
+	public int hasWeakTeamMember() {
+		int result = 0;
+
 		for (Perception p : perceptions) {
 			if (!p.hasEnemy() && p.hasInjuredAgent()) {
-				return true;
+				result++;
 			}
 		}
-		return false;
+		return result;
 	}
 
-	public boolean hasTiredTeamMember() {
+	public int hasTiredTeamMember() {
+		int result = 0;
+
 		for (Perception p : perceptions) {
 			if (p.hasEnemy() && p.hasTiredAgent()) {
-				return true;
+				result++;
 			}
 		}
-		return false;
+		return result;
 	}
 }

@@ -16,4 +16,12 @@ public class Patrol extends Agent {
 		sprite = right;
 	}
 
+	@Override
+	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
+		if (flag) {
+			return 35;
+		} else {
+			return 0;
+		}
+	}
 }

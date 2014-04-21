@@ -105,6 +105,14 @@ public abstract class Agent implements IGameElement {
 		return agentAttack;
 	}
 
+	public int getLife() {
+		return life;
+	}
+
+	public int getFatigue() {
+		return fatigue;
+	}
+
 	public float getAgentSpeed(MapPosition pos) {
 		return agentSpeed * (100 - fatigue) * 1.0f / 100
 				* MapController.getMap().getMovementSpeed(pos);
@@ -181,6 +189,9 @@ public abstract class Agent implements IGameElement {
 		fatigue = Math.min(fatigue + value, 100);
 	}
 
+	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
+			boolean flag);
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -222,10 +233,6 @@ public abstract class Agent implements IGameElement {
 						&& land.getAgent().getAgentId() != getAgentId() || land
 						.getAgent().getTeamId() != getTeamId());
 	}
-
-	/*
-	 * public void setHasFlag(boolean hasFlag) { this.hasFlag = hasFlag; }
-	 */
 
 	/************************
 	 *** MOVEMENT RELATED ***
