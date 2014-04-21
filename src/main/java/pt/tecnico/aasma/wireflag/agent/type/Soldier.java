@@ -16,4 +16,8 @@ public class Soldier extends Agent {
 		sprite = right;
 	}
 
+	@Override
+	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
+		return 10 * nEnemy;
+	}
 }
