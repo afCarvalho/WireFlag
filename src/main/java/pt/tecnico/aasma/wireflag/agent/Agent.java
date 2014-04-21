@@ -224,6 +224,10 @@ public abstract class Agent implements IGameElement {
 		return flag != null;
 	}
 
+	/*
+	 * returns false if the position p is free or if the agent in that position
+	 * is this agent
+	 */
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = MapController.getMap().getLandscape(p);
 		boolean posBlocked = MapController.getMap().isBlocked(p);
@@ -281,21 +285,21 @@ public abstract class Agent implements IGameElement {
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
-		/* if the agent is left to the position, moves to the right */
+		/* if position is left to the agent's position, moves to the left */
 		if (oldPos.isLeft(mapPos, direction)) {
-			moveRight(delta, oldPos);
-		} else
-		/* if the agent is right to the position, moves to the left */
-		if (oldPos.isRight(mapPos, direction)) {
 			moveLeft(delta, oldPos);
 		} else
-		/* if the agent is ahead to the position, moves down */
-		if (oldPos.isAhead(mapPos, direction)) {
-			moveDown(delta, oldPos);
+		/* if position is right to the agent's position, moves to the right */
+		if (oldPos.isRight(mapPos, direction)) {
+			moveRight(delta, oldPos);
 		} else
-		/* if the agent is behind to the position, moves up */
-		if (oldPos.isBehind(mapPos, direction)) {
+		/* if position is ahead to the agent's position, moves up */
+		if (oldPos.isAhead(mapPos, direction)) {
 			moveUp(delta, oldPos);
+		} else
+		/* if position is behind to the agent's position, moves up */
+		if (oldPos.isBehind(mapPos, direction)) {
+			moveDown(delta, oldPos);
 		}
 	}
 
