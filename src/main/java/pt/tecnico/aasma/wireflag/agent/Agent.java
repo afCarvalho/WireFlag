@@ -233,8 +233,6 @@ public abstract class Agent implements IGameElement {
 
 	private void move(int delta) {
 
-		System.out.println("move...");
-		
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
@@ -265,9 +263,8 @@ public abstract class Agent implements IGameElement {
 	public void moveSameDirection(int delta) {
 		if (random.nextInt(10000) > 9990) {
 			direction = random.nextInt(4);
-			System.out.println("mudei direction!!!!!!!!!!!!!!!!!!!!!!!!!1");
 		}
-		System.out.println("moveSameDirection");
+
 		move(delta);
 	}
 
