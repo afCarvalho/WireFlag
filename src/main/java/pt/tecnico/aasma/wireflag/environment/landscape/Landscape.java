@@ -71,6 +71,11 @@ public abstract class Landscape implements IGameElement {
 		return visibility;
 	}
 
+	/* return the landscape's rating */
+	public double getRating() {
+		return 0.4 * movementSpeed + 0.4 * (5 - fatigue) + 0.2 * visibility;
+	}
+
 	/***************
 	 *** SETTERS ***
 	 ***************/

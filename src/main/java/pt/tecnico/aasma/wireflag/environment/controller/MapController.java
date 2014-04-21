@@ -89,7 +89,7 @@ public class MapController implements IController {
 	private Perception getTilePerception(int teamId, int id, MapPosition pos) {
 		Landscape land = getLandscape(pos);
 
-		Perception perception = new Perception(pos, id);
+		Perception perception = new Perception(pos, id, land.getRating());
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
 		perception.setEndPoint(land.hasEndPoint());
@@ -97,9 +97,12 @@ public class MapController implements IController {
 		perception.setNight(TimeController.getTime().isNight());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
-		perception.setAgentAttack(land.getAgent().getAgentAttack());
-		perception.setTiredAgent(land.getAgent().hasFatigue());
-		perception.setInjuredAgent(land.getAgent().hasLowLife());
+		if (land.hasAgent()) {
+			perception.setAgentAttack(land.getAgent().getAgentAttack());
+			perception.setTiredAgent(land.getAgent().hasFatigue());
+			perception.setInjuredAgent(land.getAgent().hasLowLife());
+		}
+
 		return perception;
 	}
 
@@ -133,12 +136,6 @@ public class MapController implements IController {
 
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = getLandscape(p);
-
-		// Debug begin
-		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
-		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
-		System.out.println("land.hasAgent(): " + land.hasAgent());
-		// Debug end
 
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}

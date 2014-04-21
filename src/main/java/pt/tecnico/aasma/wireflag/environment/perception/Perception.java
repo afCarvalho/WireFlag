@@ -6,6 +6,7 @@ public class Perception {
 
 	private int id;
 	private MapPosition position;
+	private double landRating;
 	private boolean flag;
 	private boolean enemy;
 	private boolean tiredAgent;
@@ -18,17 +19,24 @@ public class Perception {
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
 
-	public Perception(MapPosition position, int id) {
+	public Perception(MapPosition position, int id, double landRating) {
 		this.position = position;
 		this.id = id;
+		this.landRating = landRating;
 	}
 
 	/***************
 	 *** GETTERS ***
 	 ***************/
 
+	/* returns the position that the perception refers */
 	public MapPosition getPosition() {
 		return position;
+	}
+
+	/* returns the position's rating that the perception refers */
+	public double getLandRating() {
+		return landRating;
 	}
 
 	public int getAgentAttack() {
