@@ -44,6 +44,13 @@ public class MapPosition {
 
 	}
 
+	/* returns true if position, pos, is an adjacent position of this position */
+	public boolean isAdjacentPosition(MapPosition pos, int direction) {
+		return isJustAhead(pos, direction) || isJustBehind(pos, direction)
+				|| isCloseOnLeft(pos, direction)
+				|| isCloseOnRight(pos, direction);
+	}
+
 	/* returns true if position, pos, is the left position of this position */
 	public boolean isCloseOnLeft(MapPosition pos, int direction) {
 

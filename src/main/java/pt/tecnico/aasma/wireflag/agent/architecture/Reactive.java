@@ -18,14 +18,22 @@ public class Reactive extends Architecture {
 		// Nothing to do here
 	}
 
+	private Perception getPerceptionPos(MapPosition actualPos,
+			List<Perception> perceptions) {
+		for (Perception perception : perceptions) {
+			if (actualPos.isSamePosition(perception.getPosition())) {
+				return perception;
+			}
+		}
+		return null;
+	}
+
 	/* agent has the flag and is on the end point */
 	public boolean reactivePerception0(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (perception.getPosition().isSamePosition(actualPos)) {
-				return agent.hasFlag() && perception.hasEndPoint();
-			}
+		if (agent.hasFlag()) {
+			return getPerceptionPos(actualPos, perceptions).hasEndPoint();
 		}
 
 		return false;
@@ -62,18 +70,12 @@ public class Reactive extends Architecture {
 
 		/*
 		 * an agent with low life also has very low life, so is only necessary
-		 * verify one condition
+		 * verify one condition (has low life)
 		 */
 		if (agent.hasLowLife()) {
 			for (Perception perception : perceptions) {
-				if (actualPos.isJustAhead(perception.getPosition(),
-						agent.getDirection())
-						|| actualPos.isJustBehind(perception.getPosition(),
-								agent.getDirection())
-						|| actualPos.isCloseOnLeft(perception.getPosition(),
-								agent.getDirection())
-						|| actualPos.isCloseOnRight(perception.getPosition(),
-								agent.getDirection())) {
+				if (actualPos.isAdjacentPosition(perception.getPosition(),
+						agent.getDirection())) {
 					return perception.hasAnimal();
 				}
 			}
@@ -87,14 +89,9 @@ public class Reactive extends Architecture {
 		int killResult = 0;
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isJustAhead(perception.getPosition(),
-					agent.getDirection())
-					|| actualPos.isJustBehind(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isCloseOnLeft(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isCloseOnRight(perception.getPosition(),
-							agent.getDirection())) {
+			if (actualPos.isAdjacentPosition(perception.getPosition(),
+					agent.getDirection())) {
+
 				killResult = MapController.getMap()
 						.getLandscape(perception.getPosition()).killAnimal();
 				break;
@@ -113,14 +110,8 @@ public class Reactive extends Architecture {
 
 		if (agent.hasLowLife()) {
 			for (Perception perception : perceptions) {
-				if (actualPos.isAhead(perception.getPosition(),
-						agent.getDirection())
-						|| actualPos.isBehind(perception.getPosition(),
-								agent.getDirection())
-						|| actualPos.isLeft(perception.getPosition(),
-								agent.getDirection())
-						|| actualPos.isRight(perception.getPosition(),
-								agent.getDirection())) {
+				if (actualPos.isAdjacentPosition(perception.getPosition(),
+						agent.getDirection())) {
 					return perception.hasAnimal();
 				}
 			}
@@ -133,14 +124,9 @@ public class Reactive extends Architecture {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isJustAhead(perception.getPosition(),
-					agent.getDirection())
-					|| actualPos.isJustBehind(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isCloseOnLeft(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isCloseOnRight(perception.getPosition(),
-							agent.getDirection())) {
+			if (actualPos.isAdjacentPosition(perception.getPosition(),
+					agent.getDirection())) {
+
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
@@ -151,24 +137,14 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception5(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())) {
-				return perception.hasFlag();
-			}
-		}
-
-		return false;
+		return getPerceptionPos(actualPos, perceptions).hasFlag();
 	}
 
 	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasFlag()) {
-				agent.catchFlag();
-				return;
-			}
+		if (getPerceptionPos(actualPos, perceptions).hasFlag()) {
+			agent.catchFlag();
 		}
 	}
 
@@ -178,26 +154,15 @@ public class Reactive extends Architecture {
 	 */
 	public boolean reactivePerception6(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasFire()) {
-				for (Perception perception1 : perceptions) {
-					if (actualPos.isJustAhead(perception1.getPosition(),
-							agent.getDirection())
-							|| actualPos.isJustBehind(
-									perception1.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnLeft(
-									perception1.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnRight(
-									perception1.getPosition(),
-									agent.getDirection())) {
-						return !perception1.hasFire()
-								&& !MapController.getMap().isBlocked(
-										perception1.getPosition());
-					}
+		if (perceptionAgentPos.hasFire()) {
+			for (Perception perception : perceptions) {
+				if (actualPos.isAdjacentPosition(
+						perceptionAgentPos.getPosition(), agent.getDirection())) {
+					return !perception.hasFire()
+							&& !MapController.getMap().isBlocked(
+									perception.getPosition());
 				}
 			}
 		}
@@ -207,34 +172,31 @@ public class Reactive extends Architecture {
 
 	public void doAction6(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasFire()) {
-				for (Perception perception1 : perceptions) {
-					if (!perception1.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						if (actualPos.isJustAhead(perception1.getPosition(),
-								agent.getDirection())) {
-							agent.moveUp(delta, actualPos);
-						} else if (actualPos
-								.isJustBehind(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveDown(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnLeft(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveLeft(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnRight(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveRight(delta, actualPos);
-						}
+		if (perceptionAgentPos.hasFire()) {
+			for (Perception perception : perceptions) {
+				if (!perception.hasFire()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition())) {
+
+					if (actualPos.isJustAhead(perception.getPosition(),
+							agent.getDirection())) {
+						agent.moveUp(delta, actualPos);
+					} else if (actualPos.isJustBehind(perception.getPosition(),
+							agent.getDirection())) {
+						agent.moveDown(delta, actualPos);
+					} else if (actualPos.isCloseOnLeft(
+							perception.getPosition(), agent.getDirection())) {
+						agent.moveLeft(delta, actualPos);
+					} else if (actualPos.isCloseOnRight(
+							perception.getPosition(), agent.getDirection())) {
+						agent.moveRight(delta, actualPos);
 					}
 				}
 			}
 		}
+
 	}
 
 	/*
@@ -244,14 +206,11 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception7(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasFire()) {
-				for (Perception perception1 : perceptions) {
-					return !perception1.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition());
-				}
+		if (getPerceptionPos(actualPos, perceptions).hasFire()) {
+			for (Perception perception : perceptions) {
+				return !perception.hasFire()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition());
 			}
 		}
 
@@ -261,18 +220,16 @@ public class Reactive extends Architecture {
 	public void doAction7(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasFire()) {
-				for (Perception perception1 : perceptions) {
-					if (!perception1.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						agent.approachTile(delta, perception1.getPosition());
-					}
+		if (getPerceptionPos(actualPos, perceptions).hasFire()) {
+			for (Perception perception : perceptions) {
+				if (!perception.hasFire()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition())) {
+					agent.approachTile(delta, perception.getPosition());
 				}
 			}
 		}
+
 	}
 
 	/*
@@ -282,25 +239,13 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception8(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasExtremeWeather()) {
-				for (Perception perception1 : perceptions) {
-					if (actualPos.isJustAhead(perception1.getPosition(),
-							agent.getDirection())
-							|| actualPos.isJustBehind(
-									perception1.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnLeft(
-									perception1.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnRight(
-									perception1.getPosition(),
-									agent.getDirection())) {
-						return !perception1.hasExtremeWeather()
-								&& !MapController.getMap().isBlocked(
-										perception1.getPosition());
-					}
+		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
+			for (Perception perception : perceptions) {
+				if (actualPos.isAdjacentPosition(perception.getPosition(),
+						agent.getDirection())) {
+					return !perception.hasExtremeWeather()
+							&& !MapController.getMap().isBlocked(
+									perception.getPosition());
 				}
 			}
 		}
@@ -311,31 +256,27 @@ public class Reactive extends Architecture {
 	public void doAction8(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasExtremeWeather()) {
-				for (Perception perception1 : perceptions) {
-					if (!perception1.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						if (actualPos.isJustAhead(perception1.getPosition(),
-								agent.getDirection())) {
-							agent.moveUp(delta, actualPos);
-						} else if (actualPos
-								.isJustBehind(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveDown(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnLeft(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveLeft(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnRight(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveRight(delta, actualPos);
-						}
+		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
+			for (Perception perception : perceptions) {
+				if (!perception.hasExtremeWeather()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition())) {
+
+					if (actualPos.isJustAhead(perception.getPosition(),
+							agent.getDirection())) {
+						agent.moveUp(delta, actualPos);
+					} else if (actualPos.isJustBehind(perception.getPosition(),
+							agent.getDirection())) {
+						agent.moveDown(delta, actualPos);
+					} else if (actualPos.isCloseOnLeft(
+							perception.getPosition(), agent.getDirection())) {
+						agent.moveLeft(delta, actualPos);
+					} else if (actualPos.isCloseOnRight(
+							perception.getPosition(), agent.getDirection())) {
+						agent.moveRight(delta, actualPos);
 					}
 				}
+
 			}
 		}
 	}
@@ -347,14 +288,11 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception9(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasExtremeWeather()) {
-				for (Perception perception1 : perceptions) {
-					return !perception1.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition());
-				}
+		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
+			for (Perception perception : perceptions) {
+				return !perception.hasExtremeWeather()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition());
 			}
 		}
 
@@ -364,15 +302,12 @@ public class Reactive extends Architecture {
 	public void doAction9(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasExtremeWeather()) {
-				for (Perception perception1 : perceptions) {
-					if (!perception1.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						agent.approachTile(delta, perception1.getPosition());
-					}
+		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
+			for (Perception perception : perceptions) {
+				if (!perception.hasExtremeWeather()
+						&& !MapController.getMap().isBlocked(
+								perception.getPosition())) {
+					agent.approachTile(delta, perception.getPosition());
 				}
 			}
 		}
@@ -480,15 +415,8 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.hasEnemy()
-					&& (actualPos.isJustAhead(perception.getPosition(),
-							agent.getDirection())
-							|| actualPos.isJustBehind(perception.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnLeft(
-									perception.getPosition(),
-									agent.getDirection()) || actualPos
-								.isCloseOnRight(perception.getPosition(),
-										agent.getDirection()))) {
+					&& actualPos.isAdjacentPosition(perception.getPosition(),
+							agent.getDirection())) {
 				return true;
 			}
 		}
@@ -501,15 +429,9 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.hasEnemy()
-					&& (actualPos.isJustAhead(perception.getPosition(),
-							agent.getDirection())
-							|| actualPos.isJustBehind(perception.getPosition(),
-									agent.getDirection())
-							|| actualPos.isCloseOnLeft(
-									perception.getPosition(),
-									agent.getDirection()) || actualPos
-								.isCloseOnRight(perception.getPosition(),
-										agent.getDirection()))) {
+					&& actualPos.isAdjacentPosition(perception.getPosition(),
+							agent.getDirection())) {
+
 				MapPosition enemyPos = perception.getPosition();
 				Agent enemy = MapController.getMap().getLandscape(enemyPos)
 						.getAgent();
@@ -548,29 +470,15 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception16(Agent agent,
 			List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())) {
-				for (Perception perception1 : perceptions) {
-					if (perception1.getLandRating() > perception
-							.getLandRating()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())
-							&& (actualPos.isJustAhead(
-									perception1.getPosition(),
-									agent.getDirection())
-									|| actualPos.isJustBehind(
-											perception1.getPosition(),
-											agent.getDirection())
-									|| actualPos.isCloseOnLeft(
-											perception1.getPosition(),
-											agent.getDirection()) || actualPos
-										.isCloseOnRight(
-												perception1.getPosition(),
-												agent.getDirection()))) {
-						return true;
-					}
-				}
+			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
+					&& !MapController.getMap().isBlocked(
+							perception.getPosition())
+					&& actualPos.isAdjacentPosition(perception.getPosition(),
+							agent.getDirection())) {
+				return true;
 			}
 		}
 
@@ -579,35 +487,29 @@ public class Reactive extends Architecture {
 
 	public void doAction16(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())) {
+			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
+					&& !MapController.getMap().isBlocked(
+							perception.getPosition())) {
 
-				for (Perception perception1 : perceptions) {
-					if (perception1.getLandRating() > perception
-							.getLandRating()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						if (actualPos.isJustAhead(perception1.getPosition(),
-								agent.getDirection())) {
-							agent.moveUp(delta, actualPos);
-						} else if (actualPos
-								.isJustBehind(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveDown(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnLeft(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveLeft(delta, actualPos);
-						} else if (actualPos
-								.isCloseOnRight(perception1.getPosition(),
-										agent.getDirection())) {
-							agent.moveRight(delta, actualPos);
-						}
-					}
+				if (actualPos.isJustAhead(perception.getPosition(),
+						agent.getDirection())) {
+					agent.moveUp(delta, actualPos);
+				} else if (actualPos.isJustBehind(perception.getPosition(),
+						agent.getDirection())) {
+					agent.moveDown(delta, actualPos);
+				} else if (actualPos.isCloseOnLeft(perception.getPosition(),
+						agent.getDirection())) {
+					agent.moveLeft(delta, actualPos);
+				} else if (actualPos.isCloseOnRight(perception.getPosition(),
+						agent.getDirection())) {
+					agent.moveRight(delta, actualPos);
 				}
 			}
 		}
+
 	}
 
 	/*
@@ -617,16 +519,13 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception17(Agent agent,
 			List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())) {
-				for (Perception perception1 : perceptions) {
-					return perception1.getLandRating() > perception
-							.getLandRating()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition());
-				}
-			}
+			return perception.getLandRating() > perceptionAgentPos
+					.getLandRating()
+					&& !MapController.getMap().isBlocked(
+							perception.getPosition());
 		}
 
 		return false;
@@ -634,18 +533,13 @@ public class Reactive extends Architecture {
 
 	public void doAction17(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
+		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
 		for (Perception perception : perceptions) {
-			if (actualPos.isSamePosition(perception.getPosition())
-					&& perception.hasExtremeWeather()) {
-				for (Perception perception1 : perceptions) {
-					if (perception1.getLandRating() > perception
-							.getLandRating()
-							&& !MapController.getMap().isBlocked(
-									perception1.getPosition())) {
-						agent.approachTile(delta, perception1.getPosition());
-					}
-				}
+			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
+					&& !MapController.getMap().isBlocked(
+							perception.getPosition())) {
+				agent.approachTile(delta, perception.getPosition());
 			}
 		}
 	}
@@ -690,7 +584,7 @@ public class Reactive extends Architecture {
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
 			try {
 				// Debug begin
-				System.out.println("try perception: " + i);
+				// System.out.println("try perception: " + i);
 				// Debug end
 
 				Boolean result = (Boolean) this
@@ -701,7 +595,7 @@ public class Reactive extends Architecture {
 
 				if (result) {
 					// Debug begin
-					System.out.println("perception true: " + i);
+					// System.out.println("perception true: " + i);
 					// Debug end
 
 					this.getClass()
