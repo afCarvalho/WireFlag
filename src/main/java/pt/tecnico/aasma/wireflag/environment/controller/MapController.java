@@ -86,10 +86,10 @@ public class MapController implements IController {
 	}
 
 	/* for each tile is created a perception */
-	private Perception getTilePerception(int teamId, MapPosition pos) {
+	private Perception getTilePerception(int teamId, int id, MapPosition pos) {
 		Landscape land = getLandscape(pos);
 
-		Perception perception = new Perception(pos);
+		Perception perception = new Perception(pos, id);
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
 		perception.setEndPoint(land.hasEndPoint());
@@ -112,6 +112,7 @@ public class MapController implements IController {
 
 		int x = pos.getX();
 		int y = pos.getY();
+		int id = 0;
 
 		for (int j = y + visibility; j >= y - visibility && j > 0
 				&& j < getNVerticalTiles(); j--) {
@@ -119,7 +120,7 @@ public class MapController implements IController {
 			for (int i = x - visibility; i <= x + visibility && i > 0
 					&& i < getNHorizontalTiles(); i++) {
 
-				list.add(getTilePerception(teamId, new MapPosition(i, j)));
+				list.add(getTilePerception(teamId, id++, new MapPosition(i, j)));
 			}
 		}
 
@@ -132,6 +133,12 @@ public class MapController implements IController {
 
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = getLandscape(p);
+
+		// Debug begin
+		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
+		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
+		System.out.println("land.hasAgent(): " + land.hasAgent());
+		// Debug end
 
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}
