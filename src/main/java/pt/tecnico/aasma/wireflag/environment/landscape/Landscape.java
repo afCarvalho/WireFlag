@@ -95,8 +95,7 @@ public abstract class Landscape implements IGameElement {
 		this.animal = animal;
 	}
 
-	public abstract void setExtremeWeather(int duration) throws SlickException;	
-	public abstract boolean isInflammable();
+	public abstract void setExtremeWeather(int duration) throws SlickException;
 
 	public void setSunnyWeather() {
 		weather = new Sunny(0, landscapePos);
@@ -129,13 +128,19 @@ public abstract class Landscape implements IGameElement {
 	public boolean hasAnimal() {
 		return animal != null;
 	}
-	
+
+	public abstract boolean isInflammable();
+
 	/***********************
 	 *** STATE MODIFIERS ***
 	 ***********************/
 
 	public int killAnimal() {
-		return animal.kill();
+		if (hasAnimal()) {
+			return animal.kill();
+		} else {
+			return 0;
+		}
 	}
 
 	public void takePenalty() {

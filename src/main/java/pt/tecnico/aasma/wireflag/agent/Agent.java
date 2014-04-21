@@ -221,7 +221,7 @@ public abstract class Agent implements IGameElement {
 	 *** MOVEMENT RELATED ***
 	 ************************/
 
-	public void move(int delta) {
+	private void move(int delta) {
 
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
@@ -264,19 +264,19 @@ public abstract class Agent implements IGameElement {
 		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
 		/* if the agent is left to the position, moves to the right */
-		if (oldPos.isLeft(mapPos)) {
+		if (oldPos.isLeft(mapPos, direction)) {
 			moveRight(delta, oldPos);
 		} else
 		/* if the agent is right to the position, moves to the left */
-		if (oldPos.isRight(mapPos)) {
+		if (oldPos.isRight(mapPos, direction)) {
 			moveLeft(delta, oldPos);
 		} else
 		/* if the agent is ahead to the position, moves down */
-		if (oldPos.isAhead(mapPos)) {
+		if (oldPos.isAhead(mapPos, direction)) {
 			moveDown(delta, oldPos);
 		} else
 		/* if the agent is behind to the position, moves up */
-		if (oldPos.isBehind(mapPos)) {
+		if (oldPos.isBehind(mapPos, direction)) {
 			moveUp(delta, oldPos);
 		}
 	}
