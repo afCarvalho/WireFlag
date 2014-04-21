@@ -110,16 +110,18 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception4(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		for (Perception perception : perceptions) {
-			if (actualPos.isAhead(perception.getPosition(),
-					agent.getDirection())
-					|| actualPos.isBehind(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isLeft(perception.getPosition(),
-							agent.getDirection())
-					|| actualPos.isRight(perception.getPosition(),
-							agent.getDirection())) {
-				return perception.hasAnimal();
+		if (agent.hasLowLife()) {
+			for (Perception perception : perceptions) {
+				if (actualPos.isAhead(perception.getPosition(),
+						agent.getDirection())
+						|| actualPos.isBehind(perception.getPosition(),
+								agent.getDirection())
+						|| actualPos.isLeft(perception.getPosition(),
+								agent.getDirection())
+						|| actualPos.isRight(perception.getPosition(),
+								agent.getDirection())) {
+					return perception.hasAnimal();
+				}
 			}
 		}
 

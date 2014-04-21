@@ -52,9 +52,9 @@ public class MapPosition {
 		} else if (direction == Agent.UP) {
 			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
 		} else if (direction == Agent.RIGHT) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else if (direction == Agent.LEFT) {
 			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
+		} else if (direction == Agent.LEFT) {
+			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
 		} else {
 			return false;
 		}
@@ -68,9 +68,9 @@ public class MapPosition {
 		} else if (direction == Agent.UP) {
 			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
 		} else if (direction == Agent.RIGHT) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else if (direction == Agent.LEFT) {
 			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
+		} else if (direction == Agent.LEFT) {
+			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
 		} else {
 			return false;
 		}
@@ -80,9 +80,9 @@ public class MapPosition {
 	public boolean isJustAhead(MapPosition pos, int direction) {
 
 		if (direction == Agent.DOWN) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else if (direction == Agent.UP) {
 			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
+		} else if (direction == Agent.UP) {
+			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
 		} else if (direction == Agent.RIGHT) {
 			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
 		} else if (direction == Agent.LEFT) {
@@ -96,9 +96,9 @@ public class MapPosition {
 	public boolean isJustBehind(MapPosition pos, int direction) {
 
 		if (direction == Agent.DOWN) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else if (direction == Agent.UP) {
 			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
+		} else if (direction == Agent.UP) {
+			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
 		} else if (direction == Agent.RIGHT) {
 			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
 		} else if (direction == Agent.LEFT) {
@@ -116,9 +116,9 @@ public class MapPosition {
 		} else if (direction == Agent.UP) {
 			return this.x > pos.getX();
 		} else if (direction == Agent.RIGHT) {
-			return this.y < pos.getY();
-		} else if (direction == Agent.LEFT) {
 			return this.y > pos.getY();
+		} else if (direction == Agent.LEFT) {
+			return this.y < pos.getY();
 		} else {
 			return false;
 		}
@@ -132,9 +132,9 @@ public class MapPosition {
 		} else if (direction == Agent.UP) {
 			return this.x < pos.getX();
 		} else if (direction == Agent.RIGHT) {
-			return this.y > pos.getY();
-		} else if (direction == Agent.LEFT) {
 			return this.y < pos.getY();
+		} else if (direction == Agent.LEFT) {
+			return this.y > pos.getY();
 		} else {
 			return false;
 		}
@@ -144,9 +144,9 @@ public class MapPosition {
 	public boolean isAhead(MapPosition pos, int direction) {
 
 		if (direction == Agent.DOWN) {
-			return this.y > pos.getY();
-		} else if (direction == Agent.UP) {
 			return this.y < pos.getY();
+		} else if (direction == Agent.UP) {
+			return this.y > pos.getY();
 		} else if (direction == Agent.RIGHT) {
 			return this.x < pos.getX();
 		} else if (direction == Agent.LEFT) {
@@ -160,9 +160,9 @@ public class MapPosition {
 	public boolean isBehind(MapPosition pos, int direction) {
 
 		if (direction == Agent.DOWN) {
-			return this.y < pos.getY();
-		} else if (direction == Agent.UP) {
 			return this.y > pos.getY();
+		} else if (direction == Agent.UP) {
+			return this.y < pos.getY();
 		} else if (direction == Agent.RIGHT) {
 			return this.x > pos.getX();
 		} else if (direction == Agent.LEFT) {
