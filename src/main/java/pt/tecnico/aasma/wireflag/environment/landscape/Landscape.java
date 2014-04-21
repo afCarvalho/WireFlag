@@ -135,6 +135,15 @@ public abstract class Landscape implements IGameElement {
 	 *** STATE MODIFIERS ***
 	 ***********************/
 
+	/* removes the flag and returns it */
+	public Flag removeFlag() {
+		Flag temp = flag;
+
+		flag = null;
+
+		return temp;
+	}
+
 	public int killAnimal() {
 		if (hasAnimal()) {
 			return animal.kill();

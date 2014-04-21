@@ -43,18 +43,22 @@ public class MapController implements IController {
 		return getLandscape(p).getMovementSpeed();
 	}
 
+	/* return number of horizontal tiles */
 	public int getNHorizontalTiles() {
 		return grassMap.getWidth();
 	}
 
+	/* return number of vertical tiles */
 	public int getNVerticalTiles() {
 		return grassMap.getHeight();
 	}
 
+	/* return total height of the map */
 	public int getMapHeight() {
 		return grassMap.getHeight() * grassMap.getTileHeight();
 	}
 
+	/* return total width of the map */
 	public int getMapWidth() {
 		return grassMap.getWidth() * grassMap.getTileWidth();
 	}
@@ -82,7 +86,7 @@ public class MapController implements IController {
 	}
 
 	/* for each tile is created a perception */
-	public Perception getTilePerception(int teamId, MapPosition pos) {
+	private Perception getTilePerception(int teamId, MapPosition pos) {
 		Landscape land = getLandscape(pos);
 
 		Perception perception = new Perception(pos);
@@ -128,6 +132,13 @@ public class MapController implements IController {
 
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = getLandscape(p);
+		
+		//Debug begin
+		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
+		System.out.println("getMovementSpeed(p) == 0: " + getMovementSpeed(p));
+		System.out.println("land.hasAgent(): " + land.hasAgent());
+		//Debug end
+		
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}
 
