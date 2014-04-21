@@ -9,11 +9,13 @@ public class Sunny extends Weather {
 	}
 
 	@Override
-	public void draw(int x, int y) {
-	}
-
-	@Override
 	public int getLifeDamage() {
 		return NOLIFEDMG;
 	}
+
+	@Override
+	public void draw(int x, int y) {
+
+	}
+
 }

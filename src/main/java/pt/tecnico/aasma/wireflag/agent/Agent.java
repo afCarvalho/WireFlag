@@ -78,28 +78,19 @@ public abstract class Agent implements IGameElement {
 		this.architecture = arquitecture;
 
 		ill = AnimationLoader.getLoader().getIll();
-		this.isIll = false;
 		direction = UP;
-		// agentPos = new WorldPosition(550f, 600f);
-
 	}
 
-	/* returns the agent's team id */
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	public int getTeamId() {
 		return teamId;
 	}
 
-	public void setTeamId(int id) {
-		this.teamId = id;
-	}
-
 	public WorldPosition getPos() {
 		return agentPos;
-	}
-
-	public void setPos(WorldPosition pos) {
-		agentPos = pos;
-		sprite = down;
 	}
 
 	public int getAgentId() {
@@ -110,14 +101,62 @@ public abstract class Agent implements IGameElement {
 		return direction;
 	}
 
-	public void setAgentId(int agentId) {
-		this.agentId = agentId;
+	public float getAgentSpeed(MapPosition pos) {
+		return agentSpeed * (100 - fatigue) * 1.0f / 100
+				* MapController.getMap().getMovementSpeed(pos);
 	}
 
-	/* decrement value in agent's life */
+	public int getVisibilityRange() {
+		int visibility = 2;
+		visibility += MapController.getMap().getLandscape(agentPos)
+				.getVisibility();
+
+		if (TimeController.getTime().isNight())
+			visibility--;
+
+		return visibility;
+	}
+
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
+	public void setTeamId(int id) {
+		this.teamId = id;
+	}
+
+	public void setPos(WorldPosition pos) {
+		agentPos = pos;
+		sprite = down;
+	}
+
+	public void setIll(boolean isIll) {
+		this.isIll = isIll;
+	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
+
+	public void stop() {
+		increaseLife(1);
+		fatigue = Math.min(100, fatigue - 5);
+		fatigue = Math.max(fatigue, 0);
+	}
+
+	public void dropFlag() {
+		if (hasFlag()) {
+			MapController.getMap().getLandscape(agentPos).setFlag(flag);
+			flag = null;
+		}
+	}
+
+	public void attack(Agent agent) {
+		agent.decreaseLife(agentAttack);
+	}
+
 	public void decreaseLife(int value) {
 		life = Math.max(0, life - value);
-		// fatigue = Math.max((100 - life), fatigue);
 	}
 
 	public void increaseLife(int value) {
@@ -131,6 +170,10 @@ public abstract class Agent implements IGameElement {
 	public void increaseFatigue(int value) {
 		fatigue = Math.min(fatigue + value, 100);
 	}
+
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
 
 	public boolean hasLowLife() {
 		return life <= LOW_LIFE;
@@ -148,7 +191,6 @@ public abstract class Agent implements IGameElement {
 		return this.teamId != teamId;
 	}
 
-	/* returns true if the agent is alive */
 	public boolean isAlive() {
 		return life > 0;
 	}
@@ -157,35 +199,8 @@ public abstract class Agent implements IGameElement {
 		return isIll;
 	}
 
-	public void setIll(boolean isIll) {
-		this.isIll = isIll;
-	}
-
 	public boolean hasFlag() {
 		return flag != null;
-	}
-
-	/*
-	 * public void setHasFlag(boolean hasFlag) { this.hasFlag = hasFlag; }
-	 */
-
-	/* when agent stops */
-	public void stop() {
-		increaseLife(1);
-		fatigue = Math.min(100, fatigue - 5);
-		fatigue = Math.max(fatigue, 0);
-	}
-
-	public float getAgentSpeed(MapPosition pos) {
-		return agentSpeed * (100 - fatigue) * 1.0f / 100
-				* MapController.getMap().getMovementSpeed(pos);
-	}
-
-	public void dropFlag() {
-		if (hasFlag()) {
-			MapController.getMap().getLandscape(agentPos).setFlag(flag);
-			flag = null;
-		}
 	}
 
 	public boolean isBlocked(MapPosition p) {
@@ -197,6 +212,14 @@ public abstract class Agent implements IGameElement {
 						&& land.getAgent().getAgentId() != getAgentId() || land
 						.getAgent().getTeamId() != getTeamId());
 	}
+
+	/*
+	 * public void setHasFlag(boolean hasFlag) { this.hasFlag = hasFlag; }
+	 */
+
+	/************************
+	 *** MOVEMENT RELATED ***
+	 ************************/
 
 	public void move(int delta) {
 
@@ -312,20 +335,9 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(Agent agent) {
-		agent.decreaseLife(agentAttack);
-	}
-
-	public int getVisibilityRange() {
-		int visibility = 2;
-		visibility += MapController.getMap().getLandscape(agentPos)
-				.getVisibility();
-
-		if (TimeController.getTime().isNight())
-			visibility--;
-
-		return visibility;
-	}
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);

@@ -25,9 +25,22 @@ public abstract class Weather implements IGameElement {
 		this.extremeWeather = extremeWeather;
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+	public abstract int getLifeDamage();
+
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	public boolean isExtremeWeather() {
 		return duration > 0;
 	}
+
+	/********************
+	 *** GAME RELATED ***
+	 ********************/
 
 	@Override
 	public void update(int delta) {
@@ -55,6 +68,4 @@ public abstract class Weather implements IGameElement {
 	public void draw(int x, int y) {
 		extremeWeather.draw(x, y);
 	}
-
-	public abstract int getLifeDamage();
 }

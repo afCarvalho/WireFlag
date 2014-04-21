@@ -21,34 +21,10 @@ public class ClimateController implements IController {
 		random = new Random();
 		activeFire = false;
 	}
-
-	@Override
-	public void init() throws SlickException {
-	}
-
-	public void update(int delta) throws SlickException {
-
-		if (random.nextInt(10) < 8) {
-			pressure += delta;
-		} else {
-			pressure -= delta;
-		}
-
-		if (random.nextInt(10) < 8) {
-			dryness += delta;
-		} else {
-			dryness -= delta;
-		}
-
-		if (pressure > 10000) {
-			createClimateEvent();
-			pressure = 0;
-		}
-
-		if (dryness % 100 == 0) {
-			createFire();
-		}
-	}
+	
+	/**********************
+	 *** EVENT CREATORS ***
+	 **********************/
 
 	public void createClimateEvent() throws SlickException {
 
@@ -96,6 +72,10 @@ public class ClimateController implements IController {
 		}
 
 	}
+	
+	/**********************
+	 *** EVENT UPDATERS ***
+	 **********************/
 
 	public void updateFire() throws SlickException {
 		activeFire = MapController.getMap().getLandscape(firePos)
@@ -103,13 +83,41 @@ public class ClimateController implements IController {
 				&& !MapController.getMap().getLandscape(firePos).hasFire();
 
 		if (activeFire) {
-			setFire();
+			Fire fire = new Fire(fireDuration, firePos);
+			MapController.getMap().getLandscape(firePos).setFire(fire);
 		}
 	}
 
-	public void setFire() throws SlickException {
-		Fire fire = new Fire(fireDuration, firePos);
-		MapController.getMap().getLandscape(firePos).setOnFire(fire);
+	/********************
+	 *** GAME RELATED ***
+	 ********************/
+
+	@Override
+	public void init() throws SlickException {
+	}
+
+	public void update(int delta) throws SlickException {
+
+		if (random.nextInt(10) < 8) {
+			pressure += delta;
+		} else {
+			pressure -= delta;
+		}
+
+		if (random.nextInt(10) < 8) {
+			dryness += delta;
+		} else {
+			dryness -= delta;
+		}
+
+		if (pressure > 10000) {
+			createClimateEvent();
+			pressure = 0;
+		}
+
+		if (dryness % 100 == 0) {
+			createFire();
+		}
 	}
 
 	@Override

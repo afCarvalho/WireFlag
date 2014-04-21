@@ -10,87 +10,25 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import pt.tecnico.aasma.wireflag.environment.Perception;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.DesertFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.ForestFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.LandscapeFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.LimitFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
-import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
-import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
+import pt.tecnico.aasma.wireflag.environment.landscape.LandscapeType;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public class MapController implements IController {
 
-	public enum LandscapeType {
-		DESERT("desert", new DesertFactory()), FOREST("trees",
-				new ForestFactory()), HOLE("hole", new LimitFactory()), MOUNTAIN(
-				"mountain", new MountainFactory()), WATER("water",
-				new WaterFactory()), LIMIT("limit", new LimitFactory()), PLAIN(
-				"plain", new PlainFactory());
-
-		private String name;
-		private LandscapeFactory factory;
-
-		LandscapeType(String name, LandscapeFactory factory) {
-			this.name = name;
-			this.factory = factory;
-		}
-
-		public Landscape createLandscape(MapPosition pos) {
-			return factory.createLandscape(pos);
-		}
-
-		public static Landscape getTileLandscape(String landscapeName,
-				MapPosition pos) throws SlickException {
-
-			for (LandscapeType land : LandscapeType.values()) {
-				if (land.name.equals(landscapeName))
-					return land.createLandscape(pos);
-			}
-			throw new LandscapeNotFoundException(landscapeName);
-		}
-	}
-
 	private static final MapController INSTANCE = new MapController();
 	private TiledMap grassMap;
 	private Landscape[][] tileMatrix;
 
-
 	private MapController() {
 	}
 
-	@Override
-	public void init() throws SlickException {
+	/***************
+	 *** GETTERS ***
+	 ***************/
 
-		grassMap = new TiledMap(System.getProperty("map") + "grassmap.tmx");
-		tileMatrix = new Landscape[grassMap.getWidth()][grassMap.getHeight()];
-
-		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
-			}
-		}
-	}
-
-	@Override
-	public void render(Graphics g) {
-		grassMap.render(0, 0);
-
-		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				tileMatrix[xAxis][yAxis].render(g);
-			}
-		}
-	}
-
-	public void update(int delta) throws SlickException {
-		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				tileMatrix[xAxis][yAxis].update(delta);
-			}
-		}
+	public static MapController getMap() {
+		return INSTANCE;
 	}
 
 	public Landscape getLandscape(MapPosition p) {
@@ -103,11 +41,6 @@ public class MapController implements IController {
 
 	public float getMovementSpeed(MapPosition p) {
 		return getLandscape(p).getMovementSpeed();
-	}
-
-	public boolean isBlocked(MapPosition p) {
-		Landscape land = getLandscape(p);
-		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
 	}
 
 	public int getNHorizontalTiles() {
@@ -142,10 +75,6 @@ public class MapController implements IController {
 		return new MapPosition(x, y);
 	}
 
-	public static MapController getMap() {
-		return INSTANCE;
-	}
-
 	private Landscape getLandscapeType(int x, int y) throws SlickException {
 		int tileID = grassMap.getTileId(x, y, 0);
 		String value = grassMap.getTileProperty(tileID, "terrain", "plain");
@@ -154,40 +83,16 @@ public class MapController implements IController {
 
 	/* for each tile is created a perception */
 	public Perception getTilePerception(int teamId, MapPosition pos) {
-		Landscape landscape = getLandscape(pos);
+		Landscape land = getLandscape(pos);
 
 		Perception perception = new Perception(pos);
-
-		if (landscape.hasFlag()) {
-			perception.setFlag(true);
-		}
-
-		if (landscape.hasAgent()) {
-			if (landscape.getAgent().isEnemy(teamId)) {
-				perception.setEnemy(true);
-			}
-		}
-
-		if (landscape.hasEndPoint()) {
-			perception.setEndPoint(true);
-		}
-
-		if (landscape.hasAnimal()) {
-			perception.setAnimal(true);
-		}
-
-		if (TimeController.getTime().isNight()) {
-			perception.setNight(true);
-		}
-
-		if (landscape.hasFire()) {
-			perception.setFire(true);
-
-		}
-
-		if (landscape.getWeather().isExtremeWeather()) {
-			perception.setExtremeWeather(true);
-		}
+		perception.setFlag(land.hasFlag());
+		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
+		perception.setEndPoint(land.hasEndPoint());
+		perception.setAnimal(land.hasAnimal());
+		perception.setNight(TimeController.getTime().isNight());
+		perception.setFire(land.hasFire());
+		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
 
 		return perception;
 	}
@@ -214,4 +119,50 @@ public class MapController implements IController {
 
 		return list;
 	}
+
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
+	public boolean isBlocked(MapPosition p) {
+		Landscape land = getLandscape(p);
+		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent();
+	}
+
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
+
+	@Override
+	public void init() throws SlickException {
+
+		grassMap = new TiledMap(System.getProperty("map") + "grassmap.tmx");
+		tileMatrix = new Landscape[grassMap.getWidth()][grassMap.getHeight()];
+
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				tileMatrix[xAxis][yAxis] = getLandscapeType(xAxis, yAxis);
+			}
+		}
+	}
+
+	@Override
+	public void render(Graphics g) {
+		grassMap.render(0, 0);
+
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				tileMatrix[xAxis][yAxis].render(g);
+			}
+		}
+	}
+
+	public void update(int delta) throws SlickException {
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				tileMatrix[xAxis][yAxis].update(delta);
+			}
+		}
+	}
+
 }

@@ -16,6 +16,10 @@ public class ObjectController implements IController {
 		animals = new Animal[10];
 	}
 
+	/********************
+	 *** GAME RELATED ***
+	 ********************/
+
 	@Override
 	public void init() throws SlickException {
 

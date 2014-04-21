@@ -26,6 +26,10 @@ public class AgentController implements IController {
 		actualTeamId = 0;
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	public static AgentController getAgents() {
 		return INSTANCE;
 	}
@@ -38,9 +42,17 @@ public class AgentController implements IController {
 		return teams;
 	}
 
+	/***********************
+	 *** STATE MODIFIERS ***
+	 **********************/
+
 	public void addTeam(Team team) {
 		teams.add(team);
 	}
+
+	/**********************
+	 *** GAME RELATED *****
+	 **********************/
 
 	@Override
 	public void init() throws SlickException, InvalidTeamSizeException {

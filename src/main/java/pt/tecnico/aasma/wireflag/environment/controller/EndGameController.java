@@ -26,12 +26,20 @@ public class EndGameController implements IController {
 	private int endMinutes;
 	private int endSeconds;
 
+	private EndGameController() {
+	}
+
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	public static EndGameController getEnd() {
 		return INSTANCE;
 	}
 
-	private EndGameController() {
-	}
+	/**********************
+	 *** STATE MODIFIERS **
+	 **********************/
 
 	public void increaseNAliveAgents() {
 		this.nAliveAgents++;
@@ -68,6 +76,10 @@ public class EndGameController implements IController {
 			x = 15 * tileWidth;
 		}
 	}
+
+	/**********************
+	 *** GAME RELATED *****
+	 **********************/
 
 	@Override
 	public void render(Graphics g) {

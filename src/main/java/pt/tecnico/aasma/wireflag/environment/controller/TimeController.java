@@ -30,6 +30,10 @@ public class TimeController implements IController {
 		seconds = 0;
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	public static TimeController getTime() {
 		return INSTANCE;
 	}
@@ -50,6 +54,10 @@ public class TimeController implements IController {
 		return seconds;
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	public void setDays(int days) {
 		this.days = days;
 	}
@@ -66,9 +74,17 @@ public class TimeController implements IController {
 		this.seconds = seconds;
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	public boolean isNight() {
 		return hours < 6 || hours > 17;
 	}
+
+	/********************
+	 *** GAME RELATED ***
+	 ********************/
 
 	@Override
 	public void init() {

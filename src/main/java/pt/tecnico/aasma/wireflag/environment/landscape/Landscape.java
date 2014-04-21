@@ -51,6 +51,65 @@ public abstract class Landscape implements IGameElement {
 		this.fatigue = fatigue;
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
+	public float getMovementSpeed() {
+		return movementSpeed;
+	}
+
+	public Weather getWeather() {
+		return weather;
+	}
+
+	public Agent getAgent() {
+		return agent;
+	}
+
+	public int getVisibility() {
+		return visibility;
+	}
+
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
+	public void setAgent(Agent agent) {
+		this.agent = agent;
+	}
+
+	public void setFlag(Flag flag) {
+		this.flag = flag;
+	}
+
+	public void setEndPoint(EndPoint endPoint) {
+		this.endPoint = endPoint;
+	}
+
+	public void setFire(Fire fire) {
+		this.fire = fire;
+	}
+
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+
+	public abstract void setExtremeWeather(int duration) throws SlickException;	
+	public abstract boolean isInflammable();
+
+	public void setSunnyWeather() {
+		weather = new Sunny(0, landscapePos);
+	}
+
+	public void setVisibility(int visibility) {
+		this.visibility = visibility;
+	}
+
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	public boolean hasAgent() {
 		return agent != null;
 	}
@@ -70,47 +129,13 @@ public abstract class Landscape implements IGameElement {
 	public boolean hasAnimal() {
 		return animal != null;
 	}
-
-	public void setAgent(Agent agent) {
-		this.agent = agent;
-	}
-
-	public void setFlag(Flag flag) {
-		this.flag = flag;
-	}
-
-	public void setEndPoint(EndPoint endPoint) {
-		this.endPoint = endPoint;
-	}
-
-	public void setOnFire(Fire fire) {
-		this.fire = fire;
-	}
-
-	public void setAnimal(Animal animal) {
-		this.animal = animal;
-	}
+	
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	public int killAnimal() {
 		return animal.kill();
-	}
-
-	public float getMovementSpeed() {
-		return movementSpeed;
-	}
-
-	public Weather getWeather() {
-		return weather;
-	}
-
-	public abstract void setExtremeWeather(int duration) throws SlickException;
-
-	public Agent getAgent() {
-		return agent;
-	}
-
-	public void setSunnyWeather() {
-		weather = new Sunny(0, landscapePos);
 	}
 
 	public void takePenalty() {
@@ -131,7 +156,9 @@ public abstract class Landscape implements IGameElement {
 		}
 	}
 
-	public abstract boolean isInflammable();
+	/********************
+	 *** GAME RELATED ***
+	 ********************/
 
 	@Override
 	public void update(int delta) throws SlickException {
@@ -194,13 +221,5 @@ public abstract class Landscape implements IGameElement {
 		if (hasAgent()) {
 			agent.render(g);
 		}
-	}
-
-	public int getVisibility() {
-		return visibility;
-	}
-
-	public void setVisibility(int visibility) {
-		this.visibility = visibility;
 	}
 }
