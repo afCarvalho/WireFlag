@@ -376,6 +376,11 @@ public abstract class Agent implements IGameElement {
 		g.drawString("T" + getTeamId() + "A" + getAgentId(),
 				agentPos.getX() - 40, agentPos.getY() + 30);
 
+		if (hasFlag()) {
+			AnimationLoader.getLoader().getFlag()
+					.draw(agentPos.getX() + 10, agentPos.getY());
+		}
+
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
 		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,

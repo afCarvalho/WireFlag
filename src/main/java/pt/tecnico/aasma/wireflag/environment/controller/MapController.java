@@ -117,13 +117,14 @@ public class MapController implements IController {
 		int y = pos.getY();
 		int id = 0;
 
-		for (int j = y + visibility; j >= y - visibility && j > 0
-				&& j < getNVerticalTiles(); j--) {
+		for (int j = y + visibility; j >= y - visibility; j--) {
+			for (int i = x - visibility; i <= x + visibility; i++) {
 
-			for (int i = x - visibility; i <= x + visibility && i > 0
-					&& i < getNHorizontalTiles(); i++) {
-
-				list.add(getTilePerception(teamId, id++, new MapPosition(i, j)));
+				if (j < getNVerticalTiles() && i < getNHorizontalTiles()
+						&& j > 0 && i > 0) {
+					list.add(getTilePerception(teamId, id++, new MapPosition(i,
+							j)));
+				}
 			}
 		}
 
