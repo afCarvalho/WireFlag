@@ -30,35 +30,20 @@ public class Deliberative extends Architecture {
 			if (actions.get(i).getAction() == Action.STOP_ACTION) {
 				agent.stop();
 			} else if (actions.get(i).getAction() == Action.HABILITY_ACTION) {
-
 			} else if (actions.get(i).getAction() == Action.MOVE_ACTION) {
-
-				if (actions.get(i).getPerception().hasFlag()) {
-					agent.catchFlag();
-				}
-
-				if (actions.get(i).getPerception().hasEndPoint()) {
-					agent.dropFlag();
-				}
-
-				if (actions.get(i + 1).getPerception().hasEnemy()) {
-					agent.attack(MapController.getMap()
-							.getLandscape(actions.get(i + 1).getPos())
-							.getAgent());
-				}
-
-				if (actions.get(i + 1).getPerception().hasAnimal()) {
-					agent.increaseLife(MapController.getMap()
-							.getLandscape(actions.get(i + 1).getPos())
-							.killAnimal());
-				}
-
 				agent.approachTile(delta, actions.get(i + 1).getPos());
-
+			} else if (actions.get(i).getAction() == Action.GET_FLAG) {
+				agent.catchFlag();
+			} else if (actions.get(i).getAction() == Action.GET_END) {
+				agent.dropFlag();
+			} else if (actions.get(i).getAction() == Action.GET_ANIMAL) {
+				agent.increaseLife(MapController.getMap()
+						.getLandscape(actions.get(i + 1).getPos()).killAnimal());
+			} else if (actions.get(i).getAction() == Action.ATTACK) {
+				agent.attack(MapController.getMap()
+						.getLandscape(actions.get(i + 1).getPos()).getAgent());
 			}
-
 		}
-
 	}
 
 	public void updateInternalState(Agent agent) {

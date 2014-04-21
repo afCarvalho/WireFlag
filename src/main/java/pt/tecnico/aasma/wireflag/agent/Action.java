@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
@@ -15,6 +16,10 @@ public class Action {
 	public static int MOVE_ACTION = 0;
 	public static int STOP_ACTION = 1;
 	public static int HABILITY_ACTION = 2;
+	public static int GET_FLAG = 3;
+	public static int GET_ANIMAL = 4;
+	public static int GET_END = 5;
+	public static int ATTACK = 6;
 
 	public Action(Action action, Perception p, int intention) {
 		this.ancestor = action;
@@ -32,49 +37,87 @@ public class Action {
 
 	public double getValue(InternalState state, Agent a) {
 
-		double landUtility = getClimateUtility() + getLandscapeUtility()
-				+ getFireUtility() + getFlagUtility() + getEndUtility(state)
-				+ getIllUtility(a) + getAnimalUtility(a);
-
+		double moveUtility = getClimateUtility() + getLandscapeUtility()
+				+ getFireUtility() + getIllUtility(a);
+		double flagUtility = getFlagUtility();
+		double animalUtility = getAnimalUtility(a);
+		double endUtility = getEndUtility(state);
 		double stopUtility = getStopUtility(a) + getIllUtility(a);
 		double habilityUtility = getHabilityUtility(state, a);
+		double enemyUtility = getEnemyUtility(a, state);
 
 		if (intention == Intention.END_GAME) {
-			landUtility += getEndUtility(state);
+			endUtility += getEndUtility(state);
 		}
 
 		if (intention == Intention.GET_FLAG) {
-			landUtility += getFlagUtility();
+			flagUtility += getFlagUtility();
 		}
 
 		if (intention == Intention.SURVIVE) {
-			stopUtility = 2 * stopUtility;
-			landUtility += getAnimalUtility(a) + getClimateUtility()
-					+ getFireUtility() + getIllUtility(a);
+			stopUtility += stopUtility;
+			animalUtility += getAnimalUtility(a);
 		}
 
 		if (intention == Intention.TEAM_SURVIVE) {
-			stopUtility = 2 * stopUtility;
-			habilityUtility = 2 * habilityUtility;
+			stopUtility += stopUtility;
+			habilityUtility += habilityUtility;
 		}
 
 		if (intention == Intention.MOVE) {
-			landUtility = 2 * landUtility;
+			moveUtility += moveUtility;
 		}
 
-		if (landUtility > stopUtility && landUtility > habilityUtility) {
+		if (intention == Intention.ATTACK) {
+			enemyUtility += enemyUtility;
+		}
+
+		ArrayList<Double> utilities = new ArrayList<Double>();
+		utilities.add(moveUtility);
+		utilities.add(flagUtility);
+		utilities.add(animalUtility);
+		utilities.add(endUtility);
+		utilities.add(stopUtility);
+		utilities.add(habilityUtility);
+		utilities.add(enemyUtility);
+
+		double higherUtility = 0;
+		double totalUtility = 0;
+
+		for (Double value : utilities) {
+			higherUtility = Math.max(higherUtility, value);
+			totalUtility += value;
+		}
+
+		if (moveUtility == higherUtility) {
 			action = MOVE_ACTION;
 		}
 
-		if (stopUtility > landUtility && stopUtility > habilityUtility) {
+		if (moveUtility == flagUtility) {
+			action = GET_FLAG;
+		}
+
+		if (moveUtility == animalUtility) {
+			action = GET_ANIMAL;
+		}
+
+		if (moveUtility == endUtility) {
+			action = GET_END;
+		}
+
+		if (stopUtility == higherUtility) {
 			action = STOP_ACTION;
 		}
 
-		if (habilityUtility > landUtility && habilityUtility > stopUtility) {
+		if (habilityUtility == higherUtility) {
 			action = HABILITY_ACTION;
 		}
 
-		return landUtility + stopUtility + habilityUtility;
+		if (enemyUtility == higherUtility) {
+			action = ATTACK;
+		}
+
+		return totalUtility;
 	}
 
 	public int getAction() {
@@ -138,6 +181,14 @@ public class Action {
 
 	private double getAnimalUtility(Agent a) {
 		return (100 - a.getLife()) / 3;
+	}
+
+	private double getEnemyUtility(Agent a, InternalState state) {
+		if (state.hasEnemyClose(a) > 0) {
+			return (state.hasEnemyClose(a) + 1) * 10;
+		} else {
+			return 0;
+		}
 	}
 
 	/***********************
