@@ -92,7 +92,10 @@ public abstract class Landscape implements IGameElement {
 	}
 
 	public int killAnimal() {
-		return animal.kill();
+		if (animal != null) {
+			return animal.kill();
+		}
+		return 0;
 	}
 
 	public float getMovementSpeed() {
