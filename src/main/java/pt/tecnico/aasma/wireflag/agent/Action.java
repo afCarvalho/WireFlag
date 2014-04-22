@@ -35,7 +35,7 @@ public class Action {
 		return perception;
 	}
 
-	public double getValue(InternalState state, Agent a) {
+	public double getValue(InternalState state, Agent a, MapPosition initialPos) {
 
 		double moveUtility = getClimateUtility() + getLandscapeUtility()
 				+ getFireUtility() + getIllUtility(a);
@@ -72,6 +72,10 @@ public class Action {
 			enemyUtility += enemyUtility;
 		}
 
+		if (perception.isBlocked()) {
+			moveUtility = 0;
+		}
+
 		ArrayList<Double> utilities = new ArrayList<Double>();
 		utilities.add(moveUtility);
 		utilities.add(flagUtility);
@@ -87,6 +91,16 @@ public class Action {
 		for (Double value : utilities) {
 			higherUtility = Math.max(higherUtility, value);
 			totalUtility += value;
+		}
+
+		/*
+		 * totalUtility = totalUtility (Math.abs(initialPos.getX() -
+		 * perception.getPosition().getX()) + Math .abs(initialPos.getY() -
+		 * perception.getPosition().getY())) + 1;
+		 */
+
+		if (ancestor != null) {
+			totalUtility += ancestor.getValue(state, a, initialPos);
 		}
 
 		if (moveUtility == higherUtility) {
@@ -129,7 +143,10 @@ public class Action {
 		if (actions.size() == 0) {
 			actions.add(this);
 		}
-		actions.add(ancestor);
+
+		if (ancestor != null) {
+			actions.add(ancestor);
+		}
 	}
 
 	/*************************

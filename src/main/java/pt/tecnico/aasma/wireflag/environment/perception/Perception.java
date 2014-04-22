@@ -18,6 +18,7 @@ public class Perception {
 	private boolean fire;
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
+	private boolean blocked;
 
 	public Perception(MapPosition position, int id, double landRating) {
 		this.position = position;
@@ -45,6 +46,10 @@ public class Perception {
 
 	public int getId() {
 		return id;
+	}
+
+	public boolean getBlocked() {
+		return blocked;
 	}
 
 	/***************
@@ -95,6 +100,10 @@ public class Perception {
 		this.id = id;
 	}
 
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -133,5 +142,9 @@ public class Perception {
 
 	public boolean hasInjuredAgent() {
 		return injuredAgent;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
 	}
 }
