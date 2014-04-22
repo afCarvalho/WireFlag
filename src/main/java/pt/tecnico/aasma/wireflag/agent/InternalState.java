@@ -17,6 +17,10 @@ public class InternalState {
 	private int horizontalSize;
 	private int verticalSize;
 
+	public static final int EXPLORED = -1;
+	public static final int NEWLY_DISCOVERED = 1;
+	public static final int UNKNOWN = 0;
+
 	public InternalState() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
 		verticalSize = MapController.getMap().getNVerticalTiles();
@@ -70,8 +74,8 @@ public class InternalState {
 				world[i][j].setInjuredAgent(false);
 				world[i][j].setAgentAttack(0);
 				world[i][j].setEnemy(false);
-				if (world[i][j].getId() == 1) {
-					world[i][j].setId(-1);
+				if (world[i][j].getId() == NEWLY_DISCOVERED) {
+					world[i][j].setId(EXPLORED);
 				}
 			}
 		}
@@ -83,8 +87,10 @@ public class InternalState {
 				endPos = p.getPosition();
 			}
 
-			if (world[p.getPosition().getX()][p.getPosition().getY()].getId() == 0) {
-				p.setId(1);
+			if (world[p.getPosition().getX()][p.getPosition().getY()].getId() == UNKNOWN) {
+				p.setId(NEWLY_DISCOVERED);
+			} else {
+				p.setId(EXPLORED);
 			}
 
 			world[p.getPosition().getX()][p.getPosition().getY()] = p;

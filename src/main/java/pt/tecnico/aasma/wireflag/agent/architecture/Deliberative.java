@@ -21,14 +21,16 @@ public class Deliberative extends Architecture {
 		actions = new LinkedList<Action>();
 	}
 
+	public InternalState getInternal() {
+		return state;
+	}
+
 	public void makeAction(Agent agent, int delta) {
 
 		System.out.println("INIT " + agent.getPos().getMapPosition().getX()
 				+ " " + agent.getPos().getMapPosition().getY());
 
 		updateInternalState(agent);
-
-		System.out.println("internals updated");
 
 		if (actions.size() < 2) {
 			actions = plan(getIntentions(agent), agent.getPos()
@@ -37,16 +39,26 @@ public class Deliberative extends Architecture {
 
 		// System.out.println("planing finished" + actions.size());
 
-		Action a;
+		for (int i = 0; i < MapController.getMap().getNHorizontalTiles(); i++)
+			for (int j = 0; j < MapController.getMap().getNVerticalTiles(); j++)
+				MapController.getMap().getLandscape(new MapPosition(i, j)).isSet = false;
 
-		System.out.println("let have some action");
+		System.out.println("size " + actions.size());
+
+		for (Action a : actions) {
+			MapController.getMap().getLandscape(a.getPos()).isSet = true;
+		}
+
+		Action a;
 
 		a = actions.removeFirst();
 
-		System.out.println("Agent pos " + agent.getPos().getX() + " "
-				+ agent.getPos().getY()
-				+ agent.getPos().getMapPosition().getX() + " "
-				+ agent.getPos().getMapPosition().getY());
+
+		/*
+		 * System.out.println("Agent pos " + agent.getPos().getX() + " " +
+		 * agent.getPos().getY() + agent.getPos().getMapPosition().getX() + " "
+		 * + agent.getPos().getMapPosition().getY());
+		 */
 
 		if (a.getAction() == Action.STOP_ACTION) {
 			System.out.println("STOP");
@@ -58,8 +70,10 @@ public class Deliberative extends Architecture {
 					+ " " + actions.getFirst().getPos().getY());
 			agent.approachTile(delta, actions.getFirst().getPos());
 
-			System.out.println(MapController.getMap().isBlocked(
-					actions.getFirst().getPos()));
+			/*
+			 * System.out.println(MapController.getMap().isBlocked(
+			 * actions.getFirst().getPos()));
+			 */
 
 			if (!agent.getPos().getMapPosition()
 					.isSamePosition(actions.getFirst().getPos())) {
@@ -81,7 +95,13 @@ public class Deliberative extends Architecture {
 			agent.attack(MapController.getMap()
 					.getLandscape(actions.getFirst().getPos()).getAgent());
 		}
+		
 
+		if (agent.hasFatigue()) {
+			actions.clear();
+			return;
+		}
+		
 	}
 
 	public void updateInternalState(Agent agent) {

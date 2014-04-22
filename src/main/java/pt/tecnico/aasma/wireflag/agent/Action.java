@@ -79,12 +79,21 @@ public class Action {
 
 		ArrayList<Double> utilities = new ArrayList<Double>();
 		utilities.add(moveUtility);
-		utilities.add(flagUtility);
-		utilities.add(animalUtility);
-		utilities.add(endUtility);
+		// utilities.add(flagUtility);
+		// utilities.add(animalUtility);
+		// utilities.add(endUtility);
 		utilities.add(stopUtility);
-		//utilities.add(habilityUtility);
-		utilities.add(enemyUtility);
+		// utilities.add(habilityUtility);
+		// utilities.add(enemyUtility);
+
+		//System.out.println("Move utility " + moveUtility + " "
+		//		+ perception.getId());
+		// System.out.println("Flag utility " + flagUtility);
+		// System.out.println("Animal utility " + flagUtility);
+		// System.out.println("End utility " + flagUtility);
+		//System.out.println("Stop utility " + stopUtility);
+		//System.out.println("agent fatigue " + a.getFatigue());
+		// System.out.println("Enemy utility " + flagUtility);
 
 		double higherUtility = 0;
 		double totalUtility = 0;
@@ -105,28 +114,30 @@ public class Action {
 		}
 
 		if (moveUtility == higherUtility) {
+			System.out.println("MOVE ACTION");
 			action = MOVE_ACTION;
 		}
 
-		if (moveUtility == flagUtility) {
+		if (higherUtility == flagUtility) {
 			action = GET_FLAG;
 		}
 
-		if (moveUtility == animalUtility) {
+		if (higherUtility == animalUtility) {
 			action = GET_ANIMAL;
 		}
 
-		if (moveUtility == endUtility) {
+		if (higherUtility == endUtility) {
 			action = GET_END;
 		}
 
 		if (stopUtility == higherUtility) {
+			System.out.println("STOP ACTION");
 			action = STOP_ACTION;
 		}
 
-		/*if (habilityUtility == higherUtility) {
-			action = HABILITY_ACTION;
-		}*/
+		/*
+		 * if (habilityUtility == higherUtility) { action = HABILITY_ACTION; }
+		 */
 
 		if (enemyUtility == higherUtility) {
 			action = ATTACK;
@@ -155,6 +166,14 @@ public class Action {
 		}
 	}
 
+	public int getNActions() {
+		if (ancestor == null) {
+			return 0;
+		}
+
+		return 1 + ancestor.getNActions();
+	}
+
 	/*************************
 	 *** LANDSCAPE FACTORS ***
 	 *************************/
@@ -168,7 +187,9 @@ public class Action {
 	}
 
 	private double getLandscapeUtility() {
-		return 10 * perception.getLandRating() + perception.getId();
+		System.out.println(getNActions());
+		return (6 * perception.getLandRating() + 4 * (1 + perception.getId()))
+				/ (getNActions() + 1);
 	}
 
 	private double getFireUtility() {
