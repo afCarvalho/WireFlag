@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
@@ -58,28 +59,29 @@ public class AgentController implements IController {
 	public void init() throws SlickException, InvalidTeamSizeException {
 
 		Team t1 = new DemocraticalTeam(getNextTeamId());
-		Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive());
-		Agent b1 = new Builder(t1.getID(), t1.getMemberID(), new Reactive());
-		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive());
-		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(), new Reactive());
-		t1.addAgent(b1);
-		t1.addAgent(d1);
+		// Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new
+		// Deliberative());
+		// Agent b1 = new Builder(t1.getID(), t1.getMemberID(), new
+		// Deliberative());
+		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Deliberative());
+		// Agent s1 = new Soldier(t1.getID(), t1.getMemberID(), new
+		// Deliberative());
+		// t1.addAgent(b1);
+		// t1.addAgent(d1);
 		t1.addAgent(p1);
-		t1.addAgent(s1);
+		// t1.addAgent(s1);
 		t1.setTeamUp();
 		addTeam(t1);
 
-		Team t2 = new DemocraticalTeam(getNextTeamId());
-		Agent d2 = new Doctor(t2.getID(), t2.getMemberID(), new Reactive());
-		Agent b2 = new Builder(t2.getID(), t2.getMemberID(), new Reactive());
-		Agent p2 = new Patrol(t2.getID(), t2.getMemberID(), new Reactive());
-		Agent s2 = new Soldier(t2.getID(), t2.getMemberID(), new Reactive());
-		t2.addAgent(b2);
-		t2.addAgent(d2);
-		t2.addAgent(p2);
-		t2.addAgent(s2);
-		t2.setTeamUp();
-		addTeam(t2);
+		/*
+		 * Team t2 = new DemocraticalTeam(getNextTeamId()); Agent d2 = new
+		 * Doctor(t2.getID(), t2.getMemberID(), new Reactive()); Agent b2 = new
+		 * Builder(t2.getID(), t2.getMemberID(), new Reactive()); Agent p2 = new
+		 * Patrol(t2.getID(), t2.getMemberID(), new Reactive()); Agent s2 = new
+		 * Soldier(t2.getID(), t2.getMemberID(), new Reactive());
+		 * t2.addAgent(b2); t2.addAgent(d2); t2.addAgent(p2); t2.addAgent(s2);
+		 * t2.setTeamUp(); addTeam(t2);
+		 */
 
 		/*
 		 * Agent leader = agentController.getAgents().get(0); List<Agent>

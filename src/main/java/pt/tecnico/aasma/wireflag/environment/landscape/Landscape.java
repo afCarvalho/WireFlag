@@ -7,13 +7,17 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public abstract class Landscape implements IGameElement {
@@ -41,6 +45,7 @@ public abstract class Landscape implements IGameElement {
 	protected Animal animal;
 	protected int visibility;
 	protected int fatigue;
+	public boolean isSet;
 
 	public Landscape(float movementSpeed, MapPosition position, int visibility,
 			int fatigue) {
@@ -240,5 +245,50 @@ public abstract class Landscape implements IGameElement {
 		if (hasAgent()) {
 			agent.render(g);
 		}
+
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		int tileXPosition = landscapePos.getX() * tileWidth;
+		int tileYPosition = landscapePos.getY() * tileHeight;
+
+		for (int x = tileXPosition; x < tileXPosition + tileWidth; x++) {
+			for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
+				if (x % 25 == 0 && y % 25 == 0)
+					g.drawString(
+							((Deliberative) AgentController.getAgents()
+									.getTeams().get(0).getMembers().get(0)
+									.getArch()).getInternal().getWorld()[landscapePos
+									.getX()][landscapePos.getY()].getId() + " ",
+							x, y);
+			}
+		}
+
+		if (isSet) {
+			AnimationLoader.getLoader().getCross()
+					.draw(tileXPosition, tileYPosition);
+		}
+
+		/*
+		 * g.drawString( ((Deliberative)
+		 * AgentController.getAgents().getTeams().get(0)
+		 * .getMembers().get(0).getArch()).getInternal()
+		 * .getWorld()[landscapePos.getX()][landscapePos.getY()] .getId() + " ",
+		 * landscapePos.getX() MapController.getMap().getNHorizontalTiles() +
+		 * MapController.getMap().getTileWidth(), landscapePos.getY()
+		 * MapController.getMap().getNVerticalTiles() +
+		 * MapController.getMap().getTileHeight() + 40);
+		 */
+
+		// System.out.println(landscapePos.getX() + " " + landscapePos.getY());
+
+		/*
+		 * g.drawString(landscapePos.getX() + "/" + landscapePos.getY(),
+		 * landscapePos.getX() MapController.getMap().getNHorizontalTiles() +
+		 * MapController.getMap().getTileWidth(), landscapePos.getY()
+		 * MapController.getMap().getNVerticalTiles() +
+		 * MapController.getMap().getTileHeight());
+		 */
+
 	}
 }
