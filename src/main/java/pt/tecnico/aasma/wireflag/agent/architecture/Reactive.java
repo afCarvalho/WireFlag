@@ -179,25 +179,16 @@ public class Reactive extends Architecture {
 
 		if (perceptionAgentPos.hasFire()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasFire() && !perception.isBlocked()) {
+				if (!perception.hasFire()
+						&& !perception.isBlocked()
+						&& actualPos.isAdjacentPosition(
+								perception.getPosition(), agent.getDirection())) {
 
-					if (actualPos.isJustAhead(perception.getPosition(),
-							agent.getDirection())) {
-						agent.moveUp(delta, actualPos);
-					} else if (actualPos.isJustBehind(perception.getPosition(),
-							agent.getDirection())) {
-						agent.moveDown(delta, actualPos);
-					} else if (actualPos.isCloseOnLeft(
-							perception.getPosition(), agent.getDirection())) {
-						agent.moveLeft(delta, actualPos);
-					} else if (actualPos.isCloseOnRight(
-							perception.getPosition(), agent.getDirection())) {
-						agent.moveRight(delta, actualPos);
-					}
+					agent.approachTile(delta, perception.getPosition());
+					return;
 				}
 			}
 		}
-
 	}
 
 	/*
@@ -233,7 +224,6 @@ public class Reactive extends Architecture {
 				}
 			}
 		}
-
 	}
 
 	/*
@@ -263,23 +253,14 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasExtremeWeather() && !perception.isBlocked()) {
+				if (!perception.hasExtremeWeather()
+						&& !perception.isBlocked()
+						&& actualPos.isAdjacentPosition(
+								perception.getPosition(), agent.getDirection())) {
 
-					if (actualPos.isJustAhead(perception.getPosition(),
-							agent.getDirection())) {
-						agent.moveUp(delta, actualPos);
-					} else if (actualPos.isJustBehind(perception.getPosition(),
-							agent.getDirection())) {
-						agent.moveDown(delta, actualPos);
-					} else if (actualPos.isCloseOnLeft(
-							perception.getPosition(), agent.getDirection())) {
-						agent.moveLeft(delta, actualPos);
-					} else if (actualPos.isCloseOnRight(
-							perception.getPosition(), agent.getDirection())) {
-						agent.moveRight(delta, actualPos);
-					}
+					agent.approachTile(delta, perception.getPosition());
+					return;
 				}
-
 			}
 		}
 	}
@@ -346,6 +327,7 @@ public class Reactive extends Architecture {
 					agent.getDirection())
 					&& (perception.hasFire() || perception.hasExtremeWeather())) {
 				agent.moveDifferentDirection(delta);
+				return;
 			}
 		}
 	}
@@ -373,6 +355,7 @@ public class Reactive extends Architecture {
 			for (Perception perception : perceptions) {
 				if (perception.hasEndPoint()) {
 					agent.approachTile(delta, perception.getPosition());
+					return;
 				}
 			}
 		}
@@ -397,6 +380,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (perception.hasFlag()) {
 				agent.approachTile(delta, perception.getPosition());
+				return;
 			}
 		}
 	}
@@ -442,6 +426,7 @@ public class Reactive extends Architecture {
 				Agent enemy = MapController.getMap().getLandscape(enemyPos)
 						.getAgent();
 				agent.attack(enemy);
+				return;
 			}
 		}
 	}
@@ -465,6 +450,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (perception.hasEnemy()) {
 				agent.approachTile(delta, perception.getPosition());
+				return;
 			}
 		}
 	}
@@ -496,24 +482,36 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !perception.isBlocked()) {
+					&& !perception.isBlocked()
+					&& actualPos.isAdjacentPosition(perception.getPosition(),
+							agent.getDirection())) {
 
-				if (actualPos.isJustAhead(perception.getPosition(),
-						agent.getDirection())) {
-					agent.moveUp(delta, actualPos);
-				} else if (actualPos.isJustBehind(perception.getPosition(),
-						agent.getDirection())) {
-					agent.moveDown(delta, actualPos);
-				} else if (actualPos.isCloseOnLeft(perception.getPosition(),
-						agent.getDirection())) {
-					agent.moveLeft(delta, actualPos);
-				} else if (actualPos.isCloseOnRight(perception.getPosition(),
-						agent.getDirection())) {
-					agent.moveRight(delta, actualPos);
-				}
+				// debug begin
+				System.err.println("perception.getLandRating(): "
+						+ perception.getLandRating()
+						+ " perceptionAgentPos.getLandRating(): "
+						+ perceptionAgentPos.getLandRating());
+
+				System.err.println("perception land rating: "
+						+ MapController.getMap()
+								.getLandscape(perception.getPosition())
+								.getRating()
+						+ " Agent pos land.getRating(): "
+						+ MapController.getMap().getLandscape(actualPos)
+								.getRating());
+
+				System.err.println("perception pos x: "
+						+ perception.getPosition().getX() + " y: "
+						+ perception.getPosition().getY());
+
+				System.err.println("agent pos x: " + actualPos.getX() + " y: "
+						+ actualPos.getY());
+				// debug end
+
+				agent.approachTile(delta, perception.getPosition());
+				return;
 			}
 		}
-
 	}
 
 	/*
@@ -603,6 +601,9 @@ public class Reactive extends Architecture {
 				if (result) {
 					// Debug begin
 					// System.out.println("perception true: " + i);
+					if (i == 16) {
+						System.err.println("------------------");
+					}
 					// Debug end
 
 					this.getClass()
@@ -611,14 +612,17 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-					System.err.println("Time: "
-							+ TimeController.getTime().getDays() + "d "
-							+ TimeController.getTime().getHours() + "h "
-							+ TimeController.getTime().getMinutes() + "m"
-							+ " [T" + agent.getTeamId() + " A"
-							+ agent.getAgentId() + "] action done: " + i);
-					System.err.println("direction: " + agent.getDirection());
+					if (i == 16) {
+						System.err.println("Time: "
+								+ TimeController.getTime().getDays() + "d "
+								+ TimeController.getTime().getHours() + "h "
+								+ TimeController.getTime().getMinutes() + "m"
+								+ " [T" + agent.getTeamId() + " A"
+								+ agent.getAgentId() + "] direction: "
+								+ agent.getDirection() + " action done: " + i);
+					}
 					// Debug end
+
 					return;
 				}
 			} catch (IllegalArgumentException e) {

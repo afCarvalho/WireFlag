@@ -296,18 +296,22 @@ public abstract class Agent implements IGameElement {
 
 		/* if position is left to the agent's position, moves to the left */
 		if (oldPos.isLeft(mapPos, direction) && moveLeft(delta, oldPos)) {
+			direction = LEFT;
 			return;
 		}
 		/* if position is right to the agent's position, moves to the right */
 		if (oldPos.isRight(mapPos, direction) && moveRight(delta, oldPos)) {
+			direction = RIGHT;
 			return;
 		}
 		/* if position is ahead to the agent's position, moves up */
 		if (oldPos.isAhead(mapPos, direction) && moveUp(delta, oldPos)) {
+			direction = UP;
 			return;
 		}
 		/* if position is behind to the agent's position, moves up */
 		if (oldPos.isBehind(mapPos, direction) && moveDown(delta, oldPos)) {
+			direction = DOWN;
 			return;
 		}
 	}
@@ -356,7 +360,6 @@ public abstract class Agent implements IGameElement {
 	 */
 	public boolean moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
-
 		ballon = AnimationLoader.getLoader().getRightArrow();
 
 		MapPosition newPos = new WorldPosition(agentPos.getX() + delta,
