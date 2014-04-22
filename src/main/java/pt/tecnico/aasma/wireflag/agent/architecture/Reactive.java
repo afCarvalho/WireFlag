@@ -7,6 +7,7 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Reactive extends Architecture {
@@ -164,9 +165,7 @@ public class Reactive extends Architecture {
 						&& actualPos.isAdjacentPosition(
 								perceptionAgentPos.getPosition(),
 								agent.getDirection())) {
-					result = !perception.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+					result = !perception.hasFire() && !perception.isBlocked();
 				}
 			}
 		}
@@ -180,9 +179,7 @@ public class Reactive extends Architecture {
 
 		if (perceptionAgentPos.hasFire()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasFire()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasFire() && !perception.isBlocked()) {
 
 					if (actualPos.isJustAhead(perception.getPosition(),
 							agent.getDirection())) {
@@ -215,9 +212,7 @@ public class Reactive extends Architecture {
 			for (Perception perception : perceptions) {
 
 				if (!result) {
-					result = !perception.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+					result = !perception.hasFire() && !perception.isBlocked();
 				} else {
 					return result;
 				}
@@ -232,9 +227,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasFire()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasFire()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasFire() && !perception.isBlocked()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
@@ -257,8 +250,7 @@ public class Reactive extends Architecture {
 						&& actualPos.isAdjacentPosition(
 								perception.getPosition(), agent.getDirection())) {
 					return !perception.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+							&& !perception.isBlocked();
 				}
 			}
 		}
@@ -271,9 +263,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasExtremeWeather()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasExtremeWeather() && !perception.isBlocked()) {
 
 					if (actualPos.isJustAhead(perception.getPosition(),
 							agent.getDirection())) {
@@ -306,8 +296,7 @@ public class Reactive extends Architecture {
 			for (Perception perception : perceptions) {
 				if (!result) {
 					result = !perception.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+							&& !perception.isBlocked();
 				} else {
 					return result;
 				}
@@ -322,9 +311,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasExtremeWeather()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasExtremeWeather() && !perception.isBlocked()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
@@ -493,8 +480,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())
+					&& !perception.isBlocked()
 					&& actualPos.isAdjacentPosition(perception.getPosition(),
 							agent.getDirection())) {
 				return true;
@@ -510,8 +496,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())) {
+					&& !perception.isBlocked()) {
 
 				if (actualPos.isJustAhead(perception.getPosition(),
 						agent.getDirection())) {
@@ -544,9 +529,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (!result) {
 				result = perception.getLandRating() > perceptionAgentPos
-						.getLandRating()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition());
+						.getLandRating() && !perception.isBlocked();
 			} else {
 				return result;
 			}
@@ -561,8 +544,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())) {
+					&& !perception.isBlocked()) {
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
@@ -577,7 +559,7 @@ public class Reactive extends Architecture {
 			List<Perception> perceptions) {
 
 		MapPosition actualPosition = agent.getPos().getMapPosition();
-		MapPosition aheadPosition = actualPosition.getAhedPosition(agent
+		MapPosition aheadPosition = actualPosition.getAheadPosition(agent
 				.getDirection());
 
 		return MapController.getMap().isBlocked(aheadPosition);
@@ -619,9 +601,6 @@ public class Reactive extends Architecture {
 						.invoke(this, new Object[] { agent, perceptions });
 
 				if (result) {
-					if (i == 18) {
-						System.err.println("18 begin!!!!!!!!!");
-					}
 					// Debug begin
 					// System.out.println("perception true: " + i);
 					// Debug end
@@ -632,10 +611,12 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-					if (i == 18) {
-						System.err.println("18 end !!!!!!!!!!!!!!");
-					}
-					System.err.println("action done: " + i);
+					System.err.println("Time: "
+							+ TimeController.getTime().getDays() + "d "
+							+ TimeController.getTime().getHours() + "h "
+							+ TimeController.getTime().getMinutes() + "m"
+							+ " action done: " + i);
+					System.err.println("direction: " + agent.getDirection());
 					// Debug end
 					return;
 				}

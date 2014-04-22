@@ -29,7 +29,7 @@ public class MapPosition {
 		this.x = x;
 	}
 
-	public MapPosition getAhedPosition(int direction) {
+	public MapPosition getAheadPosition(int direction) {
 		if (direction == Agent.DOWN) {
 			return new MapPosition(getX(), getY() + 1);
 		} else if (direction == Agent.UP) {
@@ -38,6 +38,51 @@ public class MapPosition {
 			return new MapPosition(getX() + 1, getY());
 		} else if (direction == Agent.LEFT) {
 			return new MapPosition(getX() - 1, getY());
+		} else {
+			return new MapPosition(-1, -1);
+		}
+
+	}
+
+	public MapPosition getLeftPosition(int direction) {
+		if (direction == Agent.DOWN) {
+			return new MapPosition(getX() + 1, getY());
+		} else if (direction == Agent.UP) {
+			return new MapPosition(getX() - 1, getY());
+		} else if (direction == Agent.RIGHT) {
+			return new MapPosition(getX(), getY() - 1);
+		} else if (direction == Agent.LEFT) {
+			return new MapPosition(getX(), getY() + 1);
+		} else {
+			return new MapPosition(-1, -1);
+		}
+
+	}
+
+	public MapPosition getRightPosition(int direction) {
+		if (direction == Agent.DOWN) {
+			return new MapPosition(getX() - 1, getY());
+		} else if (direction == Agent.UP) {
+			return new MapPosition(getX() + 1, getY());
+		} else if (direction == Agent.RIGHT) {
+			return new MapPosition(getX(), getY() + 1);
+		} else if (direction == Agent.LEFT) {
+			return new MapPosition(getX(), getY() - 1);
+		} else {
+			return new MapPosition(-1, -1);
+		}
+
+	}
+
+	public MapPosition getBehindPosition(int direction) {
+		if (direction == Agent.DOWN) {
+			return new MapPosition(getX(), getY() - 1);
+		} else if (direction == Agent.UP) {
+			return new MapPosition(getX(), getY() + 1);
+		} else if (direction == Agent.RIGHT) {
+			return new MapPosition(getX() - 1, getY());
+		} else if (direction == Agent.LEFT) {
+			return new MapPosition(getX() + 1, getY());
 		} else {
 			return new MapPosition(-1, -1);
 		}
@@ -54,65 +99,25 @@ public class MapPosition {
 	/* returns true if position, pos, is the left position of this position */
 	public boolean isCloseOnLeft(MapPosition pos, int direction) {
 
-		if (direction == Agent.DOWN) {
-			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.UP) {
-			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.RIGHT) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else if (direction == Agent.LEFT) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else {
-			return false;
-		}
+		return pos.isSamePosition(getLeftPosition(direction));
 	}
 
 	/* returns true if position, pos, is the right position of this position */
 	public boolean isCloseOnRight(MapPosition pos, int direction) {
 
-		if (direction == Agent.DOWN) {
-			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.UP) {
-			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.RIGHT) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else if (direction == Agent.LEFT) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else {
-			return false;
-		}
+		return pos.isSamePosition(getRightPosition(direction));
 	}
 
 	/* returns true if position, pos, is right ahead this position */
 	public boolean isJustAhead(MapPosition pos, int direction) {
 
-		if (direction == Agent.DOWN) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else if (direction == Agent.UP) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else if (direction == Agent.RIGHT) {
-			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.LEFT) {
-			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
-		} else {
-			return false;
-		}
+		return pos.isSamePosition(getAheadPosition(direction));
 	}
 
 	/* returns true if position, pos, is right behind this position */
 	public boolean isJustBehind(MapPosition pos, int direction) {
 
-		if (direction == Agent.DOWN) {
-			return (this.x == pos.getX()) && (this.y - 1 == pos.getY());
-		} else if (direction == Agent.UP) {
-			return (this.x == pos.getX()) && (this.y + 1 == pos.getY());
-		} else if (direction == Agent.RIGHT) {
-			return (this.x - 1 == pos.getX()) && (this.y == pos.getY());
-		} else if (direction == Agent.LEFT) {
-			return (this.x + 1 == pos.getX()) && (this.y == pos.getY());
-		} else {
-			return false;
-		}
+		return pos.isSamePosition(getBehindPosition(direction));
 	}
 
 	/* returns true if position, pos, is a left position of this position */

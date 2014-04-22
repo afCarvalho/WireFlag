@@ -10,7 +10,9 @@ public class AnimationLoader {
 
 	private Animation rain, sand, snow, thunder, goat, pig, end, fire, flag,
 			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
-			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill, cross;
+			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill, cross,
+			up_arrow, down_arrow, left_arrow, right_arrow, stop, approach,
+			attack;
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
@@ -116,6 +118,29 @@ public class AnimationLoader {
 				duration1, false);
 
 		cross = new Animation(new Image[] { new Image(agent + "cross.png") },
+				duration1, false);
+
+		up_arrow = new Animation(
+				new Image[] { new Image(agent + "up_arrow.png") }, duration1,
+				false);
+
+		down_arrow = new Animation(new Image[] { new Image(agent
+				+ "down_arrow.png") }, duration1, false);
+
+		left_arrow = new Animation(new Image[] { new Image(agent
+				+ "left_arrow.png") }, duration1, false);
+
+		right_arrow = new Animation(new Image[] { new Image(agent
+				+ "right_arrow.png") }, duration1, false);
+
+		stop = new Animation(new Image[] { new Image(agent + "stop.png") },
+				duration1, false);
+
+		approach = new Animation(
+				new Image[] { new Image(agent + "approach.png") }, duration1,
+				false);
+
+		attack = new Animation(new Image[] { new Image(agent + "attack.png") },
 				duration1, false);
 
 	}
@@ -254,5 +279,37 @@ public class AnimationLoader {
 
 	public Animation getCross() {
 		return cross;
+	}
+
+	/*************************
+	 *** BALLON ANIMATIONS ***
+	 *************************/
+
+	public Animation getUpArrow() {
+		return up_arrow;
+	}
+
+	public Animation getDownArrow() {
+		return down_arrow;
+	}
+
+	public Animation getLeftArrow() {
+		return left_arrow;
+	}
+
+	public Animation getRightArrow() {
+		return right_arrow;
+	}
+
+	public Animation getStop() {
+		return stop;
+	}
+
+	public Animation getApproach() {
+		return approach;
+	}
+
+	public Animation getAttack() {
+		return attack;
 	}
 }
