@@ -164,9 +164,7 @@ public class Reactive extends Architecture {
 						&& actualPos.isAdjacentPosition(
 								perceptionAgentPos.getPosition(),
 								agent.getDirection())) {
-					result = !perception.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+					result = !perception.hasFire() && !perception.isBlocked();
 				}
 			}
 		}
@@ -180,9 +178,7 @@ public class Reactive extends Architecture {
 
 		if (perceptionAgentPos.hasFire()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasFire()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasFire() && !perception.isBlocked()) {
 
 					if (actualPos.isJustAhead(perception.getPosition(),
 							agent.getDirection())) {
@@ -215,9 +211,7 @@ public class Reactive extends Architecture {
 			for (Perception perception : perceptions) {
 
 				if (!result) {
-					result = !perception.hasFire()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+					result = !perception.hasFire() && !perception.isBlocked();
 				} else {
 					return result;
 				}
@@ -232,9 +226,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasFire()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasFire()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasFire() && !perception.isBlocked()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
@@ -257,8 +249,7 @@ public class Reactive extends Architecture {
 						&& actualPos.isAdjacentPosition(
 								perception.getPosition(), agent.getDirection())) {
 					return !perception.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+							&& !perception.isBlocked();
 				}
 			}
 		}
@@ -271,9 +262,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasExtremeWeather()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasExtremeWeather() && !perception.isBlocked()) {
 
 					if (actualPos.isJustAhead(perception.getPosition(),
 							agent.getDirection())) {
@@ -306,8 +295,7 @@ public class Reactive extends Architecture {
 			for (Perception perception : perceptions) {
 				if (!result) {
 					result = !perception.hasExtremeWeather()
-							&& !MapController.getMap().isBlocked(
-									perception.getPosition());
+							&& !perception.isBlocked();
 				} else {
 					return result;
 				}
@@ -322,9 +310,7 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
 			for (Perception perception : perceptions) {
-				if (!perception.hasExtremeWeather()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition())) {
+				if (!perception.hasExtremeWeather() && !perception.isBlocked()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
@@ -493,8 +479,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())
+					&& !perception.isBlocked()
 					&& actualPos.isAdjacentPosition(perception.getPosition(),
 							agent.getDirection())) {
 				return true;
@@ -510,8 +495,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())) {
+					&& !perception.isBlocked()) {
 
 				if (actualPos.isJustAhead(perception.getPosition(),
 						agent.getDirection())) {
@@ -544,9 +528,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (!result) {
 				result = perception.getLandRating() > perceptionAgentPos
-						.getLandRating()
-						&& !MapController.getMap().isBlocked(
-								perception.getPosition());
+						.getLandRating() && !perception.isBlocked();
 			} else {
 				return result;
 			}
@@ -561,8 +543,7 @@ public class Reactive extends Architecture {
 
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !MapController.getMap().isBlocked(
-							perception.getPosition())) {
+					&& !perception.isBlocked()) {
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
