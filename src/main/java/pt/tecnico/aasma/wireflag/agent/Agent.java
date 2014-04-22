@@ -306,10 +306,10 @@ public abstract class Agent implements IGameElement {
 	public void moveDown(int delta, MapPosition oldPos) {
 		sprite = down;
 		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
-				+ 2 * delta).getMapPosition();
+				+ delta).getMapPosition();
 
 		if (!isBlocked(newPos)) {
-			agentPos.setY(agentPos.getY() + delta * getAgentSpeed(newPos));
+			agentPos.setY(agentPos.getY() + delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
 		}
 	}
@@ -317,32 +317,32 @@ public abstract class Agent implements IGameElement {
 	public void moveUp(int delta, MapPosition oldPos) {
 		sprite = up;
 		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
-				- 2 * delta).getMapPosition();
+				- delta).getMapPosition();
 
 		if (!isBlocked(newPos)) {
-			agentPos.setY(agentPos.getY() - delta * getAgentSpeed(newPos));
+			agentPos.setY(agentPos.getY() - delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
 		}
 	}
 
 	public void moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
-		MapPosition newPos = new WorldPosition(agentPos.getX() + 2 * delta,
+		MapPosition newPos = new WorldPosition(agentPos.getX() + delta,
 				agentPos.getY()).getMapPosition();
 
 		if (!isBlocked(newPos)) {
-			agentPos.setX(agentPos.getX() + delta * getAgentSpeed(newPos));
+			agentPos.setX(agentPos.getX() + delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
 		}
 	}
 
 	public void moveLeft(int delta, MapPosition oldPos) {
 		sprite = left;
-		MapPosition newPos = new WorldPosition(agentPos.getX() - 2 * delta,
+		MapPosition newPos = new WorldPosition(agentPos.getX() - delta,
 				agentPos.getY()).getMapPosition();
 
 		if (!isBlocked(newPos)) {
-			agentPos.setX(agentPos.getX() - delta * getAgentSpeed(newPos));
+			agentPos.setX(agentPos.getX() - delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
 		}
 	}
@@ -371,8 +371,8 @@ public abstract class Agent implements IGameElement {
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		g.drawString("hp:" + life, agentPos.getX() + 3, agentPos.getY() - 20);
-		g.drawString("fp:" + Math.max((100 - life), fatigue) + "",
-				agentPos.getX() + 3, agentPos.getY() + 30);
+		g.drawString("fp:" + getFatigue() + "", agentPos.getX() + 3,
+				agentPos.getY() + 30);
 		g.drawString("T" + getTeamId() + "A" + getAgentId(),
 				agentPos.getX() - 40, agentPos.getY() + 30);
 

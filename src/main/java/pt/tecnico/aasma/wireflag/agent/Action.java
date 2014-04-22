@@ -1,6 +1,7 @@
 package pt.tecnico.aasma.wireflag.agent;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
@@ -72,9 +73,9 @@ public class Action {
 			enemyUtility += enemyUtility;
 		}
 
-		if (perception.isBlocked()) {
-			moveUtility = 0;
-		}
+		/*
+		 * if (perception.isBlocked()) { moveUtility = 0; }
+		 */
 
 		ArrayList<Double> utilities = new ArrayList<Double>();
 		utilities.add(moveUtility);
@@ -82,7 +83,7 @@ public class Action {
 		utilities.add(animalUtility);
 		utilities.add(endUtility);
 		utilities.add(stopUtility);
-		utilities.add(habilityUtility);
+		//utilities.add(habilityUtility);
 		utilities.add(enemyUtility);
 
 		double higherUtility = 0;
@@ -123,12 +124,16 @@ public class Action {
 			action = STOP_ACTION;
 		}
 
-		if (habilityUtility == higherUtility) {
+		/*if (habilityUtility == higherUtility) {
 			action = HABILITY_ACTION;
-		}
+		}*/
 
 		if (enemyUtility == higherUtility) {
 			action = ATTACK;
+		}
+
+		if (stopUtility == higherUtility) {
+			action = STOP_ACTION;
 		}
 
 		return totalUtility;
@@ -138,14 +143,15 @@ public class Action {
 		return action;
 	}
 
-	public void getActionsList(List<Action> actions) {
+	public void getActionsList(LinkedList<Action> actions) {
 
 		if (actions.size() == 0) {
-			actions.add(this);
+			actions.addFirst(this);
 		}
 
 		if (ancestor != null) {
-			actions.add(ancestor);
+			actions.addFirst(ancestor);
+			ancestor.getActionsList(actions);
 		}
 	}
 
@@ -162,7 +168,7 @@ public class Action {
 	}
 
 	private double getLandscapeUtility() {
-		return 10 * perception.getLandRating();
+		return 10 * perception.getLandRating() + perception.getId();
 	}
 
 	private double getFireUtility() {
@@ -213,7 +219,7 @@ public class Action {
 	 ***********************/
 
 	private double getStopUtility(Agent a) {
-		if (a.hasLowLife()) {
+		if (a.hasLowLife() || a.hasFatigue()) {
 			return 34;
 		} else {
 			return 0;

@@ -8,7 +8,7 @@ public class Intention {
 	public static int TEAM_SURVIVE = 3;
 	public static int ATTACK = 4;
 	public static int MOVE = 5;
-	//public static int STOP = 6;
-	//public static int HABILITY = 7;
+	public static int STOP = 6;
+	// public static int HABILITY = 7;
 
 }

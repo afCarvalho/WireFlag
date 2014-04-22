@@ -1,6 +1,5 @@
 package pt.tecnico.aasma.wireflag.agent.architecture;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,46 +14,74 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Deliberative extends Architecture {
 
 	InternalState state;
+	LinkedList<Action> actions;
 
 	public Deliberative() {
 		state = new InternalState();
+		actions = new LinkedList<Action>();
 	}
 
 	public void makeAction(Agent agent, int delta) {
 
+		System.out.println("INIT " + agent.getPos().getMapPosition().getX()
+				+ " " + agent.getPos().getMapPosition().getY());
+
 		updateInternalState(agent);
-		List<Action> actions = plan(getIntentions(agent), agent.getPos()
-				.getMapPosition(), agent.getVisibilityRange(), agent);
 
-		System.out.println("planing finished" + actions.size());
+		System.out.println("internals updated");
 
-		for (int i = 0; i < actions.size() - 1; i++) {
-			System.out.println(actions.get(i).getAction() + " "
-					+ actions.get(i + 1));
-			if (actions.get(i).getAction() == Action.STOP_ACTION) {
-				System.out.println("STOP");
-				agent.stop();
-			} else if (actions.get(i).getAction() == Action.HABILITY_ACTION) {
-				System.out.println("HAB");
-			} else if (actions.get(i).getAction() == Action.MOVE_ACTION) {
-				System.out.println("MOVE");
-				agent.approachTile(delta, actions.get(i + 1).getPos());
-			} else if (actions.get(i).getAction() == Action.GET_FLAG) {
-				System.out.println("FLAG");
-				agent.catchFlag();
-			} else if (actions.get(i).getAction() == Action.GET_END) {
-				System.out.println("END");
-				agent.dropFlag();
-			} else if (actions.get(i).getAction() == Action.GET_ANIMAL) {
-				System.out.println("ANIMAL");
-				agent.increaseLife(MapController.getMap()
-						.getLandscape(actions.get(i + 1).getPos()).killAnimal());
-			} else if (actions.get(i).getAction() == Action.ATTACK) {
-				System.out.println("ATTACK");
-				agent.attack(MapController.getMap()
-						.getLandscape(actions.get(i + 1).getPos()).getAgent());
-			}
+		if (actions.size() < 2) {
+			actions = plan(getIntentions(agent), agent.getPos()
+					.getMapPosition(), agent.getVisibilityRange(), agent);
 		}
+
+		// System.out.println("planing finished" + actions.size());
+
+		Action a;
+
+		System.out.println("let have some action");
+
+		a = actions.removeFirst();
+
+		System.out.println("Agent pos " + agent.getPos().getX() + " "
+				+ agent.getPos().getY()
+				+ agent.getPos().getMapPosition().getX() + " "
+				+ agent.getPos().getMapPosition().getY());
+
+		if (a.getAction() == Action.STOP_ACTION) {
+			System.out.println("STOP");
+			agent.stop();
+		} else if (a.getAction() == Action.HABILITY_ACTION) {
+			System.out.println("HAB");
+		} else if (a.getAction() == Action.MOVE_ACTION) {
+			System.out.println("MOVE " + actions.getFirst().getPos().getX()
+					+ " " + actions.getFirst().getPos().getY());
+			agent.approachTile(delta, actions.getFirst().getPos());
+
+			System.out.println(MapController.getMap().isBlocked(
+					actions.getFirst().getPos()));
+
+			if (!agent.getPos().getMapPosition()
+					.isSamePosition(actions.getFirst().getPos())) {
+				actions.addFirst(a);
+			}
+
+		} else if (a.getAction() == Action.GET_FLAG) {
+			System.out.println("FLAG");
+			agent.catchFlag();
+		} else if (a.getAction() == Action.GET_END) {
+			System.out.println("END");
+			agent.dropFlag();
+		} else if (a.getAction() == Action.GET_ANIMAL) {
+			System.out.println("ANIMAL");
+			agent.increaseLife(MapController.getMap()
+					.getLandscape(actions.getFirst().getPos()).killAnimal());
+		} else if (a.getAction() == Action.ATTACK) {
+			System.out.println("ATTACK");
+			agent.attack(MapController.getMap()
+					.getLandscape(actions.getFirst().getPos()).getAgent());
+		}
+
 	}
 
 	public void updateInternalState(Agent agent) {
@@ -73,7 +100,7 @@ public class Deliberative extends Architecture {
 			return Intention.GET_FLAG;
 		}
 
-		if (agent.hasLowLife()) {
+		if (agent.hasLowLife() || agent.hasFatigue()) {
 			return Intention.SURVIVE;
 		}
 
@@ -89,26 +116,37 @@ public class Deliberative extends Architecture {
 	}
 
 	public Perception getPerception(int x, int y) {
-		for (Perception p : state.getPerceptions()) {
-			if (p.getPosition().isSamePosition(new MapPosition(x, y))) {
-				return p;
-			}
-		}
-		return null;
+		return state.getWorld()[x][y];
 	}
 
-	public List<Action> plan(int intention, MapPosition initialPos,
+	public void addAction(Action a, LinkedList<Action> actions,
+			boolean usedPerception[][], int intention, int x, int y) {
+		MapPosition pos = a.getPos();
+		Perception percept = getPerception(pos.getX() + x, pos.getY() + y);
+
+		if (percept != null && !usedPerception[pos.getX() + x][pos.getY() + y]) {
+			actions.addLast(new Action(a, percept, intention));
+			usedPerception[pos.getX() + x][pos.getY() + y] = true;
+		}
+	}
+
+	public LinkedList<Action> plan(int intention, MapPosition initialPos,
 			int visibility, Agent agent) {
 
-		boolean usedPerception[] = new boolean[state.getPerceptions().size()];
+		boolean usedPerception[][] = new boolean[state.getHorizontalSize()][state
+				.getVerticalSize()];
 		LinkedList<Action> actions = new LinkedList<Action>();
 
+		Perception initialPercept = getPerception(initialPos.getX(),
+				initialPos.getY());
+		actions.add(new Action(null, initialPercept, intention));
+		usedPerception[initialPos.getX()][initialPos.getY()] = true;
 
-		for (Perception p : state.getPerceptions()) {
-			if (p.getPosition().isSamePosition(initialPos)) {
-				actions.add(new Action(null, p, intention));
-				usedPerception[p.getId()] = true;
-				break;
+		for (int i = 0; i < state.getHorizontalSize(); i++) {
+			for (int j = 0; j < state.getVerticalSize(); j++) {
+				if (getPerception(i, j).isBlocked()) {
+					usedPerception[i][j] = true;
+				}
 			}
 		}
 
@@ -118,37 +156,41 @@ public class Deliberative extends Architecture {
 			Action a = actions.removeFirst();
 
 			if (a != null) {
-				MapPosition pos = a.getPos();
-				System.out.println("pos" + a.getPos().getX() + " "
-						+ a.getPos().getY());
 
-				Perception p1 = getPerception(pos.getX() + 1, pos.getY());
-				Perception p2 = getPerception(pos.getX() - 1, pos.getY());
-				Perception p3 = getPerception(pos.getX(), pos.getY() + 1);
-				Perception p4 = getPerception(pos.getX(), pos.getY() - 1);
+				addAction(a, actions, usedPerception, intention, 1, 0);
+				addAction(a, actions, usedPerception, intention, -1, 0);
+				addAction(a, actions, usedPerception, intention, 0, 1);
+				addAction(a, actions, usedPerception, intention, 0, -1);
 
-				if (p1 != null && !usedPerception[p1.getId()]) {
-					actions.addLast(new Action(a, p1, intention));
-					usedPerception[p1.getId()] = true;
-				}
+				// MapPosition pos = a.getPos();
+				// System.out.println("pos" + a.getPos().getX() + " "
+				// + a.getPos().getY());
 
-				if (p2 != null && !usedPerception[p2.getId()]) {
-					actions.addLast(new Action(a, p2, intention));
-					usedPerception[p2.getId()] = true;
-				}
+				/*
+				 * Perception p1 = getPerception(pos.getX() + 1, pos.getY());
+				 * Perception p2 = getPerception(pos.getX() - 1, pos.getY());
+				 * Perception p3 = getPerception(pos.getX(), pos.getY() + 1);
+				 * Perception p4 = getPerception(pos.getX(), pos.getY() - 1);
+				 * 
+				 * if (p1 != null && !usedPerception[p1.getId()]) {
+				 * actions.addLast(new Action(a, p1, intention));
+				 * usedPerception[p1.getId()] = true; }
+				 * 
+				 * if (p2 != null && !usedPerception[p2.getId()]) {
+				 * actions.addLast(new Action(a, p2, intention));
+				 * usedPerception[p2.getId()] = true; }
+				 * 
+				 * if (p3 != null && !usedPerception[p3.getId()]) {
+				 * actions.addLast(new Action(a, p3, intention));
+				 * usedPerception[p3.getId()] = true; }
+				 * 
+				 * if (p4 != null && !usedPerception[p4.getId()]) {
+				 * actions.addLast(new Action(a, p4, intention));
+				 * usedPerception[p4.getId()] = true; }
+				 */
 
-				if (p3 != null && !usedPerception[p3.getId()]) {
-					actions.addLast(new Action(a, p3, intention));
-					usedPerception[p3.getId()] = true;
-				}
-
-				if (p4 != null && !usedPerception[p4.getId()]) {
-					actions.addLast(new Action(a, p4, intention));
-					usedPerception[p4.getId()] = true;
-				}
-
-				System.out.println("value "
-						+ a.getValue(state, agent, initialPos));
+				// System.out.println("value "
+				// + a.getValue(state, agent, initialPos));
 
 				if (a.getValue(state, agent, initialPos) > bestAction.getValue(
 						state, agent, initialPos)) {
@@ -157,7 +199,7 @@ public class Deliberative extends Architecture {
 			}
 		}
 
-		ArrayList<Action> acList = new ArrayList<Action>();
+		LinkedList<Action> acList = new LinkedList<Action>();
 		bestAction.getActionsList(acList);
 
 		return acList;

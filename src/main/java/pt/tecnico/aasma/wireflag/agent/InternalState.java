@@ -3,6 +3,8 @@ package pt.tecnico.aasma.wireflag.agent;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -10,11 +12,24 @@ public class InternalState {
 
 	private MapPosition endPos;
 	private MapPosition flagPos;
-	private List<Perception> perceptions;
 	private boolean teamHasFlag;
+	private Perception[][] world;
+	private int horizontalSize;
+	private int verticalSize;
 
 	public InternalState() {
-		perceptions = new ArrayList<Perception>();
+		horizontalSize = MapController.getMap().getNHorizontalTiles();
+		verticalSize = MapController.getMap().getNVerticalTiles();
+		world = new Perception[horizontalSize][verticalSize];
+
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				world[i][j] = new Perception(new MapPosition(i, j), 0, 0);
+				world[i][j].setBlocked(true);
+			}
+
+		}
+
 	}
 
 	/***************
@@ -28,8 +43,8 @@ public class InternalState {
 		return flagPos;
 	}
 
-	public List<Perception> getPerceptions() {
-		return perceptions;
+	public Perception[][] getWorld() {
+		return world;
 	}
 
 	/***************
@@ -45,7 +60,21 @@ public class InternalState {
 	}
 
 	public void setPerceptions(List<Perception> perceptions) {
-		this.perceptions = perceptions;
+
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				world[i][j].setExtremeWeather(false);
+				world[i][j].setFire(false);
+				world[i][j].setAnimal(false);
+				world[i][j].setTiredAgent(false);
+				world[i][j].setInjuredAgent(false);
+				world[i][j].setAgentAttack(0);
+				world[i][j].setEnemy(false);
+				if (world[i][j].getId() == 1) {
+					world[i][j].setId(-1);
+				}
+			}
+		}
 
 		for (Perception p : perceptions) {
 			if (p.hasFlag()) {
@@ -53,7 +82,29 @@ public class InternalState {
 			} else if (p.hasEndPoint()) {
 				endPos = p.getPosition();
 			}
+
+			if (world[p.getPosition().getX()][p.getPosition().getY()].getId() == 0) {
+				p.setId(1);
+			}
+
+			world[p.getPosition().getX()][p.getPosition().getY()] = p;
 		}
+	}
+
+	public int getHorizontalSize() {
+		return horizontalSize;
+	}
+
+	public void setHorizontalSize(int horizontalSize) {
+		this.horizontalSize = horizontalSize;
+	}
+
+	public int getVerticalSize() {
+		return verticalSize;
+	}
+
+	public void setVerticalSize(int verticalSize) {
+		this.verticalSize = verticalSize;
 	}
 
 	public void setTeamHasFlag(boolean teamHasFlag) {
@@ -78,10 +129,14 @@ public class InternalState {
 
 	public int hasEnemyClose(Agent a) {
 		int result = 0;
-		for (Perception p : perceptions) {
-			if (p.hasEnemy() && !(p.getAgentAttack() > a.getAgentAttack())
-					|| (p.hasInjuredAgent() && !a.hasLowLife())) {
-				result++;
+
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				if (world[i][j].hasEnemy()
+						&& !(world[i][j].getAgentAttack() > a.getAgentAttack())
+						|| (world[i][j].hasInjuredAgent() && !a.hasLowLife())) {
+					result++;
+				}
 			}
 		}
 		return result;
@@ -90,9 +145,11 @@ public class InternalState {
 	public int hasWeakTeamMember() {
 		int result = 0;
 
-		for (Perception p : perceptions) {
-			if (!p.hasEnemy() && p.hasInjuredAgent()) {
-				result++;
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				if (!world[i][j].hasEnemy() && world[i][j].hasInjuredAgent()) {
+					result++;
+				}
 			}
 		}
 		return result;
@@ -101,9 +158,11 @@ public class InternalState {
 	public int hasTiredTeamMember() {
 		int result = 0;
 
-		for (Perception p : perceptions) {
-			if (p.hasEnemy() && p.hasTiredAgent()) {
-				result++;
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				if (world[i][j].hasEnemy() && world[i][j].hasTiredAgent()) {
+					result++;
+				}
 			}
 		}
 		return result;
