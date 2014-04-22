@@ -51,13 +51,14 @@ public abstract class Agent implements IGameElement {
 	protected Animation left;
 	protected Animation sprite;
 	protected Animation ill;
-	private int direction;
+	protected Animation ballon;
 
 	private int teamId;
 	private int agentId;
 
 	private WorldPosition agentPos;
 	private Random random;
+	private int direction;
 	private float agentSpeed;
 	private int agentAttack;
 	private int fatigue;
@@ -78,6 +79,7 @@ public abstract class Agent implements IGameElement {
 		this.agentId = agentId;
 		this.architecture = arquitecture;
 
+		ballon = AnimationLoader.getLoader().getUpArrow();
 		ill = AnimationLoader.getLoader().getIll();
 		direction = UP;
 	}
@@ -152,6 +154,8 @@ public abstract class Agent implements IGameElement {
 	 ***********************/
 
 	public void stop() {
+		ballon = AnimationLoader.getLoader().getStop();
+
 		increaseLife(1);
 		fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
 		fatigue = Math.max(fatigue, 0);
@@ -171,6 +175,8 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public void attack(Agent agent) {
+		ballon = AnimationLoader.getLoader().getAttack();
+
 		agent.decreaseLife(agentAttack);
 	}
 
@@ -282,30 +288,37 @@ public abstract class Agent implements IGameElement {
 
 	/* agent approaches tile identified by mapPos */
 	public void approachTile(int delta, MapPosition mapPos) {
+		ballon = AnimationLoader.getLoader().getApproach();
 
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
 		/* if position is left to the agent's position, moves to the left */
-		if (oldPos.isLeft(mapPos, direction)) {
+		if (oldPos.isLeft(mapPos, direction)
+				&& !isBlocked(oldPos.getLeftPosition(direction))) {
 			moveLeft(delta, oldPos);
 		} else
 		/* if position is right to the agent's position, moves to the right */
-		if (oldPos.isRight(mapPos, direction)) {
+		if (oldPos.isRight(mapPos, direction)
+				&& !isBlocked(oldPos.getRightPosition(direction))) {
 			moveRight(delta, oldPos);
 		} else
 		/* if position is ahead to the agent's position, moves up */
-		if (oldPos.isAhead(mapPos, direction)) {
+		if (oldPos.isAhead(mapPos, direction)
+				&& !isBlocked(oldPos.getAheadPosition(direction))) {
 			moveUp(delta, oldPos);
 		} else
 		/* if position is behind to the agent's position, moves up */
-		if (oldPos.isBehind(mapPos, direction)) {
+		if (oldPos.isBehind(mapPos, direction)
+				&& !isBlocked(oldPos.getBehindPosition(direction))) {
 			moveDown(delta, oldPos);
 		}
 	}
 
 	public void moveDown(int delta, MapPosition oldPos) {
 		sprite = down;
+		ballon = AnimationLoader.getLoader().getDownArrow();
+
 		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
 				+ 2 * delta).getMapPosition();
 
@@ -317,6 +330,8 @@ public abstract class Agent implements IGameElement {
 
 	public void moveUp(int delta, MapPosition oldPos) {
 		sprite = up;
+		ballon = AnimationLoader.getLoader().getUpArrow();
+
 		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
 				- 2 * delta).getMapPosition();
 
@@ -328,6 +343,8 @@ public abstract class Agent implements IGameElement {
 
 	public void moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
+		ballon = AnimationLoader.getLoader().getRightArrow();
+
 		MapPosition newPos = new WorldPosition(agentPos.getX() + 2 * delta,
 				agentPos.getY()).getMapPosition();
 
@@ -339,6 +356,8 @@ public abstract class Agent implements IGameElement {
 
 	public void moveLeft(int delta, MapPosition oldPos) {
 		sprite = left;
+		ballon = AnimationLoader.getLoader().getLeftArrow();
+
 		MapPosition newPos = new WorldPosition(agentPos.getX() - 2 * delta,
 				agentPos.getY()).getMapPosition();
 
@@ -350,6 +369,8 @@ public abstract class Agent implements IGameElement {
 
 	public void changePosition(int delta, MapPosition oldPos, MapPosition newPos) {
 		sprite.update(delta);
+		ballon.update(delta);
+
 		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		MapController.getMap().getLandscape(agentPos).setAgent(this);
 
@@ -369,6 +390,7 @@ public abstract class Agent implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 		sprite.draw(agentPos.getX(), agentPos.getY());
+		ballon.draw(agentPos.getX() - 10, agentPos.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		g.drawString("hp:" + life, agentPos.getX() + 3, agentPos.getY() - 20);

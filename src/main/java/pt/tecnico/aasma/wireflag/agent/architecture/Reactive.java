@@ -559,7 +559,7 @@ public class Reactive extends Architecture {
 			List<Perception> perceptions) {
 
 		MapPosition actualPosition = agent.getPos().getMapPosition();
-		MapPosition aheadPosition = actualPosition.getAhedPosition(agent
+		MapPosition aheadPosition = actualPosition.getAheadPosition(agent
 				.getDirection());
 
 		return MapController.getMap().isBlocked(aheadPosition);
