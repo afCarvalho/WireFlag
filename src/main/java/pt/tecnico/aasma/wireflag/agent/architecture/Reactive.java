@@ -7,6 +7,7 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Reactive extends Architecture {
@@ -600,9 +601,6 @@ public class Reactive extends Architecture {
 						.invoke(this, new Object[] { agent, perceptions });
 
 				if (result) {
-					if (i == 18) {
-						System.err.println("18 begin!!!!!!!!!");
-					}
 					// Debug begin
 					// System.out.println("perception true: " + i);
 					// Debug end
@@ -613,10 +611,12 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-					if (i == 18) {
-						System.err.println("18 end !!!!!!!!!!!!!!");
-					}
-					System.err.println("action done: " + i);
+					System.err.println("Time: "
+							+ TimeController.getTime().getDays() + "d "
+							+ TimeController.getTime().getHours() + "h "
+							+ TimeController.getTime().getMinutes() + "m"
+							+ " action done: " + i);
+					System.err.println("direction: " + agent.getDirection());
 					// Debug end
 					return;
 				}

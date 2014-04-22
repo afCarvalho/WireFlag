@@ -37,6 +37,7 @@ public abstract class Agent implements IGameElement {
 	/* fatigue 0-100 */
 	protected final static int HIGH_FATIGUE = 80;
 	protected final static int LOW_FATIGUE = 0;
+	protected final static int FATIGUE_RECOVER = 5;
 
 	/* direction */
 	public final static int UP = 0;
@@ -152,7 +153,7 @@ public abstract class Agent implements IGameElement {
 
 	public void stop() {
 		increaseLife(1);
-		fatigue = Math.min(100, fatigue - 5);
+		fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
 		fatigue = Math.max(fatigue, 0);
 	}
 

@@ -94,7 +94,6 @@ public class MapController implements IController {
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
 		perception.setEndPoint(land.hasEndPoint());
 		perception.setAnimal(land.hasAnimal());
-		perception.setNight(TimeController.getTime().isNight());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
 		perception.setBlocked(isBlocked(pos));

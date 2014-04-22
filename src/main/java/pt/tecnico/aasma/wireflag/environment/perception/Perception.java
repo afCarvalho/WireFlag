@@ -14,7 +14,6 @@ public class Perception {
 	private int agentAttack;
 	private boolean endPoint;
 	private boolean animal;
-	private boolean night;
 	private boolean fire;
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
@@ -72,10 +71,6 @@ public class Perception {
 		this.animal = value;
 	}
 
-	public void setNight(boolean value) {
-		this.night = value;
-	}
-
 	public void setFire(boolean fire) {
 		this.fire = fire;
 	}
@@ -122,10 +117,6 @@ public class Perception {
 
 	public boolean hasAnimal() {
 		return animal;
-	}
-
-	public boolean hasNight() {
-		return night;
 	}
 
 	public boolean hasFire() {
