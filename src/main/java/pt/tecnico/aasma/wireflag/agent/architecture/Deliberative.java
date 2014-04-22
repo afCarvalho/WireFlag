@@ -39,15 +39,15 @@ public class Deliberative extends Architecture {
 
 		// System.out.println("planing finished" + actions.size());
 
-		for (int i = 0; i < MapController.getMap().getNHorizontalTiles(); i++)
-			for (int j = 0; j < MapController.getMap().getNVerticalTiles(); j++)
-				MapController.getMap().getLandscape(new MapPosition(i, j)).isSet = false;
+		//for (int i = 0; i < MapController.getMap().getNHorizontalTiles(); i++)
+		//	for (int j = 0; j < MapController.getMap().getNVerticalTiles(); j++)
+		//		MapController.getMap().getLandscape(new MapPosition(i, j)).isSet = false;
 
 		System.out.println("size " + actions.size());
 
-		for (Action a : actions) {
-			MapController.getMap().getLandscape(a.getPos()).isSet = true;
-		}
+		//for (Action a : actions) {
+		//	MapController.getMap().getLandscape(a.getPos()).isSet = true;
+		//}
 
 		Action a;
 
