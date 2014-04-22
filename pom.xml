@@ -12,6 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.data>/resources/data</project.data>
 	</properties>
 
 	<build>
@@ -26,7 +27,10 @@
 					<arguments>
 						<argument>-d64</argument>
 						<argument>-Djava.library.path=${project.build.directory}/natives/</argument>
-						<argument>-Ddata=/resources/data/</argument>
+						<argument>-Dweather=${project.data}/weather/</argument>
+						<argument>-Dobject=${project.data}/object/</argument>
+						<argument>-Danimal=${project.data}/animal/</argument>
+						<argument>-Dagent=${project.data}/agent/</argument>
 						<argument>-classpath</argument>
 						<classpath />
 						<argument>pt.tecnico.aasma.wireflag.WireFlagGame</argument>
