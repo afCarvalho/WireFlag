@@ -293,29 +293,30 @@ public abstract class Agent implements IGameElement {
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
 		MapPosition oldPos = agentPos.getMapPosition();
+
 		/* if position is left to the agent's position, moves to the left */
-		if (oldPos.isLeft(mapPos, direction)
-				&& !isBlocked(oldPos.getLeftPosition(direction))) {
-			moveLeft(delta, oldPos);
-		} else
+		if (oldPos.isLeft(mapPos, direction) && moveLeft(delta, oldPos)) {
+			return;
+		}
 		/* if position is right to the agent's position, moves to the right */
-		if (oldPos.isRight(mapPos, direction)
-				&& !isBlocked(oldPos.getRightPosition(direction))) {
-			moveRight(delta, oldPos);
-		} else
+		if (oldPos.isRight(mapPos, direction) && moveRight(delta, oldPos)) {
+			return;
+		}
 		/* if position is ahead to the agent's position, moves up */
-		if (oldPos.isAhead(mapPos, direction)
-				&& !isBlocked(oldPos.getAheadPosition(direction))) {
-			moveUp(delta, oldPos);
-		} else
+		if (oldPos.isAhead(mapPos, direction) && moveUp(delta, oldPos)) {
+			return;
+		}
 		/* if position is behind to the agent's position, moves up */
-		if (oldPos.isBehind(mapPos, direction)
-				&& !isBlocked(oldPos.getBehindPosition(direction))) {
-			moveDown(delta, oldPos);
+		if (oldPos.isBehind(mapPos, direction) && moveDown(delta, oldPos)) {
+			return;
 		}
 	}
 
-	public void moveDown(int delta, MapPosition oldPos) {
+	/*
+	 * if the agent can move down it moves and returns true. Returns false
+	 * otherwise.
+	 */
+	public boolean moveDown(int delta, MapPosition oldPos) {
 		sprite = down;
 		ballon = AnimationLoader.getLoader().getDownArrow();
 
@@ -325,10 +326,16 @@ public abstract class Agent implements IGameElement {
 		if (!isBlocked(newPos)) {
 			agentPos.setY(agentPos.getY() + delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
+			return true;
 		}
+		return false;
 	}
 
-	public void moveUp(int delta, MapPosition oldPos) {
+	/*
+	 * if the agent can move up it moves and returns true. Returns false
+	 * otherwise.
+	 */
+	public boolean moveUp(int delta, MapPosition oldPos) {
 		sprite = up;
 		ballon = AnimationLoader.getLoader().getUpArrow();
 
@@ -338,24 +345,36 @@ public abstract class Agent implements IGameElement {
 		if (!isBlocked(newPos)) {
 			agentPos.setY(agentPos.getY() - delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
+			return true;
 		}
+		return false;
 	}
 
-	public void moveRight(int delta, MapPosition oldPos) {
+	/*
+	 * if the agent can move to the right it moves and returns true. Returns
+	 * false otherwise.
+	 */
+	public boolean moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
 
 		ballon = AnimationLoader.getLoader().getRightArrow();
 
-		MapPosition newPos = new WorldPosition(agentPos.getX() +  delta,
+		MapPosition newPos = new WorldPosition(agentPos.getX() + delta,
 				agentPos.getY()).getMapPosition();
 
 		if (!isBlocked(newPos)) {
 			agentPos.setX(agentPos.getX() + delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
+			return true;
 		}
+		return false;
 	}
 
-	public void moveLeft(int delta, MapPosition oldPos) {
+	/*
+	 * if the agent can move to the left it moves and returns true. Returns
+	 * false otherwise.
+	 */
+	public boolean moveLeft(int delta, MapPosition oldPos) {
 		sprite = left;
 		ballon = AnimationLoader.getLoader().getLeftArrow();
 
@@ -365,7 +384,9 @@ public abstract class Agent implements IGameElement {
 		if (!isBlocked(newPos)) {
 			agentPos.setX(agentPos.getX() - delta * getAgentSpeed(oldPos));
 			changePosition(delta, oldPos, newPos);
+			return true;
 		}
+		return false;
 	}
 
 	public void changePosition(int delta, MapPosition oldPos, MapPosition newPos) {

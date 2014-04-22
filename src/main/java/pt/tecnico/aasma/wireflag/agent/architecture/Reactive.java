@@ -615,7 +615,8 @@ public class Reactive extends Architecture {
 							+ TimeController.getTime().getDays() + "d "
 							+ TimeController.getTime().getHours() + "h "
 							+ TimeController.getTime().getMinutes() + "m"
-							+ " action done: " + i);
+							+ " [T" + agent.getTeamId() + " A"
+							+ agent.getAgentId() + "] action done: " + i);
 					System.err.println("direction: " + agent.getDirection());
 					// Debug end
 					return;
