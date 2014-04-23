@@ -286,6 +286,90 @@ public abstract class Agent implements IGameElement {
 		move(delta);
 	}
 
+	/*
+	 * Agent approaches the tile on its left. Returns true if the agent can move
+	 * in the desired direction
+	 */
+	private boolean approachLeft(int delta, MapPosition oldPos) {
+
+		if (direction == UP && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		} else if (direction == LEFT && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		} else if (direction == DOWN && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == RIGHT && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Agent approaches the tile on its right. Returns true if the agent can
+	 * move in the desired direction
+	 */
+	private boolean approachRight(int delta, MapPosition oldPos) {
+
+		if (direction == UP && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == LEFT && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		} else if (direction == DOWN && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		} else if (direction == RIGHT && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Agent approaches the tile ahead it. Returns true if the agent can move in
+	 * the desired direction
+	 */
+	private boolean approachAhead(int delta, MapPosition oldPos) {
+
+		if (direction == UP && moveUp(delta, oldPos)) {
+			return true;
+		} else if (direction == LEFT && moveLeft(delta, oldPos)) {
+			return true;
+		} else if (direction == DOWN && moveDown(delta, oldPos)) {
+			return true;
+		} else if (direction == RIGHT && moveRight(delta, oldPos)) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Agent approaches the tile behind it. Returns true if the agent can move
+	 * in the desired direction
+	 */
+	private boolean approachBehind(int delta, MapPosition oldPos) {
+
+		if (direction == UP && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		} else if (direction == LEFT && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == DOWN && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		} else if (direction == RIGHT && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		}
+		return false;
+	}
+
 	/* agent approaches tile identified by mapPos */
 	public void approachTile(int delta, MapPosition mapPos) {
 		ballon = AnimationLoader.getLoader().getApproach();
@@ -295,23 +379,19 @@ public abstract class Agent implements IGameElement {
 		MapPosition oldPos = agentPos.getMapPosition();
 
 		/* if position is left to the agent's position, moves to the left */
-		if (oldPos.isLeft(mapPos, direction) && moveLeft(delta, oldPos)) {
-			direction = LEFT;
-			return;
-		}
-		/* if position is right to the agent's position, moves to the right */
-		if (oldPos.isRight(mapPos, direction) && moveRight(delta, oldPos)) {
-			direction = RIGHT;
+		if (oldPos.isLeft(mapPos, direction) && approachLeft(delta, oldPos)) {
 			return;
 		}
 		/* if position is ahead to the agent's position, moves up */
-		if (oldPos.isAhead(mapPos, direction) && moveUp(delta, oldPos)) {
-			direction = UP;
+		if (oldPos.isAhead(mapPos, direction) && approachAhead(delta, oldPos)) {
+			return;
+		}
+		/* if position is right to the agent's position, moves to the right */
+		if (oldPos.isRight(mapPos, direction) && approachRight(delta, oldPos)) {
 			return;
 		}
 		/* if position is behind to the agent's position, moves up */
-		if (oldPos.isBehind(mapPos, direction) && moveDown(delta, oldPos)) {
-			direction = DOWN;
+		if (oldPos.isBehind(mapPos, direction) && approachBehind(delta, oldPos)) {
 			return;
 		}
 	}

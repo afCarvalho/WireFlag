@@ -19,6 +19,7 @@ public class Reactive extends Architecture {
 		// Nothing to do here
 	}
 
+	/* returns the perception at position actualPos */
 	private Perception getPerceptionPos(MapPosition actualPos,
 			List<Perception> perceptions) {
 		for (Perception perception : perceptions) {
@@ -485,29 +486,6 @@ public class Reactive extends Architecture {
 					&& !perception.isBlocked()
 					&& actualPos.isAdjacentPosition(perception.getPosition(),
 							agent.getDirection())) {
-
-				// debug begin
-				System.err.println("perception.getLandRating(): "
-						+ perception.getLandRating()
-						+ " perceptionAgentPos.getLandRating(): "
-						+ perceptionAgentPos.getLandRating());
-
-				System.err.println("perception land rating: "
-						+ MapController.getMap()
-								.getLandscape(perception.getPosition())
-								.getRating()
-						+ " Agent pos land.getRating(): "
-						+ MapController.getMap().getLandscape(actualPos)
-								.getRating());
-
-				System.err.println("perception pos x: "
-						+ perception.getPosition().getX() + " y: "
-						+ perception.getPosition().getY());
-
-				System.err.println("agent pos x: " + actualPos.getX() + " y: "
-						+ actualPos.getY());
-				// debug end
-
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
@@ -588,10 +566,6 @@ public class Reactive extends Architecture {
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
 			try {
-				// Debug begin
-				// System.out.println("try perception: " + i);
-				// Debug end
-
 				Boolean result = (Boolean) this
 						.getClass()
 						.getDeclaredMethod("reactivePerception" + i,
@@ -601,9 +575,6 @@ public class Reactive extends Architecture {
 				if (result) {
 					// Debug begin
 					// System.out.println("perception true: " + i);
-					if (i == 16) {
-						System.err.println("------------------");
-					}
 					// Debug end
 
 					this.getClass()
@@ -612,15 +583,15 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-					if (i == 16) {
-						System.err.println("Time: "
-								+ TimeController.getTime().getDays() + "d "
-								+ TimeController.getTime().getHours() + "h "
-								+ TimeController.getTime().getMinutes() + "m"
-								+ " [T" + agent.getTeamId() + " A"
-								+ agent.getAgentId() + "] direction: "
-								+ agent.getDirection() + " action done: " + i);
-					}
+					/*
+					 * System.err.println("Time: " +
+					 * TimeController.getTime().getDays() + "d " +
+					 * TimeController.getTime().getHours() + "h " +
+					 * TimeController.getTime().getMinutes() + "m" + " [T" +
+					 * agent.getTeamId() + " A" + agent.getAgentId() +
+					 * "] direction: " + agent.getDirection() + " action done: "
+					 * + i);
+					 */
 					// Debug end
 
 					return;
