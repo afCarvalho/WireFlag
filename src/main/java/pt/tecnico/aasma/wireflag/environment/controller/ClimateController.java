@@ -21,7 +21,7 @@ public class ClimateController implements IController {
 		random = new Random();
 		activeFire = false;
 	}
-	
+
 	/**********************
 	 *** EVENT CREATORS ***
 	 **********************/
@@ -72,7 +72,7 @@ public class ClimateController implements IController {
 		}
 
 	}
-	
+
 	/**********************
 	 *** EVENT UPDATERS ***
 	 **********************/
@@ -123,5 +123,5 @@ public class ClimateController implements IController {
 	@Override
 	public void render(Graphics g) {
 	}
-
+	
 }

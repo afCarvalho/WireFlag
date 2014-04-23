@@ -386,6 +386,7 @@ public class Reactive extends Architecture {
 		}
 	}
 
+	/* Agent uses it's ability if exists a reason */
 	public boolean reactivePerception13(Agent agent,
 			List<Perception> perceptions) {
 		// TODO
@@ -468,6 +469,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
 					&& !perception.isBlocked()
+					&& !perception.hasExtremeWeather()
 					&& actualPos.isAdjacentPosition(perception.getPosition(),
 							agent.getDirection())) {
 				return true;
@@ -484,6 +486,7 @@ public class Reactive extends Architecture {
 		for (Perception perception : perceptions) {
 			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
 					&& !perception.isBlocked()
+					&& !perception.hasExtremeWeather()
 					&& actualPos.isAdjacentPosition(perception.getPosition(),
 							agent.getDirection())) {
 				agent.approachTile(delta, perception.getPosition());
@@ -583,6 +586,7 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
+
 					/*
 					 * System.err.println("Time: " +
 					 * TimeController.getTime().getDays() + "d " +
@@ -592,6 +596,7 @@ public class Reactive extends Architecture {
 					 * "] direction: " + agent.getDirection() + " action done: "
 					 * + i);
 					 */
+
 					// Debug end
 
 					return;
