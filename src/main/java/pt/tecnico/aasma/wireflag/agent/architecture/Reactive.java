@@ -404,22 +404,34 @@ public class Reactive extends Architecture {
 	/* Agent uses it's ability if exists a reason */
 	public boolean reactivePerception13(Agent agent,
 			List<Perception> perceptions) {
-		// TODO
+
+		for (Perception perception : perceptions) {
+			if (agent.isAbilityUseful(perception.getPosition())) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
 	public void doAction13(Agent agent, int delta, List<Perception> perceptions) {
-		// TODO
+		for (Perception perception : perceptions) {
+			if (agent.isAbilityUseful(perception.getPosition())) {
+				agent.useAbility(perception.getPosition());
+				return;
+			}
+		}
 	}
 
 	/*
-	 * if exists an enemy in an adjacent position, then agent attacks that enemy
+	 * if exists an enemy in an adjacent position and the agent has low life,
+	 * then the agent runs away
 	 */
 	public boolean reactivePerception14(Agent agent,
 			List<Perception> perceptions) {
 
 		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.hasEnemy()) {
+			if (perception.hasEnemy() && agent.hasLowLife()) {
 				return true;
 			}
 		}
@@ -430,25 +442,23 @@ public class Reactive extends Architecture {
 	public void doAction14(Agent agent, int delta, List<Perception> perceptions) {
 
 		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.hasEnemy()) {
+			if (perception.hasEnemy() && agent.hasLowLife()) {
 
-				MapPosition enemyPos = perception.getPosition();
-				Agent enemy = MapController.getMap().getLandscape(enemyPos)
-						.getAgent();
-				agent.attack(enemy);
+				agent.moveDifferentDirection(delta);
 				return;
 			}
 		}
 	}
 
 	/*
-	 * if the agent has an enemy in it's visibility, then agent approaches the
-	 * enemy
+	 * if exists an enemy in an adjacent position and the agent does not have
+	 * low life, then agent attacks that enemy
 	 */
 	public boolean reactivePerception15(Agent agent,
 			List<Perception> perceptions) {
-		for (Perception perception : perceptions) {
-			if (perception.hasEnemy()) {
+
+		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
+			if (perception.hasEnemy() && !agent.hasLowLife()) {
 				return true;
 			}
 		}
@@ -457,9 +467,14 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction15(Agent agent, int delta, List<Perception> perceptions) {
-		for (Perception perception : perceptions) {
-			if (perception.hasEnemy()) {
-				agent.approachTile(delta, perception.getPosition());
+
+		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
+			if (perception.hasEnemy() && !agent.hasLowLife()) {
+
+				MapPosition enemyPos = perception.getPosition();
+				Agent enemy = MapController.getMap().getLandscape(enemyPos)
+						.getAgent();
+				agent.attack(enemy);
 				return;
 			}
 		}

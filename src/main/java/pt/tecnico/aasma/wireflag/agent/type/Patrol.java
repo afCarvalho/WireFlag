@@ -2,7 +2,9 @@ package pt.tecnico.aasma.wireflag.agent.type;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
+import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Patrol extends Agent {
 
@@ -23,5 +25,25 @@ public class Patrol extends Agent {
 		} else {
 			return 0;
 		}
+	}
+
+	/*
+	 * returns true if its useful that this agent uses its ability at
+	 * MapPosition pos
+	 */
+	@Override
+	public boolean isAbilityUseful(MapPosition pos) {
+		Agent agent = MapController.getMap().getLandscape(pos).getAgent();
+
+		if (agent != null) {
+			return getTeamId() != agent.getTeamId();
+		}
+		return false;
+	}
+
+	/* this agent use its ability at MapPosition pos */
+	@Override
+	public void useAbility(MapPosition pos) {
+		// TODO comunica a todos os agentes da equipa que viu o enemy
 	}
 }

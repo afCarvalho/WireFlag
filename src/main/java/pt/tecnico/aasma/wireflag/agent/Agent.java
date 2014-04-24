@@ -33,6 +33,7 @@ public abstract class Agent implements IGameElement {
 	protected final static int VLOW_LIFE = 10;
 	protected final static int LOW_LIFE = 20;
 	protected final static int FULL_LIFE = 100;
+	protected final static int LIFE_RECOVER = 10;
 
 	/* fatigue 0-100 */
 	protected final static int HIGH_FATIGUE = 80;
@@ -199,6 +200,9 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
+	/* this agent use its ability at MapPosition pos */
+	public abstract void useAbility(MapPosition pos);
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -244,6 +248,12 @@ public abstract class Agent implements IGameElement {
 						&& land.getAgent().getAgentId() != getAgentId() || land
 						.getAgent().getTeamId() != getTeamId());
 	}
+
+	/*
+	 * returns true if its useful that this agent uses its ability at
+	 * MapPosition pos
+	 */
+	public abstract boolean isAbilityUseful(MapPosition pos);
 
 	/************************
 	 *** MOVEMENT RELATED ***
