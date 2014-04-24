@@ -404,11 +404,10 @@ public abstract class Agent implements IGameElement {
 		sprite = down;
 		ballon = AnimationLoader.getLoader().getDownArrow();
 
-		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
-				+ delta).getMapPosition();
+		WorldPosition newPos = new WorldPosition(agentPos.getX(),
+				agentPos.getY() + delta * getAgentSpeed(oldPos));
 
-		if (!isBlocked(newPos)) {
-			agentPos.setY(agentPos.getY() + delta * getAgentSpeed(oldPos));
+		if (!isBlocked(newPos.getMapPosition())) {
 			changePosition(delta, oldPos, newPos);
 			return true;
 		}
@@ -423,11 +422,10 @@ public abstract class Agent implements IGameElement {
 		sprite = up;
 		ballon = AnimationLoader.getLoader().getUpArrow();
 
-		MapPosition newPos = new WorldPosition(agentPos.getX(), agentPos.getY()
-				- delta).getMapPosition();
+		WorldPosition newPos = new WorldPosition(agentPos.getX(),
+				agentPos.getY() - delta * getAgentSpeed(oldPos));
 
-		if (!isBlocked(newPos)) {
-			agentPos.setY(agentPos.getY() - delta * getAgentSpeed(oldPos));
+		if (!isBlocked(newPos.getMapPosition())) {
 			changePosition(delta, oldPos, newPos);
 			return true;
 		}
@@ -442,11 +440,10 @@ public abstract class Agent implements IGameElement {
 		sprite = right;
 		ballon = AnimationLoader.getLoader().getRightArrow();
 
-		MapPosition newPos = new WorldPosition(agentPos.getX() + delta,
-				agentPos.getY()).getMapPosition();
+		WorldPosition newPos = new WorldPosition(agentPos.getX() + delta
+				* getAgentSpeed(oldPos), agentPos.getY());
 
-		if (!isBlocked(newPos)) {
-			agentPos.setX(agentPos.getX() + delta * getAgentSpeed(oldPos));
+		if (!isBlocked(newPos.getMapPosition())) {
 			changePosition(delta, oldPos, newPos);
 			return true;
 		}
@@ -461,20 +458,22 @@ public abstract class Agent implements IGameElement {
 		sprite = left;
 		ballon = AnimationLoader.getLoader().getLeftArrow();
 
-		MapPosition newPos = new WorldPosition(agentPos.getX() - delta,
-				agentPos.getY()).getMapPosition();
+		WorldPosition newPos = new WorldPosition(agentPos.getX() - delta
+				* getAgentSpeed(oldPos), agentPos.getY());
 
-		if (!isBlocked(newPos)) {
-			agentPos.setX(agentPos.getX() - delta * getAgentSpeed(oldPos));
+		if (!isBlocked(newPos.getMapPosition())) {
 			changePosition(delta, oldPos, newPos);
 			return true;
 		}
 		return false;
 	}
 
-	public void changePosition(int delta, MapPosition oldPos, MapPosition newPos) {
+	public void changePosition(int delta, MapPosition oldPos,
+			WorldPosition newPos) {
 		sprite.update(delta);
 		ballon.update(delta);
+
+		agentPos = newPos;
 
 		MapController.getMap().getLandscape(oldPos).setAgent(null);
 		MapController.getMap().getLandscape(agentPos).setAgent(this);

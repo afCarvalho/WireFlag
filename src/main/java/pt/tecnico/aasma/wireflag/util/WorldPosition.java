@@ -8,17 +8,17 @@ public class WorldPosition {
 	private float x;
 	private float y;
 
+	public WorldPosition(float x, float y) {
+		this.setX(x);
+		this.setY(y);
+	}
+
 	public float getY() {
 		return y;
 	}
 
 	public void setY(float y) {
 		this.y = y;
-	}
-
-	public WorldPosition(float x, float y) {
-		this.setX(x);
-		this.setY(y);
 	}
 
 	public float getX() {
@@ -40,5 +40,4 @@ public class WorldPosition {
 
 		return new MapPosition(xPos, yPos);
 	}
-
 }
