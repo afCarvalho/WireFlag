@@ -1,10 +1,8 @@
 package pt.tecnico.aasma.wireflag.agent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -13,27 +11,26 @@ public class InternalState {
 	private MapPosition endPos;
 	private MapPosition flagPos;
 	private boolean teamHasFlag;
-	private Perception[][] world;
+	private WorldState[][] world;
 	private int horizontalSize;
 	private int verticalSize;
-
-	public static final int EXPLORED = -1;
-	public static final int NEWLY_DISCOVERED = 1;
-	public static final int UNKNOWN = 0;
+	private KmCounter kmCounter;
 
 	public InternalState() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
 		verticalSize = MapController.getMap().getNVerticalTiles();
-		world = new Perception[horizontalSize][verticalSize];
+		world = new WorldState[horizontalSize][verticalSize];
+		kmCounter = new KmCounter();
 
 		for (int i = 0; i < horizontalSize; i++) {
 			for (int j = 0; j < verticalSize; j++) {
-				world[i][j] = new Perception(new MapPosition(i, j), 0, 0);
-				world[i][j].setBlocked(true);
+				world[i][j] = new WorldState(i, j);
+				if (i == horizontalSize - 1 || j == verticalSize - 1 || i == 0
+						|| j == 0) {
+					world[i][j].setAsExplored();
+				}
 			}
-
 		}
-
 	}
 
 	/***************
@@ -47,7 +44,7 @@ public class InternalState {
 		return flagPos;
 	}
 
-	public Perception[][] getWorld() {
+	public WorldState[][] getWorld() {
 		return world;
 	}
 
@@ -67,16 +64,7 @@ public class InternalState {
 
 		for (int i = 0; i < horizontalSize; i++) {
 			for (int j = 0; j < verticalSize; j++) {
-				world[i][j].setExtremeWeather(false);
-				world[i][j].setFire(false);
-				world[i][j].setAnimal(false);
-				world[i][j].setTiredAgent(false);
-				world[i][j].setInjuredAgent(false);
-				world[i][j].setAgentAttack(0);
-				world[i][j].setEnemy(false);
-				if (world[i][j].getId() == NEWLY_DISCOVERED) {
-					world[i][j].setId(EXPLORED);
-				}
+				world[i][j].updateState();
 			}
 		}
 
@@ -86,14 +74,8 @@ public class InternalState {
 			} else if (p.hasEndPoint()) {
 				endPos = p.getPosition();
 			}
-
-			if (world[p.getPosition().getX()][p.getPosition().getY()].getId() == UNKNOWN) {
-				p.setId(NEWLY_DISCOVERED);
-			} else {
-				p.setId(EXPLORED);
-			}
-
-			world[p.getPosition().getX()][p.getPosition().getY()] = p;
+			world[p.getPosition().getX()][p.getPosition().getY()]
+					.setPerception(p);
 		}
 	}
 
@@ -172,5 +154,17 @@ public class InternalState {
 			}
 		}
 		return result;
+	}
+
+	public void countKm(int actualFatigue) {
+		kmCounter.update(actualFatigue);
+	}
+
+	public void resetKm(int actualFatigue) {
+		kmCounter.reset(actualFatigue);
+	}
+
+	public boolean shouldStop(int actualFatigue) {
+		return kmCounter.isBurningOut(actualFatigue);
 	}
 }

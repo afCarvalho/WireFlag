@@ -124,7 +124,7 @@ public class EndGameController implements IController {
 		ttf.drawString(12 * MapController.getMap().getTileWidth(), y,
 				"Done by:", Color.lightGray);
 		ttf.drawString(18 * MapController.getMap().getTileWidth(), y,
-				"José Cavalheiro ", Color.lightGray);
+				"Jose Cavalheiro ", Color.lightGray);
 		y += 1 * MapController.getMap().getTileWidth();
 		ttf.drawString(18 * MapController.getMap().getTileWidth(), y,
 				"Alberto Carvalho ", Color.lightGray);

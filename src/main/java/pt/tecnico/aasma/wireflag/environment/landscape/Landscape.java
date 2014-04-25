@@ -259,8 +259,9 @@ public abstract class Landscape implements IGameElement {
 							((Deliberative) AgentController.getAgents()
 									.getTeams().get(0).getMembers().get(0)
 									.getArch()).getInternal().getWorld()[landscapePos
-									.getX()][landscapePos.getY()].getId() + " ",
-							x, y);
+									.getX()][landscapePos.getY()]
+									.getCondition()
+									+ " ", x, y);
 			}
 		}
 

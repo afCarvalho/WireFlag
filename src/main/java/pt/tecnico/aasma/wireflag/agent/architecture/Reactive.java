@@ -119,7 +119,7 @@ public class Reactive extends Architecture {
 	}
 
 	/*
-	 * if an agent has low life and an animal is in it's visibility then agent
+	 * if an agent has low life and an animal is in its visibility then agent
 	 * approaches the animal position
 	 */
 	public boolean reactivePerception4(Agent agent, List<Perception> perceptions) {

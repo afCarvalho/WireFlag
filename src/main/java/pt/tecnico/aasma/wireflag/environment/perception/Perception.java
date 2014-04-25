@@ -4,7 +4,6 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Perception {
 
-	private int id;
 	private MapPosition position;
 	private double landRating;
 	private boolean flag;
@@ -19,9 +18,8 @@ public class Perception {
 	private boolean extremeWeather;
 	private boolean blocked;
 
-	public Perception(MapPosition position, int id, double landRating) {
+	public Perception(MapPosition position, double landRating) {
 		this.position = position;
-		this.id = id;
 		this.landRating = landRating;
 	}
 
@@ -41,10 +39,6 @@ public class Perception {
 
 	public int getAgentAttack() {
 		return agentAttack;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public boolean getBlocked() {
@@ -89,10 +83,6 @@ public class Perception {
 
 	public void setAgentAttack(int agentAttack) {
 		this.agentAttack = agentAttack;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public void setBlocked(boolean blocked) {
