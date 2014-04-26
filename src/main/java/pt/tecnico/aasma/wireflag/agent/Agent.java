@@ -185,8 +185,17 @@ public abstract class Agent implements IGameElement {
 
 	public void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
+		int hitRate = random.nextInt(100);
 
-		agent.decreaseLife(agentAttack);
+		if (hitRate > 95) {
+			hitRate = agentAttack * 2;
+		} else if (hitRate < 15) {
+			hitRate = 0;
+		} else {
+			hitRate = agentAttack;
+		}
+
+		agent.decreaseLife(hitRate);
 	}
 
 	public void decreaseLife(int value) {
@@ -529,7 +538,8 @@ public abstract class Agent implements IGameElement {
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
 		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
-				getVisibilityRange() * MapController.getMap().getTileWidth());
+				getVisibilityRange() * MapController.getMap().getTileWidth()
+						* 1.5f);
 
 		g.draw(circle);
 		g.fill(circle);
