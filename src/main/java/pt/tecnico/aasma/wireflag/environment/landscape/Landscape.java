@@ -81,6 +81,10 @@ public abstract class Landscape implements IGameElement {
 		return 0.4 * movementSpeed + 0.4 * (5 - fatigue) + 0.2 * visibility;
 	}
 
+	public Animal getAnimal() {
+		return animal;
+	}
+
 	/***************
 	 *** SETTERS ***
 	 ***************/
