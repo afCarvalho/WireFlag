@@ -17,6 +17,31 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="7">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
   <tile id="12">
    <properties>
     <property name="terrain" value="desert"/>
@@ -37,6 +62,31 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="46">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="47">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="48">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="49">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="50">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
   <tile id="51">
    <properties>
     <property name="terrain" value="desert"/>
@@ -52,9 +102,64 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="84">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="85">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="86">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="87">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="88">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="89">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
   <tile id="90">
    <properties>
     <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="96">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="97">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="98">
+   <properties>
+    <property name="terrain" value="water"/>
    </properties>
   </tile>
   <tile id="121">
@@ -67,7 +172,42 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="123">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="124">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="125">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="134">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
   <tile id="135">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="136">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="137">
    <properties>
     <property name="terrain" value="water"/>
    </properties>
@@ -82,7 +222,42 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="162">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="163">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="164">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="172">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="173">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
   <tile id="174">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="175">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="176">
    <properties>
     <property name="terrain" value="water"/>
    </properties>
@@ -92,12 +267,112 @@
     <property name="terrain" value="desert"/>
    </properties>
   </tile>
+  <tile id="201">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="202">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="203">
+   <properties>
+    <property name="terrain" value="desert"/>
+   </properties>
+  </tile>
+  <tile id="211">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="212">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
   <tile id="213">
    <properties>
     <property name="terrain" value="water"/>
    </properties>
   </tile>
+  <tile id="214">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="215">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="250">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="251">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
   <tile id="252">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="253">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="254">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="273">
+   <properties>
+    <property name="terrain" value="trees"/>
+   </properties>
+  </tile>
+  <tile id="289">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="290">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="291">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="292">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="293">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="329">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="330">
+   <properties>
+    <property name="terrain" value="water"/>
+   </properties>
+  </tile>
+  <tile id="331">
    <properties>
     <property name="terrain" value="water"/>
    </properties>
@@ -247,9 +522,24 @@
     <property name="terrain" value="plain"/>
    </properties>
   </tile>
+  <tile id="667">
+   <properties>
+    <property name="terrain" value="mountain"/>
+   </properties>
+  </tile>
+  <tile id="750">
+   <properties>
+    <property name="terrain" value="mountain"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="781" name="trees" tilewidth="34" tileheight="34">
   <image source="tilea2.png" width="512" height="384"/>
+  <tile id="3">
+   <properties>
+    <property name="terrain" value="trees"/>
+   </properties>
+  </tile>
   <tile id="10">
    <properties>
     <property name="terrain" value="limit"/>
@@ -280,10 +570,39 @@
     <property name="terrain" value="mountain"/>
    </properties>
   </tile>
+  <tile id="64">
+   <properties>
+    <property name="terrain" value="mountain"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="946" name="treetop" tilewidth="34" tileheight="34">
+  <image source="../../../../../Desktop/treetop.png" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="976" name="treetrunk" tilewidth="34" tileheight="34">
+  <image source="../../../../../Desktop/trunk.png" width="192" height="96"/>
+ </tileset>
+ <tileset firstgid="986" name="mountains_0" tilewidth="34" tileheight="34">
+  <image source="../../../../../Desktop/mountains_0.png" width="192" height="160"/>
  </tileset>
  <layer name="Layer 0" width="41" height="23">
   <data encoding="base64" compression="gzip">
-   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
+   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
+  </data>
+ </layer>
+ <layer name="Layer1" width="41" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3UMQqAQAxE0UDufygVVFBBBddy15sYsNzYiOC4zIMh7a8iUqaoIulmh35dd2HjO/7QSEREz1T2x2tnDdB/b62lc9YDNQ7WMjqbgBpna1k0vytQ42YtQfO7AzUSlewERUjBgrwOAAA=
+  </data>
+ </layer>
+ <layer name="Layer2" width="41" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OQQqAIBhE4R+8/6EsSCGECsrrOK504apFuXgfDLN9ZgAAAHjLO7NlsNX9XdZsagmDxYkad7Uc2qld3aeJGqtbPY+WuwfwjQIwkBuAvA4AAA==
+  </data>
+ </layer>
+ <layer name="Layer3" width="41" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OMQoAIAzAwEL//ygVVFD/ZDeX7paSg+wRAQAAQGZFRapT099nT7eX4TQDPS572U4n0COQ2QWiMnDNvA4AAA==
   </data>
  </layer>
 </map>
