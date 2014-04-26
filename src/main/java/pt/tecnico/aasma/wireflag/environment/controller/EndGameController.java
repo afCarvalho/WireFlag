@@ -51,6 +51,21 @@ public class EndGameController implements IController {
 		if (nAliveAgents == 0) {
 			WireFlagGame.win(-1);
 		}
+
+		int winnerTeam = -1;
+		for (Team team : AgentController.getAgents().getTeams()) {
+			for (Agent a : team.getMembers()) {
+				if (a.isAlive() && winnerTeam == -1) {
+					winnerTeam = a.getTeamId();
+				}
+
+				if (a.isAlive() && winnerTeam != a.getTeamId()) {
+					return;
+				}
+			}
+		}
+
+		WireFlagGame.win(winnerTeam);
 	}
 
 	public void endGame(int winnerTeam) {
@@ -72,7 +87,7 @@ public class EndGameController implements IController {
 				MapController.getMap().getLandscape(new WorldPosition(x, y))
 						.setVisibility(-1);
 			}
-			y += y;
+			y += 5 * tileHeight;
 			x = 15 * tileWidth;
 		}
 	}
@@ -124,7 +139,7 @@ public class EndGameController implements IController {
 		ttf.drawString(12 * MapController.getMap().getTileWidth(), y,
 				"Done by:", Color.lightGray);
 		ttf.drawString(18 * MapController.getMap().getTileWidth(), y,
-				"José Cavalheiro ", Color.lightGray);
+				"Jose Cavalheiro ", Color.lightGray);
 		y += 1 * MapController.getMap().getTileWidth();
 		ttf.drawString(18 * MapController.getMap().getTileWidth(), y,
 				"Alberto Carvalho ", Color.lightGray);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
@@ -66,29 +67,74 @@ public class Reactive extends Architecture {
 		WireFlagGame.win(agent.getTeamId());
 	}
 
-	/* agent stops if has very low life */
+	/* if the flag is in the agent's actual position */
 	public boolean reactivePerception1(Agent agent, List<Perception> perceptions) {
-		return agent.hasVeryLowLife();
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		return getPerceptionPos(actualPos, perceptions).hasFlag();
 	}
 
 	public void doAction1(Agent agent, int delta, List<Perception> perceptions) {
-		agent.stop();
+		MapPosition actualPos = agent.getPos().getMapPosition();
+
+		if (getPerceptionPos(actualPos, perceptions).hasFlag()) {
+			agent.catchFlag();
+		}
 	}
 
-	/* agent stops if has extreme fatigue */
+	/*
+	 * if exists an enemy in an adjacent position and the agent has low life,
+	 * then the agent runs away
+	 */
 	public boolean reactivePerception2(Agent agent, List<Perception> perceptions) {
-		return agent.hasFatigue();
+
+		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
+			if (perception.hasEnemy() && agent.hasLowLife()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void doAction2(Agent agent, int delta, List<Perception> perceptions) {
-		agent.stop();
+
+		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
+			if (perception.hasEnemy() && agent.hasLowLife()) {
+
+				agent.moveDifferentDirection(delta);
+				return;
+			}
+		}
+	}
+
+	/* agent stops if has very low life */
+	public boolean reactivePerception3(Agent agent, List<Perception> perceptions) {
+		return agent.hasVeryLowLife();
+	}
+
+	public void doAction3(Agent agent, int delta, List<Perception> perceptions) {
+		while (agent.getLife() < 100) {
+			agent.stop();
+		}
+	}
+
+	/* agent stops if has extreme fatigue */
+	public boolean reactivePerception4(Agent agent, List<Perception> perceptions) {
+		return agent.hasFatigue();
+	}
+
+	public void doAction4(Agent agent, int delta, List<Perception> perceptions) {
+		while (agent.getFatigue() > 0) {
+			agent.stop();
+		}
 	}
 
 	/*
 	 * when an animal is an adjacent position and the agent has low or very low
 	 * life it is devoured
 	 */
-	public boolean reactivePerception3(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception5(Agent agent, List<Perception> perceptions) {
 		/*
 		 * an agent with low life also has very low life, so is only necessary
 		 * verify one condition (has low life)
@@ -104,25 +150,23 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction3(Agent agent, int delta, List<Perception> perceptions) {
-		int killResult = 0;
-
+	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
 		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
 			if (perception.hasAnimal()) {
 
-				killResult = MapController.getMap()
-						.getLandscape(perception.getPosition()).killAnimal();
-				agent.increaseLife(killResult);
+				Animal prey = MapController.getMap()
+						.getLandscape(perception.getPosition()).getAnimal();
+				agent.hunt(prey);
 				return;
 			}
 		}
 	}
 
 	/*
-	 * if an agent has low life and an animal is in it's visibility then agent
+	 * if an agent has low life and an animal is in its visibility then agent
 	 * approaches the animal position
 	 */
-	public boolean reactivePerception4(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception6(Agent agent, List<Perception> perceptions) {
 
 		if (agent.hasLowLife()) {
 			for (Perception perception : perceptions) {
@@ -135,7 +179,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction4(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction6(Agent agent, int delta, List<Perception> perceptions) {
 		for (Perception perception : perceptions) {
 			if (perception.hasAnimal()) {
 
@@ -145,26 +189,11 @@ public class Reactive extends Architecture {
 		}
 	}
 
-	/* if the flag is in the agent's actual position */
-	public boolean reactivePerception5(Agent agent, List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-
-		return getPerceptionPos(actualPos, perceptions).hasFlag();
-	}
-
-	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-
-		if (getPerceptionPos(actualPos, perceptions).hasFlag()) {
-			agent.catchFlag();
-		}
-	}
-
 	/*
 	 * if the agent's actual position has fire it moves to adjacent position if
 	 * it is available
 	 */
-	public boolean reactivePerception6(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception7(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 		boolean result = false;
@@ -182,7 +211,7 @@ public class Reactive extends Architecture {
 		return result;
 	}
 
-	public void doAction6(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction7(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
 
@@ -201,7 +230,7 @@ public class Reactive extends Architecture {
 	 * if the agent actual position has fire and exists one better position, in
 	 * the agent's visibility, the agent approaches it.
 	 */
-	public boolean reactivePerception7(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception8(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		boolean result = false;
 
@@ -219,7 +248,7 @@ public class Reactive extends Architecture {
 		return result;
 	}
 
-	public void doAction7(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction8(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		if (getPerceptionPos(actualPos, perceptions).hasFire()) {
@@ -236,7 +265,7 @@ public class Reactive extends Architecture {
 	 * if the agent actual position has extreme weather it moves to adjacent
 	 * position if it is available
 	 */
-	public boolean reactivePerception8(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception9(Agent agent, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		boolean result = false;
 
@@ -254,7 +283,7 @@ public class Reactive extends Architecture {
 		return result;
 	}
 
-	public void doAction8(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction9(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
@@ -272,7 +301,8 @@ public class Reactive extends Architecture {
 	 * if the agent actual position has extreme weather and exists one better
 	 * position in the agent's visibility, the agent approaches it.
 	 */
-	public boolean reactivePerception9(Agent agent, List<Perception> perceptions) {
+	public boolean reactivePerception10(Agent agent,
+			List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 		boolean result = false;
 
@@ -290,7 +320,7 @@ public class Reactive extends Architecture {
 		return result;
 	}
 
-	public void doAction9(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction10(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		if (getPerceptionPos(actualPos, perceptions).hasExtremeWeather()) {
@@ -308,7 +338,7 @@ public class Reactive extends Architecture {
 	 * switches it's direction unless the adjacent positions has extreme weather
 	 * or fire.
 	 */
-	public boolean reactivePerception10(Agent agent,
+	public boolean reactivePerception11(Agent agent,
 			List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
@@ -330,7 +360,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction10(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction11(Agent agent, int delta, List<Perception> perceptions) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
 		Perception aheadPerception = getPerceptionPos(
@@ -352,7 +382,7 @@ public class Reactive extends Architecture {
 	 * if the agent has the flag and the end point is in it's visibility, then
 	 * agent approaches the end point
 	 */
-	public boolean reactivePerception11(Agent agent,
+	public boolean reactivePerception12(Agent agent,
 			List<Perception> perceptions) {
 
 		if (agent.hasFlag()) {
@@ -366,7 +396,7 @@ public class Reactive extends Architecture {
 		return false;
 	}
 
-	public void doAction11(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
 				if (perception.hasEndPoint()) {
@@ -381,32 +411,10 @@ public class Reactive extends Architecture {
 	 * if the agent has the flag in it's visibility, then agent approaches the
 	 * flag position
 	 */
-	public boolean reactivePerception12(Agent agent,
-			List<Perception> perceptions) {
-		for (Perception perception : perceptions) {
-			if (perception.hasFlag()) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
-		for (Perception perception : perceptions) {
-			if (perception.hasFlag()) {
-				agent.approachTile(delta, perception.getPosition());
-				return;
-			}
-		}
-	}
-
-	/* Agent uses it's ability if exists a reason */
 	public boolean reactivePerception13(Agent agent,
 			List<Perception> perceptions) {
-
 		for (Perception perception : perceptions) {
-			if (agent.isAbilityUseful(perception.getPosition())) {
+			if (perception.hasFlag()) {
 				return true;
 			}
 		}
@@ -416,22 +424,19 @@ public class Reactive extends Architecture {
 
 	public void doAction13(Agent agent, int delta, List<Perception> perceptions) {
 		for (Perception perception : perceptions) {
-			if (agent.isAbilityUseful(perception.getPosition())) {
-				agent.useAbility(perception.getPosition());
+			if (perception.hasFlag()) {
+				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
 		}
 	}
 
-	/*
-	 * if exists an enemy in an adjacent position and the agent has low life,
-	 * then the agent runs away
-	 */
+	/* Agent uses it's ability if exists a reason */
 	public boolean reactivePerception14(Agent agent,
 			List<Perception> perceptions) {
 
-		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.hasEnemy() && agent.hasLowLife()) {
+		for (Perception perception : perceptions) {
+			if (agent.isAbilityUseful(perception.getPosition())) {
 				return true;
 			}
 		}
@@ -440,11 +445,9 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction14(Agent agent, int delta, List<Perception> perceptions) {
-
-		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.hasEnemy() && agent.hasLowLife()) {
-
-				agent.moveDifferentDirection(delta);
+		for (Perception perception : perceptions) {
+			if (agent.isAbilityUseful(perception.getPosition())) {
+				agent.useAbility(perception.getPosition());
 				return;
 			}
 		}

@@ -2,17 +2,16 @@ package pt.tecnico.aasma.wireflag.agent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
-import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Action {
 
-	private Perception perception;
+	private WorldState perception;
 	private Action ancestor;
 	private int intention;
 	private int action;
+	private double val;
 
 	public static int MOVE_ACTION = 0;
 	public static int STOP_ACTION = 1;
@@ -22,7 +21,11 @@ public class Action {
 	public static int GET_END = 5;
 	public static int ATTACK = 6;
 
-	public Action(Action action, Perception p, int intention) {
+	public static final int GO_FURTHER = 0;
+	public static final int GO_CLOSE = 1;
+	public static final int GO_AWAY = 2;
+
+	public Action(Action action, WorldState p, int intention) {
 		this.ancestor = action;
 		this.perception = p;
 		this.intention = intention;
@@ -32,46 +35,156 @@ public class Action {
 		return perception.getPosition();
 	}
 
-	public Perception getPerception() {
+	public WorldState getPerception() {
 		return perception;
 	}
 
-	public double getValue(InternalState state, Agent a, MapPosition initialPos) {
+	public double getNUnknownAdjacent(Agent a, InternalState state) {
 
-		double moveUtility = getClimateUtility() + getLandscapeUtility()
-				+ getFireUtility() + getIllUtility(a);
-		double flagUtility = getFlagUtility();
-		double animalUtility = getAnimalUtility(a);
-		double endUtility = getEndUtility(state);
-		double stopUtility = getStopUtility(a) + getIllUtility(a);
-		double habilityUtility = getHabilityUtility(state, a);
-		double enemyUtility = getEnemyUtility(a, state);
+		MapPosition pos = perception.getPosition();
+		MapPosition aPos = a.getPos().getMapPosition();
+		double result = 1;
+		double distance = Math.abs(pos.getX() - aPos.getX())
+				+ Math.abs(pos.getY() - aPos.getY()) + 1;
 
-		if (intention == Intention.END_GAME) {
-			endUtility += getEndUtility(state);
+		// System.out.println("Perception " + pos.getX() + " " + pos.getY() +
+		// " "
+		// + distance);
+		// System.out.println("Action " + aPos.getX() + " " + aPos.getY());
+
+		WorldState p1 = state.getWorld()[pos.getX() + 1][pos.getY()];
+		WorldState p2 = state.getWorld()[pos.getX() - 1][pos.getY()];
+		WorldState p3 = state.getWorld()[pos.getX()][pos.getY() + 1];
+		WorldState p4 = state.getWorld()[pos.getX()][pos.getY() - 1];
+
+		/*
+		 * for (int i = 0; i < state.getHorizontalSize(); i++) { for (int j = 0;
+		 * j < state.getVerticalSize(); j++) { if
+		 * (state.getWorld()[i][j].getPosition().isSamePosition(pos)) {
+		 * System.out.print(" X "); } else if
+		 * (state.getWorld()[i][j].getPosition().isSamePosition(
+		 * p1.getPosition())) { System.out.print(" P1/" +
+		 * state.getWorld()[i][j].getId()); } else if
+		 * (state.getWorld()[i][j].getPosition().isSamePosition(
+		 * p2.getPosition())) { System.out.print(" P2/" +
+		 * state.getWorld()[i][j].getId()); } if
+		 * (state.getWorld()[i][j].getPosition().isSamePosition(
+		 * p3.getPosition())) { System.out.print(" P3/" +
+		 * state.getWorld()[i][j].getId()); } if
+		 * (state.getWorld()[i][j].getPosition().isSamePosition(
+		 * p4.getPosition())) { System.out.print(" P4/" +
+		 * state.getWorld()[i][j].getId()); } else { System.out .print(" " +
+		 * state.getWorld()[i][j].getId() + " "); } }
+		 * 
+		 * System.out.println(""); }
+		 */
+
+		if (p1 != null && p1.isUnknown()) {
+			// System.out.println("P1");
+			result += 10 * result / distance;
+		} else
+
+		if (p2 != null && p2.isUnknown()) {
+			// System.out.println("P2");
+			result += 10 * result / distance;
+		} else
+
+		if (p3 != null && p3.isUnknown()) {
+			// System.out.println("P3");
+			result += 10 * result / distance;
+		} else
+
+		if (p4 != null && p4.isUnknown()) {
+			// System.out.println("P4");
+			result += 10 * result / distance;
 		}
 
-		if (intention == Intention.GET_FLAG) {
-			flagUtility += getFlagUtility();
+		// System.out.println("result " + result);
+
+		return result;
+	}
+
+	public double getValue(InternalState state, Agent a,
+			MapPosition initialPos, int option) {
+
+		double moveUtility;
+
+		if (option == GO_FURTHER) {
+			moveUtility = (((getMoveUtility(a))) / (getNActions()))
+					+ ((getNUnknownAdjacent(a, state)));
+		} else if (option == GO_AWAY) {
+			moveUtility = getMoveUtility(a) * getNActions() + getNActions();
+			/* + getNUnknownAdjacent(a, state); */
+		} else {
+			moveUtility = (((getMoveUtility(a)) + ((1 + perception
+					.getCondition()) / (getNActions())))) / (getNActions());
 		}
 
-		if (intention == Intention.SURVIVE) {
-			stopUtility += stopUtility;
-			animalUtility += getAnimalUtility(a);
+		if (!state.getWorld()[a.getPos().getMapPosition().getX()][a.getPos()
+				.getMapPosition().getY()].hasExtremeWeather()
+				&& !state.getWorld()[a.getPos().getMapPosition().getX()][a
+						.getPos().getMapPosition().getY()].hasFire()) {
+			moveUtility = moveUtility
+					* Math.min(Math.min(getClimateUtility(), getFireUtility()),
+							getBlockedUtility(a));
+		}
+		double stopUtility = moveUtility;
+		// System.out.println("Climate Utility " + getClimateUtility());
+		// System.out.println("Actions " + getNActions() + 1 + " "
+		// + getMoveUtility(a) + " " + moveUtility);
+
+		double flagUtility = getFlagUtility() * moveUtility;
+		double endUtility = getEndUtility(state, a) * moveUtility;
+		// double animalUtility = getAnimalUtility(a);
+		// double endUtility = getEndUtility(state);
+
+		double stopFactor = getStopUtility(a, state);
+		double illFactor = getIllUtility(a);
+		double lifeFactor = getLifeUtility(a);
+
+		if (stopFactor != 0 && stopFactor < a.getFatigue() + 1) {
+			// System.out.println("STOP FACTOR");
+			stopUtility = stopUtility + stopFactor;
+		} else if (illFactor != 0 && illFactor < 100 - a.getLife()) {
+			// System.out.println("ILL FACTOR");
+			stopUtility = stopUtility + illFactor;
+		} else if (lifeFactor != 0 && lifeFactor < 100 - a.getLife()) {
+			// System.out.println("LIFE FACTOR " + lifeFactor);
+			stopUtility = stopUtility + lifeFactor;
 		}
 
-		if (intention == Intention.TEAM_SURVIVE) {
-			stopUtility += stopUtility;
-			habilityUtility += habilityUtility;
-		}
+		// +
+		// getIllUtility(a);
+		// double habilityUtility = getHabilityUtility(state, a);
+		// double enemyUtility = getEnemyUtility(a, state);
 
-		if (intention == Intention.MOVE) {
-			moveUtility += moveUtility;
-		}
+		/*
+		 * if (intention == Intention.END_GAME) { endUtility +=
+		 * getEndUtility(state); }
+		 */
 
-		if (intention == Intention.ATTACK) {
-			enemyUtility += enemyUtility;
-		}
+		/*
+		 * if (intention == Intention.GET_FLAG) { flagUtility +=
+		 * getFlagUtility(); }
+		 */
+
+		/*
+		 * if (intention == Intention.SURVIVE) { stopUtility += stopUtility;
+		 * animalUtility += getAnimalUtility(a); }
+		 */
+
+		/*
+		 * if (intention == Intention.TEAM_SURVIVE) { stopUtility +=
+		 * stopUtility; habilityUtility += habilityUtility; }
+		 */
+
+		/*
+		 * if (intention == Intention.MOVE) { moveUtility += moveUtility; }
+		 */
+
+		/*
+		 * if (intention == Intention.ATTACK) { enemyUtility += enemyUtility; }
+		 */
 
 		/*
 		 * if (perception.isBlocked()) { moveUtility = 0; }
@@ -79,27 +192,31 @@ public class Action {
 
 		ArrayList<Double> utilities = new ArrayList<Double>();
 		utilities.add(moveUtility);
-		// utilities.add(flagUtility);
+		utilities.add(flagUtility);
 		// utilities.add(animalUtility);
-		// utilities.add(endUtility);
+		utilities.add(endUtility);
 		utilities.add(stopUtility);
 		// utilities.add(habilityUtility);
 		// utilities.add(enemyUtility);
 
-		//System.out.println("Move utility " + moveUtility + " "
-		//		+ perception.getId());
+		// System.out.println("Move utility " + moveUtility + " "
+		// + getMoveUtility(a));
 		// System.out.println("Flag utility " + flagUtility);
 		// System.out.println("Animal utility " + flagUtility);
 		// System.out.println("End utility " + flagUtility);
-		//System.out.println("Stop utility " + stopUtility);
-		//System.out.println("agent fatigue " + a.getFatigue());
+		// System.out.println("Stop utility " + stopUtility);
+		// System.out.println("agent fatigue " + a.getFatigue());
 		// System.out.println("Enemy utility " + flagUtility);
 
+		// System.out.println("Perception id " + perception.getId());
+
 		double higherUtility = 0;
+		double lowerUtility = 0;
 		double totalUtility = 0;
 
 		for (Double value : utilities) {
 			higherUtility = Math.max(higherUtility, value);
+			lowerUtility = Math.min(lowerUtility, value);
 			totalUtility += value;
 		}
 
@@ -109,29 +226,35 @@ public class Action {
 		 * perception.getPosition().getY())) + 1;
 		 */
 
-		if (ancestor != null) {
-			totalUtility += ancestor.getValue(state, a, initialPos);
-		}
+		// if (ancestor != null) {
+		// totalUtility += ancestor.getValue(state, a, initialPos);
+		// }
 
 		if (moveUtility == higherUtility) {
-			System.out.println("MOVE ACTION");
+			/*
+			 * System.out.println("MOVE ACTION" + " move " + moveUtility +
+			 * " stop " + stopUtility + " stop factor " + stopFactor +
+			 * " fatigue " + a.getFatigue() + " NActions " + getNActions());
+			 */
 			action = MOVE_ACTION;
-		}
+		} else
 
 		if (higherUtility == flagUtility) {
 			action = GET_FLAG;
-		}
-
-		if (higherUtility == animalUtility) {
-			action = GET_ANIMAL;
-		}
-
+		} else
+		/*
+		 * if (higherUtility == animalUtility) { action = GET_ANIMAL; }
+		 */
 		if (higherUtility == endUtility) {
 			action = GET_END;
-		}
+		} else
 
 		if (stopUtility == higherUtility) {
-			System.out.println("STOP ACTION");
+			/*
+			 * System.out.println("STOP ACTION" + " move " + moveUtility +
+			 * " stop " + stopUtility + " stop factor " + stopFactor +
+			 * " fatigue " + a.getFatigue() + " NActions " + getNActions());
+			 */
 			action = STOP_ACTION;
 		}
 
@@ -139,15 +262,31 @@ public class Action {
 		 * if (habilityUtility == higherUtility) { action = HABILITY_ACTION; }
 		 */
 
-		if (enemyUtility == higherUtility) {
-			action = ATTACK;
+		/*
+		 * if (enemyUtility == higherUtility) { action = ATTACK; }
+		 */
+
+		if (ancestor == null) {
+			totalUtility = Math.min(lowerUtility, 0);
 		}
 
-		if (stopUtility == higherUtility) {
-			action = STOP_ACTION;
-		}
+		// System.out.println("Total utility " + totalUtility + " n Actions "
+		// + getNActions());
+		val = totalUtility;
 
 		return totalUtility;
+	}
+
+	public Action getAncestor() {
+		return ancestor;
+	}
+
+	public void setAncestor(Action ancestor) {
+		this.ancestor = ancestor;
+	}
+
+	public double getValue() {
+		return val;
 	}
 
 	public int getAction() {
@@ -156,19 +295,19 @@ public class Action {
 
 	public void getActionsList(LinkedList<Action> actions) {
 
-		if (actions.size() == 0) {
-			actions.addFirst(this);
-		}
+		/*
+		 * if (actions.size() == 0) { actions.addFirst(this); }
+		 */
+		actions.addFirst(this);
 
 		if (ancestor != null) {
-			actions.addFirst(ancestor);
 			ancestor.getActionsList(actions);
 		}
 	}
 
 	public int getNActions() {
 		if (ancestor == null) {
-			return 0;
+			return 1;
 		}
 
 		return 1 + ancestor.getNActions();
@@ -178,49 +317,80 @@ public class Action {
 	 *** LANDSCAPE FACTORS ***
 	 *************************/
 
-	private double getClimateUtility() {
-		if (perception.hasExtremeWeather()) {
-			return -20;
+	public double getMoveUtility(Agent a) {
+		double result = /* 10 * */getLandscapeUtility();
+
+		if (ancestor == null) {
+			return result;
 		} else {
-			return 0;
+			return result + ancestor.getMoveUtility(a);
 		}
+
 	}
 
 	private double getLandscapeUtility() {
-		System.out.println(getNActions());
-		return (6 * perception.getLandRating() + 4 * (1 + perception.getId()))
-				/ (getNActions() + 1);
+		// System.out.println(getNActions());
+		return perception.getLandRating();
 	}
 
-	private double getFireUtility() {
-		if (perception.hasFire()) {
-			return -30;
+	public double getClimateUtility() {
+		if (perception.hasExtremeWeather()) {
+			return -1;
+		} else if (ancestor != null) {
+			return ancestor.getClimateUtility();
 		} else {
-			return 0;
+			return 1;
+		}
+	}
+
+	public double getFireUtility() {
+		if (perception.hasFire()) {
+			return -1;
+		} else if (ancestor != null) {
+			return ancestor.getFireUtility();
+		} else {
+			return 1;
+		}
+	}
+
+	public double getBlockedUtility(Agent a) {
+		if (perception.isBlocked()
+				&& !a.getPos().getMapPosition()
+						.isSamePosition(perception.getPosition())) {
+			return -1;
+		} else if (ancestor != null) {
+			return ancestor.getBlockedUtility(a);
+		} else {
+			return 1;
 		}
 	}
 
 	private double getFlagUtility() {
 		if (perception.hasFlag()) {
-			return 50;
+			return 100;
 		} else {
-			return 0;
+			return 1;
 		}
 	}
 
-	private double getEndUtility(InternalState state) {
-		if (state.teamHasFlag()) {
-			return 50;
+	private double getEndUtility(InternalState state, Agent a) {
+		/*
+		 * while (state.hasEndPos() &&
+		 * state.getEndPos().isSamePosition(perception.getPosition())) {
+		 * System.out.println(a.hasFlag()); } ;
+		 * 
+		 * System.out.println("PERCEPTION POS " +
+		 * perception.getPosition().getX() + " " +
+		 * perception.getPosition().getY());
+		 */
+		if (state.hasEndPos()
+				&& state.getEndPos().isAdjacentPosition(
+						perception.getPosition(), a.getDirection())
+				&& a.hasFlag()) {
+			return 100;
 		} else {
-			return 0;
+			return 1;
 		}
-	}
-
-	private double getIllUtility(Agent a) {
-		if (a.isIll()) {
-			return 20;
-		}
-		return 0;
 	}
 
 	private double getAnimalUtility(Agent a) {
@@ -239,9 +409,31 @@ public class Action {
 	 *** SPECIAL FACTORS ***
 	 ***********************/
 
-	private double getStopUtility(Agent a) {
-		if (a.hasLowLife() || a.hasFatigue()) {
-			return 34;
+	public double getStopUtility(Agent a, InternalState state) {
+		if (state.shouldStop(a.getFatigue()) && ancestor != null) {
+			return 5 + ancestor.getStopUtility(a, state);
+		} else if (state.shouldStop(a.getFatigue()) && ancestor == null) {
+			return 5;
+		} else {
+			return 0;
+		}
+	}
+
+	private double getIllUtility(Agent a) {
+		if (a.isIll() && ancestor != null) {
+			return 1 + ancestor.getIllUtility(a);
+		} else if (a.isIll() && ancestor == null) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	private double getLifeUtility(Agent a) {
+		if (a.hasLowLife() && ancestor != null) {
+			return 1 + ancestor.getLifeUtility(a);
+		} else if (a.hasLowLife() && ancestor == null) {
+			return 1;
 		} else {
 			return 0;
 		}

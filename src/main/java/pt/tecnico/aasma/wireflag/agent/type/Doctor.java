@@ -40,7 +40,15 @@ public class Doctor extends Agent {
 	/* this agent use its ability at MapPosition pos */
 	@Override
 	public void useAbility(MapPosition pos) {
+		ballon = AnimationLoader.getLoader().getStar();
+		
 		if (isAbilityUseful(pos)) {
+
+			/*
+			 * try { Thread.sleep(250); } catch (InterruptedException e) { //
+			 * TODO Auto-generated catch block e.printStackTrace(); }
+			 */
+
 			Agent ally = MapController.getMap().getLandscape(pos).getAgent();
 			ally.increaseLife(LIFE_RECOVER);
 		}

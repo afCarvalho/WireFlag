@@ -89,7 +89,7 @@ public class MapController implements IController {
 	private Perception getTilePerception(int teamId, int id, MapPosition pos) {
 		Landscape land = getLandscape(pos);
 
-		Perception perception = new Perception(pos, id, land.getRating());
+		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
 		perception.setEndPoint(land.hasEndPoint());

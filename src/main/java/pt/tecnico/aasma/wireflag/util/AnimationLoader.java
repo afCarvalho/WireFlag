@@ -12,11 +12,12 @@ public class AnimationLoader {
 			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
 			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill, cross,
 			up_arrow, down_arrow, left_arrow, right_arrow, stop, approach,
-			attack;
+			attack, bow, star;
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
 	private final String agent = System.getProperty("agent");
+	private final String state = System.getProperty("state");
 
 	private AnimationLoader() {
 
@@ -114,35 +115,36 @@ public class AnimationLoader {
 				new Image(agent + "d_right3.png"),
 				new Image(agent + "d_right4.png") }, duration4, false);
 
-		ill = new Animation(new Image[] { new Image(agent + "ill.png") },
+		ill = new Animation(new Image[] { new Image(state + "ill.png") },
 				duration1, false);
 
-		cross = new Animation(new Image[] { new Image(agent + "cross.png") },
+		cross = new Animation(new Image[] { new Image(state + "cross.png") },
 				duration1, false);
 
 		up_arrow = new Animation(
-				new Image[] { new Image(agent + "up_arrow.png") }, duration1,
+				new Image[] { new Image(state + "up_arrow.png") }, duration1,
 				false);
 
-		down_arrow = new Animation(new Image[] { new Image(agent
+		down_arrow = new Animation(new Image[] { new Image(state
 				+ "down_arrow.png") }, duration1, false);
 
-		left_arrow = new Animation(new Image[] { new Image(agent
+		left_arrow = new Animation(new Image[] { new Image(state
 				+ "left_arrow.png") }, duration1, false);
 
-		right_arrow = new Animation(new Image[] { new Image(agent
+		right_arrow = new Animation(new Image[] { new Image(state
 				+ "right_arrow.png") }, duration1, false);
 
-		stop = new Animation(new Image[] { new Image(agent + "stop.png") },
+		stop = new Animation(new Image[] { new Image(state + "stop.png") },
 				duration1, false);
 
-		approach = new Animation(
-				new Image[] { new Image(agent + "approach.png") }, duration1,
-				false);
-
-		attack = new Animation(new Image[] { new Image(agent + "attack.png") },
+		attack = new Animation(new Image[] { new Image(state + "attack.png") },
 				duration1, false);
 
+		bow = new Animation(new Image[] { new Image(state + "bow.png") },
+				duration1, false);
+
+		star = new Animation(new Image[] { new Image(state + "star.png") },
+				duration1, false);
 	}
 
 	/**************************
@@ -305,11 +307,15 @@ public class AnimationLoader {
 		return stop;
 	}
 
-	public Animation getApproach() {
-		return approach;
-	}
-
 	public Animation getAttack() {
 		return attack;
+	}
+
+	public Animation getBow() {
+		return bow;
+	}
+
+	public Animation getStar() {
+		return star;
 	}
 }
