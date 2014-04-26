@@ -12,6 +12,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
@@ -161,6 +162,11 @@ public abstract class Agent implements IGameElement {
 	public void stop() {
 		ballon = AnimationLoader.getLoader().getStop();
 
+		/*
+		 * try { Thread.sleep(250); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
+
 		if (isIll && life > 85) {
 			setIll(false);
 		}
@@ -185,6 +191,12 @@ public abstract class Agent implements IGameElement {
 
 	public void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
+
+		/*
+		 * try { Thread.sleep(500); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
+
 		int hitRate = random.nextInt(100);
 
 		if (hitRate > 95) {
@@ -216,6 +228,15 @@ public abstract class Agent implements IGameElement {
 
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
+
+	public void hunt(Animal prey) {
+		ballon = AnimationLoader.getLoader().getBow();
+		/*
+		 * try { Thread.sleep(250); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
+		increaseLife(prey.kill());
+	}
 
 	/* this agent use its ability at MapPosition pos */
 	public abstract void useAbility(MapPosition pos);
@@ -399,7 +420,6 @@ public abstract class Agent implements IGameElement {
 
 	/* agent approaches tile identified by mapPos */
 	public void approachTile(int delta, MapPosition mapPos) {
-		ballon = AnimationLoader.getLoader().getApproach();
 
 		/* to avoid the agent get out of the matrix */
 		delta = Math.min(delta, 20);
