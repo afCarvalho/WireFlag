@@ -102,4 +102,16 @@ public class WorldState {
 	public int getCondition() {
 		return condition;
 	}
+
+	public boolean hasEndPoint() {
+		return perception.hasEndPoint();
+	}
+
+	public int getTimeOut() {
+		return timeOut;
+	}
+
+	public void setTimeOut(int timeOut) {
+		this.timeOut = timeOut;
+	}
 }

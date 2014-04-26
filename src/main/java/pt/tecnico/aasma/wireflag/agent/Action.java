@@ -113,30 +113,44 @@ public class Action {
 			moveUtility = (((getMoveUtility(a))) / (getNActions()))
 					+ ((getNUnknownAdjacent(a, state)));
 		} else if (option == GO_AWAY) {
-			moveUtility = getMoveUtility(a) * getNActions()
-					+ getNUnknownAdjacent(a, state);
+			moveUtility = getMoveUtility(a) * getNActions() + getNActions();
+			/* + getNUnknownAdjacent(a, state); */
 		} else {
 			moveUtility = (((getMoveUtility(a)) + ((1 + perception
 					.getCondition()) / (getNActions())))) / (getNActions());
 		}
 
-		moveUtility = moveUtility
-				* Math.min(getClimateUtility(), getFireUtility())
-				* getFlagUtility() * getBlockedUtility(a);
+		if (!state.getWorld()[a.getPos().getMapPosition().getX()][a.getPos()
+				.getMapPosition().getY()].hasExtremeWeather()
+				&& !state.getWorld()[a.getPos().getMapPosition().getX()][a
+						.getPos().getMapPosition().getY()].hasFire()) {
+			moveUtility = moveUtility
+					* Math.min(Math.min(getClimateUtility(), getFireUtility()),
+							getBlockedUtility(a));
+		}
 		double stopUtility = moveUtility;
 		// System.out.println("Climate Utility " + getClimateUtility());
 		// System.out.println("Actions " + getNActions() + 1 + " "
 		// + getMoveUtility(a) + " " + moveUtility);
 
-		// double flagUtility = getFlagUtility();
+		double flagUtility = getFlagUtility() * moveUtility;
+		double endUtility = getEndUtility(state, a) * moveUtility;
 		// double animalUtility = getAnimalUtility(a);
 		// double endUtility = getEndUtility(state);
 
 		double stopFactor = getStopUtility(a, state);
+		double illFactor = getIllUtility(a);
+		double lifeFactor = getLifeUtility(a);
 
 		if (stopFactor != 0 && stopFactor < a.getFatigue() + 1) {
-			// System.out.println("STOPPING IS POSSIBLE!" + stopFactor);
+			// System.out.println("STOP FACTOR");
 			stopUtility = stopUtility + stopFactor;
+		} else if (illFactor != 0 && illFactor < 100 - a.getLife()) {
+			// System.out.println("ILL FACTOR");
+			stopUtility = stopUtility + illFactor;
+		} else if (lifeFactor != 0 && lifeFactor < 100 - a.getLife()) {
+			// System.out.println("LIFE FACTOR " + lifeFactor);
+			stopUtility = stopUtility + lifeFactor;
 		}
 
 		// +
@@ -178,9 +192,9 @@ public class Action {
 
 		ArrayList<Double> utilities = new ArrayList<Double>();
 		utilities.add(moveUtility);
-		// utilities.add(flagUtility);
+		utilities.add(flagUtility);
 		// utilities.add(animalUtility);
-		// utilities.add(endUtility);
+		utilities.add(endUtility);
 		utilities.add(stopUtility);
 		// utilities.add(habilityUtility);
 		// utilities.add(enemyUtility);
@@ -197,10 +211,12 @@ public class Action {
 		// System.out.println("Perception id " + perception.getId());
 
 		double higherUtility = 0;
+		double lowerUtility = 0;
 		double totalUtility = 0;
 
 		for (Double value : utilities) {
 			higherUtility = Math.max(higherUtility, value);
+			lowerUtility = Math.min(lowerUtility, value);
 			totalUtility += value;
 		}
 
@@ -223,15 +239,15 @@ public class Action {
 			action = MOVE_ACTION;
 		} else
 
-		// if (higherUtility == flagUtility) {
-		// action = GET_FLAG;
-		// } else
+		if (higherUtility == flagUtility) {
+			action = GET_FLAG;
+		} else
 		/*
 		 * if (higherUtility == animalUtility) { action = GET_ANIMAL; }
 		 */
-		// if (higherUtility == endUtility) {
-		// action = GET_END;
-		// } else
+		if (higherUtility == endUtility) {
+			action = GET_END;
+		} else
 
 		if (stopUtility == higherUtility) {
 			/*
@@ -251,7 +267,7 @@ public class Action {
 		 */
 
 		if (ancestor == null) {
-			totalUtility = 0;
+			totalUtility = Math.min(lowerUtility, 0);
 		}
 
 		// System.out.println("Total utility " + totalUtility + " n Actions "
@@ -317,7 +333,7 @@ public class Action {
 		return perception.getLandRating();
 	}
 
-	private double getClimateUtility() {
+	public double getClimateUtility() {
 		if (perception.hasExtremeWeather()) {
 			return -1;
 		} else if (ancestor != null) {
@@ -327,7 +343,7 @@ public class Action {
 		}
 	}
 
-	private double getFireUtility() {
+	public double getFireUtility() {
 		if (perception.hasFire()) {
 			return -1;
 		} else if (ancestor != null) {
@@ -337,11 +353,11 @@ public class Action {
 		}
 	}
 
-	private double getBlockedUtility(Agent a) {
+	public double getBlockedUtility(Agent a) {
 		if (perception.isBlocked()
 				&& !a.getPos().getMapPosition()
 						.isSamePosition(perception.getPosition())) {
-			return 0;
+			return -1;
 		} else if (ancestor != null) {
 			return ancestor.getBlockedUtility(a);
 		} else {
@@ -351,25 +367,30 @@ public class Action {
 
 	private double getFlagUtility() {
 		if (perception.hasFlag()) {
-			return 1;
+			return 100;
 		} else {
 			return 1;
 		}
 	}
 
-	private double getEndUtility(InternalState state) {
-		if (state.hasEndPos()) {
-			return 500;
+	private double getEndUtility(InternalState state, Agent a) {
+		/*
+		 * while (state.hasEndPos() &&
+		 * state.getEndPos().isSamePosition(perception.getPosition())) {
+		 * System.out.println(a.hasFlag()); } ;
+		 * 
+		 * System.out.println("PERCEPTION POS " +
+		 * perception.getPosition().getX() + " " +
+		 * perception.getPosition().getY());
+		 */
+		if (state.hasEndPos()
+				&& state.getEndPos().isAdjacentPosition(
+						perception.getPosition(), a.getDirection())
+				&& a.hasFlag()) {
+			return 100;
 		} else {
-			return 0;
+			return 1;
 		}
-	}
-
-	private double getIllUtility(Agent a) {
-		if (a.isIll()) {
-			return 20;
-		}
-		return 0;
 	}
 
 	private double getAnimalUtility(Agent a) {
@@ -393,6 +414,26 @@ public class Action {
 			return 5 + ancestor.getStopUtility(a, state);
 		} else if (state.shouldStop(a.getFatigue()) && ancestor == null) {
 			return 5;
+		} else {
+			return 0;
+		}
+	}
+
+	private double getIllUtility(Agent a) {
+		if (a.isIll() && ancestor != null) {
+			return 1 + ancestor.getIllUtility(a);
+		} else if (a.isIll() && ancestor == null) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	private double getLifeUtility(Agent a) {
+		if (a.hasLowLife() && ancestor != null) {
+			return 1 + ancestor.getLifeUtility(a);
+		} else if (a.hasLowLife() && ancestor == null) {
+			return 1;
 		} else {
 			return 0;
 		}

@@ -161,6 +161,10 @@ public abstract class Agent implements IGameElement {
 	public void stop() {
 		ballon = AnimationLoader.getLoader().getStop();
 
+		if (isIll && life > 85) {
+			setIll(false);
+		}
+
 		increaseLife(1);
 		fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
 		fatigue = Math.max(fatigue, 0);
