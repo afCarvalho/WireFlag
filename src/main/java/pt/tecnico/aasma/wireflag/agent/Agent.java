@@ -134,10 +134,6 @@ public abstract class Agent implements IGameElement {
 		return visibility;
 	}
 
-	public Architecture getArch() {
-		return architecture;
-	}
-
 	/***************
 	 *** SETTERS ***
 	 ***************/
