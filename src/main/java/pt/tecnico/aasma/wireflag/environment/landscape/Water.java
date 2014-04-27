@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.environment.landscape;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
@@ -28,6 +29,33 @@ public class Water extends Landscape {
 		animal = new Animal(landscapePos, AnimationLoader.getLoader()
 				.getTurtle());
 		return animal;
+	}
+
+	@Override
+	public void render(Graphics g) {
+		weather.render(g);
+
+		if (hasFire()) {
+			fire.render(g);
+		}
+
+		if (hasAnimal()) {
+			animal.render(g);
+		}
+
+		if (hasFlag()) {
+			flag.render(g);
+		}
+
+		if (hasEndPoint()) {
+			endPoint.render(g);
+		}
+
+		if (hasAgent()) {
+			agent.render(g);
+			AnimationLoader.getLoader().getBoat()
+					.draw(agent.getPos().getX(), agent.getPos().getY());
+		}
 	}
 
 }

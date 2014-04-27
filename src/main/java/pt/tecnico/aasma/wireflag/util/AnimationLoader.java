@@ -12,7 +12,7 @@ public class AnimationLoader {
 			rabbit, end, fire, flag, s_up, s_down, s_left, s_right, d_up,
 			d_down, d_left, d_right, b_up, b_down, b_left, b_right, p_up,
 			p_down, p_right, p_left, ill, cross, up_arrow, down_arrow,
-			left_arrow, right_arrow, stop, attack, bow, star;
+			left_arrow, right_arrow, stop, attack, bow, star, boat;
 
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
@@ -153,6 +153,10 @@ public class AnimationLoader {
 
 		star = new Animation(new Image[] { new Image(state + "star.png") },
 				duration1, false);
+
+		boat = new Animation(new Image[] { new Image(state + "boat.png") },
+				duration1, false);
+
 	}
 
 	/**************************
@@ -301,6 +305,10 @@ public class AnimationLoader {
 
 	public Animation getCross() {
 		return cross;
+	}
+
+	public Animation getBoat() {
+		return boat;
 	}
 
 	/*************************
