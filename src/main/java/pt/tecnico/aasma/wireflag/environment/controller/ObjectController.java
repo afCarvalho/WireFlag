@@ -47,8 +47,8 @@ public class ObjectController implements IController {
 		}
 
 		flag = new Flag(new WorldPosition(flagPos.getX()
-				* MapController.getMap().getMapWidth(), flagPos.getY()
-				* MapController.getMap().getMapHeight()));
+				* MapController.getMap().getTileWidth(), flagPos.getY()
+				* MapController.getMap().getTileHeight()));
 		MapController.getMap().getLandscape(flagPos).setFlag(flag);
 	}
 
