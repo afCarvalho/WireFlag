@@ -2,7 +2,9 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.Rainy;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Forest extends Landscape {
@@ -21,4 +23,10 @@ public class Forest extends Landscape {
 		return true;
 	}
 
+	@Override
+	public Animal createAnimal() {
+		animal = new Animal(landscapePos, AnimationLoader.getLoader()
+				.getRabbit());
+		return animal;
+	}
 }

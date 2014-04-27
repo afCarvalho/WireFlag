@@ -104,10 +104,6 @@ public abstract class Landscape implements IGameElement {
 		this.fire = fire;
 	}
 
-	public void setAnimal(Animal animal) {
-		this.animal = animal;
-	}
-
 	public abstract void setExtremeWeather(int duration) throws SlickException;
 
 	public void setSunnyWeather() {
@@ -182,6 +178,8 @@ public abstract class Landscape implements IGameElement {
 			agent.decreaseLife(15);
 		}
 	}
+
+	public abstract Animal createAnimal();
 
 	/********************
 	 *** GAME RELATED ***

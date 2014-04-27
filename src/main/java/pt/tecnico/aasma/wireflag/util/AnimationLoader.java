@@ -8,11 +8,12 @@ public class AnimationLoader {
 
 	private static final AnimationLoader INSTANCE = new AnimationLoader();
 
-	private Animation rain, sand, snow, thunder, goat, pig, end, fire, flag,
-			s_up, s_down, s_left, s_right, d_up, d_down, d_left, d_right, b_up,
-			b_down, b_left, b_right, p_up, p_down, p_right, p_left, ill, cross,
-			up_arrow, down_arrow, left_arrow, right_arrow, stop, approach,
-			attack, bow, star;
+	private Animation rain, sand, snow, thunder, goat, pig, camel, turtle,
+			rabbit, end, fire, flag, s_up, s_down, s_left, s_right, d_up,
+			d_down, d_left, d_right, b_up, b_down, b_left, b_right, p_up,
+			p_down, p_right, p_left, ill, cross, up_arrow, down_arrow,
+			left_arrow, right_arrow, stop, attack, bow, star;
+
 	private final String weather = System.getProperty("weather");
 	private final String object = System.getProperty("object");
 	private final String animal = System.getProperty("animal");
@@ -47,7 +48,14 @@ public class AnimationLoader {
 				duration1, false);
 		pig = new Animation(new Image[] { new Image(animal + "pig.png") },
 				duration1, false);
-
+		camel = new Animation(new Image[] { new Image(animal + "camel.png") },
+				duration1, false);
+		turtle = new Animation(
+				new Image[] { new Image(animal + "turtle.png") }, duration1,
+				false);
+		rabbit = new Animation(
+				new Image[] { new Image(animal + "rabbit.png") }, duration1,
+				false);
 		end = new Animation(new Image[] { new Image(object + "endpoint.png") },
 				duration1, false);
 		fire = new Animation(new Image[] { new Image(object + "fire.png") },
@@ -177,6 +185,18 @@ public class AnimationLoader {
 
 	public Animation getPig() {
 		return pig;
+	}
+
+	public Animation getCamel() {
+		return camel;
+	}
+
+	public Animation getTurtle() {
+		return turtle;
+	}
+
+	public Animation getRabbit() {
+		return rabbit;
 	}
 
 	public Animation getEndPoint() {

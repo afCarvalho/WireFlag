@@ -2,6 +2,7 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -19,5 +20,10 @@ public class Limit extends Landscape {
 	@Override
 	public boolean isInflammable() {
 		return false;
+	}
+
+	@Override
+	public Animal createAnimal() {
+		return null;
 	}
 }

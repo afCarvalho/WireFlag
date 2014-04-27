@@ -13,7 +13,7 @@ public class ObjectController implements IController {
 	private Animal[] animals;
 
 	public ObjectController() {
-		animals = new Animal[10];
+		animals = new Animal[20];
 	}
 
 	/********************
@@ -60,17 +60,12 @@ public class ObjectController implements IController {
 	}
 
 	public Animal createAnimal() throws SlickException {
-
 		MapPosition animalPos = MapController.getMap().getRandomPosition();
 
 		while (MapController.getMap().isBlocked(animalPos)) {
 			animalPos = MapController.getMap().getRandomPosition();
 		}
 
-		Animal animal = new Animal(animalPos);
-		MapController.getMap().getLandscape(animalPos).setAnimal(animal);
-
-		return animal;
+		return MapController.getMap().getLandscape(animalPos).createAnimal();
 	}
-
 }

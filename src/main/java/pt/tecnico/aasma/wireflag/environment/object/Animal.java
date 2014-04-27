@@ -15,19 +15,14 @@ public class Animal implements IGameElement {
 
 	private int protein;
 	private Random random;
-	private Animation goat;
-	private Animation pig;
+	private Animation animalAnimation;
 	private MapPosition animalPos;
-	private int type;
-	private final int PIG = 0;
 
-	public Animal(MapPosition pos) {
+	public Animal(MapPosition pos, Animation animation) {
 		random = new Random();
 		protein = random.nextInt(100);
 		animalPos = pos;
-		type = random.nextInt(2);
-		pig = AnimationLoader.getLoader().getPig();
-		goat = AnimationLoader.getLoader().getGoat();
+		animalAnimation = animation;
 	}
 
 	public boolean isAlive() {
@@ -44,15 +39,8 @@ public class Animal implements IGameElement {
 	public void render(Graphics g) {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
-
-		if (type == PIG) {
-			pig.draw(animalPos.getX() * tileWidth, animalPos.getY()
-					* tileHeight);
-		} else {
-			goat.draw(animalPos.getX() * tileWidth, animalPos.getY()
-					* tileHeight);
-		}
-
+		animalAnimation.draw(animalPos.getX() * tileWidth, animalPos.getY()
+				* tileHeight);
 	}
 
 	@Override

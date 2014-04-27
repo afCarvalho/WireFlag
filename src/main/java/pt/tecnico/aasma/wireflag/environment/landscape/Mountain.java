@@ -2,7 +2,9 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.SnowStorm;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Mountain extends Landscape {
@@ -19,5 +21,11 @@ public class Mountain extends Landscape {
 	@Override
 	public boolean isInflammable() {
 		return false;
+	}
+
+	@Override
+	public Animal createAnimal() {
+		animal = new Animal(landscapePos, AnimationLoader.getLoader().getGoat());
+		return animal;
 	}
 }
