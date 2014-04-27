@@ -547,8 +547,7 @@ public abstract class Agent implements IGameElement {
 				agentPos.getX() - 40, agentPos.getY() + 30);
 
 		if (hasFlag()) {
-			AnimationLoader.getLoader().getFlag()
-					.draw(agentPos.getX() + 10, agentPos.getY());
+			flag.draw(agentPos.getX() + 10, agentPos.getY());
 		}
 
 		g.setColor(new Color(1f, life * 1.0f / 100,

@@ -61,7 +61,7 @@ public class AnimationLoader {
 		fire = new Animation(new Image[] { new Image(object + "fire.png") },
 				duration1, false);
 		flag = new Animation(
-				new Image[] { new Image(object + "SmallFlag.png") }, duration1,
+				new Image[] { new Image(object + "Flag.png") }, duration1,
 				false);
 		s_up = new Animation(new Image[] { new Image(agent + "s_back1.png"),
 				new Image(agent + "s_back2.png"),

@@ -236,7 +236,11 @@ public abstract class Landscape implements IGameElement {
 		}
 
 		if (hasFlag()) {
-			flag.render(g);
+			int width = MapController.getMap().getTileWidth()
+					* landscapePos.getX();
+			int tileHeight = MapController.getMap().getTileHeight()
+					* landscapePos.getY();
+			flag.draw(width, tileHeight);
 		}
 
 		if (hasEndPoint()) {

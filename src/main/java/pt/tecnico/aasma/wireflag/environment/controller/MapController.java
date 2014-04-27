@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -162,12 +163,25 @@ public class MapController implements IController {
 	@Override
 	public void render(Graphics g) {
 		grassMap.render(0, 0);
+		int tileWidth = MapController.getMap().getTileWidth();
+		int tileHeight = MapController.getMap().getTileHeight();
+
+		g.setColor(new Color(Color.gray));
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			g.drawLine(xAxis * tileWidth, 0, xAxis * tileWidth, MapController
+					.getMap().getMapHeight());
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				g.drawLine(0, yAxis * tileHeight, MapController.getMap()
+						.getMapWidth(), yAxis * tileHeight);
+			}
+		}
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
 				tileMatrix[xAxis][yAxis].render(g);
 			}
 		}
+
 	}
 
 	public void update(int delta) throws SlickException {

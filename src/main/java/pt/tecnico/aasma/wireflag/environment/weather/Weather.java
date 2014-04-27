@@ -56,13 +56,15 @@ public abstract class Weather implements IGameElement {
 
 		int tileXPosition = weatherPos.getX() * tileWidth;
 		int tileYPosition = weatherPos.getY() * tileHeight;
+		
+		draw(tileXPosition,tileYPosition);
 
-		for (int x = tileXPosition; x < tileXPosition + tileWidth; x++) {
+		/*for (int x = tileXPosition; x < tileXPosition + tileWidth; x++) {
 			for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
 				if (x % 25 == 0 && y % 25 == 0)
 					draw(x, y);
 			}
-		}
+		}*/
 	}
 
 	public void draw(int x, int y) {

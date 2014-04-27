@@ -3,6 +3,7 @@ package pt.tecnico.aasma.wireflag.environment.landscape;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.ThunderStorm;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
@@ -44,7 +45,11 @@ public class Water extends Landscape {
 		}
 
 		if (hasFlag()) {
-			flag.render(g);
+			int width = MapController.getMap().getTileWidth()
+					* landscapePos.getX();
+			int tileHeight = MapController.getMap().getTileHeight()
+					* landscapePos.getY();
+			flag.draw(width, tileHeight);
 		}
 
 		if (hasEndPoint()) {
