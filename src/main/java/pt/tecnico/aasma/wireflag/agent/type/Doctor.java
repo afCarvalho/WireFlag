@@ -41,7 +41,12 @@ public class Doctor extends Agent {
 	@Override
 	public void useAbility(MapPosition pos) {
 		ballon = AnimationLoader.getLoader().getStar();
-		
+		/*
+		 * Note: agents must be obtained here before the verification (if),
+		 * because of synchronization
+		 */
+		Agent ally = MapController.getMap().getLandscape(pos).getAgent();
+
 		if (isAbilityUseful(pos)) {
 
 			/*
@@ -49,7 +54,6 @@ public class Doctor extends Agent {
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
 
-			Agent ally = MapController.getMap().getLandscape(pos).getAgent();
 			ally.increaseLife(LIFE_RECOVER);
 		}
 	}

@@ -39,9 +39,14 @@ public class Builder extends Agent {
 
 	/* this agent use its ability at MapPosition pos */
 	@Override
-	public void useAbility(MapPosition pos) {
+	public synchronized void useAbility(MapPosition pos) {
 		ballon = AnimationLoader.getLoader().getStar();
-		
+		/*
+		 * Note: agents must be obtained here before the verification (if),
+		 * because of synchronization
+		 */
+		Agent ally = MapController.getMap().getLandscape(pos).getAgent();
+
 		if (isAbilityUseful(pos)) {
 
 			/*
@@ -49,7 +54,6 @@ public class Builder extends Agent {
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
 
-			Agent ally = MapController.getMap().getLandscape(pos).getAgent();
 			ally.decreaseFatigue(FATIGUE_RECOVER);
 		}
 	}

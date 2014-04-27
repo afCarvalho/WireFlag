@@ -185,7 +185,7 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(Agent agent) {
+	public synchronized void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
 		/*
@@ -210,7 +210,7 @@ public abstract class Agent implements IGameElement {
 		life = Math.max(0, life - value);
 	}
 
-	public void increaseLife(int value) {
+	public synchronized void increaseLife(int value) {
 		life = Math.min(life + value, 100);
 	}
 
@@ -225,7 +225,7 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public void hunt(Animal prey) {
+	public synchronized void hunt(Animal prey) {
 		ballon = AnimationLoader.getLoader().getBow();
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) { // TODO
@@ -450,11 +450,7 @@ public abstract class Agent implements IGameElement {
 		WorldPosition newPos = new WorldPosition(agentPos.getX(),
 				agentPos.getY() + delta * getAgentSpeed(oldPos));
 
-		if (!isBlocked(newPos.getMapPosition())) {
-			changePosition(delta, oldPos, newPos);
-			return true;
-		}
-		return false;
+		return changePosition(delta, oldPos, newPos);
 	}
 
 	/*
@@ -468,11 +464,7 @@ public abstract class Agent implements IGameElement {
 		WorldPosition newPos = new WorldPosition(agentPos.getX(),
 				agentPos.getY() - delta * getAgentSpeed(oldPos));
 
-		if (!isBlocked(newPos.getMapPosition())) {
-			changePosition(delta, oldPos, newPos);
-			return true;
-		}
-		return false;
+		return changePosition(delta, oldPos, newPos);
 	}
 
 	/*
@@ -486,11 +478,7 @@ public abstract class Agent implements IGameElement {
 		WorldPosition newPos = new WorldPosition(agentPos.getX() + delta
 				* getAgentSpeed(oldPos), agentPos.getY());
 
-		if (!isBlocked(newPos.getMapPosition())) {
-			changePosition(delta, oldPos, newPos);
-			return true;
-		}
-		return false;
+		return changePosition(delta, oldPos, newPos);
 	}
 
 	/*
@@ -504,25 +492,28 @@ public abstract class Agent implements IGameElement {
 		WorldPosition newPos = new WorldPosition(agentPos.getX() - delta
 				* getAgentSpeed(oldPos), agentPos.getY());
 
-		if (!isBlocked(newPos.getMapPosition())) {
-			changePosition(delta, oldPos, newPos);
-			return true;
-		}
-		return false;
+		return changePosition(delta, oldPos, newPos);
 	}
 
-	public void changePosition(int delta, MapPosition oldPos,
+	public synchronized boolean changePosition(int delta, MapPosition oldPos,
 			WorldPosition newPos) {
-		sprite.update(delta);
-		ballon.update(delta);
 
-		agentPos = newPos;
+		if (!isBlocked(newPos.getMapPosition())) {
+			sprite.update(delta);
+			ballon.update(delta);
 
-		MapController.getMap().getLandscape(oldPos).setAgent(null);
-		MapController.getMap().getLandscape(agentPos).setAgent(this);
+			agentPos = newPos;
 
-		if (!oldPos.isSamePosition(agentPos.getMapPosition())) {
-			MapController.getMap().getLandscape(agentPos).takePenalty();
+			MapController.getMap().getLandscape(oldPos).setAgent(null);
+			MapController.getMap().getLandscape(agentPos).setAgent(this);
+
+			if (!oldPos.isSamePosition(agentPos.getMapPosition())) {
+				MapController.getMap().getLandscape(agentPos).takePenalty();
+			}
+
+			return true;
+		} else {
+			return false;
 		}
 	}
 
