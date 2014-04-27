@@ -163,12 +163,12 @@ public abstract class Landscape implements IGameElement {
 	}
 
 	public void takePenalty() {
-		agent.increaseFatigue(fatigue);
+		agent.modifyFatigue(fatigue);
 		if (hasFire()) {
-			agent.decreaseLife(20);
+			agent.modifyLife(-20);
 		}
 		if (getWeather().isExtremeWeather()) {
-			agent.decreaseLife(getWeather().getLifeDamage());
+			agent.modifyLife(-getWeather().getLifeDamage());
 
 			if (new Random().nextInt(100) > 80) {
 				agent.setIll(true);
@@ -176,7 +176,7 @@ public abstract class Landscape implements IGameElement {
 		}
 
 		if (agent.isIll()) {
-			agent.decreaseLife(15);
+			agent.modifyLife(-15);
 		}
 	}
 
@@ -209,11 +209,6 @@ public abstract class Landscape implements IGameElement {
 			agent.dropFlag();
 			EndGameController.getEnd().decreaseNAliveAgents();
 			setAgent(null);
-		}
-
-		if (hasAgent()) {
-			Thread thread = new Thread(new AgentThread(agent, delta));
-			thread.start();
 		}
 
 		weather.update(delta);

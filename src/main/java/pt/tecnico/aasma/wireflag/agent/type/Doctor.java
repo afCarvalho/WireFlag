@@ -54,7 +54,7 @@ public class Doctor extends Agent {
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
 
-			ally.increaseLife(LIFE_RECOVER);
+			ally.modifyLife(LIFE_RECOVER);
 		}
 	}
 }

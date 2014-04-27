@@ -67,8 +67,17 @@ public abstract class Agent implements IGameElement {
 	private int life;
 	private boolean isIll;
 	private Flag flag;
-
 	private Architecture architecture;
+	private AgentThread agentThread;
+	private Thread thread;
+
+	public AgentThread getAgentThread() {
+		return agentThread;
+	}
+
+	public void setAgentThread(AgentThread agentThread) {
+		this.agentThread = agentThread;
+	}
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture) {
@@ -80,6 +89,7 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
+		this.agentThread = new AgentThread(this);
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
 		ill = AnimationLoader.getLoader().getIll();
@@ -155,20 +165,24 @@ public abstract class Agent implements IGameElement {
 	 *** STATE MODIFIERS ***
 	 ***********************/
 
+	public void init() {
+		this.thread = new Thread(agentThread);
+		thread.start();
+	}
+
 	public void stop() {
 		ballon = AnimationLoader.getLoader().getStop();
 
-		/*try {
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { Thread.sleep(250); } catch (InterruptedException e) {
+		 * e.printStackTrace(); }
+		 */
 
 		if (isIll && life > 85) {
 			setIll(false);
 		}
 
-		increaseLife(1);
+		modifyLife(1);
 		fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
 		fatigue = Math.max(fatigue, 0);
 	}
@@ -190,11 +204,10 @@ public abstract class Agent implements IGameElement {
 	public synchronized void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
-		/*try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { Thread.sleep(500); } catch (InterruptedException e) {
+		 * e.printStackTrace(); }
+		 */
 
 		int hitRate = random.nextInt(100);
 
@@ -206,23 +219,17 @@ public abstract class Agent implements IGameElement {
 			hitRate = agentAttack;
 		}
 
-		agent.decreaseLife(hitRate);
+		agent.modifyLife(-hitRate);
 	}
 
-	public void decreaseLife(int value) {
-		life = Math.max(0, life - value);
+	public synchronized void modifyLife(int value) {
+		life = Math.max(0, life + value);
+		life = Math.min(life, 100);
 	}
 
-	public synchronized void increaseLife(int value) {
-		life = Math.min(life + value, 100);
-	}
-
-	public void decreaseFatigue(int value) {
-		fatigue = Math.max(0, fatigue - value);
-	}
-
-	public void increaseFatigue(int value) {
-		fatigue = Math.min(fatigue + value, 100);
+	public synchronized void modifyFatigue(int value) {
+		fatigue = Math.max(0, fatigue + value);
+		fatigue = Math.min(fatigue, 100);
 	}
 
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
@@ -231,12 +238,11 @@ public abstract class Agent implements IGameElement {
 	public synchronized void hunt(Animal prey) {
 		ballon = AnimationLoader.getLoader().getBow();
 
-		/*try {
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-		increaseLife(prey.kill());
+		/*
+		 * try { Thread.sleep(250); } catch (InterruptedException e) {
+		 * e.printStackTrace(); }
+		 */
+		modifyLife(prey.kill());
 	}
 
 	/* this agent use its ability at MapPosition pos */

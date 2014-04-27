@@ -81,7 +81,7 @@ public class AgentController implements IController {
 		t2.addAgent(s2);
 		t2.setTeamUp();
 		addTeam(t2);
-		
+
 		Team t3 = new DemocraticalTeam(getNextTeamId());
 		Agent d3 = new Doctor(t3.getID(), t3.getMemberID(), new Reactive());
 		Agent b3 = new Builder(t3.getID(), t3.getMemberID(), new Reactive());
@@ -93,7 +93,7 @@ public class AgentController implements IController {
 		t3.addAgent(s3);
 		t3.setTeamUp();
 		addTeam(t3);
-		
+
 		Team t4 = new DemocraticalTeam(getNextTeamId());
 		Agent d4 = new Doctor(t4.getID(), t4.getMemberID(), new Reactive());
 		Agent b4 = new Builder(t4.getID(), t4.getMemberID(), new Reactive());
@@ -105,6 +105,12 @@ public class AgentController implements IController {
 		t4.addAgent(s4);
 		t4.setTeamUp();
 		addTeam(t4);
+
+		for (Team t : getTeams()) {
+			for (Agent a : t.getMembers()) {
+				a.init();
+			}
+		}
 
 		/*
 		 * Agent leader = agentController.getAgents().get(0); List<Agent>
@@ -124,6 +130,11 @@ public class AgentController implements IController {
 	}
 
 	public void update(int delta) {
+		for (Team t : getTeams()) {
+			for (Agent a : t.getMembers()) {
+				a.getAgentThread().setDelta(delta);
+			}
+		}
 	}
 
 	@Override

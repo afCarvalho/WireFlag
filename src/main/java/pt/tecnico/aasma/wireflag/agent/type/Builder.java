@@ -54,7 +54,7 @@ public class Builder extends Agent {
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
 
-			ally.decreaseFatigue(FATIGUE_RECOVER);
+			ally.modifyFatigue(-FATIGUE_RECOVER);
 		}
 	}
 }

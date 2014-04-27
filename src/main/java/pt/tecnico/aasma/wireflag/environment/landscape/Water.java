@@ -1,8 +1,10 @@
 package pt.tecnico.aasma.wireflag.environment.landscape;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.ThunderStorm;
@@ -11,8 +13,11 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Water extends Landscape {
 
+	private Animation boat;
+
 	public Water(MapPosition position) {
 		super(VREDUCEDSPD, position, REDUCEDVSB, VHIGHFATIGUE);
+		boat = AnimationLoader.getLoader().getBoat();
 	}
 
 	@Override
@@ -48,11 +53,11 @@ public class Water extends Landscape {
 			endPoint.render(g);
 		}
 
-		if (hasAgent()) {
-			agent.render(g);
-			AnimationLoader.getLoader().getBoat()
-					.draw(agent.getPos().getX(), agent.getPos().getY());
+		Agent a = agent;
+
+		if (a != null) {
+			a.render(g);
+			boat.draw(a.getPos().getX(), a.getPos().getY());
 		}
 	}
-
 }
