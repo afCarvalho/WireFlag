@@ -15,7 +15,7 @@ import pt.tecnico.aasma.wireflag.util.MapPosition;
 public class Reactive extends Architecture {
 
 	/* total number of behaviors */
-	protected final static int BEHAVIOR_SIZE = 20;
+	protected final static int BEHAVIOR_SIZE = 18;
 
 	public Reactive() {
 		// Nothing to do here
@@ -484,79 +484,10 @@ public class Reactive extends Architecture {
 	}
 
 	/*
-	 * If the agent has an adjacent position with a higher rating than the
-	 * agent's actual position, then the agent moves to it unless that position
-	 * has extreme weather or fire.
-	 */
-	public boolean reactivePerception16(Agent agent,
-			List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
-
-		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !perception.isBlocked()
-					&& !perception.hasExtremeWeather() && !perception.hasFire()) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public void doAction16(Agent agent, int delta, List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
-
-		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-			if (perception.getLandRating() > perceptionAgentPos.getLandRating()
-					&& !perception.isBlocked()
-					&& !perception.hasExtremeWeather() && !perception.hasFire()) {
-				agent.approachTile(delta, perception.getPosition());
-				return;
-			}
-		}
-	}
-
-	/*
-	 * if exists a position, in the agent's visibility, with a higher rating
-	 * than the agent's actual position, then the agent approaches to it.
-	 */
-	public boolean reactivePerception17(Agent agent,
-			List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
-		boolean result = false;
-
-		for (Perception perception : perceptions) {
-			if (!result) {
-				result = perception.getLandRating() > perceptionAgentPos
-						.getLandRating();
-			} else {
-				return result;
-			}
-		}
-
-		return result;
-	}
-
-	public void doAction17(Agent agent, int delta, List<Perception> perceptions) {
-		MapPosition actualPos = agent.getPos().getMapPosition();
-		Perception perceptionAgentPos = getPerceptionPos(actualPos, perceptions);
-
-		for (Perception perception : perceptions) {
-			if (perception.getLandRating() > perceptionAgentPos.getLandRating()) {
-				agent.approachTile(delta, perception.getPosition());
-				return;
-			}
-		}
-	}
-
-	/*
 	 * Rule: Position ahead blocked. Returns true if the agent can move ahead,
 	 * and false otherwise.
 	 */
-	public boolean reactivePerception18(Agent agent,
+	public boolean reactivePerception16(Agent agent,
 			List<Perception> perceptions) {
 
 		MapPosition actualPosition = agent.getPos().getMapPosition();
@@ -567,18 +498,18 @@ public class Reactive extends Architecture {
 	}
 
 	/* position ahead blocked */
-	public void doAction18(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction16(Agent agent, int delta, List<Perception> perceptions) {
 		agent.moveDifferentDirection(delta);
 	}
 
 	/* true case */
-	public boolean reactivePerception19(Agent agent,
+	public boolean reactivePerception17(Agent agent,
 			List<Perception> perceptions) {
 		return true;
 	}
 
 	/* true case */
-	public void doAction19(Agent agent, int delta, List<Perception> perceptions) {
+	public void doAction17(Agent agent, int delta, List<Perception> perceptions) {
 		agent.moveSameDirection(delta);
 	}
 
