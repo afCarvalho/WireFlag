@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Circle;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -187,7 +188,7 @@ public abstract class Agent implements IGameElement {
 		fatigue = Math.max(fatigue, 0);
 	}
 
-	public synchronized void catchFlag() {
+	public void catchFlag() {
 		if (MapController.getMap().getLandscape(agentPos).hasFlag()) {
 			flag = MapController.getMap().getLandscape(agentPos).removeFlag();
 		}
@@ -201,7 +202,7 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public synchronized void attack(Agent agent) {
+	public void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
 		/*
@@ -225,17 +226,19 @@ public abstract class Agent implements IGameElement {
 	public synchronized void modifyLife(int value) {
 		life = Math.max(0, life + value);
 		life = Math.min(life, 100);
+		this.notify();
 	}
 
 	public synchronized void modifyFatigue(int value) {
 		fatigue = Math.max(0, fatigue + value);
 		fatigue = Math.min(fatigue, 100);
+		this.notify();
 	}
 
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public synchronized void hunt(Animal prey) {
+	public void hunt(Animal prey) {
 		ballon = AnimationLoader.getLoader().getBow();
 
 		/*
@@ -535,7 +538,7 @@ public abstract class Agent implements IGameElement {
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
 
-		if (hasFlag()) {
+		if (hasFlag() && !EndGameController.getEnd().getGameFinished()) {
 			flag.setFlagPos(new WorldPosition(agentPos.getX() + 10, agentPos
 					.getY()));
 		}

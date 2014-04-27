@@ -64,6 +64,7 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction0(Agent agent, int delta, List<Perception> perceptions) {
+		System.out.println("NORMAL WAY");
 		WireFlagGame.win(agent.getTeamId());
 	}
 

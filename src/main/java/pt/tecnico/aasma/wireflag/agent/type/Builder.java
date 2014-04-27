@@ -39,7 +39,7 @@ public class Builder extends Agent {
 
 	/* this agent use its ability at MapPosition pos */
 	@Override
-	public synchronized void useAbility(MapPosition pos) {
+	public void useAbility(MapPosition pos) {
 		ballon = AnimationLoader.getLoader().getStar();
 		/*
 		 * Note: agents must be obtained here before the verification (if),

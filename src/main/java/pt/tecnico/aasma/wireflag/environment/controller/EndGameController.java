@@ -25,6 +25,7 @@ public class EndGameController implements IController {
 	private int endHours;
 	private int endMinutes;
 	private int endSeconds;
+	private boolean gameFinished;
 
 	private EndGameController() {
 	}
@@ -35,6 +36,10 @@ public class EndGameController implements IController {
 
 	public static EndGameController getEnd() {
 		return INSTANCE;
+	}
+
+	public boolean getGameFinished() {
+		return gameFinished;
 	}
 
 	/**********************
@@ -65,10 +70,12 @@ public class EndGameController implements IController {
 			}
 		}
 
+		System.out.println("ALTERNATIVE WAY");
 		WireFlagGame.win(winnerTeam);
 	}
 
 	public void endGame(int winnerTeam) {
+		gameFinished = true;
 		this.winnerTeam = winnerTeam;
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileWidth();

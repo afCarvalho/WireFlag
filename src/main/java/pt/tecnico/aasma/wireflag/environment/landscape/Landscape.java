@@ -206,8 +206,10 @@ public abstract class Landscape implements IGameElement {
 		}
 
 		if (hasAgent() && !agent.isAlive()) {
-			agent.dropFlag();
 			EndGameController.getEnd().decreaseNAliveAgents();
+			if (!EndGameController.getEnd().getGameFinished()) {
+				agent.dropFlag();
+			}
 			setAgent(null);
 		}
 
