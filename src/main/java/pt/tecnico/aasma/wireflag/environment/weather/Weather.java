@@ -1,7 +1,9 @@
 package pt.tecnico.aasma.wireflag.environment.weather;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
@@ -51,20 +53,9 @@ public abstract class Weather implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 
-		int tileWidth = MapController.getMap().getTileWidth();
-		int tileHeight = MapController.getMap().getTileHeight();
-
-		int tileXPosition = weatherPos.getX() * tileWidth;
-		int tileYPosition = weatherPos.getY() * tileHeight;
-		
-		draw(tileXPosition,tileYPosition);
-
-		/*for (int x = tileXPosition; x < tileXPosition + tileWidth; x++) {
-			for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
-				if (x % 25 == 0 && y % 25 == 0)
-					draw(x, y);
-			}
-		}*/
+		int width = MapController.getMap().getTileWidth() * weatherPos.getX();
+		int height = MapController.getMap().getTileHeight() * weatherPos.getY();
+		draw(width, height);
 	}
 
 	public void draw(int x, int y) {

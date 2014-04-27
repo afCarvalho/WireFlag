@@ -44,14 +44,6 @@ public class Water extends Landscape {
 			animal.render(g);
 		}
 
-		if (hasFlag()) {
-			int width = MapController.getMap().getTileWidth()
-					* landscapePos.getX();
-			int tileHeight = MapController.getMap().getTileHeight()
-					* landscapePos.getY();
-			flag.draw(width, tileHeight);
-		}
-
 		if (hasEndPoint()) {
 			endPoint.render(g);
 		}

@@ -158,10 +158,11 @@ public abstract class Agent implements IGameElement {
 	public void stop() {
 		ballon = AnimationLoader.getLoader().getStop();
 
-		/*
-		 * try { Thread.sleep(250); } catch (InterruptedException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
+		/*try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
 
 		if (isIll && life > 85) {
 			setIll(false);
@@ -172,7 +173,7 @@ public abstract class Agent implements IGameElement {
 		fatigue = Math.max(fatigue, 0);
 	}
 
-	public void catchFlag() {
+	public synchronized void catchFlag() {
 		if (MapController.getMap().getLandscape(agentPos).hasFlag()) {
 			flag = MapController.getMap().getLandscape(agentPos).removeFlag();
 		}
@@ -181,6 +182,7 @@ public abstract class Agent implements IGameElement {
 	public void dropFlag() {
 		if (hasFlag()) {
 			MapController.getMap().getLandscape(agentPos).setFlag(flag);
+			flag.setFlagPos(agentPos);
 			flag = null;
 		}
 	}
@@ -188,10 +190,11 @@ public abstract class Agent implements IGameElement {
 	public synchronized void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
-		/*
-		 * try { Thread.sleep(500); } catch (InterruptedException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
+		/*try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
 
 		int hitRate = random.nextInt(100);
 
@@ -227,10 +230,12 @@ public abstract class Agent implements IGameElement {
 
 	public synchronized void hunt(Animal prey) {
 		ballon = AnimationLoader.getLoader().getBow();
-		/*
-		 * try { Thread.sleep(250); } catch (InterruptedException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
+
+		/*try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
 		increaseLife(prey.kill());
 	}
 
@@ -523,6 +528,11 @@ public abstract class Agent implements IGameElement {
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
+
+		if (hasFlag()) {
+			flag.setFlagPos(new WorldPosition(agentPos.getX() + 10, agentPos
+					.getY()));
+		}
 	}
 
 	@Override
@@ -536,10 +546,6 @@ public abstract class Agent implements IGameElement {
 				agentPos.getY() + 30);
 		g.drawString("T" + getTeamId() + "A" + getAgentId(),
 				agentPos.getX() - 40, agentPos.getY() + 30);
-
-		if (hasFlag()) {
-			flag.draw(agentPos.getX() + 10, agentPos.getY());
-		}
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));

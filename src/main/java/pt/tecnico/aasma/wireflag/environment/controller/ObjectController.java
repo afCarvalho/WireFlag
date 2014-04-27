@@ -1,16 +1,20 @@
 package pt.tecnico.aasma.wireflag.environment.controller;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
+import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public class ObjectController implements IController {
 
 	private Animal[] animals;
+	private Flag flag;
 
 	public ObjectController() {
 		animals = new Animal[20];
@@ -42,8 +46,10 @@ public class ObjectController implements IController {
 			flagPos = MapController.getMap().getRandomPosition();
 		}
 
-		MapController.getMap().getLandscape(flagPos).setFlag(new Flag(flagPos));
-
+		flag = new Flag(new WorldPosition(flagPos.getX()
+				* MapController.getMap().getMapWidth(), flagPos.getY()
+				* MapController.getMap().getMapHeight()));
+		MapController.getMap().getLandscape(flagPos).setFlag(flag);
 	}
 
 	public void update(int delta) throws SlickException {
@@ -57,6 +63,7 @@ public class ObjectController implements IController {
 
 	@Override
 	public void render(Graphics g) {
+		flag.render(g);
 	}
 
 	public Animal createAnimal() throws SlickException {

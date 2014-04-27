@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.AgentThread;
 import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
@@ -211,7 +212,8 @@ public abstract class Landscape implements IGameElement {
 		}
 
 		if (hasAgent()) {
-			agent.update(delta);
+			Thread thread = new Thread(new AgentThread(agent, delta));
+			thread.start();
 		}
 
 		weather.update(delta);
@@ -233,14 +235,6 @@ public abstract class Landscape implements IGameElement {
 
 		if (hasAnimal()) {
 			animal.render(g);
-		}
-
-		if (hasFlag()) {
-			int width = MapController.getMap().getTileWidth()
-					* landscapePos.getX();
-			int tileHeight = MapController.getMap().getTileHeight()
-					* landscapePos.getY();
-			flag.draw(width, tileHeight);
 		}
 
 		if (hasEndPoint()) {

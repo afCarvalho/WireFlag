@@ -1,6 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.object;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
@@ -17,16 +18,16 @@ public class Fire implements IGameElement {
 	public Fire(int duration, MapPosition firePosition) {
 		this.firePosition = firePosition;
 		this.duration = duration;
-		fire=AnimationLoader.getLoader().getFire();
+		fire = AnimationLoader.getLoader().getFire();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		int tileWidth = MapController.getMap().getTileWidth();
-		int tileHeight = MapController.getMap().getTileHeight();
+		int width = MapController.getMap().getTileWidth() * firePosition.getX();
+		int height = MapController.getMap().getTileHeight()
+				* firePosition.getY();
 
-		fire.draw(firePosition.getX() * tileWidth, firePosition.getY()
-				* tileHeight);
+		fire.draw(width, height);
 	}
 
 	@Override

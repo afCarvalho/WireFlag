@@ -3,6 +3,7 @@ package pt.tecnico.aasma.wireflag.environment.object;
 import java.util.Random;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
@@ -37,10 +38,9 @@ public class Animal implements IGameElement {
 
 	@Override
 	public void render(Graphics g) {
-		int tileWidth = MapController.getMap().getTileWidth();
-		int tileHeight = MapController.getMap().getTileHeight();
-		animalAnimation.draw(animalPos.getX() * tileWidth, animalPos.getY()
-				* tileHeight);
+		int width = MapController.getMap().getTileWidth() * animalPos.getX();
+		int height = MapController.getMap().getTileHeight() * animalPos.getY();
+		animalAnimation.draw(width, height);	
 	}
 
 	@Override
