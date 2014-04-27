@@ -29,24 +29,27 @@ public class Deliberative extends Architecture {
 	}
 
 	public void makeAction(Agent agent, int delta) {
-		
-		//System.out.println("MAKE ACTION");
+
+		// System.out.println("MAKE ACTION");
 
 		// System.out.println("hasEndPoint " + state.hasEndPos()
 		// + " agent has flag " + agent.hasFlag());
 
-		//if (state.hasFlagPos()) {
-			/*System.out.println("FLAG POS " + state.getFlagPos().getX() + " "
-					+ state.getFlagPos().getY());*/
-		//}
+		// if (state.hasFlagPos()) {
+		/*
+		 * System.out.println("FLAG POS " + state.getFlagPos().getX() + " " +
+		 * state.getFlagPos().getY());
+		 */
+		// }
 
-		//if (state.hasEndPos()) {
-			/*System.out.println("AGENT POS "
-					+ agent.getPos().getMapPosition().getX() + " "
-					+ agent.getPos().getMapPosition().getY());
-			System.out.println("ENDPOS " + state.getEndPos().getX() + " "
-					+ state.getEndPos().getY());*/
-		//}
+		// if (state.hasEndPos()) {
+		/*
+		 * System.out.println("AGENT POS " +
+		 * agent.getPos().getMapPosition().getX() + " " +
+		 * agent.getPos().getMapPosition().getY()); System.out.println("ENDPOS "
+		 * + state.getEndPos().getX() + " " + state.getEndPos().getY());
+		 */
+		// }
 
 		// System.out.println("INIT " + agent.getPos().getMapPosition().getX()
 		// + " " + agent.getPos().getMapPosition().getY());
@@ -68,15 +71,18 @@ public class Deliberative extends Architecture {
 
 		// System.out.println("planing finished" + actions.size());
 
-		//for (int i = 0; i < MapController.getMap().getNHorizontalTiles(); i++)
-		//	for (int j = 0; j < MapController.getMap().getNVerticalTiles(); j++)
-		//		MapController.getMap().getLandscape(new MapPosition(i, j)).isSet = false;
+		// for (int i = 0; i < MapController.getMap().getNHorizontalTiles();
+		// i++)
+		// for (int j = 0; j < MapController.getMap().getNVerticalTiles(); j++)
+		// MapController.getMap().getLandscape(new MapPosition(i, j)).isSet =
+		// false;
 
 		// System.out.println("size " + actions.size());
 
-		/*for (Action a : actions) {
-			MapController.getMap().getLandscape(a.getPos()).isSet = true;
-		}*/
+		/*
+		 * for (Action a : actions) {
+		 * MapController.getMap().getLandscape(a.getPos()).isSet = true; }
+		 */
 
 		Action a;
 
@@ -179,7 +185,7 @@ public class Deliberative extends Architecture {
 			WireFlagGame.win(agent.getTeamId());
 		} else if (a.getAction() == Action.GET_ANIMAL) {
 			// System.out.println("ANIMAL");
-			agent.increaseLife(MapController.getMap()
+			agent.modifyLife(MapController.getMap()
 					.getLandscape(actions.getFirst().getPos()).killAnimal());
 		} else if (a.getAction() == Action.ATTACK) {
 			// System.out.println("ATTACK");
@@ -253,7 +259,7 @@ public class Deliberative extends Architecture {
 	public LinkedList<Action> plan(int intention, MapPosition initialPos,
 			int visibility, Agent agent) {
 
-		 //System.out.println("PLAN");
+		// System.out.println("PLAN");
 
 		boolean usedPerception[][] = new boolean[state.getHorizontalSize()][state
 				.getVerticalSize()];
@@ -277,12 +283,11 @@ public class Deliberative extends Architecture {
 		Action bestGoAwayAction = actions.getFirst();
 
 		while (!actions.isEmpty()) {
-			Action a = actions.removeFirst();		
-			
-			  //System.out.println("BFS " + " " + a.getAction() + " " +
-			  //a.getPos().getX() + " " + a.getPos().getY() + " " +
-			  //a.getNActions());
-			 
+			Action a = actions.removeFirst();
+
+			// System.out.println("BFS " + " " + a.getAction() + " " +
+			// a.getPos().getX() + " " + a.getPos().getY() + " " +
+			// a.getNActions());
 
 			if (a != null) {
 
@@ -302,8 +307,8 @@ public class Deliberative extends Architecture {
 				}
 
 				if (a.getAction() == Action.STOP_ACTION) {
-					//System.out.println("STOP");
-					
+					// System.out.println("STOP");
+
 					// System.out.println("Action " + a.getAction());
 					/*
 					 * System.out.println("STOP " + a.getPos().getX() + " " +
