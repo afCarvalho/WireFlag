@@ -28,7 +28,8 @@
 						<argument>-d64</argument>
 						<argument>-Djava.library.path=${project.build.directory}/natives/</argument>
 						<argument>-Dmap=${project.data}/map/</argument>
-						<argument>-Dweather=${project.data}/weather/</argument>
+                        <argument>-Dstate=${project.data}/state/</argument>
+                        <argument>-Dweather=${project.data}/weather/</argument>
 						<argument>-Dobject=${project.data}/object/</argument>
 						<argument>-Danimal=${project.data}/animal/</argument>
 						<argument>-Dagent=${project.data}/agent/</argument>
