@@ -7,8 +7,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;

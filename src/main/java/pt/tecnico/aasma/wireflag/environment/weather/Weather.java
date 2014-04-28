@@ -30,6 +30,7 @@ public abstract class Weather implements IGameElement {
 	/***************
 	 *** GETTERS ***
 	 ***************/
+
 	public abstract int getLifeDamage();
 
 	/************************

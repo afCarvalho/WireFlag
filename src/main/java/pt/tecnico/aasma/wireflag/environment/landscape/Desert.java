@@ -13,15 +13,27 @@ public class Desert extends Landscape {
 		super(REDUCEDSPD, position, NORMALVSB, VHIGHFATIGUE);
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new SandStorm(duration, landscapePos);
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public boolean isInflammable() {
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	@Override
 	public Animal createAnimal() {

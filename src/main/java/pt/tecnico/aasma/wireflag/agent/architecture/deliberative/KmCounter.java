@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.agent;
+package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 public class KmCounter {
 

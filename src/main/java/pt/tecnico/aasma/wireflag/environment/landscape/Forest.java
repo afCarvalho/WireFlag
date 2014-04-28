@@ -13,15 +13,27 @@ public class Forest extends Landscape {
 		super(REDUCEDSPD, position, REDUCEDVSB, NORMALFATIGUE);
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new Rainy(duration, landscapePos);
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public boolean isInflammable() {
 		return true;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	@Override
 	public Animal createAnimal() {

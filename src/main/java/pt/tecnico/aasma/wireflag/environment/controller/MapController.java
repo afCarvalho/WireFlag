@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.LandscapeType;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
@@ -98,10 +99,12 @@ public class MapController implements IController {
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
 		perception.setBlocked(isBlocked(pos));
-		if (land.hasAgent()) {
-			perception.setAgentAttack(land.getAgent().getAgentAttack());
-			perception.setTiredAgent(land.getAgent().hasFatigue());
-			perception.setInjuredAgent(land.getAgent().hasLowLife());
+
+		Agent agent = land.getAgent();
+		if (agent != null) {
+			perception.setAgentAttack(agent.getAgentAttack());
+			perception.setTiredAgent(agent.hasFatigue());
+			perception.setInjuredAgent(agent.hasLowLife());
 		}
 
 		return perception;

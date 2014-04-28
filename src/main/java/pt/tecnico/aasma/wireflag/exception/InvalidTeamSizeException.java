@@ -18,10 +18,14 @@ public class InvalidTeamSizeException extends SlickException {
 	private int size;
 
 	public InvalidTeamSizeException(int identifier, int size) {
-		super("It was impossible to create a team with " + size + " elements ");
+		super(getMessage(size));
 		this.identifier = identifier;
 		this.size = size;
 	}
+
+	/***************
+	 *** GETTERS ***
+	 ***************/
 
 	/**
 	 * Gets the team identifier.
@@ -41,4 +45,7 @@ public class InvalidTeamSizeException extends SlickException {
 		return this.size;
 	}
 
+	public static String getMessage(int size) {
+		return "It was impossible to create a team with " + size + " elements ";
+	}
 }

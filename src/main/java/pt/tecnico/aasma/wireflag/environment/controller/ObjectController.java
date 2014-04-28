@@ -1,13 +1,11 @@
 package pt.tecnico.aasma.wireflag.environment.controller;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
-import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
@@ -15,9 +13,18 @@ public class ObjectController implements IController {
 
 	private Animal[] animals;
 	private Flag flag;
+	private static final ObjectController INSTANCE = new ObjectController();
 
-	public ObjectController() {
+	private ObjectController() {
 		animals = new Animal[20];
+	}
+
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
+	public static ObjectController getObjects() {
+		return INSTANCE;
 	}
 
 	/********************

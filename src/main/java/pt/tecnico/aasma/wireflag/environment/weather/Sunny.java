@@ -8,14 +8,21 @@ public class Sunny extends Weather {
 		super(duration, position, null);
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	@Override
 	public int getLifeDamage() {
 		return NOLIFEDMG;
 	}
 
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
+
 	@Override
 	public void draw(int x, int y) {
 
 	}
-
 }

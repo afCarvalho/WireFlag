@@ -21,14 +21,17 @@ public class Fire implements IGameElement {
 		fire = AnimationLoader.getLoader().getFire();
 	}
 
-	@Override
-	public void render(Graphics g) {
-		int width = MapController.getMap().getTileWidth() * firePosition.getX();
-		int height = MapController.getMap().getTileHeight()
-				* firePosition.getY();
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
 
-		fire.draw(width, height);
+	public boolean isActive() {
+		return duration > 0;
 	}
+
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
 
 	@Override
 	public void update(int delta) {
@@ -36,7 +39,12 @@ public class Fire implements IGameElement {
 			duration--;
 	}
 
-	public boolean isActive() {
-		return duration > 0;
+	@Override
+	public void render(Graphics g) {
+		int width = MapController.getMap().getTileWidth() * firePosition.getX();
+		int height = MapController.getMap().getTileHeight()
+				* firePosition.getY();
+
+		fire.draw(width, height);
 	}
 }

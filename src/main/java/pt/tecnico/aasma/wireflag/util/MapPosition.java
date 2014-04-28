@@ -8,25 +8,21 @@ public class MapPosition {
 	private int x;
 	private int y;
 
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	public MapPosition(int x, int y) {
 		this.setX(x);
 		this.y = y;
 	}
 
-	public int getX() {
-		return x;
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
+	public int getY() {
+		return y;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public int getX() {
+		return x;
 	}
 
 	public MapPosition getAheadPosition(int direction) {
@@ -41,7 +37,6 @@ public class MapPosition {
 		} else {
 			return new MapPosition(-1, -1);
 		}
-
 	}
 
 	public MapPosition getLeftPosition(int direction) {
@@ -56,7 +51,6 @@ public class MapPosition {
 		} else {
 			return new MapPosition(-1, -1);
 		}
-
 	}
 
 	public MapPosition getRightPosition(int direction) {
@@ -71,7 +65,6 @@ public class MapPosition {
 		} else {
 			return new MapPosition(-1, -1);
 		}
-
 	}
 
 	public MapPosition getBehindPosition(int direction) {
@@ -86,8 +79,23 @@ public class MapPosition {
 		} else {
 			return new MapPosition(-1, -1);
 		}
-
 	}
+
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
 
 	/* returns true if position, pos, is an adjacent position of this position */
 	public boolean isAdjacentPosition(MapPosition pos, int direction) {
@@ -98,31 +106,26 @@ public class MapPosition {
 
 	/* returns true if position, pos, is the left position of this position */
 	public boolean isCloseOnLeft(MapPosition pos, int direction) {
-
 		return pos.isSamePosition(getLeftPosition(direction));
 	}
 
 	/* returns true if position, pos, is the right position of this position */
 	public boolean isCloseOnRight(MapPosition pos, int direction) {
-
 		return pos.isSamePosition(getRightPosition(direction));
 	}
 
 	/* returns true if position, pos, is right ahead this position */
 	public boolean isJustAhead(MapPosition pos, int direction) {
-
 		return pos.isSamePosition(getAheadPosition(direction));
 	}
 
 	/* returns true if position, pos, is right behind this position */
 	public boolean isJustBehind(MapPosition pos, int direction) {
-
 		return pos.isSamePosition(getBehindPosition(direction));
 	}
 
 	/* returns true if position, pos, is a left position of this position */
 	public boolean isLeft(MapPosition pos, int direction) {
-
 		if (direction == Agent.DOWN) {
 			return this.x < pos.getX();
 		} else if (direction == Agent.UP) {
@@ -138,7 +141,6 @@ public class MapPosition {
 
 	/* returns true if position, pos, is a right position of this position */
 	public boolean isRight(MapPosition pos, int direction) {
-
 		if (direction == Agent.DOWN) {
 			return this.x > pos.getX();
 		} else if (direction == Agent.UP) {
@@ -154,7 +156,6 @@ public class MapPosition {
 
 	/* returns true if position, pos, is ahead this position */
 	public boolean isAhead(MapPosition pos, int direction) {
-
 		if (direction == Agent.DOWN) {
 			return this.y < pos.getY();
 		} else if (direction == Agent.UP) {
@@ -170,7 +171,6 @@ public class MapPosition {
 
 	/* returns true if position, pos, is behind this position */
 	public boolean isBehind(MapPosition pos, int direction) {
-
 		if (direction == Agent.DOWN) {
 			return this.y > pos.getY();
 		} else if (direction == Agent.UP) {

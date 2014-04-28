@@ -5,9 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
-import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
 
 public class Flag implements IGameElement {
@@ -20,6 +18,18 @@ public class Flag implements IGameElement {
 		flagPos = flagPosition;
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
+	public void setFlagPos(WorldPosition flagPos) {
+		this.flagPos = flagPos;
+	}
+
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
+
 	public void draw(float x, float y) {
 		flag.draw(x, y);
 	}
@@ -30,9 +40,5 @@ public class Flag implements IGameElement {
 
 	@Override
 	public void update(int delta) throws SlickException {
-	}
-
-	public void setFlagPos(WorldPosition flagPos) {
-		this.flagPos = flagPos;
 	}
 }

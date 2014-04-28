@@ -12,15 +12,27 @@ public class Limit extends Landscape {
 		super(0, position, REDUCEDVSB, VHIGHFATIGUE);
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new Sunny(0, landscapePos);
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public boolean isInflammable() {
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	@Override
 	public Animal createAnimal() {

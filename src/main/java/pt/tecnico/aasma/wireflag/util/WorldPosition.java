@@ -13,25 +13,20 @@ public class WorldPosition {
 		this.setY(y);
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	public float getY() {
 		return y;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	public float getX() {
 		return x;
 	}
 
-	public void setX(float x) {
-		this.x = x;
-	}
-
 	/* converts a WorldPosition into a MapPosition */
 	public MapPosition getMapPosition() {
-
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
 
@@ -39,5 +34,17 @@ public class WorldPosition {
 		int yPos = (int) y / tileHeight;
 
 		return new MapPosition(xPos, yPos);
+	}
+
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
+	public void setY(float y) {
+		this.y = y;
+	}
+
+	public void setX(float x) {
+		this.x = x;
 	}
 }

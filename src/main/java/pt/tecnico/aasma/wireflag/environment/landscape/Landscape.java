@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.AgentThread;
-import pt.tecnico.aasma.wireflag.agent.architecture.Deliberative;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
@@ -207,9 +207,7 @@ public abstract class Landscape implements IGameElement {
 
 		if (hasAgent() && !agent.isAlive()) {
 			EndGameController.getEnd().decreaseNAliveAgents();
-			if (!EndGameController.getEnd().getGameFinished()) {
-				agent.dropFlag();
-			}
+			agent.dropFlag();
 			setAgent(null);
 		}
 

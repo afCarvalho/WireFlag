@@ -11,6 +11,10 @@ public class ThunderStorm extends Weather {
 		super(duration, position, AnimationLoader.getLoader().getThunderStorm());
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	@Override
 	public int getLifeDamage() {
 		if (new Random().nextInt(100) == 0) {

@@ -24,7 +24,8 @@ public class WireFlagGame extends BasicGame {
 	}
 
 	public static void win(int teamId) {
-		elements = new IController[] { EndGameController.getEnd() };
+		elements = new IController[] { EndGameController.getEnd(),
+				ObjectController.getObjects() };
 		EndGameController.getEnd().endGame(teamId);
 	}
 
@@ -44,8 +45,8 @@ public class WireFlagGame extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		elements = new IController[] { MapController.getMap(),
-				AgentController.getAgents(), TimeController.getTime(),
-				new ClimateController(), new ObjectController() };
+				TimeController.getTime(), new ClimateController(),
+				AgentController.getAgents(), ObjectController.getObjects() };
 
 		AnimationLoader.getLoader().loadImages();
 

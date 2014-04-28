@@ -18,6 +18,10 @@ public class Builder extends Agent {
 		sprite = right;
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
 		return 10 * nTired + 2 * nInjured;
@@ -36,6 +40,10 @@ public class Builder extends Agent {
 		}
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	/* this agent use its ability at MapPosition pos */
 	@Override

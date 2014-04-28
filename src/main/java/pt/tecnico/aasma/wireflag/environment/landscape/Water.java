@@ -20,15 +20,27 @@ public class Water extends Landscape {
 		boat = AnimationLoader.getLoader().getBoat();
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new ThunderStorm(duration, landscapePos);
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public boolean isInflammable() {
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	@Override
 	public Animal createAnimal() {
@@ -36,6 +48,10 @@ public class Water extends Landscape {
 				.getTurtle());
 		return animal;
 	}
+
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
 
 	@Override
 	public void render(Graphics g) {

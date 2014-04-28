@@ -9,6 +9,10 @@ public class Rainy extends Weather {
 		super(duration, position, AnimationLoader.getLoader().getRain());
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	@Override
 	public int getLifeDamage() {
 		return LOWLIFEDMG;

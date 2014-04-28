@@ -13,15 +13,27 @@ public class Mountain extends Landscape {
 		super(VREDUCEDSPD, position, HIGHVSB, HIGHFATIGUE);
 	}
 
+	/***************
+	 *** SETTERS ***
+	 ***************/
+
 	@Override
 	public void setExtremeWeather(int duration) throws SlickException {
 		weather = new SnowStorm(duration, landscapePos);
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public boolean isInflammable() {
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	@Override
 	public Animal createAnimal() {

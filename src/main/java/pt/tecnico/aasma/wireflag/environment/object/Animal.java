@@ -26,9 +26,17 @@ public class Animal implements IGameElement {
 		animalAnimation = animation;
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	public boolean isAlive() {
 		return protein > 0;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	public int kill() {
 		int result = protein;
@@ -36,11 +44,15 @@ public class Animal implements IGameElement {
 		return result;
 	}
 
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
+
 	@Override
 	public void render(Graphics g) {
 		int width = MapController.getMap().getTileWidth() * animalPos.getX();
 		int height = MapController.getMap().getTileHeight() * animalPos.getY();
-		animalAnimation.draw(width, height);	
+		animalAnimation.draw(width, height);
 	}
 
 	@Override

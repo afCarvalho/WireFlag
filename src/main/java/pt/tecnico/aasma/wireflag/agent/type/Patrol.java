@@ -18,6 +18,10 @@ public class Patrol extends Agent {
 		sprite = right;
 	}
 
+	/************************
+	 *** STATE PREDICATES ***
+	 ************************/
+
 	@Override
 	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
 		if (flag) {
@@ -41,6 +45,10 @@ public class Patrol extends Agent {
 
 		return false;
 	}
+
+	/***********************
+	 *** STATE MODIFIERS ***
+	 ***********************/
 
 	/* this agent use its ability at MapPosition pos */
 	@Override

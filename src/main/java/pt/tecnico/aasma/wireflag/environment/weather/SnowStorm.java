@@ -11,6 +11,10 @@ public class SnowStorm extends Weather {
 		super(duration, position, AnimationLoader.getLoader().getSnowStorm());
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	@Override
 	public int getLifeDamage() {
 		if (new Random().nextInt(100) > 80) {

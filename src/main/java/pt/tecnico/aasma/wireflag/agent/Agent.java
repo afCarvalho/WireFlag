@@ -70,15 +70,6 @@ public abstract class Agent implements IGameElement {
 	private Flag flag;
 	private Architecture architecture;
 	private AgentThread agentThread;
-	private Thread thread;
-
-	public AgentThread getAgentThread() {
-		return agentThread;
-	}
-
-	public void setAgentThread(AgentThread agentThread) {
-		this.agentThread = agentThread;
-	}
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture) {
@@ -145,6 +136,10 @@ public abstract class Agent implements IGameElement {
 		return visibility;
 	}
 
+	public AgentThread getAgentThread() {
+		return agentThread;
+	}
+
 	/***************
 	 *** SETTERS ***
 	 ***************/
@@ -167,8 +162,7 @@ public abstract class Agent implements IGameElement {
 	 ***********************/
 
 	public void init() {
-		this.thread = new Thread(agentThread);
-		thread.start();
+		agentThread.init();
 	}
 
 	public void stop() {
@@ -202,8 +196,19 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
+	public void moveFlag() {
+		if (hasFlag()) {
+			flag.setFlagPos(new WorldPosition(agentPos.getX() + 10, agentPos
+					.getY()));
+		}
+	}
+
 	public void attack(Agent agent) {
 		ballon = AnimationLoader.getLoader().getAttack();
+
+		if (agent == null) {
+			return;
+		}
 
 		/*
 		 * try { Thread.sleep(500); } catch (InterruptedException e) {
@@ -537,15 +542,20 @@ public abstract class Agent implements IGameElement {
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
-
-		if (hasFlag() && !EndGameController.getEnd().getGameFinished()) {
-			flag.setFlagPos(new WorldPosition(agentPos.getX() + 10, agentPos
-					.getY()));
-		}
+		moveFlag();
 	}
 
 	@Override
 	public void render(Graphics g) {
+
+		g.setColor(new Color(1f, life * 1.0f / 100,
+				((100 - fatigue) * 1.0f) / 100, 0.4f));
+		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
+				getVisibilityRange() * MapController.getMap().getTileWidth()
+						* 1.5f);
+		g.draw(circle);
+		g.fill(circle);
+
 		sprite.draw(agentPos.getX(), agentPos.getY());
 		ballon.draw(agentPos.getX() - 10, agentPos.getY());
 
@@ -555,15 +565,6 @@ public abstract class Agent implements IGameElement {
 				agentPos.getY() + 30);
 		g.drawString("T" + getTeamId() + "A" + getAgentId(),
 				agentPos.getX() - 40, agentPos.getY() + 30);
-
-		g.setColor(new Color(1f, life * 1.0f / 100,
-				((100 - fatigue) * 1.0f) / 100, 0.4f));
-		Circle circle = new Circle(agentPos.getX() + 15, agentPos.getY() + 15,
-				getVisibilityRange() * MapController.getMap().getTileWidth()
-						* 1.5f);
-
-		g.draw(circle);
-		g.fill(circle);
 
 		if (isIll()) {
 			ill.draw(agentPos.getX(), agentPos.getY());

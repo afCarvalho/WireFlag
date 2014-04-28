@@ -127,6 +127,7 @@ public class EndGameController implements IController {
 			y += 5 * MapController.getMap().getTileWidth();
 
 			for (Agent agent : team.getMembers()) {
+				agent.moveFlag();
 				agent.render(g);
 				WorldPosition agentPos = agent.getPos();
 				if (!agent.isAlive()) {

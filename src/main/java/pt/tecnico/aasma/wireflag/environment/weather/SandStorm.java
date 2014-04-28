@@ -9,6 +9,10 @@ public class SandStorm extends Weather {
 		super(duration, position, AnimationLoader.getLoader().getSandStorm());
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	@Override
 	public int getLifeDamage() {
 		return MODERATELIFEDMG;

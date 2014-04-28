@@ -1,14 +1,11 @@
-package pt.tecnico.aasma.wireflag.agent.architecture;
+package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import java.util.LinkedList;
 import java.util.Random;
 
 import pt.tecnico.aasma.wireflag.WireFlagGame;
-import pt.tecnico.aasma.wireflag.agent.Action;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.Intention;
-import pt.tecnico.aasma.wireflag.agent.InternalState;
-import pt.tecnico.aasma.wireflag.agent.WorldState;
+import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -63,7 +60,7 @@ public class Deliberative extends Architecture {
 
 		if (actions.size() < 2) {
 
-			System.out.println("SIZE < 2 ");
+			//System.out.println("SIZE < 2 ");
 			// agent.stop();
 			return;
 
@@ -412,7 +409,7 @@ public class Deliberative extends Architecture {
 		}
 
 		if (acList.size() < 2) {
-			System.out.println("GO AWAY "
+			/*System.out.println("GO AWAY "
 					+ bestGoAwayAction.getNActions()
 					+ " "
 					+ bestGoAwayAction.getMoveUtility(agent)
@@ -421,7 +418,7 @@ public class Deliberative extends Architecture {
 					+ " "
 					+ Math.min(Math.min(bestGoAwayAction.getClimateUtility(),
 							bestGoAwayAction.getFireUtility()),
-							bestGoAwayAction.getBlockedUtility(agent)));
+							bestGoAwayAction.getBlockedUtility(agent)));*/
 			acList.clear();
 			bestGoAwayAction.getActionsList(actions);
 		}

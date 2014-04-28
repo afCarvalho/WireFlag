@@ -18,16 +18,17 @@ public class EndPoint implements IGameElement {
 		this.endPos = endPos;
 	}
 
+	/*********************
+	 *** GAME RELATED ****
+	 *********************/
+
 	public void render(Graphics g) {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
-
 		endPoint.draw(endPos.getX() * tileWidth, endPos.getY() * tileHeight);
 	}
 
 	@Override
 	public void update(int delta) {
-		// TODO Auto-generated method stub
-
 	}
 }

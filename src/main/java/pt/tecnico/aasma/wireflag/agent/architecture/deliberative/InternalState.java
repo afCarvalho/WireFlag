@@ -1,7 +1,8 @@
-package pt.tecnico.aasma.wireflag.agent;
+package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import java.util.List;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.MapPosition;

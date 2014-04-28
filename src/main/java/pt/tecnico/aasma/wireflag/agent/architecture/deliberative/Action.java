@@ -1,8 +1,9 @@
-package pt.tecnico.aasma.wireflag.agent;
+package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Action {

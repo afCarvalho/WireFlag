@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.agent;
+package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.MapPosition;

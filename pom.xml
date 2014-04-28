@@ -94,13 +94,6 @@
 			<version>2.9.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.jnlp</groupId>
-			<artifactId>jnlp-api</artifactId>
-			<version>5.0</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/lib/javaws.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>com.ninjacave</groupId>
 			<artifactId>slick</artifactId>
 			<version>2013.06.03</version>

@@ -10,6 +10,10 @@ public class LandscapeNotFoundException extends SlickException {
 		super(getMessage(landscapeName));
 	}
 
+	/***************
+	 *** GETTERS ***
+	 ***************/
+
 	private static String getMessage(String landscapeName) {
 		return "Landscape with name " + landscapeName + " was not found";
 	}
