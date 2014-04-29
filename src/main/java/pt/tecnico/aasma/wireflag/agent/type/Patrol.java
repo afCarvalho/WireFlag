@@ -2,9 +2,13 @@ package pt.tecnico.aasma.wireflag.agent.type;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.controller.TeamController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
+
+import java.util.List;
 
 public class Patrol extends Agent {
 
@@ -17,11 +21,18 @@ public class Patrol extends Agent {
 
 		sprite = right;
 	}
+    
+    @Override
+    public List<Agent> getNearTeammates() {
+        List<Agent> agents = AgentController.getAgents().getTeamById(getTeamId()).toList();
+        agents.remove(this);
+        return agents;
+    }
 
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
-
+    
 	@Override
 	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
 		if (flag) {

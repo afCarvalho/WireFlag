@@ -1,14 +1,9 @@
 package pt.tecnico.aasma.wireflag.environment.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.Builder;
@@ -16,6 +11,9 @@ import pt.tecnico.aasma.wireflag.agent.type.Doctor;
 import pt.tecnico.aasma.wireflag.agent.type.Patrol;
 import pt.tecnico.aasma.wireflag.agent.type.Soldier;
 import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgentController implements IController {
 
@@ -42,6 +40,23 @@ public class AgentController implements IController {
 	public List<Team> getTeams() {
 		return teams;
 	}
+
+    /**
+     *  FIXME: If TeamController is going to be use, this method should go there.
+     *
+     * Gets the team matching the id.
+     *
+     * @param id the ID of the team to be retrieved
+     * @return the actual team or null if not founds
+     */
+    public Team getTeamById(int id) {
+        for (Team team : teams) {
+            if (team.getID() == id) {
+                return team;
+            }
+        }
+        return null;
+    }
 
 	/***********************
 	 *** STATE MODIFIERS ***

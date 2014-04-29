@@ -1,5 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.perception;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Perception {
@@ -44,6 +46,15 @@ public class Perception {
 	public boolean getBlocked() {
 		return blocked;
 	}
+
+    /**
+     * Gets the agent in the current position.
+     *
+     * @return the agent
+     */
+    public Agent getAgent() {
+        return MapController.getMap().getLandscape(position).getAgent();
+    }
 
 	/***************
 	 *** SETTERS ***

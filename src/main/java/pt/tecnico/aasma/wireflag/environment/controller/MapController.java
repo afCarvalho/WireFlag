@@ -88,6 +88,7 @@ public class MapController implements IController {
 	}
 
 	/* for each tile is created a perception */
+    @Deprecated
 	private Perception getTilePerception(int teamId, int id, MapPosition pos) {
 		Landscape land = getLandscape(pos);
 
@@ -113,6 +114,7 @@ public class MapController implements IController {
 	/*
 	 * returns a list with a perception for each tile in the agent's visibility
 	 */
+    @Deprecated
 	public List<Perception> getPerceptions(int teamId, MapPosition pos,
 			int visibility) {
 		List<Perception> list = new ArrayList<Perception>();
