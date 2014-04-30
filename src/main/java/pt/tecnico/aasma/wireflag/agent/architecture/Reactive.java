@@ -516,9 +516,7 @@ public class Reactive extends Architecture {
 
 	public void makeAction(Agent agent, int delta) {
 
-		List<Perception> perceptions = MapController.getMap().getPerceptions(
-				agent.getTeamId(), agent.getPos().getMapPosition(),
-				agent.getVisibilityRange());
+		List<Perception> perceptions = agent.getPerceptions();
 
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
@@ -536,7 +534,6 @@ public class Reactive extends Architecture {
 							.invoke(this,
 									new Object[] { agent, delta, perceptions });
 					// Debug begin
-
 					/*
 					 * System.err.println("Time: " +
 					 * TimeController.getTime().getDays() + "d " +
@@ -546,7 +543,6 @@ public class Reactive extends Architecture {
 					 * "] direction: " + agent.getDirection() + " action done: "
 					 * + i);
 					 */
-
 					// Debug end
 
 					return;

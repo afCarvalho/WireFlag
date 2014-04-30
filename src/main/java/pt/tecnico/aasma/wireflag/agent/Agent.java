@@ -140,63 +140,64 @@ public abstract class Agent implements IGameElement {
 	public AgentThread getAgentThread() {
 		return agentThread;
 	}
-    
-    /* for each tile is created a perception */
-    private Perception getTilePerception(MapPosition pos) {
-        Landscape land = MapController.getMap().getLandscape(pos);
-        
-        Perception perception = new Perception(pos, land.getRating());
-        perception.setFlag(land.hasFlag());
-        perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
-        perception.setEndPoint(land.hasEndPoint());
-        perception.setAnimal(land.hasAnimal());
-        perception.setFire(land.hasFire());
-        perception.setExtremeWeather(land.getWeather().isExtremeWeather());
-        perception.setBlocked(isBlocked(pos));
-        if (land.hasAgent()) {
-            perception.setAgentAttack(land.getAgent().getAgentAttack());
-            perception.setTiredAgent(land.getAgent().hasFatigue());
-            perception.setInjuredAgent(land.getAgent().hasLowLife());
-        }
-        
-        return perception;
-    }
-    
-    /*
-     * returns a list with a perception for each tile in the agent's visibility
-     */
-    public List<Perception> getPerceptions() {
-        List<Perception> list = new ArrayList<Perception>();
-        int visibility = getVisibilityRange();
-        int x = position.getMapPosition().getX();
-        int y = position.getMapPosition().getY();
-        int id = 0;
-        
-        for (int j = y + visibility; j >= y - visibility; j--) {
-            for (int i = x - visibility; i <= x + visibility; i++) {
-                
-                if (j < MapController.getMap().getNVerticalTiles() && i < MapController.getMap().getNHorizontalTiles()
-                    && j > 0 && i > 0) {
-                    list.add(getTilePerception(new MapPosition(i, j)));
-                }
-            }
-        }
-        
-        return list;
-    }
-    
-    public List<Agent> getNearTeammates() {
-        List<Perception> perceptions = getPerceptions();
-        List<Agent> mates = new ArrayList<>();
 
-        for (Perception perception : perceptions) {
-            Agent agent = perception.getAgent();
-            if (agent != null && agent.getTeamId() == teamId) {
-                mates.add(agent);
-            }
-        }
-        return mates;
-    }
+	/* for each tile is created a perception */
+	private Perception getTilePerception(MapPosition pos) {
+		Landscape land = MapController.getMap().getLandscape(pos);
+
+		Perception perception = new Perception(pos, land.getRating());
+		perception.setFlag(land.hasFlag());
+		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
+		perception.setEndPoint(land.hasEndPoint());
+		perception.setAnimal(land.hasAnimal());
+		perception.setFire(land.hasFire());
+		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
+		perception.setBlocked(isBlocked(pos));
+		if (land.hasAgent()) {
+			perception.setAgentAttack(land.getAgent().getAgentAttack());
+			perception.setTiredAgent(land.getAgent().hasFatigue());
+			perception.setInjuredAgent(land.getAgent().hasLowLife());
+		}
+
+		return perception;
+	}
+
+	/*
+	 * returns a list with a perception for each tile in the agent's visibility
+	 */
+	public List<Perception> getPerceptions() {
+		List<Perception> list = new ArrayList<Perception>();
+		int visibility = getVisibilityRange();
+		int x = position.getMapPosition().getX();
+		int y = position.getMapPosition().getY();
+		int id = 0;
+
+		for (int j = y + visibility; j >= y - visibility; j--) {
+			for (int i = x - visibility; i <= x + visibility; i++) {
+
+				if (j < MapController.getMap().getNVerticalTiles()
+						&& i < MapController.getMap().getNHorizontalTiles()
+						&& j > 0 && i > 0) {
+					list.add(getTilePerception(new MapPosition(i, j)));
+				}
+			}
+		}
+
+		return list;
+	}
+
+	public List<Agent> getNearTeammates() {
+		List<Perception> perceptions = getPerceptions();
+		List<Agent> mates = new ArrayList<Agent>();
+
+		for (Perception perception : perceptions) {
+			Agent agent = perception.getAgent();
+			if (agent != null && agent.getTeamId() == teamId) {
+				mates.add(agent);
+			}
+		}
+		return mates;
+	}
 
 	/***************
 	 *** SETTERS ***
@@ -227,32 +228,32 @@ public abstract class Agent implements IGameElement {
 		ballon = AnimationLoader.getLoader().getStop();
 
 		/*
-         * try { Thread.sleep(250); } catch (InterruptedException e) {
+		 * try { Thread.sleep(250); } catch (InterruptedException e) {
 		 * e.printStackTrace(); }
 		 */
 
-        if (isIll && life > 85) {
-            setIll(false);
-        }
+		if (isIll && life > 85) {
+			setIll(false);
+		}
 
-        modifyLife(1);
-        fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
-        fatigue = Math.max(fatigue, 0);
-    }
+		modifyLife(1);
+		fatigue = Math.min(100, fatigue - FATIGUE_RECOVER);
+		fatigue = Math.max(fatigue, 0);
+	}
 
-    public void catchFlag() {
-        if (MapController.getMap().getLandscape(position).hasFlag()) {
-            flag = MapController.getMap().getLandscape(position).removeFlag();
-        }
-    }
+	public void catchFlag() {
+		if (MapController.getMap().getLandscape(position).hasFlag()) {
+			flag = MapController.getMap().getLandscape(position).removeFlag();
+		}
+	}
 
-    public void dropFlag() {
-        if (hasFlag()) {
-            MapController.getMap().getLandscape(position).setFlag(flag);
-            flag.setFlagPos(position);
-            flag = null;
-        }
-    }
+	public void dropFlag() {
+		if (hasFlag()) {
+			MapController.getMap().getLandscape(position).setFlag(flag);
+			flag.setFlagPos(position);
+			flag = null;
+		}
+	}
 
 	public void moveFlag() {
 		if (hasFlag()) {
@@ -273,247 +274,243 @@ public abstract class Agent implements IGameElement {
 		 * e.printStackTrace(); }
 		 */
 
-        int hitRate = random.nextInt(100);
+		int hitRate = random.nextInt(100);
 
-        if (hitRate > 95) {
-            hitRate = agentAttack * 2;
-        } else if (hitRate < 15) {
-            hitRate = 0;
-        } else {
-            hitRate = agentAttack;
-        }
+		if (hitRate > 95) {
+			hitRate = agentAttack * 2;
+		} else if (hitRate < 15) {
+			hitRate = 0;
+		} else {
+			hitRate = agentAttack;
+		}
 
-        agent.modifyLife(-hitRate);
-    }
+		agent.modifyLife(-hitRate);
+	}
 
-    public synchronized void modifyLife(int value) {
-        life = Math.max(0, life + value);
-        life = Math.min(life, 100);
-        this.notify();
-    }
+	public synchronized void modifyLife(int value) {
+		life = Math.max(0, life + value);
+		life = Math.min(life, 100);
+		this.notify();
+	}
 
-    public synchronized void modifyFatigue(int value) {
-        fatigue = Math.max(0, fatigue + value);
-        fatigue = Math.min(fatigue, 100);
-        this.notify();
-    }
+	public synchronized void modifyFatigue(int value) {
+		fatigue = Math.max(0, fatigue + value);
+		fatigue = Math.min(fatigue, 100);
+		this.notify();
+	}
 
-    public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
-                                     boolean flag);
+	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
+			boolean flag);
 
-    public void hunt(Animal prey) {
-        ballon = AnimationLoader.getLoader().getBow();
+	public void hunt(Animal prey) {
+		ballon = AnimationLoader.getLoader().getBow();
 
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) {
 		 * e.printStackTrace(); }
 		 */
-        modifyLife(prey.kill());
-    }
+		modifyLife(prey.kill());
+	}
 
-    /* this agent use its ability at MapPosition pos */
-    public abstract void useAbility(MapPosition pos);
+	/* this agent use its ability at MapPosition pos */
+	public abstract void useAbility(MapPosition pos);
 
-    /**
-     * *********************
-     * ** STATE PREDICATES ***
-     * **********************
-     */
+	/**
+	 * ********************* *** STATE PREDICATES *** **********************
+	 */
 
-    public boolean hasLowLife() {
-        return life <= LOW_LIFE;
-    }
+	public boolean hasLowLife() {
+		return life <= LOW_LIFE;
+	}
 
-    public boolean hasVeryLowLife() {
-        return life <= VLOW_LIFE;
-    }
+	public boolean hasVeryLowLife() {
+		return life <= VLOW_LIFE;
+	}
 
-    public boolean hasFatigue() {
-        return fatigue >= HIGH_FATIGUE;
-    }
+	public boolean hasFatigue() {
+		return fatigue >= HIGH_FATIGUE;
+	}
 
-    public boolean isEnemy(int teamId) {
-        return this.teamId != teamId;
-    }
+	public boolean isEnemy(int teamId) {
+		return this.teamId != teamId;
+	}
 
-    public boolean isAlive() {
-        return life > 0;
-    }
+	public boolean isAlive() {
+		return life > 0;
+	}
 
-    public boolean isIll() {
-        return isIll;
-    }
+	public boolean isIll() {
+		return isIll;
+	}
 
-    public boolean hasFlag() {
-        return flag != null;
-    }
+	public boolean hasFlag() {
+		return flag != null;
+	}
 
-    /*
-     * returns false if the position p is free or if the agent in that position
-     * is this agent
-     */
-    public boolean isBlocked(MapPosition p) {
-        Landscape land = MapController.getMap().getLandscape(p);
-        boolean posBlocked = MapController.getMap().isBlocked(p);
+	/*
+	 * returns false if the position p is free or if the agent in that position
+	 * is this agent
+	 */
+	public boolean isBlocked(MapPosition p) {
+		Landscape land = MapController.getMap().getLandscape(p);
+		boolean posBlocked = MapController.getMap().isBlocked(p);
 
-        return posBlocked
-                && (!land.hasAgent() || land.hasAgent()
-                && land.getAgent().getAgentId() != getAgentId() || land
-                .getAgent().getTeamId() != getTeamId());
-    }
+		return posBlocked
+				&& (!land.hasAgent() || land.hasAgent()
+						&& land.getAgent().getAgentId() != getAgentId() || land
+						.getAgent().getTeamId() != getTeamId());
+	}
 
-    /*
-     * returns true if its useful that this agent uses its ability at
-     * MapPosition pos
-     */
-    public abstract boolean isAbilityUseful(MapPosition pos);
+	/*
+	 * returns true if its useful that this agent uses its ability at
+	 * MapPosition pos
+	 */
+	public abstract boolean isAbilityUseful(MapPosition pos);
 
-    /**
-     * *********************
-     * ** MOVEMENT RELATED ***
-     * **********************
-     */
+	/**
+	 * ********************* *** MOVEMENT RELATED *** **********************
+	 */
 
-    private void move(int delta) {
+	private void move(int delta) {
 
 		/* to avoid the agent get out of the matrix */
-        delta = Math.min(delta, 20);
-        MapPosition oldPos = position.getMapPosition();
-        if (direction == UP) {
-            moveUp(delta, oldPos);
-        } else if (direction == DOWN) {
-            moveDown(delta, oldPos);
-        } else if (direction == LEFT) {
-            moveLeft(delta, oldPos);
-        } else if (direction == RIGHT) {
-            moveRight(delta, oldPos);
-        }
-    }
+		delta = Math.min(delta, 20);
+		MapPosition oldPos = position.getMapPosition();
+		if (direction == UP) {
+			moveUp(delta, oldPos);
+		} else if (direction == DOWN) {
+			moveDown(delta, oldPos);
+		} else if (direction == LEFT) {
+			moveLeft(delta, oldPos);
+		} else if (direction == RIGHT) {
+			moveRight(delta, oldPos);
+		}
+	}
 
-    /* agent move to a different direction */
-    public void moveDifferentDirection(int delta) {
-        int oldDirection = direction;
-        while (direction == oldDirection) {
-            direction = random.nextInt(4);
-        }
-        move(delta);
-    }
+	/* agent move to a different direction */
+	public void moveDifferentDirection(int delta) {
+		int oldDirection = direction;
+		while (direction == oldDirection) {
+			direction = random.nextInt(4);
+		}
+		move(delta);
+	}
 
-    /*
-     * agent moves to the same direction, but change it from time to time to
-     * don't walk just in a straight line
-     */
-    public void moveSameDirection(int delta) {
-        if (random.nextInt(10000) > 9990) {
-            direction = random.nextInt(4);
-        }
+	/*
+	 * agent moves to the same direction, but change it from time to time to
+	 * don't walk just in a straight line
+	 */
+	public void moveSameDirection(int delta) {
+		if (random.nextInt(10000) > 9990) {
+			direction = random.nextInt(4);
+		}
 
-        move(delta);
-    }
+		move(delta);
+	}
 
-    /*
-     * Agent approaches the tile on its left. Returns true if the agent can move
-     * in the desired direction
-     */
-    private boolean approachLeft(int delta, MapPosition oldPos) {
+	/*
+	 * Agent approaches the tile on its left. Returns true if the agent can move
+	 * in the desired direction
+	 */
+	private boolean approachLeft(int delta, MapPosition oldPos) {
 
-        if (direction == UP && moveLeft(delta, oldPos)) {
-            direction = LEFT;
-            return true;
-        } else if (direction == LEFT && moveDown(delta, oldPos)) {
-            direction = DOWN;
-            return true;
-        } else if (direction == DOWN && moveRight(delta, oldPos)) {
-            direction = RIGHT;
-            return true;
-        } else if (direction == RIGHT && moveUp(delta, oldPos)) {
-            direction = UP;
-            return true;
-        }
-        return false;
-    }
+		if (direction == UP && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		} else if (direction == LEFT && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		} else if (direction == DOWN && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == RIGHT && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		}
+		return false;
+	}
 
-    /*
-     * Agent approaches the tile on its right. Returns true if the agent can
-     * move in the desired direction
-     */
-    private boolean approachRight(int delta, MapPosition oldPos) {
+	/*
+	 * Agent approaches the tile on its right. Returns true if the agent can
+	 * move in the desired direction
+	 */
+	private boolean approachRight(int delta, MapPosition oldPos) {
 
-        if (direction == UP && moveRight(delta, oldPos)) {
-            direction = RIGHT;
-            return true;
-        } else if (direction == LEFT && moveUp(delta, oldPos)) {
-            direction = UP;
-            return true;
-        } else if (direction == DOWN && moveLeft(delta, oldPos)) {
-            direction = LEFT;
-            return true;
-        } else if (direction == RIGHT && moveDown(delta, oldPos)) {
-            direction = DOWN;
-            return true;
-        }
-        return false;
-    }
+		if (direction == UP && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == LEFT && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		} else if (direction == DOWN && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		} else if (direction == RIGHT && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		}
+		return false;
+	}
 
-    /*
-     * Agent approaches the tile ahead it. Returns true if the agent can move in
-     * the desired direction
-     */
-    private boolean approachAhead(int delta, MapPosition oldPos) {
+	/*
+	 * Agent approaches the tile ahead it. Returns true if the agent can move in
+	 * the desired direction
+	 */
+	private boolean approachAhead(int delta, MapPosition oldPos) {
 
-        if (direction == UP && moveUp(delta, oldPos)) {
-            return true;
-        } else if (direction == LEFT && moveLeft(delta, oldPos)) {
-            return true;
-        } else if (direction == DOWN && moveDown(delta, oldPos)) {
-            return true;
-        } else if (direction == RIGHT && moveRight(delta, oldPos)) {
-            return true;
-        }
-        return false;
-    }
+		if (direction == UP && moveUp(delta, oldPos)) {
+			return true;
+		} else if (direction == LEFT && moveLeft(delta, oldPos)) {
+			return true;
+		} else if (direction == DOWN && moveDown(delta, oldPos)) {
+			return true;
+		} else if (direction == RIGHT && moveRight(delta, oldPos)) {
+			return true;
+		}
+		return false;
+	}
 
-    /*
-     * Agent approaches the tile behind it. Returns true if the agent can move
-     * in the desired direction
-     */
-    private boolean approachBehind(int delta, MapPosition oldPos) {
+	/*
+	 * Agent approaches the tile behind it. Returns true if the agent can move
+	 * in the desired direction
+	 */
+	private boolean approachBehind(int delta, MapPosition oldPos) {
 
-        if (direction == UP && moveDown(delta, oldPos)) {
-            direction = DOWN;
-            return true;
-        } else if (direction == LEFT && moveRight(delta, oldPos)) {
-            direction = RIGHT;
-            return true;
-        } else if (direction == DOWN && moveUp(delta, oldPos)) {
-            direction = UP;
-            return true;
-        } else if (direction == RIGHT && moveLeft(delta, oldPos)) {
-            direction = LEFT;
-            return true;
-        }
-        return false;
-    }
+		if (direction == UP && moveDown(delta, oldPos)) {
+			direction = DOWN;
+			return true;
+		} else if (direction == LEFT && moveRight(delta, oldPos)) {
+			direction = RIGHT;
+			return true;
+		} else if (direction == DOWN && moveUp(delta, oldPos)) {
+			direction = UP;
+			return true;
+		} else if (direction == RIGHT && moveLeft(delta, oldPos)) {
+			direction = LEFT;
+			return true;
+		}
+		return false;
+	}
 
-    /* agent approaches tile identified by mapPos */
-    public void approachTile(int delta, MapPosition mapPos) {
+	/* agent approaches tile identified by mapPos */
+	public void approachTile(int delta, MapPosition mapPos) {
 
 		/* to avoid the agent get out of the matrix */
-        delta = Math.min(delta, 20);
-        MapPosition oldPos = position.getMapPosition();
+		delta = Math.min(delta, 20);
+		MapPosition oldPos = position.getMapPosition();
 
 		/* if position is left to the agent's position, moves to the left */
-        if (oldPos.isLeft(mapPos, direction) && approachLeft(delta, oldPos)) {
-            return;
-        }
+		if (oldPos.isLeft(mapPos, direction) && approachLeft(delta, oldPos)) {
+			return;
+		}
 		/* if position is ahead to the agent's position, moves up */
-        if (oldPos.isAhead(mapPos, direction) && approachAhead(delta, oldPos)) {
-            return;
-        }
+		if (oldPos.isAhead(mapPos, direction) && approachAhead(delta, oldPos)) {
+			return;
+		}
 		/* if position is right to the agent's position, moves to the right */
-        if (oldPos.isRight(mapPos, direction) && approachRight(delta, oldPos)) {
-            return;
-        }
+		if (oldPos.isRight(mapPos, direction) && approachRight(delta, oldPos)) {
+			return;
+		}
 		/* if position is behind to the agent's position, moves up */
 
 		if (oldPos.isBehind(mapPos, direction) && approachBehind(delta, oldPos)) {
@@ -530,7 +527,7 @@ public abstract class Agent implements IGameElement {
 		ballon = AnimationLoader.getLoader().getDownArrow();
 
 		WorldPosition newPos = new WorldPosition(position.getX(),
-                position.getY() + delta * getAgentSpeed(oldPos));
+				position.getY() + delta * getAgentSpeed(oldPos));
 
 		return changePosition(delta, oldPos, newPos);
 	}
@@ -544,7 +541,7 @@ public abstract class Agent implements IGameElement {
 		ballon = AnimationLoader.getLoader().getUpArrow();
 
 		WorldPosition newPos = new WorldPosition(position.getX(),
-                position.getY() - delta * getAgentSpeed(oldPos));
+				position.getY() - delta * getAgentSpeed(oldPos));
 
 		return changePosition(delta, oldPos, newPos);
 	}
@@ -584,7 +581,7 @@ public abstract class Agent implements IGameElement {
 			sprite.update(delta);
 			ballon.update(delta);
 
-            position = newPos;
+			position = newPos;
 
 			MapController.getMap().getLandscape(oldPos).setAgent(null);
 			MapController.getMap().getLandscape(position).setAgent(this);
@@ -625,9 +622,9 @@ public abstract class Agent implements IGameElement {
 		g.setColor(new Color(1f, 1f, 1f, 1f));
 		g.drawString("hp:" + life, position.getX() + 3, position.getY() - 20);
 		g.drawString("fp:" + getFatigue() + "", position.getX() + 3,
-                position.getY() + 30);
+				position.getY() + 30);
 		g.drawString("T" + getTeamId() + "A" + getAgentId(),
-                position.getX() - 40, position.getY() + 30);
+				position.getX() - 40, position.getY() + 30);
 
 		if (isIll()) {
 			ill.draw(position.getX(), position.getY());

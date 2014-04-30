@@ -149,19 +149,20 @@ public abstract class Team {
 		return res;
 	}
 
-    /**
-     * Creates a representation of the team. This representation is a list containing the leader and members of the team.
-     *
-     * @return the list containing all the agents.
-     */
-    public List<Agent> toList() {
-        ArrayList<Agent> agents = new ArrayList<>();
+	/**
+	 * Creates a representation of the team. This representation is a list
+	 * containing the leader and members of the team.
+	 * 
+	 * @return the list containing all the agents.
+	 */
+	public List<Agent> toList() {
+		ArrayList<Agent> agents = new ArrayList<Agent>();
 
-        agents.add(leader);
-        agents.addAll(members);
+		agents.add(leader);
+		agents.addAll(members);
 
-        return agents;
-    }
+		return agents;
+	}
 
 	public int getMemberID() {
 		return nextMemberID++;

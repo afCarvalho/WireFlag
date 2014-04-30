@@ -41,22 +41,23 @@ public class AgentController implements IController {
 		return teams;
 	}
 
-    /**
-     *  FIXME: If TeamController is going to be use, this method should go there.
-     *
-     * Gets the team matching the id.
-     *
-     * @param id the ID of the team to be retrieved
-     * @return the actual team or null if not founds
-     */
-    public Team getTeamById(int id) {
-        for (Team team : teams) {
-            if (team.getID() == id) {
-                return team;
-            }
-        }
-        return null;
-    }
+	/**
+	 * FIXME: If TeamController is going to be use, this method should go there.
+	 * 
+	 * Gets the team matching the id.
+	 * 
+	 * @param id
+	 *            the ID of the team to be retrieved
+	 * @return the actual team or null if not founds
+	 */
+	public Team getTeamById(int id) {
+		for (Team team : teams) {
+			if (team.getID() == id) {
+				return team;
+			}
+		}
+		return null;
+	}
 
 	/***********************
 	 *** STATE MODIFIERS ***
@@ -155,5 +156,4 @@ public class AgentController implements IController {
 	@Override
 	public void render(Graphics g) {
 	}
-
 }
