@@ -26,7 +26,7 @@ public class AgentThread implements Runnable {
 				agent.update(delta);
 				active = false;
 			} else {
-				thread.interrupt();
+				stop();
 			}
 		}
 	}
@@ -43,6 +43,7 @@ public class AgentThread implements Runnable {
 		if (!active) {
 			this.delta = delta;
 			active = true;
+			this.notify();
 		}
 	}
 }

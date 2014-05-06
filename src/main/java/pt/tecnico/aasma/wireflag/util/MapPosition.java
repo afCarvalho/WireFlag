@@ -1,6 +1,7 @@
 package pt.tecnico.aasma.wireflag.util;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 
 /* Position dividing the map in tiles :41x23 */
 public class MapPosition {
@@ -23,6 +24,11 @@ public class MapPosition {
 
 	public int getX() {
 		return x;
+	}
+
+	public WorldPosition getWorldPosition() {
+		return new WorldPosition(x * MapController.getMap().getTileWidth(), y
+				* MapController.getMap().getMapHeight());
 	}
 
 	public MapPosition getAheadPosition(int direction) {
