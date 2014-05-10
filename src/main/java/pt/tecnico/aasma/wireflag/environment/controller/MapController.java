@@ -171,7 +171,7 @@ public class MapController implements IController {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
 
-		g.setColor(new Color(Color.gray));
+		/*g.setColor(new Color(Color.gray));
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			g.drawLine(xAxis * tileWidth, 0, xAxis * tileWidth, MapController
 					.getMap().getMapHeight());
@@ -179,7 +179,7 @@ public class MapController implements IController {
 				g.drawLine(0, yAxis * tileHeight, MapController.getMap()
 						.getMapWidth(), yAxis * tileHeight);
 			}
-		}
+		}*/
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {

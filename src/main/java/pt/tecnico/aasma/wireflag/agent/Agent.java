@@ -4,14 +4,17 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
+import pt.tecnico.aasma.wireflag.test.DeliberativeArchTest;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
@@ -607,6 +610,8 @@ public abstract class Agent implements IGameElement {
 
 	@Override
 	public void render(Graphics g) {
+		
+		DeliberativeArchTest.run(g, (Deliberative)architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
@@ -616,7 +621,7 @@ public abstract class Agent implements IGameElement {
 		g.draw(circle);
 		g.fill(circle);
 
-		sprite.draw(position.getX(), position.getY());
+		sprite.draw(position.getX() - sprite.getWidth()/2, position.getY() - sprite.getHeight()*0.75f);
 		ballon.draw(position.getX() - 10, position.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));

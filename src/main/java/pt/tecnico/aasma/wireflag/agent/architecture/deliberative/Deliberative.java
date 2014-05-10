@@ -7,6 +7,7 @@ import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.test.DeliberativeArchTest;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
 public class Deliberative extends Architecture {
@@ -422,6 +423,8 @@ public class Deliberative extends Architecture {
 			acList.clear();
 			bestGoAwayAction.getActionsList(actions);
 		}
+		
+		DeliberativeArchTest.setActions(acList);
 
 		return acList;
 	}
