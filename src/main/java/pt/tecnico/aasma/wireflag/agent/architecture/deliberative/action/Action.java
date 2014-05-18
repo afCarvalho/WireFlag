@@ -33,4 +33,11 @@ public abstract class Action {
 			previousAction.fillActionsList(actionsList);
 		}
 	}
+
+	public int getNActions() {
+		if (previousAction == null) {
+			return 1;
+		}
+		return 1 + previousAction.getNActions();
+	}
 }

@@ -14,8 +14,9 @@ public class ExploreNewAction extends MoveAction {
 
 	@Override
 	public double getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (((getLandUtility()) + ((1 + beliefs.getWorldState(
+				position.getX(), position.getY()).getCondition()) / (getNActions()))))
+				/ (getNActions());
 	}
 
 }

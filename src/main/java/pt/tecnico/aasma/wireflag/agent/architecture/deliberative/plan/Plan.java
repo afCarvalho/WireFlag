@@ -2,7 +2,6 @@ package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 
 import java.util.LinkedList;
 
-import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.test.DeliberativeArchTest;

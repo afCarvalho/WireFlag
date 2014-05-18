@@ -20,4 +20,15 @@ public abstract class MoveAction extends Action {
 
 		return !beliefs.getAgentPos().isSamePosition(position);
 	}
+
+	public double getLandUtility() {
+		double result = beliefs.getWorldState(position.getX(), position.getY())
+				.getLandRating();
+
+		if (previousAction == null) {
+			return result;
+		} else {
+			return result + ((MoveAction) previousAction).getLandUtility();
+		}
+	}
 }

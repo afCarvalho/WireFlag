@@ -1,14 +1,13 @@
 package pt.tecnico.aasma.wireflag.agent.type;
 
+import java.util.List;
+
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.environment.controller.TeamController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
-
-import java.util.List;
 
 public class Patrol extends Agent {
 
