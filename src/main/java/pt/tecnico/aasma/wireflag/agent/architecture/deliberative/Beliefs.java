@@ -1,13 +1,11 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
-import java.util.List;
-
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class InternalState {
+public class Beliefs {
 
 	private MapPosition endPos;
 	private MapPosition flagPos;
@@ -16,8 +14,12 @@ public class InternalState {
 	private int horizontalSize;
 	private int verticalSize;
 	private KmCounter kmCounter;
+	private int worldExploredPercentage;
+	private MapPosition animalPos;
+	private Agent agent;
+	private boolean reconsider;
 
-	public InternalState() {
+	public Beliefs() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
 		verticalSize = MapController.getMap().getNVerticalTiles();
 		world = new WorldState[horizontalSize][verticalSize];
@@ -41,12 +43,28 @@ public class InternalState {
 		return endPos;
 	}
 
+	public MapPosition getAgentPos() {
+		return agent.getPos().getMapPosition();
+	}
+
 	public MapPosition getFlagPos() {
 		return flagPos;
 	}
 
-	public WorldState[][] getWorld() {
-		return world;
+	public int getLife() {
+		return agent.getLife();
+	}
+
+	public int getFatigue() {
+		return agent.getFatigue();
+	}
+
+	public int getDirection() {
+		return agent.getDirection();
+	}
+
+	public MapPosition getAnimalPos() {
+		return animalPos;
 	}
 
 	/***************
@@ -61,23 +79,45 @@ public class InternalState {
 		this.flagPos = flagPos;
 	}
 
-	public void setPerceptions(List<Perception> perceptions) {
+	public void setAgent(Agent a) {
+		this.agent = a;
+	}
 
-		for (int i = 0; i < horizontalSize; i++) {
-			for (int j = 0; j < verticalSize; j++) {
-				world[i][j].updateState();
-			}
-		}
+	public void updateBeliefs() {
+		reconsider = false;
 
-		for (Perception p : perceptions) {
+		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
 				flagPos = p.getPosition();
 			} else if (p.hasEndPoint()) {
 				endPos = p.getPosition();
 			}
-			world[p.getPosition().getX()][p.getPosition().getY()]
-					.setPerception(p);
+			reconsider = world[p.getPosition().getX()][p.getPosition().getY()]
+					.setState(p) || reconsider;
 		}
+
+		int exploredPercentage = 0;
+
+		for (int i = 0; i < horizontalSize; i++) {
+			for (int j = 0; j < verticalSize; j++) {
+				world[i][j].updateState();
+				exploredPercentage += Math.abs(world[i][j].getCondition());
+
+				if (world[i][j].hasAnimal()
+						&& world[i][j].getPosition().getDistanceFrom(
+								getAgentPos()) < animalPos
+								.getDistanceFrom(getAgentPos())) {
+					animalPos = world[i][j].getPosition();
+				}
+			}
+		}
+
+		worldExploredPercentage = exploredPercentage / horizontalSize
+				* verticalSize;
+	}
+
+	public int getWorldExploredPercentage() {
+		return worldExploredPercentage;
 	}
 
 	public int getHorizontalSize() {
@@ -100,6 +140,10 @@ public class InternalState {
 		this.teamHasFlag = teamHasFlag;
 	}
 
+	public WorldState getWorldState(int x, int y) {
+		return world[x][y];
+	}
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -116,56 +160,37 @@ public class InternalState {
 		return endPos != null;
 	}
 
-	public int hasEnemyClose(Agent a) {
-		int result = 0;
-
-		for (int i = 0; i < horizontalSize; i++) {
-			for (int j = 0; j < verticalSize; j++) {
-				if (world[i][j].hasEnemy()
-						&& !(world[i][j].getAgentAttack() > a.getAgentAttack())
-						|| (world[i][j].hasInjuredAgent() && !a.hasLowLife())) {
-					result++;
-				}
-			}
-		}
-		return result;
+	public boolean shouldStop() {
+		return kmCounter.isBurningOut(getFatigue());
 	}
 
-	public int hasWeakTeamMember() {
-		int result = 0;
-
-		for (int i = 0; i < horizontalSize; i++) {
-			for (int j = 0; j < verticalSize; j++) {
-				if (!world[i][j].hasEnemy() && world[i][j].hasInjuredAgent()) {
-					result++;
-				}
-			}
-		}
-		return result;
+	public boolean isIll() {
+		return agent.isIll();
 	}
 
-	public int hasTiredTeamMember() {
-		int result = 0;
-
-		for (int i = 0; i < horizontalSize; i++) {
-			for (int j = 0; j < verticalSize; j++) {
-				if (world[i][j].hasEnemy() && world[i][j].hasTiredAgent()) {
-					result++;
-				}
-			}
-		}
-		return result;
+	public boolean carriesFlag() {
+		return agent.hasFlag();
 	}
 
-	public void countKm(int actualFatigue) {
-		kmCounter.update(actualFatigue);
+	public boolean blockedWay(int x, int y) {
+		WorldState world = getWorldState(x, y);
+		return world.hasExtremeWeather() || world.hasAnimal()
+				|| world.hasFire() || world.hasFlag() || world.isBlocked();
 	}
 
-	public void resetKm(int actualFatigue) {
-		kmCounter.reset(actualFatigue);
+	public boolean reconsider() {
+		return reconsider;
 	}
 
-	public boolean shouldStop(int actualFatigue) {
-		return kmCounter.isBurningOut(actualFatigue);
+	/************************
+	 *** STATE MODIFIERS ***
+	 ************************/
+
+	public void countKm() {
+		kmCounter.update(getFatigue());
+	}
+
+	public void resetKm() {
+		kmCounter.reset(getFatigue());
 	}
 }

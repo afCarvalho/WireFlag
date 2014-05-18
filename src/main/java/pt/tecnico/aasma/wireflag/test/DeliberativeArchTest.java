@@ -4,11 +4,12 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.Graphics;
 
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Action;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.OldAction;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class DeliberativeArchTest {
 
@@ -33,8 +34,9 @@ public class DeliberativeArchTest {
 					for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
 						if (x % 25 == 0 && y % 25 == 0) {
 							g.drawString(
-									arch.getInternal().getWorld()[landPos
-											.getX()][landPos.getY()]
+									arch.getInternal()
+											.getWorldState(landPos.getX(),
+													landPos.getY())
 											.getCondition()
 											+ " ", x, y);
 
@@ -75,7 +77,7 @@ public class DeliberativeArchTest {
 		return actions;
 	}
 
-	public static void setActions(LinkedList<Action> actions) {
-		DeliberativeArchTest.actions = actions;
+	public static void setActions(LinkedList<Action> actionsList) {
+		DeliberativeArchTest.actions = actionsList;
 	}
 }

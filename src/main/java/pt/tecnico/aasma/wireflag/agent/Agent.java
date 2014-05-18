@@ -16,8 +16,8 @@ import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.test.DeliberativeArchTest;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 import java.util.ArrayList;
 import java.util.List;

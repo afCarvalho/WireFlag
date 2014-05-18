@@ -6,8 +6,8 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 public class ObjectController implements IController {
 

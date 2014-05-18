@@ -19,7 +19,7 @@ import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public abstract class Landscape implements IGameElement {
 

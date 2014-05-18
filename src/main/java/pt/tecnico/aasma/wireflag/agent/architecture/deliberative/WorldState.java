@@ -1,7 +1,7 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class WorldState {
 
@@ -47,7 +47,30 @@ public class WorldState {
 		return condition == UNKNOWN;
 	}
 
-	public void setPerception(Perception p) {
+	public boolean isExplored() {
+		return condition == EXPLORED;
+	}
+
+	public boolean isNewlyDiscovered() {
+		return condition == NEWLY_DISCOVERED;
+	}
+
+	public boolean setState(Perception p) {
+		boolean reconsider = false;
+
+		if (perception.hasAnimal() != p.hasAnimal()) {
+			reconsider = true;
+		} else if (perception.hasExtremeWeather() != p.hasExtremeWeather()) {
+			reconsider = true;
+		} else if (perception.hasFire() != p.hasFire()) {
+			reconsider = true;
+		} else if (perception.hasEnemy() != p.hasEnemy()) {
+			reconsider = true;
+		} else if (perception.hasFlag() != p.hasFlag()) {
+			reconsider = true;
+		} else if (perception.hasEndPoint() != p.hasEndPoint()) {
+			reconsider = true;
+		}
 
 		perception = p;
 		timeOut = 500;
@@ -57,6 +80,8 @@ public class WorldState {
 		} else {
 			condition = EXPLORED;
 		}
+
+		return reconsider;
 	}
 
 	public boolean hasEnemy() {
@@ -113,5 +138,9 @@ public class WorldState {
 
 	public void setTimeOut(int timeOut) {
 		this.timeOut = timeOut;
+	}
+
+	public boolean hasAnimal() {
+		return perception.hasAnimal();
 	}
 }

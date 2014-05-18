@@ -4,7 +4,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Limit extends Landscape {
 

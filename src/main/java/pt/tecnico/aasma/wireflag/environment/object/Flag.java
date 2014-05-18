@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 public class Flag implements IGameElement {
 

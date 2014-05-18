@@ -3,7 +3,7 @@ package pt.tecnico.aasma.wireflag.environment.weather;
 import java.util.Random;
 
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class ThunderStorm extends Weather {
 

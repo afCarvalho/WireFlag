@@ -8,8 +8,8 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 /**
  * The class Team represents a generic team. A team is composed by a leader and
