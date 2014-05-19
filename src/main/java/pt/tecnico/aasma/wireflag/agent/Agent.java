@@ -617,8 +617,6 @@ public abstract class Agent implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 
-		DeliberativeArchTest.run(g, (Deliberative) architecture);
-
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
 		Circle circle = new Circle(position.getX() + 15, position.getY() + 15,

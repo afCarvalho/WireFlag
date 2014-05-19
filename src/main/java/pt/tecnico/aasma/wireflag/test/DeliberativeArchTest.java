@@ -34,7 +34,7 @@ public class DeliberativeArchTest {
 					for (int y = tileYPosition; y < tileYPosition + tileHeight; y++) {
 						if (x % 25 == 0 && y % 25 == 0) {
 							g.drawString(
-									arch.getInternal()
+									arch.getBeliefs()
 											.getWorldState(landPos.getX(),
 													landPos.getY())
 											.getCondition()

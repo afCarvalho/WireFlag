@@ -34,7 +34,7 @@ public class Deliberative extends Architecture {
 				new CureIllDesire(), new HealDesire() };
 	}
 
-	public Beliefs getInternal() {
+	public Beliefs getBeliefs() {
 		return beliefs;
 	}
 

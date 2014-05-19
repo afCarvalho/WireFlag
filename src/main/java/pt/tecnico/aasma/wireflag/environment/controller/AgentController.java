@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.architecture.Hybrid;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
@@ -81,10 +82,12 @@ public class AgentController implements IController {
 		Agent b1 = new Builder(t1.getID(), t1.getMemberID(), new Reactive());
 		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive());
 		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(), new Deliberative());
+		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(), new Hybrid());
 		//t1.addAgent(b1);
 		//t1.addAgent(d1);
 		//t1.addAgent(p1);
-		t1.addAgent(s1);
+		//t1.addAgent(s1);
+		t1.addAgent(h1);
 		t1.setTeamUp();
 		addTeam(t1);
 
