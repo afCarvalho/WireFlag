@@ -7,8 +7,8 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Inten
 public class ExploreDesire implements Desire {
 
 	@Override
-	public double getRate(Beliefs state) {
-		return Math.max(50 - state.getHorizontalSize(), 20);
+	public double getRate(Beliefs beliefs) {
+		return Math.max(50 - beliefs.getWorldExploredPercentage() / 2.0, 20);
 	}
 
 	@Override

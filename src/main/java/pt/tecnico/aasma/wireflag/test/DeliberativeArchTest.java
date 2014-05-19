@@ -13,7 +13,7 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class DeliberativeArchTest {
 
-	private static LinkedList<Action> actions = new LinkedList<Action>();
+	private static LinkedList<MapPosition> actions = new LinkedList<MapPosition>();
 
 	public static void run(Graphics g, Deliberative arch) {
 
@@ -51,14 +51,12 @@ public class DeliberativeArchTest {
 			}
 		}
 
-		for (Action a : actions) {
+		for (MapPosition a : actions) {
 			AnimationLoader
 					.getLoader()
 					.getCross()
-					.draw(a.getPos().getX()
-							* MapController.getMap().getTileWidth(),
-							a.getPos().getY()
-									* MapController.getMap().getTileHeight());
+					.draw(a.getX() * MapController.getMap().getTileWidth(),
+							a.getY() * MapController.getMap().getTileHeight());
 		}
 
 		// System.out.println(landscapePos.getX() + " " + landscapePos.getY());
@@ -73,11 +71,11 @@ public class DeliberativeArchTest {
 
 	}
 
-	public static LinkedList<Action> getActions() {
+	public static LinkedList<MapPosition> getActions() {
 		return actions;
 	}
 
-	public static void setActions(LinkedList<Action> actionsList) {
+	public static void setActions(LinkedList<MapPosition> actionsList) {
 		DeliberativeArchTest.actions = actionsList;
 	}
 }

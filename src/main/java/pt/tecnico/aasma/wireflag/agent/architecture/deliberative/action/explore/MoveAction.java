@@ -19,7 +19,7 @@ public abstract class MoveAction extends Action {
 		agent.approachTile(delta, position);
 		beliefs.countKm();
 
-		return !beliefs.getAgentPos().isSamePosition(position);
+		return beliefs.getAgentPos().isSamePosition(position);
 	}
 
 	public abstract double getValue();
@@ -28,11 +28,11 @@ public abstract class MoveAction extends Action {
 		double result = beliefs.getWorldState(position.getX(), position.getY())
 				.getLandRating();
 
-		if (previousAction == null) {
-			return result;
-		} else {
-			return result + ((MoveAction) previousAction).getLandUtility();
-		}
+		/*
+		 * if (previousAction == null) { return result; } else { return result +
+		 * ((MoveAction) previousAction).getLandUtility(); }
+		 */
+		return result;
 	}
 
 	public double getDangerUtility() {
@@ -46,5 +46,27 @@ public abstract class MoveAction extends Action {
 		} else {
 			return 1;
 		}
+	}
+
+	public double getLandValue() {
+		//System.out.println("VALUE " + getValue() + " " + getNActions());
+		if (previousAction != null) {
+			//System.out.println("PREVIOUS..");
+			return getValue() + ((MoveAction) previousAction).getLandValue();
+		} else {
+			return getValue();
+		}
+	}
+
+	@Override
+	public double getSequenceValue() {
+
+		//System.out.println("S--------------------------");
+		/*System.out.println("ACTIONS VALUE " + sequence + " DANGER "
+				+ getDangerUtility() + " N ACTIONS " + getNActions()
+				+ " RESULT " + sequence * getDangerUtility() / getNActions()
+				+ " IS FINISHED " + isFinished);
+		System.out.println("E--------------------------");*/
+		return getLandValue() * getDangerUtility() / getNActions();
 	}
 }

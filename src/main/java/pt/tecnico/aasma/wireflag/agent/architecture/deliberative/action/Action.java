@@ -51,10 +51,19 @@ public abstract class Action {
 	public abstract double getValue();
 
 	public double getSequenceValue() {
-		if (previousAction != null) {
-			return getValue() + previousAction.getValue();
-		} else {
-			return getValue();
+		double result = 0;
+		Action action = this;
+
+		while (action != null) {
+			System.out.println("VALUE " + getValue() + " " + getNActions());
+			result += action.getValue();
+			action = action.getPrevious();
+			System.out.println("PREVIOUS..");
 		}
+		return result;
+	}
+
+	public Action getPrevious() {
+		return previousAction;
 	}
 }

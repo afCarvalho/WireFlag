@@ -20,6 +20,7 @@ public class Deliberative extends Architecture {
 	LinkedList<Action> actions;
 	Random random;
 	Desire desires[];
+	Intention actualIntention;
 
 	public Deliberative() {
 		beliefs = new Beliefs();
@@ -42,12 +43,19 @@ public class Deliberative extends Architecture {
 		double desireRate = 0;
 		Intention intention = null;
 
+		int i = 0;
+
 		for (Desire desire : desires) {
+			// System.out.println("DESIRE RATE " + i++ + " " +
+			// desire.getRate(beliefs));
+
 			if (desire.getRate(beliefs) > desireRate) {
 				desireRate = desire.getRate(beliefs);
 				intention = desire.getIntention();
 			}
 		}
+
+		// System.out.println("HIGHEST RATE " + desireRate);
 
 		return intention;
 	}
@@ -56,27 +64,36 @@ public class Deliberative extends Architecture {
 		beliefs.setAgent(agent);
 		beliefs.updateBeliefs();
 
-		Intention actualIntention = getIntention();
-		Plan plan = actualIntention.getPlan(beliefs);
-		LinkedList<Action> actionsList = plan.makePlan(beliefs.getAgentPos());
+		if (actions.isEmpty() || actualIntention.impossible(actions, beliefs)
+				|| actualIntention.suceeded(actions, beliefs)) {
+			actualIntention = getIntention();
+			Plan plan = actualIntention.getPlan(beliefs);
+			actions = plan.makePlan(beliefs.getAgentPos());
 
-		while (!actualIntention.impossible(actions, beliefs)
-				|| actualIntention.suceeded(actions, beliefs)
-				|| actions.isEmpty()) {
+			System.out.println("PLANING " + actualIntention.getId()
+					+ " DONE WITH " + actions.size() + " ACTIONS "
+					+ actualIntention.impossible(actions, beliefs) + " "
+					+ actualIntention.suceeded(actions, beliefs) + " "
+					+ actions.isEmpty() + " " + actions.size());
 
-			Action action = actionsList.removeFirst();
-			if (!action.act(agent, delta)) {
-				actionsList.addFirst(action);
-			}
+		}
 
-			if (beliefs.reconsider()) {
-				Intention intention = getIntention();
-				if (!intention.isSame(actualIntention)
-						|| actualIntention.impossible(actionsList, beliefs)) {
-					actualIntention = intention;
-					plan = actualIntention.getPlan(beliefs);
-					actionsList = plan.makePlan(beliefs.getAgentPos());
-				}
+		Action action = actions.removeFirst();
+		if (!action.act(agent, delta)) {
+			//System.out.println("MOVING TO POS " + action.getPos().getX() + " "
+			//		+ action.getPos().getY());
+			actions.addFirst(action);
+		}
+
+		if (beliefs.reconsider()) {
+			System.out.println("RECONSIDER");
+			Intention intention = getIntention();
+			if (!intention.isSame(actualIntention)
+					|| actualIntention.impossible(actions, beliefs)) {
+				System.out.println("REPLAN");
+				actualIntention = intention;
+				Plan plan = actualIntention.getPlan(beliefs);
+				actions = plan.makePlan(beliefs.getAgentPos());
 			}
 		}
 	}

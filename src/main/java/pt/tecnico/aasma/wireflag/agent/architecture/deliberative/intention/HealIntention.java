@@ -14,7 +14,7 @@ public class HealIntention extends Intention {
 	@Override
 	protected int getIntentionId() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 5;
 	}
 
 	@Override

@@ -22,11 +22,11 @@ public class ExplorePlan extends Plan {
 		for (int i = 0; i < beliefs.getHorizontalSize(); i++) {
 			for (int j = 0; j < beliefs.getVerticalSize(); j++) {
 				if (beliefs.getWorldState(i, j).isNewlyDiscovered()) {
-					return WorldState.NEWLY_DISCOVERED;
+					return DISCOVER_NEW;
 				}
 			}
 		}
-		return WorldState.UNKNOWN;
+		return DISCOVER_UNKNOWN;
 	}
 
 	@Override
@@ -42,9 +42,41 @@ public class ExplorePlan extends Plan {
 		if (moveStrategy == DISCOVER_NEW) {
 			actionsList.addLast(new ExploreNewAction(beliefs, pos,
 					previousAction));
+
+			if (beliefs.getWorldState(pos.getX(), pos.getY())
+					.isNewlyDiscovered()) {
+				actionsList.getLast().setFinished(true);
+			}
 		} else if (moveStrategy == DISCOVER_UNKNOWN) {
 			actionsList.addLast(new ExploreUnknownAction(beliefs, pos,
 					previousAction));
+
+			if (getNUnknownAdjacent(beliefs, pos)) {
+				actionsList.getLast().setFinished(true);
+			}
 		}
+	}
+
+	private static boolean getNUnknownAdjacent(Beliefs beliefs,
+			MapPosition position) {
+
+		MapPosition pos = beliefs.getWorldState(position.getX(),
+				position.getY()).getPosition();
+
+		WorldState p1 = beliefs.getWorldState(pos.getX() + 1, pos.getY());
+		WorldState p2 = beliefs.getWorldState(pos.getX() - 1, pos.getY());
+		WorldState p3 = beliefs.getWorldState(pos.getX(), pos.getY() + 1);
+		WorldState p4 = beliefs.getWorldState(pos.getX(), pos.getY() - 1);
+
+		if (p1 != null && p1.isUnknown()) {
+			return true;
+		} else if (p2 != null && p2.isUnknown()) {
+			return true;
+		} else if (p3 != null && p3.isUnknown()) {
+			return true;
+		} else if (p4 != null && p4.isUnknown()) {
+			return true;
+		}
+		return false;
 	}
 }

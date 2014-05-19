@@ -13,7 +13,10 @@ public class RestPlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, Action previousAction) {
-		if (previousAction.getValue() != 0
+
+		if (previousAction == null) {
+			actions.addLast(new StopAction(beliefs, pos, previousAction));
+		} else if (previousAction.getValue() != 0
 				&& 5 * previousAction.getValue() < beliefs.getFatigue() + 1) {
 
 			usedPerception[previousAction.getPos().getX()][previousAction

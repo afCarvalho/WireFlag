@@ -34,6 +34,6 @@ public class ExploreIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 1;
+		return 2;
 	}
 }

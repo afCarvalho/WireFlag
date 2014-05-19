@@ -14,9 +14,12 @@ public class ExploreNewAction extends MoveAction {
 
 	@Override
 	public double getValue() {
-		return (((getLandUtility() * getDangerUtility()) + ((1 + beliefs
-				.getWorldState(position.getX(), position.getY()).getCondition()) / (getNActions()))))
-				/ (getNActions());
+		/*
+		 * System.out.println("LAND UTIL " + getLandUtility() + " DANGER UTIL "
+		 * + getDangerUtility() + " CONDITION " + (1 +
+		 * beliefs.getWorldState(position.getX(), position.getY())
+		 * .getCondition()) + " N ACTIONS " + getNActions());
+		 */
+		return getLandUtility();
 	}
-
 }

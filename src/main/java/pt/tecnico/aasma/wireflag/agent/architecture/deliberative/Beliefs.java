@@ -14,7 +14,7 @@ public class Beliefs {
 	private int horizontalSize;
 	private int verticalSize;
 	private KmCounter kmCounter;
-	private int worldExploredPercentage;
+	private double worldExploredPercentage;
 	private WorldState animalState;
 	private Agent agent;
 	private boolean reconsider;
@@ -96,7 +96,7 @@ public class Beliefs {
 					.setState(p) || reconsider;
 		}
 
-		int exploredPercentage = 0;
+		double exploredPercentage = 0;
 
 		for (int i = 0; i < horizontalSize; i++) {
 			for (int j = 0; j < verticalSize; j++) {
@@ -116,13 +116,13 @@ public class Beliefs {
 			}
 		}
 
-		System.out.println("PHASE 2");
+		/*System.out.println("PHASE 2 " + exploredPercentage + " out of "
+				+ horizontalSize * verticalSize);*/
 
-		worldExploredPercentage = exploredPercentage / horizontalSize
-				* verticalSize;
+		worldExploredPercentage = (exploredPercentage / horizontalSize * verticalSize) / 100;
 	}
 
-	public int getWorldExploredPercentage() {
+	public double getWorldExploredPercentage() {
 		return worldExploredPercentage;
 	}
 

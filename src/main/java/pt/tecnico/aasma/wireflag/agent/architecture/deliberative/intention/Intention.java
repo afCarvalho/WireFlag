@@ -19,5 +19,9 @@ public abstract class Intention {
 	public boolean isSame(Intention actualIntention) {
 		return actualIntention.getIntentionId() == getIntentionId();
 	}
+	
+	public int getId(){
+		return getIntentionId();
+	}
 
 }

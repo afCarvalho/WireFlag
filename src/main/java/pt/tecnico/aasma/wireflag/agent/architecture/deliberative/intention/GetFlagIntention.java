@@ -44,6 +44,6 @@ public class GetFlagIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 3;
+		return 4;
 	}
 }

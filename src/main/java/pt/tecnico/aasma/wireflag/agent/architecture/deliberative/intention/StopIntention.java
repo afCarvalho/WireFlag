@@ -26,6 +26,6 @@ public class StopIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 5;
+		return 8;
 	}
 }

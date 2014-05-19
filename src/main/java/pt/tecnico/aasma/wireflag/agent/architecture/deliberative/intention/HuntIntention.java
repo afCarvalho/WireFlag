@@ -51,6 +51,6 @@ public class HuntIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 4;
+		return 6;
 	}
 }
