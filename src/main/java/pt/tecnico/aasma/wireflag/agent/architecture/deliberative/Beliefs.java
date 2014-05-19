@@ -15,7 +15,7 @@ public class Beliefs {
 	private int verticalSize;
 	private KmCounter kmCounter;
 	private int worldExploredPercentage;
-	private MapPosition animalPos;
+	private WorldState animalState;
 	private Agent agent;
 	private boolean reconsider;
 
@@ -63,8 +63,8 @@ public class Beliefs {
 		return agent.getDirection();
 	}
 
-	public MapPosition getAnimalPos() {
-		return animalPos;
+	public WorldState getAnimalState() {
+		return animalState;
 	}
 
 	/***************
@@ -104,13 +104,19 @@ public class Beliefs {
 				exploredPercentage += Math.abs(world[i][j].getCondition());
 
 				if (world[i][j].hasAnimal()
+						&& (getAnimalState() == null || !getAnimalState()
+								.hasAnimal())) {
+					animalState = world[i][j];
+				} else if (world[i][j].hasAnimal()
 						&& world[i][j].getPosition().getDistanceFrom(
-								getAgentPos()) < animalPos
+								getAgentPos()) < animalState.getPosition()
 								.getDistanceFrom(getAgentPos())) {
-					animalPos = world[i][j].getPosition();
+					animalState = world[i][j];
 				}
 			}
 		}
+
+		System.out.println("PHASE 2");
 
 		worldExploredPercentage = exploredPercentage / horizontalSize
 				* verticalSize;

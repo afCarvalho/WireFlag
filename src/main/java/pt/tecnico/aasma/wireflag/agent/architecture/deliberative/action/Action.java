@@ -11,6 +11,7 @@ public abstract class Action {
 	protected Beliefs beliefs;
 	protected MapPosition position;
 	protected Action previousAction;
+	protected boolean isFinished;
 
 	public Action(Beliefs beliefs, MapPosition position, Action previousAction) {
 		this.beliefs = beliefs;
@@ -19,8 +20,6 @@ public abstract class Action {
 	}
 
 	public abstract boolean act(Agent agent, int delta);
-
-	public abstract double getValue();
 
 	public MapPosition getPos() {
 		return position;
@@ -39,5 +38,23 @@ public abstract class Action {
 			return 1;
 		}
 		return 1 + previousAction.getNActions();
+	}
+
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public void setFinished(boolean isFinished) {
+		this.isFinished = isFinished;
+	}
+
+	public abstract double getValue();
+
+	public double getSequenceValue() {
+		if (previousAction != null) {
+			return getValue() + previousAction.getValue();
+		} else {
+			return getValue();
+		}
 	}
 }

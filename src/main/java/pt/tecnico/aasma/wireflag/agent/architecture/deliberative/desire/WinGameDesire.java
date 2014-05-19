@@ -30,5 +30,4 @@ public class WinGameDesire implements Desire {
 	public Intention getIntention() {
 		return new WinGameIntention();
 	}
-
 }

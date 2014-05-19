@@ -19,8 +19,6 @@ public class BattleAction extends Action {
 
 	@Override
 	public double getValue() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-
 }

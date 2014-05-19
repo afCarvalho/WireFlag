@@ -33,7 +33,8 @@ public abstract class Plan {
 		MapPosition pos = new MapPosition(action.getPos().getX() + x, action
 				.getPos().getY() + y);
 
-		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]) {
+		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
+				&& !action.isFinished()) {
 			createNewAction(pos, action);
 			// usedPerception[pos.getX() + x][pos.getY() + y] = true;
 		}
@@ -68,7 +69,7 @@ public abstract class Plan {
 
 	public abstract void createNewAction(MapPosition pos, Action previousAction);
 
-	/*public void execute(Agent agent) {
-		actions.removeFirst().act(agent);
-	}*/
+	/*
+	 * public void execute(Agent agent) { actions.removeFirst().act(agent); }
+	 */
 }

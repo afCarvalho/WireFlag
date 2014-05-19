@@ -21,16 +21,6 @@ public class DropFlagAction extends Action {
 
 	@Override
 	public double getValue() {
-		return getEndUtility();
-	}
-
-	private double getEndUtility() {
-		if (beliefs.hasEndPos()
-				&& beliefs.getEndPos().isAdjacentPosition(position,
-						beliefs.getDirection()) && beliefs.carriesFlag()) {
-			return 100;
-		} else {
-			return 1;
-		}
+		return 0;
 	}
 }

@@ -1,8 +1,5 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
@@ -68,7 +65,7 @@ public class OldAction {
 	public double getValue(Beliefs state, Agent a, MapPosition initialPos,
 			int option) {
 
-		double moveUtility = 0;
+		//double moveUtility = 0;
 
 		/*
 		 * if (option == GO_FURTHER) { moveUtility = (((getMoveUtility(a))) /
@@ -78,14 +75,14 @@ public class OldAction {
 		 * perception .getCondition()) / (getNActions())))) / (getNActions()); }
 		 */
 
-		if (!state.getWorldState(a.getPos().getMapPosition().getX(),
+		/*if (!state.getWorldState(a.getPos().getMapPosition().getX(),
 				a.getPos().getMapPosition().getY()).hasExtremeWeather()
 				&& !state.getWorldState(a.getPos().getMapPosition().getX(),
 						a.getPos().getMapPosition().getY()).hasFire()) {
 			moveUtility = moveUtility
 					* Math.min(Math.min(getClimateUtility(), getFireUtility()),
 							getBlockedUtility(a));
-		}
+		}*/
 		// double stopUtility = moveUtility;
 		// double flagUtility = getFlagUtility() * moveUtility;
 		// double endUtility = getEndUtility(state, a) * moveUtility;
@@ -100,21 +97,21 @@ public class OldAction {
 		 * stopUtility + lifeFactor; }
 		 */
 
-		ArrayList<Double> utilities = new ArrayList<Double>();
+		//ArrayList<Double> utilities = new ArrayList<Double>();
 		// utilities.add(moveUtility);
 		// utilities.add(flagUtility);
 		// utilities.add(endUtility);
 		// utilities.add(stopUtility);
 
-		double higherUtility = 0;
-		double lowerUtility = 0;
+		//double higherUtility = 0;
+		//double lowerUtility = 0;
 		double totalUtility = 0;
 
-		for (Double value : utilities) {
-			higherUtility = Math.max(higherUtility, value);
-			lowerUtility = Math.min(lowerUtility, value);
-			totalUtility += value;
-		}
+		//for (Double value : utilities) {
+			//higherUtility = Math.max(higherUtility, value);
+			//lowerUtility = Math.min(lowerUtility, value);
+			//totalUtility += value;
+		//}
 
 		/*
 		 * if (moveUtility == higherUtility) { action = MOVE_ACTION; } else if
@@ -126,11 +123,11 @@ public class OldAction {
 		 * if (stopUtility == higherUtility) { action = STOP_ACTION; }
 		 */
 
-		if (ancestor == null) {
+		/*if (ancestor == null) {
 			totalUtility = Math.min(lowerUtility, 0);
 		}
 
-		val = totalUtility;
+		val = totalUtility;*/
 
 		return totalUtility;
 	}
@@ -178,7 +175,7 @@ public class OldAction {
 	 * }
 	 */
 
-	public double getClimateUtility() {
+	/*public double getClimateUtility() {
 		if (perception.hasExtremeWeather()) {
 			return -1;
 		} else if (ancestor != null) {
@@ -208,7 +205,7 @@ public class OldAction {
 		} else {
 			return 1;
 		}
-	}
+	}*/
 
 	/*
 	 * private double getFlagUtility() { if (perception.hasFlag()) { return 100;

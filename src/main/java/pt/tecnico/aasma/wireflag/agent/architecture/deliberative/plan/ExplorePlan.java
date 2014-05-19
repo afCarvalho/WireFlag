@@ -11,15 +11,14 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class ExplorePlan extends Plan {
 
-	private int subPlan;
+	public static final int DISCOVER_NEW = 0;
+	public static final int DISCOVER_UNKNOWN = 1;
 
 	public ExplorePlan(Beliefs beliefs) {
 		super(beliefs);
-		subPlan = setSubPlan(beliefs);
-
 	}
 
-	public static int setSubPlan(Beliefs beliefs) {
+	public static int getMoveStrategy(Beliefs beliefs) {
 		for (int i = 0; i < beliefs.getHorizontalSize(); i++) {
 			for (int j = 0; j < beliefs.getVerticalSize(); j++) {
 				if (beliefs.getWorldState(i, j).isNewlyDiscovered()) {
@@ -32,16 +31,18 @@ public class ExplorePlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, Action previousAction) {
-		createExploreAction(actions, beliefs, pos, previousAction, subPlan);
+		createExploreAction(actions, beliefs, pos, previousAction);
 	}
 
 	public static void createExploreAction(LinkedList<Action> actionsList,
-			Beliefs beliefs, MapPosition pos, Action previousAction,
-			int moveStrategy) {
-		if (moveStrategy == WorldState.NEWLY_DISCOVERED) {
+			Beliefs beliefs, MapPosition pos, Action previousAction) {
+
+		int moveStrategy = getMoveStrategy(beliefs);
+
+		if (moveStrategy == DISCOVER_NEW) {
 			actionsList.addLast(new ExploreNewAction(beliefs, pos,
 					previousAction));
-		} else {
+		} else if (moveStrategy == DISCOVER_UNKNOWN) {
 			actionsList.addLast(new ExploreUnknownAction(beliefs, pos,
 					previousAction));
 		}

@@ -31,13 +31,13 @@ public class HuntIntention extends Intention {
 			pos = action.getPos();
 
 			if (beliefs.blockedWay(pos.getX(), pos.getY())
-					&& !beliefs.getAnimalPos().isSamePosition(pos)) {
+					&& !beliefs.getAnimalState().getPosition()
+							.isSamePosition(pos)) {
 				return true;
 			}
 		}
 
-		if (!beliefs.getWorldState(beliefs.getFlagPos().getX(),
-				beliefs.getAnimalPos().getY()).hasAnimal()) {
+		if (!beliefs.getAnimalState().hasAnimal()) {
 			return true;
 		}
 

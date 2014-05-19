@@ -13,6 +13,12 @@ public class WinGamePlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, Action previousAction) {
-		addAction(new DropFlagAction(beliefs, pos, previousAction), 0, 0);		
+		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasEndPoint()) {
+			actions.addLast(new DropFlagAction(beliefs, pos, previousAction));
+			actions.getLast().setFinished(true);
+		} else {
+			ExplorePlan.createExploreAction(actions, beliefs, pos,
+					previousAction);	
+		}
 	}
 }

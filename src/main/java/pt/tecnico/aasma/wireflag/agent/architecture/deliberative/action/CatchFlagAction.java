@@ -19,14 +19,6 @@ public class CatchFlagAction extends Action {
 
 	@Override
 	public double getValue() {
-		return getFlagUtility();
-	}
-
-	private double getFlagUtility() {
-		if (beliefs.hasFlagPos()) {
-			return 100;
-		} else {
-			return 1;
-		}
+		return 0;
 	}
 }

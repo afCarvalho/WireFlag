@@ -6,14 +6,11 @@ import java.util.Random;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.BattleDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.CureIllDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.Desire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.ExploreDesire;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.FleeDesire;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.GetFlagDesire;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HuntDesire;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.StopDesire;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WinGameDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HealDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.RestDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 
@@ -28,9 +25,13 @@ public class Deliberative extends Architecture {
 		beliefs = new Beliefs();
 		actions = new LinkedList<Action>();
 		random = new Random();
-		desires = new Desire[] { new BattleDesire(), new ExploreDesire(),
-				new FleeDesire(), new GetFlagDesire(), new HuntDesire(),
-				new StopDesire(), new WinGameDesire() };
+		/*
+		 * desires = new Desire[] { new BattleDesire(), new ExploreDesire(), new
+		 * FleeDesire(), new GetFlagDesire(), new HuntDesire(), new
+		 * CureIllDesire(), new WinGameDesire() };
+		 */
+		desires = new Desire[] { new ExploreDesire(), new RestDesire(),
+				new CureIllDesire(), new HealDesire() };
 	}
 
 	public Beliefs getInternal() {
@@ -64,13 +65,14 @@ public class Deliberative extends Architecture {
 				|| actions.isEmpty()) {
 
 			Action action = actionsList.removeFirst();
-			if(!action.act(agent, delta)){
+			if (!action.act(agent, delta)) {
 				actionsList.addFirst(action);
 			}
 
 			if (beliefs.reconsider()) {
 				Intention intention = getIntention();
-				if (!intention.isSame(actualIntention)) {
+				if (!intention.isSame(actualIntention)
+						|| actualIntention.impossible(actionsList, beliefs)) {
 					actualIntention = intention;
 					plan = actualIntention.getPlan(beliefs);
 					actionsList = plan.makePlan(beliefs.getAgentPos());

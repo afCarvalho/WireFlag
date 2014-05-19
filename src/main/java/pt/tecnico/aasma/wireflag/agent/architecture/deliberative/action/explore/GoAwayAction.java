@@ -13,8 +13,7 @@ public class GoAwayAction extends MoveAction {
 
 	@Override
 	public double getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getLandUtility() * getDangerUtility() * getNActions()
+				+ getNActions();
 	}
-
 }

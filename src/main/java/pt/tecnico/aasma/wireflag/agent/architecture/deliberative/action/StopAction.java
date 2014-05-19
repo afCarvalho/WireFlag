@@ -20,49 +20,6 @@ public class StopAction extends Action {
 
 	@Override
 	public double getValue() {
-		double stopUtility = 0;
-		double stopFactor = getStopUtility();
-		double illFactor = getIllUtility();
-		double lifeFactor = getLifeUtility();
-
-		if (stopFactor != 0 && stopFactor < beliefs.getFatigue() + 1) {
-			stopUtility = stopUtility + stopFactor;
-		} else if (illFactor != 0 && illFactor < 100 - beliefs.getLife()) {
-			stopUtility = stopUtility + illFactor;
-		} else if (lifeFactor != 0 && lifeFactor < 100 - beliefs.getLife()) {
-			stopUtility = stopUtility + lifeFactor;
-		}
-
-		return stopUtility;
-	}
-
-	private double getStopUtility() {
-		if (beliefs.shouldStop() && previousAction != null) {
-			return 5 + ((StopAction) previousAction).getStopUtility();
-		} else if (beliefs.shouldStop() && previousAction == null) {
-			return 5;
-		} else {
-			return 0;
-		}
-	}
-
-	private double getIllUtility() {
-		if (beliefs.isIll() && previousAction != null) {
-			return 1 + ((StopAction) previousAction).getIllUtility();
-		} else if (beliefs.isIll() && previousAction == null) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	private double getLifeUtility() {
-		if (beliefs.getLife() < 30 && previousAction != null) {
-			return 1 + ((StopAction) previousAction).getLifeUtility();
-		} else if (beliefs.getLife() < 30 && previousAction == null) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return 1;
 	}
 }

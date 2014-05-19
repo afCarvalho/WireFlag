@@ -4,14 +4,20 @@ import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.CureIllPlan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.HealPlan;
 
-public class StopIntention extends Intention {
+public class CureIllIntention extends Intention {
+
+	@Override
+	protected int getIntentionId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
-		return beliefs.getLife() == 100 && beliefs.getFatigue() == 0;
+		return !beliefs.isIll();
 	}
 
 	@Override
@@ -21,11 +27,7 @@ public class StopIntention extends Intention {
 
 	@Override
 	public Plan getPlan(Beliefs beliefs) {
-		return new HealPlan(beliefs);
+		return new CureIllPlan(beliefs);
 	}
 
-	@Override
-	protected int getIntentionId() {
-		return 5;
-	}
 }

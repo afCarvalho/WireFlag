@@ -7,15 +7,19 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Inten
 public class HuntDesire implements Desire {
 
 	@Override
-	public double getRate(Beliefs state) {
-		// TODO Auto-generated method stub
-		return 100 - state.getLife() / 2.0
-				- state.getAgentPos().getDistanceFrom(state.getAnimalPos());
+	public double getRate(Beliefs beliefs) {
+		if (beliefs.getAnimalState().hasAnimal()) {
+			return 100
+					- (beliefs.getLife() / 2.0)
+					- beliefs.getAgentPos().getDistanceFrom(
+							beliefs.getAnimalState().getPosition());
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
 	public Intention getIntention() {
 		return new HuntIntention();
 	}
-
 }

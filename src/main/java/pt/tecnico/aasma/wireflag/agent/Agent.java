@@ -305,14 +305,20 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public void hunt(Animal prey) {
+	public void hunt(MapPosition animalPos) {
 		ballon = AnimationLoader.getLoader().getBow();
+
+		Animal prey = MapController.getMap().getLandscape(animalPos)
+				.getAnimal();
 
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) {
 		 * e.printStackTrace(); }
 		 */
-		modifyLife(prey.kill());
+
+		if (prey != null) {
+			modifyLife(prey.kill());
+		}
 	}
 
 	/* this agent use its ability at MapPosition pos */
@@ -610,8 +616,8 @@ public abstract class Agent implements IGameElement {
 
 	@Override
 	public void render(Graphics g) {
-		
-		DeliberativeArchTest.run(g, (Deliberative)architecture);
+
+		DeliberativeArchTest.run(g, (Deliberative) architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
@@ -621,7 +627,8 @@ public abstract class Agent implements IGameElement {
 		g.draw(circle);
 		g.fill(circle);
 
-		sprite.draw(position.getX() - sprite.getWidth()/2, position.getY() - sprite.getHeight()*0.75f);
+		sprite.draw(position.getX() - sprite.getWidth() / 2, position.getY()
+				- sprite.getHeight() * 0.75f);
 		ballon.draw(position.getX() - 10, position.getY());
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
