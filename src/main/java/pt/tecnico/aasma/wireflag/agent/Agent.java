@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Circle;
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -73,10 +74,11 @@ public abstract class Agent implements IGameElement {
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
+	private Strategy strategy;
 	private AgentThread agentThread;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
-			Architecture arquitecture) {
+			Architecture arquitecture, Strategy strategy) {
 		random = new Random();
 		this.life = FULL_LIFE;
 		this.fatigue = LOW_FATIGUE;
@@ -85,6 +87,7 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
+		this.strategy = strategy;
 		this.agentThread = new AgentThread(this);
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
@@ -262,6 +265,47 @@ public abstract class Agent implements IGameElement {
 		if (hasFlag()) {
 			flag.setFlagPos(new WorldPosition(position.getX() + 10, position
 					.getY()));
+		}
+	}
+
+	public void startPlay() {
+		strategy.startPlay();
+	}
+
+	public boolean applyStrategy() {
+		return strategy.getPlay();
+	}
+
+	public void updateLastOpponentPlay(boolean play) {
+		strategy.updateLastOpponentPlay(play);
+	}
+
+	public void confront(MapPosition enemyPos) {
+		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
+		boolean agentPlay;
+		boolean enemyPlay;
+
+		startPlay();
+		enemy.startPlay();
+
+		for (int i = 0; i < 3; i++) {
+			agentPlay = applyStrategy();
+			enemyPlay = enemy.applyStrategy();
+
+			if (agentPlay == enemyPlay == Strategy.COOPERATE) {
+				// do nothing ?????
+			} else {
+				if (agentPlay == Strategy.ATTACK) {
+					attack(enemyPos);
+				}
+
+				if (enemyPlay == Strategy.ATTACK) {
+					enemy.attack(position.getMapPosition());
+				}
+			}
+
+			updateLastOpponentPlay(enemyPlay);
+			enemy.updateLastOpponentPlay(agentPlay);
 		}
 	}
 
