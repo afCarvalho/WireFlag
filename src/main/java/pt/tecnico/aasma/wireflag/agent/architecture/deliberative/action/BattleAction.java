@@ -14,7 +14,7 @@ public class BattleAction extends Action {
 
 	@Override
 	public boolean act(Agent agent, int delta) {
-		agent.attack(beliefs.getEnemyState().getPosition());
+		agent.confront(beliefs.getEnemyState().getPosition());
 		return true;
 	}
 
