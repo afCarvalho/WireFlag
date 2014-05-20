@@ -86,7 +86,7 @@ public class Beliefs {
 
 	public void updateBeliefs() {
 		reconsider = false;
-		String message="";
+		//String message="";
 		
 
 		for (Perception p : agent.getPerceptions()) {

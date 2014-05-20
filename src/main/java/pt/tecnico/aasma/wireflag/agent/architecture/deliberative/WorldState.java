@@ -73,9 +73,11 @@ public class WorldState {
 		} else if (perception.hasEnemy() != p.hasEnemy()) {
 			reconsider = true;
 		} else if ((!perception.hasEnemy() && perception.getAgent() != null) != (!p
-				.hasEnemy() && p.getAgent() != null))
+				.hasEnemy() && p.getAgent() != null)) {
+			reconsider = true;
+		}
 
-			perception = p;
+		perception = p;
 		timeOut = 500;
 
 		if (condition == UNKNOWN) {

@@ -11,7 +11,7 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public abstract class Plan {
 
 	protected LinkedList<ActionSequence> actSequences;
-	boolean usedPerception[][];
+	private boolean usedPerception[][];
 	Beliefs beliefs;
 	MapPosition initiPosition;
 
@@ -42,13 +42,8 @@ public abstract class Plan {
 				|| beliefs.getWorldState(pos.getX(), pos.getY()).hasAgent()) {
 			return;
 		}
-
-		// System.out.println("WANT TO ADD " + action.getPos().getX() + " " +
-		// action.getPos().getY() + " " + x + " " + y );
 		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
 				&& !actionSeq.isFinished()) {
-
-			// System.out.println("ADDED " + x + " " + y );
 			createNewAction(pos, actionSeq);
 			// usedPerception[pos.getX() + x][pos.getY() + y] = true;
 		}
@@ -57,21 +52,22 @@ public abstract class Plan {
 	public LinkedList<Action> makePlan(MapPosition initialPosition) {
 		createNewAction(initialPosition, null);
 
-		// System.out.println("LETS PLAN");
-
 		ActionSequence bestSequence = null;// = actSequences.getFirst();
 
 		while (!actSequences.isEmpty()) {
 
-			/*
-			 * System.err.println("START --------------"); for (ActionSequence
-			 * seq : actSequences) { String message = ""; for (Action ac :
-			 * seq.getActions()) { message += ac.getPos().getX() + " " +
-			 * ac.getPos().getY() + " "; } System.err.println(message + " " +
-			 * seq.isFinished() + " " + seq.getSequenceValue()); }
-			 * 
-			 * System.err.println("END ---------------");
-			 */
+			/*System.err.println("START --------------");
+			for (ActionSequence seq : actSequences) {
+				String message = "";
+				for (Action ac : seq.getActions()) {
+					message += ac.getPos().getX() + " " + ac.getPos().getY()
+							+ " ";
+				}
+				System.err.println(message + " " + seq.isFinished() + " "
+						+ seq.getSequenceValue());
+			}
+
+			System.err.println("END ---------------");*/
 
 			ActionSequence a = actSequences.removeFirst();
 			usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = true;

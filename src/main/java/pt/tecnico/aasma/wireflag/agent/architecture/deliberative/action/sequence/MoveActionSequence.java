@@ -28,7 +28,7 @@ public class MoveActionSequence extends ActionSequence {
 
 	@Override
 	public double getSequenceValue() {
-		double distance = beliefs.getAgentPos().getDistanceFrom(getTailPos());
+		double distance = beliefs.getAgentPos().getDistanceFrom(getTailPos()) + 1;
 		/*System.out.println("VALUE " + value + " DANGEr " + dangerValue
 				+ " N ACTIONS " + actions.size() + " DISTANCE " + distance
 				+ " RESULT " + (value * dangerValue)
