@@ -3,6 +3,7 @@ package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.DropFlagAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class WinGamePlan extends Plan {
@@ -12,13 +13,15 @@ public class WinGamePlan extends Plan {
 	}
 
 	@Override
-	public void createNewAction(MapPosition pos, Action previousAction) {
+	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
 		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasEndPoint()) {
-			actions.addLast(new DropFlagAction(beliefs, pos, previousAction));
-			actions.getLast().setFinished(true);
+			ActionSequence seq = new ActionSequence(beliefs, actionSeq);
+			seq.addAction(new DropFlagAction(pos));
+			seq.setFinished(true);
+			actSequences.add(seq);
 		} else {
-			ExplorePlan.createExploreAction(actions, beliefs, pos,
-					previousAction);	
+			ExplorePlan.createExploreAction(actSequences, beliefs, pos,
+					actionSeq);
 		}
 	}
 }

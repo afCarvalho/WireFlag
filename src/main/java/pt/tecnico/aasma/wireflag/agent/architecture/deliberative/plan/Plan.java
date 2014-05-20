@@ -2,23 +2,21 @@ package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 
 import java.util.LinkedList;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.explore.ExploreNewAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
 import pt.tecnico.aasma.wireflag.test.DeliberativeArchTest;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public abstract class Plan {
 
-	protected LinkedList<Action> actions;
+	protected LinkedList<ActionSequence> actSequences;
 	boolean usedPerception[][];
 	Beliefs beliefs;
 	MapPosition initiPosition;
 
 	public Plan(Beliefs beliefs) {
-		actions = new LinkedList<Action>();
+		actSequences = new LinkedList<ActionSequence>();
 		usedPerception = new boolean[beliefs.getHorizontalSize()][beliefs
 				.getVerticalSize()];
 		this.beliefs = beliefs;
@@ -32,69 +30,63 @@ public abstract class Plan {
 		}
 	}
 
-	public void addAction(Action action, int x, int y) {
-		MapPosition pos = new MapPosition(action.getPos().getX() + x, action
-				.getPos().getY() + y);
+	public void addAction(ActionSequence actionSeq, int x, int y) {
+		MapPosition pos = new MapPosition(actionSeq.getTailPos().getX() + x,
+				actionSeq.getTailPos().getY() + y);
+
+		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasFire()
+				|| beliefs.getWorldState(pos.getX(), pos.getY())
+						.hasExtremeWeather()
+				|| beliefs.getWorldState(pos.getX(), pos.getY()).isBlocked()
+				|| beliefs.getWorldState(pos.getX(), pos.getY()).hasAnimal()
+				|| beliefs.getWorldState(pos.getX(), pos.getY()).hasAgent()) {
+			return;
+		}
 
 		// System.out.println("WANT TO ADD " + action.getPos().getX() + " " +
 		// action.getPos().getY() + " " + x + " " + y );
 		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
-				&& !action.isFinished()) {
-			usedPerception[pos.getX()][pos.getY()] = true;
+				&& !actionSeq.isFinished()) {
+
 			// System.out.println("ADDED " + x + " " + y );
-			createNewAction(pos, action);
+			createNewAction(pos, actionSeq);
 			// usedPerception[pos.getX() + x][pos.getY() + y] = true;
 		}
 	}
 
 	public LinkedList<Action> makePlan(MapPosition initialPosition) {
 		createNewAction(initialPosition, null);
-		
-		System.out.println("LETS PLAN");
 
-		Action bestAction = actions.getFirst();
+		// System.out.println("LETS PLAN");
 
-		while (!actions.isEmpty()) {
-			Action a = actions.removeFirst();
-			//usedPerception[a.getPos().getX()][a.getPos().getY()] = true;
-			
-			System.out.println("PLANNING " + actions.size());
+		ActionSequence bestSequence = null;// = actSequences.getFirst();
 
-			// System.out.println("ACTION HAS " + a.getNActions() + " ACTIONS "
-			// +a.getSequenceValue());
-			// LinkedList<Action> ll = new LinkedList<Action>();
-			// a.fillActionsList(ll);
-			// for (Action aa : ll) {
-			// System.out.println(aa.getPos().getX() + " " +
-			// aa.getPos().getY());
-			// }
+		while (!actSequences.isEmpty()) {
 
-			/*for (Action ac : actions) {
-				Action prev = ac;
-				System.out.println("S--------------"
-						+ beliefs.getAgentPos().getX() + " "
-						+ beliefs.getAgentPos().getY());
-				while (prev != null) {
-					System.out.println("LAND UTIL "
-							+ ((ExploreNewAction) prev).getLandUtility()
-							+ " DANGER UTIL "
-							+ ((ExploreNewAction) prev).getDangerUtility()
-							+ " CONDITION "
-							+ (1 + beliefs.getWorldState(
-									((ExploreNewAction) prev).getPos().getX(),
-									((ExploreNewAction) prev).getPos().getY())
-									.getCondition()) + " N ACTIONS "
-							+ prev.getNActions() + " X " + prev.getPos().getX()
-							+ " Y " + prev.getPos().getY());
+			/*
+			 * System.err.println("START --------------"); for (ActionSequence
+			 * seq : actSequences) { String message = ""; for (Action ac :
+			 * seq.getActions()) { message += ac.getPos().getX() + " " +
+			 * ac.getPos().getY() + " "; } System.err.println(message + " " +
+			 * seq.isFinished() + " " + seq.getSequenceValue()); }
+			 * 
+			 * System.err.println("END ---------------");
+			 */
 
-					prev = prev.getPrevious();
-				}
-				System.out.println("E--------------");
-			}*/
+			ActionSequence a = actSequences.removeFirst();
+			usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = true;
 
-			if (a.getSequenceValue() > bestAction.getSequenceValue()
-					&& a.isFinished()) {
-				bestAction = a;
+			// System.err.println("PLANNING " + actSequences.size() + " "
+			// + a.isFinished() + " " + beliefs.hasNewPosition() + " " +
+			// beliefs.hasUnknownPosition());
+
+			if (a.isFinished()
+					&& (bestSequence == null || a.getSequenceValue() > bestSequence
+							.getSequenceValue())) {
+				bestSequence = a;
+			} else if (bestSequence != null
+					&& a.getActions().size() > bestSequence.getActions().size()) {
+				continue;
 			}
 
 			addAction(a, 1, 0);
@@ -103,22 +95,22 @@ public abstract class Plan {
 			addAction(a, 0, -1);
 		}
 
-		LinkedList<Action> actionsList = new LinkedList<Action>();
-		bestAction.fillActionsList(actionsList);
+		System.err.println(beliefs.hasNewPosition() + " "
+				+ beliefs.hasUnknownPosition());
+		System.err.println("BEST " + bestSequence.isFinished());
 
 		LinkedList<MapPosition> positions = new LinkedList<MapPosition>();
-		for (Action a : actionsList) {
+		for (Action a : bestSequence.getActions()) {
 			positions.add(a.getPos());
 		}
 
 		DeliberativeArchTest.setActions(positions);
 
-		return actionsList;
+		// System.exit(0);
+
+		return bestSequence.getActions();
 	}
 
-	public abstract void createNewAction(MapPosition pos, Action previousAction);
-
-	/*
-	 * public void execute(Agent agent) { actions.removeFirst().act(agent); }
-	 */
+	public abstract void createNewAction(MapPosition pos,
+			ActionSequence actionSeq);
 }

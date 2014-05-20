@@ -1,8 +1,8 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.StopAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class RestPlan extends Plan {
@@ -12,20 +12,20 @@ public class RestPlan extends Plan {
 	}
 
 	@Override
-	public void createNewAction(MapPosition pos, Action previousAction) {
+	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
 
-		if (previousAction == null) {
-			actions.addLast(new StopAction(beliefs, pos, previousAction));
-		} else if (previousAction.getValue() != 0
-				&& 5 * previousAction.getValue() < beliefs.getFatigue() + 1) {
+		ActionSequence seq;
 
-			usedPerception[previousAction.getPos().getX()][previousAction
-					.getPos().getY()] = false;
-			actions.addLast(new StopAction(beliefs, previousAction.getPos(),
-					previousAction));
-
+		if (actionSeq == null) {
+			seq = new ActionSequence(beliefs);
 		} else {
-			previousAction.setFinished(true);
+			seq = new ActionSequence(beliefs, actionSeq);
 		}
+
+		while (5 * seq.getSequenceValue() < beliefs.getFatigue()) {
+			seq.addAction(new StopAction(beliefs, pos));
+		}
+		seq.setFinished(true);
+		actSequences.addLast(seq);
 	}
 }

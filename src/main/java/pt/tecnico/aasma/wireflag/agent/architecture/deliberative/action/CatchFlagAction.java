@@ -6,19 +6,13 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class CatchFlagAction extends Action {
 
-	public CatchFlagAction(Beliefs beliefs, MapPosition position,
-			Action previousAction) {
-		super(beliefs, position, previousAction);
+	public CatchFlagAction(MapPosition position) {
+		super(position);
 	}
 
 	@Override
-	public boolean act(Agent agent, int delta) {
+	public boolean act(Beliefs beliefs, Agent agent, int delta) {
 		agent.catchFlag();
 		return true;
-	}
-
-	@Override
-	public double getValue() {
-		return 0;
 	}
 }

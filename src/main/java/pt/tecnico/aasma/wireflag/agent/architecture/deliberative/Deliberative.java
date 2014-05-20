@@ -31,8 +31,7 @@ public class Deliberative extends Architecture {
 		 * FleeDesire(), new GetFlagDesire(), new HuntDesire(), new
 		 * CureIllDesire(), new WinGameDesire() };
 		 */
-		desires = new Desire[] { new ExploreDesire(), new RestDesire(),
-				new CureIllDesire(), new HealDesire() };
+		desires = new Desire[] { new ExploreDesire(), new RestDesire() };
 	}
 
 	public Beliefs getInternal() {
@@ -70,27 +69,30 @@ public class Deliberative extends Architecture {
 			Plan plan = actualIntention.getPlan(beliefs);
 			actions = plan.makePlan(beliefs.getAgentPos());
 
-			System.out.println("PLANING " + actualIntention.getId()
-					+ " DONE WITH " + actions.size() + " ACTIONS "
-					+ actualIntention.impossible(actions, beliefs) + " "
-					+ actualIntention.suceeded(actions, beliefs) + " "
-					+ actions.isEmpty() + " " + actions.size());
+			/*
+			 * System.err.println("PLANING " + actualIntention.getId() +
+			 * " DONE WITH " + actions.size() + " ACTIONS " +
+			 * actualIntention.impossible(actions, beliefs) + " " +
+			 * actualIntention.suceeded(actions, beliefs) + " " +
+			 * actions.isEmpty() + " " + actions.size());
+			 */
 
 		}
 
 		Action action = actions.removeFirst();
-		if (!action.act(agent, delta)) {
-			//System.out.println("MOVING TO POS " + action.getPos().getX() + " "
-			//		+ action.getPos().getY());
+		if (!action.act(beliefs, agent, delta)) {
+			// System.out.println("MOVING TO POS " + action.getPos().getX() +
+			// " "
+			// + action.getPos().getY());
 			actions.addFirst(action);
 		}
 
 		if (beliefs.reconsider()) {
-			System.out.println("RECONSIDER");
+			System.err.println("RECONSIDER");
 			Intention intention = getIntention();
 			if (!intention.isSame(actualIntention)
 					|| actualIntention.impossible(actions, beliefs)) {
-				System.out.println("REPLAN");
+				System.err.println("REPLAN");
 				actualIntention = intention;
 				Plan plan = actualIntention.getPlan(beliefs);
 				actions = plan.makePlan(beliefs.getAgentPos());

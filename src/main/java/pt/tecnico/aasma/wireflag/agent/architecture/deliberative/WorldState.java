@@ -70,9 +70,12 @@ public class WorldState {
 			reconsider = true;
 		} else if (perception.hasEndPoint() != p.hasEndPoint()) {
 			reconsider = true;
-		}
+		} else if (perception.hasEnemy() != p.hasEnemy()) {
+			reconsider = true;
+		} else if ((!perception.hasEnemy() && perception.getAgent() != null) != (!p
+				.hasEnemy() && p.getAgent() != null))
 
-		perception = p;
+			perception = p;
 		timeOut = 500;
 
 		if (condition == UNKNOWN) {
@@ -86,6 +89,14 @@ public class WorldState {
 
 	public boolean hasEnemy() {
 		return perception.hasEnemy();
+	}
+
+	public boolean hasAgent() {
+		return perception.getAgent() != null;
+	}
+
+	public boolean hasAlly() {
+		return !hasEnemy() && hasAgent();
 	}
 
 	public boolean hasInjuredAgent() {

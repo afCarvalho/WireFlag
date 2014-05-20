@@ -18,6 +18,7 @@ public class Beliefs {
 	private WorldState animalState;
 	private Agent agent;
 	private boolean reconsider;
+	private int positionAvailable;
 
 	public Beliefs() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
@@ -85,6 +86,8 @@ public class Beliefs {
 
 	public void updateBeliefs() {
 		reconsider = false;
+		String message="";
+		
 
 		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
@@ -97,10 +100,16 @@ public class Beliefs {
 		}
 
 		double exploredPercentage = 0;
+		positionAvailable = -1;
+		
 
 		for (int i = 0; i < horizontalSize; i++) {
 			for (int j = 0; j < verticalSize; j++) {
 				world[i][j].updateState();
+				positionAvailable = Math.max(world[i][j].getCondition(),
+						positionAvailable);
+				//message+= world[i][j].getCondition() + " ";
+				//message+=positionAvailable + " ";
 				exploredPercentage += Math.abs(world[i][j].getCondition());
 
 				if (world[i][j].hasAnimal()
@@ -114,10 +123,16 @@ public class Beliefs {
 					animalState = world[i][j];
 				}
 			}
+			//message+="\n";
 		}
+		
+		//System.err.println(message);
+		
 
-		/*System.out.println("PHASE 2 " + exploredPercentage + " out of "
-				+ horizontalSize * verticalSize);*/
+		/*
+		 * System.out.println("PHASE 2 " + exploredPercentage + " out of " +
+		 * horizontalSize * verticalSize);
+		 */
 
 		worldExploredPercentage = (exploredPercentage / horizontalSize * verticalSize) / 100;
 	}
@@ -186,6 +201,14 @@ public class Beliefs {
 
 	public boolean reconsider() {
 		return reconsider;
+	}
+
+	public boolean hasNewPosition() {
+		return positionAvailable == WorldState.NEWLY_DISCOVERED;
+	}
+
+	public boolean hasUnknownPosition() {
+		return positionAvailable == WorldState.UNKNOWN;
 	}
 
 	/************************

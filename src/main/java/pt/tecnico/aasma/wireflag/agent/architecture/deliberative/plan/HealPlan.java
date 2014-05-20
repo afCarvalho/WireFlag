@@ -1,8 +1,8 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.StopAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class HealPlan extends Plan {
@@ -12,18 +12,20 @@ public class HealPlan extends Plan {
 	}
 
 	@Override
-	public void createNewAction(MapPosition pos, Action previousAction) {
+	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
 
-		if (previousAction.getValue() != 0
-				&& previousAction.getValue() < 100 - beliefs.getLife()) {
+		ActionSequence seq;
 
-			usedPerception[previousAction.getPos().getX()][previousAction
-					.getPos().getY()] = false;
-			actions.addLast(new StopAction(beliefs, previousAction.getPos(),
-					previousAction));
-
+		if (actionSeq == null) {
+			seq = new ActionSequence(beliefs);
 		} else {
-			previousAction.setFinished(true);
+			seq = new ActionSequence(beliefs, actionSeq);
 		}
+
+		while (5 * seq.getSequenceValue() < 100 - beliefs.getLife()) {
+			seq.addAction(new StopAction(beliefs, pos));
+		}
+		seq.setFinished(true);
+		actSequences.addLast(seq);
 	}
 }

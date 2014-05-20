@@ -7,20 +7,14 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class DropFlagAction extends Action {
 
-	public DropFlagAction(Beliefs beliefs, MapPosition position,
-			Action previousAction) {
-		super(beliefs, position, previousAction);
+	public DropFlagAction(MapPosition position) {
+		super(position);
 	}
 
 	@Override
-	public boolean act(Agent agent, int delta) {
+	public boolean act(Beliefs beliefs, Agent agent, int delta) {
 		agent.dropFlag();
 		WireFlagGame.win(agent.getTeamId());
 		return true;
-	}
-
-	@Override
-	public double getValue() {
-		return 0;
 	}
 }

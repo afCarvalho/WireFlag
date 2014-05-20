@@ -4,55 +4,50 @@ import java.util.LinkedList;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.WorldState;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.explore.ExploreNewAction;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.explore.ExploreUnknownAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.DropFlagAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.MoveAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.MoveActionSequence;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class ExplorePlan extends Plan {
-
-	public static final int DISCOVER_NEW = 0;
-	public static final int DISCOVER_UNKNOWN = 1;
 
 	public ExplorePlan(Beliefs beliefs) {
 		super(beliefs);
 	}
 
-	public static int getMoveStrategy(Beliefs beliefs) {
-		for (int i = 0; i < beliefs.getHorizontalSize(); i++) {
-			for (int j = 0; j < beliefs.getVerticalSize(); j++) {
-				if (beliefs.getWorldState(i, j).isNewlyDiscovered()) {
-					return DISCOVER_NEW;
-				}
-			}
-		}
-		return DISCOVER_UNKNOWN;
-	}
-
 	@Override
-	public void createNewAction(MapPosition pos, Action previousAction) {
-		createExploreAction(actions, beliefs, pos, previousAction);
+	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
+		createExploreAction(actSequences, beliefs, pos, actionSeq);
 	}
 
-	public static void createExploreAction(LinkedList<Action> actionsList,
-			Beliefs beliefs, MapPosition pos, Action previousAction) {
+	public static void createExploreAction(
+			LinkedList<ActionSequence> actSequences, Beliefs beliefs,
+			MapPosition pos, ActionSequence actionSeq) {
 
-		int moveStrategy = getMoveStrategy(beliefs);
+		MoveActionSequence seq;
 
-		if (moveStrategy == DISCOVER_NEW) {
-			actionsList.addLast(new ExploreNewAction(beliefs, pos,
-					previousAction));
+		if (actionSeq == null) {
+			seq = new MoveActionSequence(beliefs);
+		} else {
+			seq = new MoveActionSequence(beliefs, actionSeq);
+		}
 
+		seq.addAction(new MoveAction(pos));
+		actSequences.add(seq);
+
+		if (beliefs.hasNewPosition()) {
+			//System.err.println("NEW "
+			//		+ beliefs.getWorldState(pos.getX(), pos.getY()).isNewlyDiscovered() );
 			if (beliefs.getWorldState(pos.getX(), pos.getY())
 					.isNewlyDiscovered()) {
-				actionsList.getLast().setFinished(true);
+				seq.setFinished(true);
 			}
-		} else if (moveStrategy == DISCOVER_UNKNOWN) {
-			actionsList.addLast(new ExploreUnknownAction(beliefs, pos,
-					previousAction));
-
-			if (getNUnknownAdjacent(beliefs, pos)) {
-				actionsList.getLast().setFinished(true);
+		} else if (beliefs.hasUnknownPosition()) {
+			//System.err.println("UNKNOWN " + getNUnknownAdjacent(beliefs, pos));
+			if (getNUnknownAdjacent(beliefs, pos)/*getNUnknownAdjacent(beliefs, pos)*/) {
+			//	System.out.println("FINISHED");
+				seq.setFinished(true);
 			}
 		}
 	}
