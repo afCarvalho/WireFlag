@@ -6,41 +6,34 @@ import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.BattlePlan;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.AbilityPlan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class BattleIntention extends Intention {
+public class AbilityIntention extends Intention {
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
 
-		return !beliefs.getEnemyState().hasEnemy();
+		return !beliefs.isAgentAbilityUseful();
 	}
 
 	@Override
 	public boolean impossible(List<Action> actions, Beliefs beliefs) {
 		MapPosition pos;
-
-		if (!beliefs.getEnemyState().hasEnemy()) {
-			return true;
-		}
-
+		boolean result = false;
 		for (Action action : actions) {
 			pos = action.getPos();
 
-			if (beliefs.blockedWay(pos.getX(), pos.getY())
-					&& !beliefs.getEnemyState().getPosition()
-							.isSamePosition(pos)) {
-				return true;
-			}
+			result = result || beliefs.blockedWay(pos.getX(), pos.getY());
 		}
 
-		return false;
+		return result;
 	}
 
 	@Override
 	public Plan getPlan(Beliefs beliefs) {
-		return new BattlePlan(beliefs);
+		return new AbilityPlan(beliefs);
 	}
 
 	@Override

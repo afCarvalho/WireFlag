@@ -36,10 +36,10 @@ public abstract class Agent implements IGameElement {
 	protected final static int HIGHTATCK = 30;
 
 	/* life 0-100 */
-	protected final static int VLOW_LIFE = 10;
-	protected final static int LOW_LIFE = 20;
-	protected final static int FULL_LIFE = 100;
-	protected final static int LIFE_RECOVER = 10;
+	public final static int VLOW_LIFE = 10;
+	public final static int LOW_LIFE = 20;
+	public final static int FULL_LIFE = 100;
+	public final static int LIFE_RECOVER = 10;
 
 	/* fatigue 0-100 */
 	protected final static int HIGH_FATIGUE = 80;
@@ -265,10 +265,13 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(Agent agent) {
+	public void attack(MapPosition mapPosition) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
-		if (agent == null) {
+		Agent enemy = MapController.getMap().getLandscape(mapPosition)
+				.getAgent();
+
+		if (enemy == null) {
 			return;
 		}
 
@@ -287,7 +290,7 @@ public abstract class Agent implements IGameElement {
 			hitRate = agentAttack;
 		}
 
-		agent.modifyLife(-hitRate);
+		enemy.modifyLife(-hitRate);
 	}
 
 	public synchronized void modifyLife(int value) {

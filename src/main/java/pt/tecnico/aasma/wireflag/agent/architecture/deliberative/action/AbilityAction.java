@@ -5,17 +5,18 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class BattleAction extends Action {
+public class AbilityAction extends Action {
 
-	public BattleAction(Beliefs beliefs, MapPosition position,
+	public AbilityAction(Beliefs beliefs, MapPosition position,
 			Action previousAction) {
 		super(beliefs, position, previousAction);
 	}
 
 	@Override
 	public boolean act(Agent agent, int delta) {
-		agent.attack(beliefs.getEnemyState().getPosition());
+		agent.useAbility(position);
 		return true;
+
 	}
 
 	@Override

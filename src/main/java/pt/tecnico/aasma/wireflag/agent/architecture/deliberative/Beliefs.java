@@ -16,7 +16,9 @@ public class Beliefs {
 	private KmCounter kmCounter;
 	private int worldExploredPercentage;
 	private WorldState animalState;
+	private WorldState enemyState;
 	private Agent agent;
+	private boolean isAbilityUseful;
 	private boolean reconsider;
 
 	public Beliefs() {
@@ -47,6 +49,14 @@ public class Beliefs {
 		return agent.getPos().getMapPosition();
 	}
 
+	public int getAgentVisibilityRange() {
+		return agent.getVisibilityRange();
+	}
+
+	public boolean isAgentAbilityUseful() {
+		return isAbilityUseful;
+	}
+
 	public MapPosition getFlagPos() {
 		return flagPos;
 	}
@@ -65,6 +75,10 @@ public class Beliefs {
 
 	public WorldState getAnimalState() {
 		return animalState;
+	}
+
+	public WorldState getEnemyState() {
+		return enemyState;
 	}
 
 	/***************
@@ -94,6 +108,9 @@ public class Beliefs {
 			}
 			reconsider = world[p.getPosition().getX()][p.getPosition().getY()]
 					.setState(p) || reconsider;
+
+			isAbilityUseful = isAbilityUseful
+					|| agent.isAbilityUseful(p.getPosition());
 		}
 
 		int exploredPercentage = 0;
@@ -112,6 +129,17 @@ public class Beliefs {
 								getAgentPos()) < animalState.getPosition()
 								.getDistanceFrom(getAgentPos())) {
 					animalState = world[i][j];
+				}
+
+				if (world[i][j].hasEnemy()
+						&& (getEnemyState() == null || !getEnemyState()
+								.hasEnemy())) {
+					enemyState = world[i][j];
+				} else if (world[i][j].hasEnemy()
+						&& world[i][j].getPosition().getDistanceFrom(
+								getAgentPos()) < enemyState.getPosition()
+								.getDistanceFrom(getAgentPos())) {
+					enemyState = world[i][j];
 				}
 			}
 		}

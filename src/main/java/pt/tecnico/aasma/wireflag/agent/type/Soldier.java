@@ -49,19 +49,13 @@ public class Soldier extends Agent {
 	@Override
 	public void useAbility(MapPosition pos) {
 		ballon = AnimationLoader.getLoader().getStar();
-		/*
-		 * Note: agents must be obtained here before the verification (if),
-		 * because of synchronization
-		 */
-		Agent enemy = MapController.getMap().getLandscape(pos).getAgent();
 
 		if (isAbilityUseful(pos)) {
-
 			/*
 			 * try { Thread.sleep(250); } catch (InterruptedException e) { //
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
-			attack(enemy);
+			attack(pos);
 		}
 	}
 }
