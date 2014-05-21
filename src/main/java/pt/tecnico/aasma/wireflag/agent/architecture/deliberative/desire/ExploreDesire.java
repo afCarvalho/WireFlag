@@ -8,7 +8,11 @@ public class ExploreDesire implements Desire {
 
 	@Override
 	public double getRate(Beliefs beliefs) {
-		return Math.max(50 - beliefs.getWorldExploredPercentage() / 2.0, 20);
+		if (beliefs.getWorldExploredPercentage() < 98) {
+			return (50 - beliefs.getWorldExploredPercentage()) / 2.0;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

@@ -137,7 +137,7 @@ public abstract class Agent implements IGameElement {
 		if (TimeController.getTime().isNight())
 			visibility--;
 
-		return visibility;
+		return Math.max(visibility, 1);
 	}
 
 	public AgentThread getAgentThread() {
@@ -621,7 +621,7 @@ public abstract class Agent implements IGameElement {
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
-		Circle circle = new Circle(position.getX() + 15, position.getY() + 15,
+		Circle circle = new Circle(position.getX(), position.getY(),
 				getVisibilityRange() * MapController.getMap().getTileWidth()
 						* 1.5f);
 		g.draw(circle);
@@ -629,14 +629,17 @@ public abstract class Agent implements IGameElement {
 
 		sprite.draw(position.getX() - sprite.getWidth() / 2, position.getY()
 				- sprite.getHeight() * 0.75f);
-		ballon.draw(position.getX() - 10, position.getY());
+		ballon.draw(position.getX() - sprite.getWidth() / 1.2f, position.getY()
+				- sprite.getHeight() * 0.9f);
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
-		g.drawString("hp:" + life, position.getX() + 3, position.getY() - 20);
-		g.drawString("fp:" + getFatigue() + "", position.getX() + 3,
-				position.getY() + 30);
-		g.drawString("T" + getTeamId() + "A" + getAgentId(),
-				position.getX() - 40, position.getY() + 30);
+		g.drawString("hp:" + life, position.getX() - sprite.getWidth() / 1.2f,
+				position.getY() - sprite.getHeight() * 1.4f);
+		g.drawString("fp:" + getFatigue() + "", position.getX(),
+				position.getY() + sprite.getHeight() * 0.1f);
+		g.drawString("T" + getTeamId() + "A" + getAgentId(), position.getX()
+				- sprite.getWidth() / 0.8f,
+				position.getY() + sprite.getHeight() * 0.1f);
 
 		if (isIll()) {
 			ill.draw(position.getX(), position.getY());

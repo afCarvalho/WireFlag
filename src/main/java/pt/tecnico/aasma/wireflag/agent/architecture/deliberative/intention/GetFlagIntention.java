@@ -15,6 +15,7 @@ public class GetFlagIntention extends Intention {
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
+		//System.err.println("HAS FLAG " + beliefs.carriesFlag());
 		return beliefs.carriesFlag();
 	}
 
@@ -25,12 +26,14 @@ public class GetFlagIntention extends Intention {
 			pos = action.getPos();
 
 			if (beliefs.blockedWay(pos.getX(), pos.getY())) {
+				//System.err.println("BLOCKED WAY");
 				return true;
 			}
 		}
 
 		if (!beliefs.getWorldState(beliefs.getFlagPos().getX(),
 				beliefs.getFlagPos().getY()).hasFlag()) {
+			//System.err.println("FLAG GONE");
 			return true;
 		}
 

@@ -16,23 +16,28 @@ public class MoveActionSequence extends ActionSequence {
 
 	public MoveActionSequence(Beliefs beliefs, ActionSequence actionSeq) {
 		super(beliefs, actionSeq);
+		dangerValue = Math.min(dangerValue,
+				((MoveActionSequence) actionSeq).dangerValue);
 	}
 
 	@Override
 	public void addAction(Action a) {
 		dangerValue = Math.min(dangerValue, getDangerUtility(a.getPos()));
 		value += getLandUtility(a.getPos());
-		// System.out.println("VALUE " + value);
+		// System.err.println("VALUE " + value + " SIZE " + actions.size());
 		actions.addLast(a);
 	}
 
 	@Override
 	public double getSequenceValue() {
 		double distance = beliefs.getAgentPos().getDistanceFrom(getTailPos()) + 1;
-		/*System.out.println("VALUE " + value + " DANGEr " + dangerValue
-				+ " N ACTIONS " + actions.size() + " DISTANCE " + distance
-				+ " RESULT " + (value * dangerValue)
-				/ (actions.size() + distance));*/
+		/*if (distance > 1) {
+			System.err.println("VALUE " + value + " DANGEr " + dangerValue
+					+ " N ACTIONS " + actions.size() + " DISTANCE " + distance
+					+ " RESULT " + (value * dangerValue)
+					/ (actions.size() + distance));
+
+		}*/
 
 		return (value * dangerValue) / (actions.size() * distance);
 	}

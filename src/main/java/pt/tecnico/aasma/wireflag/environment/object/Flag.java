@@ -35,7 +35,8 @@ public class Flag implements IGameElement {
 	}
 
 	public void render(Graphics g) {
-		flag.draw(flagPos.getX(), flagPos.getY());
+		flag.draw(flagPos.getX() - flag.getWidth() / 2,
+				flagPos.getY() - flag.getHeight() * 0.75f);
 	}
 
 	@Override

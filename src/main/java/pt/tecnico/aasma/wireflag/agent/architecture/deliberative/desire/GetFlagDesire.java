@@ -8,11 +8,11 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public class GetFlagDesire implements Desire {
 
 	@Override
-	public double getRate(Beliefs state) {
-		MapPosition flagPos = state.getFlagPos();
-		MapPosition agentPos = state.getAgentPos();
+	public double getRate(Beliefs beliefs) {
+		MapPosition flagPos = beliefs.getFlagPos();
+		MapPosition agentPos = beliefs.getAgentPos();
 
-		if (flagPos != null) {
+		if (beliefs.hasFlagPos() && !beliefs.carriesFlag()) {
 			return 100 - flagPos.getDistanceFrom(agentPos);
 		} else {
 			return 0;

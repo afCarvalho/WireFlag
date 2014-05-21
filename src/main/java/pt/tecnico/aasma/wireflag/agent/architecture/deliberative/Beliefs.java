@@ -86,8 +86,7 @@ public class Beliefs {
 
 	public void updateBeliefs() {
 		reconsider = false;
-		//String message="";
-		
+		// String message="";
 
 		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
@@ -101,15 +100,14 @@ public class Beliefs {
 
 		double exploredPercentage = 0;
 		positionAvailable = -1;
-		
 
 		for (int i = 0; i < horizontalSize; i++) {
 			for (int j = 0; j < verticalSize; j++) {
 				world[i][j].updateState();
 				positionAvailable = Math.max(world[i][j].getCondition(),
 						positionAvailable);
-				//message+= world[i][j].getCondition() + " ";
-				//message+=positionAvailable + " ";
+				// message+= world[i][j].getCondition() + " ";
+				// message+=positionAvailable + " ";
 				exploredPercentage += Math.abs(world[i][j].getCondition());
 
 				if (world[i][j].hasAnimal()
@@ -123,11 +121,10 @@ public class Beliefs {
 					animalState = world[i][j];
 				}
 			}
-			//message+="\n";
+			// message+="\n";
 		}
-		
-		//System.err.println(message);
-		
+
+		// System.err.println(message);
 
 		/*
 		 * System.out.println("PHASE 2 " + exploredPercentage + " out of " +
@@ -196,7 +193,7 @@ public class Beliefs {
 	public boolean blockedWay(int x, int y) {
 		WorldState world = getWorldState(x, y);
 		return world.hasExtremeWeather() || world.hasAnimal()
-				|| world.hasFire() || world.hasFlag() || world.isBlocked();
+				|| world.hasFire() || world.isBlocked();
 	}
 
 	public boolean reconsider() {

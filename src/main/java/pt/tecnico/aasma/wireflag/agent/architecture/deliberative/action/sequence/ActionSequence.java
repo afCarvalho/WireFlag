@@ -21,7 +21,7 @@ public class ActionSequence {
 	@SuppressWarnings("unchecked")
 	public ActionSequence(Beliefs beliefs, ActionSequence sequence) {
 		this.actions = (LinkedList<Action>) sequence.getActions().clone();
-		// System.out.println("SEQUENCE VALUE " + sequence.value);
+		// System.err.println("SEQUENCE VALUE " + sequence.value);
 		value = sequence.value;
 		this.beliefs = beliefs;
 	}
@@ -35,6 +35,7 @@ public class ActionSequence {
 	}
 
 	public double getSequenceValue() {
+		//System.err.println("ACTION SEQUENCE");
 		return value;
 	}
 
