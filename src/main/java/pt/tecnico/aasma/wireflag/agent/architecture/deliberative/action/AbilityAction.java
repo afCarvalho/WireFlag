@@ -6,8 +6,7 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class AbilityAction extends Action {
 
-	public AbilityAction(Beliefs beliefs, MapPosition position,
-			Action previousAction) {
+	public AbilityAction(MapPosition position) {
 		super(position);
 	}
 
