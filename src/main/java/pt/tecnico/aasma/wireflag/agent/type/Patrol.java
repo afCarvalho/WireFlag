@@ -4,6 +4,7 @@ import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
@@ -11,8 +12,9 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Patrol extends Agent {
 
-	public Patrol(int teamId, int agentId, Architecture arquitecture) {
-		super(HIGHSPD, LOWATCK, teamId, agentId, arquitecture);
+	public Patrol(int teamId, int agentId, Architecture arquitecture,
+			Strategy strategy) {
+		super(HIGHSPD, LOWATCK, teamId, agentId, arquitecture, strategy);
 		up = AnimationLoader.getLoader().getPatrolUp();
 		down = AnimationLoader.getLoader().getPatrolDown();
 		right = AnimationLoader.getLoader().getPatrolRight();
@@ -20,18 +22,19 @@ public class Patrol extends Agent {
 
 		sprite = right;
 	}
-    
-    @Override
-    public List<Agent> getNearTeammates() {
-        List<Agent> agents = AgentController.getAgents().getTeamById(getTeamId()).toList();
-        agents.remove(this);
-        return agents;
-    }
+
+	@Override
+	public List<Agent> getNearTeammates() {
+		List<Agent> agents = AgentController.getAgents()
+				.getTeamById(getTeamId()).toList();
+		agents.remove(this);
+		return agents;
+	}
 
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
-    
+
 	@Override
 	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
 		if (flag) {

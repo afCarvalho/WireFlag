@@ -12,7 +12,7 @@ public class Perception {
 	private boolean enemy;
 	private boolean tiredAgent;
 	private boolean injuredAgent;
-	private int agentAttack;
+	private int agentAttack; //TODO apagar
 	private boolean endPoint;
 	private boolean animal;
 	private boolean fire;

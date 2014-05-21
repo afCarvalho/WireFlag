@@ -37,7 +37,7 @@ public class Deliberative extends Architecture {
 				new GetFlagDesire(), new WaitDesire() };
 	}
 
-	public Beliefs getInternal() {
+	public Beliefs getBeliefs() {
 		return beliefs;
 	}
 

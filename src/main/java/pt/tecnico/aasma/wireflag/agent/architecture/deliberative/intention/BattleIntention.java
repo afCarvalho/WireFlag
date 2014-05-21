@@ -2,22 +2,39 @@ package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
 import java.util.List;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.BattlePlan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class BattleIntention extends Intention {
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
-		// TODO Auto-generated method stub
-		return false;
+
+		return !beliefs.getEnemyState().hasEnemy();
 	}
 
 	@Override
 	public boolean impossible(List<Action> actions, Beliefs beliefs) {
-		// TODO Auto-generated method stub
+		MapPosition pos;
+
+		if (!beliefs.getEnemyState().hasEnemy()) {
+			return true;
+		}
+
+		for (Action action : actions) {
+			pos = action.getPos();
+
+			if (beliefs.blockedWay(pos.getX(), pos.getY())
+					&& !beliefs.getEnemyState().getPosition()
+							.isSamePosition(pos)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 

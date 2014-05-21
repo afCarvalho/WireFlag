@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Circle;
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -36,10 +37,10 @@ public abstract class Agent implements IGameElement {
 	protected final static int HIGHTATCK = 30;
 
 	/* life 0-100 */
-	protected final static int VLOW_LIFE = 10;
-	protected final static int LOW_LIFE = 20;
-	protected final static int FULL_LIFE = 100;
-	protected final static int LIFE_RECOVER = 10;
+	public final static int VLOW_LIFE = 10;
+	public final static int LOW_LIFE = 20;
+	public final static int FULL_LIFE = 100;
+	public final static int LIFE_RECOVER = 10;
 
 	/* fatigue 0-100 */
 	protected final static int HIGH_FATIGUE = 80;
@@ -73,10 +74,11 @@ public abstract class Agent implements IGameElement {
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
+	private Strategy strategy;
 	private AgentThread agentThread;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
-			Architecture arquitecture) {
+			Architecture arquitecture, Strategy strategy) {
 		random = new Random();
 		this.life = FULL_LIFE;
 		this.fatigue = LOW_FATIGUE;
@@ -85,6 +87,7 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
+		this.strategy = strategy;
 		this.agentThread = new AgentThread(this);
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
@@ -265,10 +268,54 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(Agent agent) {
+	public void startPlay() {
+		strategy.startPlay();
+	}
+
+	public boolean applyStrategy() {
+		return strategy.getPlay();
+	}
+
+	public void updateLastOpponentPlay(boolean play) {
+		strategy.updateLastOpponentPlay(play);
+	}
+
+	public void confront(MapPosition enemyPos) {
+		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
+		boolean agentPlay;
+		boolean enemyPlay;
+
+		startPlay();
+		enemy.startPlay();
+
+		for (int i = 0; i < 3; i++) {
+			agentPlay = applyStrategy();
+			enemyPlay = enemy.applyStrategy();
+
+			if (agentPlay == enemyPlay == Strategy.COOPERATE) {
+				// do nothing ?????
+			} else {
+				if (agentPlay == Strategy.ATTACK) {
+					attack(enemyPos);
+				}
+
+				if (enemyPlay == Strategy.ATTACK) {
+					enemy.attack(position.getMapPosition());
+				}
+			}
+
+			updateLastOpponentPlay(enemyPlay);
+			enemy.updateLastOpponentPlay(agentPlay);
+		}
+	}
+
+	public void attack(MapPosition mapPosition) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
-		if (agent == null) {
+		Agent enemy = MapController.getMap().getLandscape(mapPosition)
+				.getAgent();
+
+		if (enemy == null) {
 			return;
 		}
 
@@ -287,7 +334,7 @@ public abstract class Agent implements IGameElement {
 			hitRate = agentAttack;
 		}
 
-		agent.modifyLife(-hitRate);
+		enemy.modifyLife(-hitRate);
 	}
 
 	public synchronized void modifyLife(int value) {

@@ -2,14 +2,16 @@ package pt.tecnico.aasma.wireflag.agent.type;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Builder extends Agent {
 
-	public Builder(int teamId, int agentId, Architecture arquitecture) {
-		super(NORMALSPD, NORMALATCK, teamId, agentId, arquitecture);
+	public Builder(int teamId, int agentId, Architecture arquitecture,
+			Strategy strategy) {
+		super(NORMALSPD, NORMALATCK, teamId, agentId, arquitecture, strategy);
 		up = AnimationLoader.getLoader().getBuilderUp();
 		down = AnimationLoader.getLoader().getBuilderDown();
 		right = AnimationLoader.getLoader().getBuilderRight();

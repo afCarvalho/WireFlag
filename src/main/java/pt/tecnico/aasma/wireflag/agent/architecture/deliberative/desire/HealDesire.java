@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire;
 
+import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.HealIntention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
@@ -10,7 +11,7 @@ public class HealDesire implements Desire {
 	public double getRate(Beliefs state) {
 		int rate = 0;
 
-		if (state.getLife() < 30) {
+		if (state.getLife() < Agent.LOW_LIFE) {
 			rate = 100 - state.getLife();
 		}
 

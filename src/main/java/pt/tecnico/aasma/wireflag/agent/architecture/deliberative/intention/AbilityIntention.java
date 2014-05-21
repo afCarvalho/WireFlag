@@ -5,18 +5,17 @@ import java.util.List;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.FleePlan;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.BattlePlan;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.AbilityPlan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class FleeIntention extends Intention {
+public class AbilityIntention extends Intention {
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
-		return beliefs.getLife() > Agent.LOW_LIFE
-				|| beliefs.getEnemyState().getPosition()
-						.getDistanceFrom(beliefs.getAgentPos()) > beliefs
-						.getAgentVisibilityRange();
+
+		return !beliefs.isAgentAbilityUseful();
 	}
 
 	@Override
@@ -34,11 +33,11 @@ public class FleeIntention extends Intention {
 
 	@Override
 	public Plan getPlan(Beliefs beliefs) {
-		return new FleePlan(beliefs);
+		return new AbilityPlan(beliefs);
 	}
 
 	@Override
 	protected int getIntentionId() {
-		return 3;
+		return 0;
 	}
 }

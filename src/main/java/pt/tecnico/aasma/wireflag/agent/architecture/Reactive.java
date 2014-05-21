@@ -472,9 +472,7 @@ public class Reactive extends Architecture {
 			if (perception.hasEnemy() && !agent.hasLowLife()) {
 
 				MapPosition enemyPos = perception.getPosition();
-				Agent enemy = MapController.getMap().getLandscape(enemyPos)
-						.getAgent();
-				agent.attack(enemy);
+				agent.confront(enemyPos);
 				return;
 			}
 		}
