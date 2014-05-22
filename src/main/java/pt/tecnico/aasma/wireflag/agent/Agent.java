@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -75,7 +74,6 @@ public abstract class Agent implements IGameElement {
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
-	private BlockingQueue<Message> mailbox;
 	private Strategy strategy;
 	private AgentThread agentUpdateThread;
 
@@ -89,7 +87,6 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
-		this.mailbox = new LinkedBlockingQueue<Message>();
 		this.strategy = strategy;
 		this.agentUpdateThread = new AgentThread(this);
 
@@ -212,7 +209,7 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public BlockingQueue<Message> getMailbox() {
-		return this.mailbox;
+		return this.architecture.getMailbox();
 	}
 
 	/***************
@@ -672,12 +669,6 @@ public abstract class Agent implements IGameElement {
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
-		List<Message> messages = new ArrayList<Message>();
-		Message message;
-		while ((message = mailbox.poll()) != null) {
-			messages.add(message);
-		}
-		architecture.processMessages(messages);
 		moveFlag();
 	}
 

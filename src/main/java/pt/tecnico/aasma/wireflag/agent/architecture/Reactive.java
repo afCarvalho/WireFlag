@@ -560,7 +560,7 @@ public class Reactive extends Architecture {
 	}
 
 	@Override
-	public void processMessages(List<Message> message) {
+	public void processMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
