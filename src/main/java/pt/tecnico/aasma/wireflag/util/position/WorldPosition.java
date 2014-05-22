@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.util;
+package pt.tecnico.aasma.wireflag.util.position;
 
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 

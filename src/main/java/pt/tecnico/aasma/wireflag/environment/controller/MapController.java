@@ -13,8 +13,8 @@ import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
 import pt.tecnico.aasma.wireflag.environment.landscape.LandscapeType;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 public class MapController implements IController {
 
@@ -87,56 +87,6 @@ public class MapController implements IController {
 		return LandscapeType.getTileLandscape(value, new MapPosition(x, y));
 	}
 
-	/* for each tile is created a perception */
-    @Deprecated
-	private Perception getTilePerception(int teamId, int id, MapPosition pos) {
-		Landscape land = getLandscape(pos);
-
-		Perception perception = new Perception(pos, land.getRating());
-		perception.setFlag(land.hasFlag());
-		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
-		perception.setEndPoint(land.hasEndPoint());
-		perception.setAnimal(land.hasAnimal());
-		perception.setFire(land.hasFire());
-		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
-		perception.setBlocked(isBlocked(pos));
-
-		Agent agent = land.getAgent();
-		if (agent != null) {
-			perception.setAgentAttack(agent.getAgentAttack());
-			perception.setTiredAgent(agent.hasFatigue());
-			perception.setInjuredAgent(agent.hasLowLife());
-		}
-
-		return perception;
-	}
-
-	/*
-	 * returns a list with a perception for each tile in the agent's visibility
-	 */
-    @Deprecated
-	public List<Perception> getPerceptions(int teamId, MapPosition pos,
-			int visibility) {
-		List<Perception> list = new ArrayList<Perception>();
-
-		int x = pos.getX();
-		int y = pos.getY();
-		int id = 0;
-
-		for (int j = y + visibility; j >= y - visibility; j--) {
-			for (int i = x - visibility; i <= x + visibility; i++) {
-
-				if (j < getNVerticalTiles() && i < getNHorizontalTiles()
-						&& j > 0 && i > 0) {
-					list.add(getTilePerception(teamId, id++, new MapPosition(i,
-							j)));
-				}
-			}
-		}
-
-		return list;
-	}
-
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
@@ -145,7 +95,7 @@ public class MapController implements IController {
 		Landscape land = getLandscape(p);
 
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent()
-				|| land.hasEndPoint();
+				|| land.hasTeamBase();
 	}
 
 	/*********************
@@ -171,15 +121,14 @@ public class MapController implements IController {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
 
-		g.setColor(new Color(Color.gray));
-		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
-			g.drawLine(xAxis * tileWidth, 0, xAxis * tileWidth, MapController
-					.getMap().getMapHeight());
-			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
-				g.drawLine(0, yAxis * tileHeight, MapController.getMap()
-						.getMapWidth(), yAxis * tileHeight);
-			}
-		}
+		/*
+		 * g.setColor(new Color(Color.gray)); for (int xAxis = 0; xAxis <
+		 * grassMap.getWidth(); xAxis++) { g.drawLine(xAxis * tileWidth, 0,
+		 * xAxis * tileWidth, MapController .getMap().getMapHeight()); for (int
+		 * yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) { g.drawLine(0,
+		 * yAxis * tileHeight, MapController.getMap() .getMapWidth(), yAxis *
+		 * tileHeight); } }
+		 */
 
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
 			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {

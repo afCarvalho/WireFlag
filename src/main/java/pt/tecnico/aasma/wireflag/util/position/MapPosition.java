@@ -1,4 +1,4 @@
-package pt.tecnico.aasma.wireflag.util;
+package pt.tecnico.aasma.wireflag.util.position;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
@@ -193,5 +193,16 @@ public class MapPosition {
 	/* returns true if position, pos, is this position */
 	public boolean isSamePosition(MapPosition pos) {
 		return this.y == pos.getY() && this.x == pos.getX();
+	}
+
+	public double getDistanceFrom(MapPosition pos) {
+		return Math.abs(getX() - pos.getX()) + Math.abs(getY() - pos.getY());
+	}
+
+	public boolean isValid() {
+		return getX() > -1
+				&& getX() < MapController.getMap().getNHorizontalTiles()
+				&& getY() > -1
+				&& getY() < MapController.getMap().getNHorizontalTiles();
 	}
 }

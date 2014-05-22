@@ -2,14 +2,16 @@ package pt.tecnico.aasma.wireflag.agent.type;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class Builder extends Agent {
+public class Guard extends Agent {
 
-	public Builder(int teamId, int agentId, Architecture arquitecture) {
-		super(NORMALSPD, NORMALATCK, teamId, agentId, arquitecture);
+	public Guard(int teamId, int agentId, Architecture arquitecture,
+			Strategy strategy) {
+		super(NORMALSPD, NORMALATCK, teamId, agentId, arquitecture, strategy);
 		up = AnimationLoader.getLoader().getBuilderUp();
 		down = AnimationLoader.getLoader().getBuilderDown();
 		right = AnimationLoader.getLoader().getBuilderRight();
@@ -21,6 +23,15 @@ public class Builder extends Agent {
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
+	@Override
+	public synchronized void modifyLife(int value) {
+		/* Guard agent is more resistant */
+		if (value < 0) {
+			value = value / 3;
+		}
+
+		super.modifyLife(value);
+	}
 
 	@Override
 	public int habilityRate(int nInjured, int nTired, int nEnemy, boolean flag) {
@@ -33,11 +44,11 @@ public class Builder extends Agent {
 	 */
 	@Override
 	public boolean isAbilityUseful(MapPosition pos) {
-		Agent agent = MapController.getMap().getLandscape(pos).getAgent();
+		MapController.getMap().getLandscape(pos).hasTeamBase();
 
-		if (agent != null) {
-			return getTeamId() == agent.getTeamId() && agent.hasFatigue();
-		}
+		// TODO ve se tem enemy no campo de visao ou se o teamBase e o teamBase
+		// da equipa
+
 		return false;
 	}
 
@@ -53,7 +64,7 @@ public class Builder extends Agent {
 		 * Note: agents must be obtained here before the verification (if),
 		 * because of synchronization
 		 */
-		Agent ally = MapController.getMap().getLandscape(pos).getAgent();
+		// Agent ally = MapController.getMap().getLandscape(pos).getAgent();
 
 		if (isAbilityUseful(pos)) {
 
@@ -62,7 +73,7 @@ public class Builder extends Agent {
 			 * TODO Auto-generated catch block e.printStackTrace(); }
 			 */
 
-			ally.modifyFatigue(-FATIGUE_RECOVER);
+			// ally.modifyFatigue(-FATIGUE_RECOVER);
 		}
 	}
 }

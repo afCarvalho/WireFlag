@@ -13,13 +13,13 @@ import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
-import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
+import pt.tecnico.aasma.wireflag.environment.object.TeamBase;
 import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public abstract class Landscape implements IGameElement {
 
@@ -40,7 +40,7 @@ public abstract class Landscape implements IGameElement {
 	protected float movementSpeed;
 	protected Weather weather;
 	protected Flag flag;
-	protected EndPoint endPoint;
+	protected TeamBase teamBase;
 	protected Agent agent;
 	protected Fire fire;
 	protected Animal animal;
@@ -71,6 +71,10 @@ public abstract class Landscape implements IGameElement {
 	public Agent getAgent() {
 		return agent;
 	}
+	
+	public TeamBase getTeamBase(){
+		return teamBase;
+	}
 
 	public int getVisibility() {
 		return visibility;
@@ -78,7 +82,8 @@ public abstract class Landscape implements IGameElement {
 
 	/* return the landscape's rating */
 	public double getRating() {
-		return 0.4 * movementSpeed + 0.4 * (5 - fatigue) + 0.2 * visibility;
+		return 0.4 * movementSpeed + 0.4 * (5 - fatigue) + 0.2
+				* (visibility + 1);
 	}
 
 	public Animal getAnimal() {
@@ -97,8 +102,8 @@ public abstract class Landscape implements IGameElement {
 		this.flag = flag;
 	}
 
-	public void setEndPoint(EndPoint endPoint) {
-		this.endPoint = endPoint;
+	public void setTeamBase(TeamBase base) {
+		this.teamBase = base;
 	}
 
 	public void setFire(Fire fire) {
@@ -127,8 +132,8 @@ public abstract class Landscape implements IGameElement {
 		return flag != null;
 	}
 
-	public boolean hasEndPoint() {
-		return endPoint != null;
+	public boolean hasTeamBase() {
+		return teamBase != null;
 	}
 
 	public boolean hasFire() {
@@ -232,12 +237,12 @@ public abstract class Landscape implements IGameElement {
 			animal.render(g);
 		}
 
-		if (hasEndPoint()) {
-			endPoint.render(g);
+		if (hasTeamBase()) {
+			teamBase.render(g);
 		}
 
-		if (hasAgent()) {
+		/*if (hasAgent()) {
 			agent.render(g);
-		}
+		}*/
 	}
 }

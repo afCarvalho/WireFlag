@@ -10,7 +10,7 @@ import pt.tecnico.aasma.wireflag.environment.landscape.factory.MountainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.PlainFactory;
 import pt.tecnico.aasma.wireflag.environment.landscape.factory.WaterFactory;
 import pt.tecnico.aasma.wireflag.exception.LandscapeNotFoundException;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public enum LandscapeType {
 	DESERT("desert", new DesertFactory()), FOREST("trees",

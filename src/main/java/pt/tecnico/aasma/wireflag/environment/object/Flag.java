@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 public class Flag implements IGameElement {
 
@@ -35,7 +35,8 @@ public class Flag implements IGameElement {
 	}
 
 	public void render(Graphics g) {
-		flag.draw(flagPos.getX(), flagPos.getY());
+		flag.draw(flagPos.getX() - flag.getWidth() / 2,
+				flagPos.getY() - flag.getHeight() * 0.75f);
 	}
 
 	@Override

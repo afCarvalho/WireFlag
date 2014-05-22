@@ -2,18 +2,20 @@ package pt.tecnico.aasma.wireflag.environment.perception;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Perception {
 
 	private MapPosition position;
 	private double landRating;
 	private boolean flag;
-	private boolean enemy;
+	private MapPosition enemyPos;
 	private boolean tiredAgent;
 	private boolean injuredAgent;
-	private int agentAttack;
-	private boolean endPoint;
+	private int agentAttack; // TODO apagar
+	private boolean isAbilityUseful;
+	private boolean teamBase;
+	private int teamBaseId;
 	private boolean animal;
 	private boolean fire;
 	/* raining, sand storm, snow storm */
@@ -47,14 +49,22 @@ public class Perception {
 		return blocked;
 	}
 
-    /**
-     * Gets the agent in the current position.
-     *
-     * @return the agent
-     */
-    public Agent getAgent() {
-        return MapController.getMap().getLandscape(position).getAgent();
-    }
+	public int getTeamBaseId() {
+		return teamBaseId;
+	}
+
+	/**
+	 * Gets the agent in the current position.
+	 * 
+	 * @return the agent
+	 */
+	public Agent getAgent() {
+		return MapController.getMap().getLandscape(position).getAgent();
+	}
+
+	public MapPosition getEnemyPos() {
+		return enemyPos;
+	}
 
 	/***************
 	 *** SETTERS ***
@@ -64,12 +74,16 @@ public class Perception {
 		this.flag = value;
 	}
 
-	public void setEnemy(boolean value) {
-		this.enemy = value;
+	public void setEnemy(MapPosition value) {
+		this.enemyPos = value;
 	}
 
-	public void setEndPoint(boolean value) {
-		this.endPoint = value;
+	public void setTeamBase(boolean value) {
+		this.teamBase = value;
+	}
+
+	public void setTeamBaseId(int value) {
+		this.teamBaseId = value;
 	}
 
 	public void setAnimal(boolean value) {
@@ -96,6 +110,10 @@ public class Perception {
 		this.agentAttack = agentAttack;
 	}
 
+	public void setIsAbilityUseful(boolean value) {
+		this.isAbilityUseful = value;
+	}
+
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 	}
@@ -109,15 +127,19 @@ public class Perception {
 	}
 
 	public boolean hasEnemy() {
-		return enemy;
+		return enemyPos != null;
 	}
 
-	public boolean hasEndPoint() {
-		return endPoint;
+	public boolean hasTeamBase() {
+		return teamBase;
 	}
 
 	public boolean hasAnimal() {
 		return animal;
+	}
+
+	public boolean isAbilityUseful() {
+		return isAbilityUseful;
 	}
 
 	public boolean hasFire() {

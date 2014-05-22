@@ -7,11 +7,9 @@ import java.util.List;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
-import pt.tecnico.aasma.wireflag.environment.object.Animal;
-import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
-import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.environment.perception.Perception;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Reactive extends Architecture {
 
@@ -50,12 +48,13 @@ public class Reactive extends Architecture {
 		return perceptionsAdj;
 	}
 
-	/* if the agent has the flag and the end point is on an adjacent position */
+	/* if the agent has the flag and the team's base is on an adjacent position */
 	public boolean reactivePerception0(Agent agent, List<Perception> perceptions) {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					return true;
 				}
 			}
@@ -155,10 +154,8 @@ public class Reactive extends Architecture {
 	public void doAction5(Agent agent, int delta, List<Perception> perceptions) {
 		for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
 			if (perception.hasAnimal()) {
-
-				Animal prey = MapController.getMap()
-						.getLandscape(perception.getPosition()).getAnimal();
-				agent.hunt(prey);
+				agent.hunt(new MapPosition(perception.getPosition().getX() - 1,
+						perception.getPosition().getY()), 1, 0);
 				return;
 			}
 		}
@@ -381,15 +378,16 @@ public class Reactive extends Architecture {
 	}
 
 	/*
-	 * if the agent has the flag and the end point is in it's visibility, then
-	 * agent approaches the end point
+	 * if the agent has the flag and the team's base is in it's visibility, then
+	 * agent approaches base
 	 */
 	public boolean reactivePerception12(Agent agent,
 			List<Perception> perceptions) {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					return true;
 				}
 			}
@@ -401,7 +399,8 @@ public class Reactive extends Architecture {
 	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
@@ -477,9 +476,7 @@ public class Reactive extends Architecture {
 			if (perception.hasEnemy() && !agent.hasLowLife()) {
 
 				MapPosition enemyPos = perception.getPosition();
-				Agent enemy = MapController.getMap().getLandscape(enemyPos)
-						.getAgent();
-				agent.attack(enemy);
+				agent.confront(enemyPos);
 				return;
 			}
 		}

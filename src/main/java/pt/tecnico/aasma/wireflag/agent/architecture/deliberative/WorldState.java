@@ -1,7 +1,7 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class WorldState {
 
@@ -29,7 +29,7 @@ public class WorldState {
 			perception.setTiredAgent(false);
 			perception.setInjuredAgent(false);
 			perception.setAgentAttack(0);
-			perception.setEnemy(false);
+			perception.setEnemy(null);
 			if (condition == NEWLY_DISCOVERED) {
 				condition = EXPLORED;
 			}
@@ -47,7 +47,35 @@ public class WorldState {
 		return condition == UNKNOWN;
 	}
 
-	public void setPerception(Perception p) {
+	public boolean isExplored() {
+		return condition == EXPLORED;
+	}
+
+	public boolean isNewlyDiscovered() {
+		return condition == NEWLY_DISCOVERED;
+	}
+
+	public boolean setState(Perception p) {
+		boolean reconsider = false;
+
+		if (perception.hasAnimal() != p.hasAnimal()) {
+			reconsider = true;
+		} else if (perception.hasExtremeWeather() != p.hasExtremeWeather()) {
+			reconsider = true;
+		} else if (perception.hasFire() != p.hasFire()) {
+			reconsider = true;
+		} else if (perception.hasEnemy() != p.hasEnemy()) {
+			reconsider = true;
+		} else if (perception.hasFlag() != p.hasFlag()) {
+			reconsider = true;
+		} else if (perception.hasTeamBase() != p.hasTeamBase()) {
+			reconsider = true;
+		} else if (perception.hasEnemy() != p.hasEnemy()) {
+			reconsider = true;
+		} else if ((!perception.hasEnemy() && perception.getAgent() != null) != (!p
+				.hasEnemy() && p.getAgent() != null)) {
+			reconsider = true;
+		}
 
 		perception = p;
 		timeOut = 500;
@@ -57,10 +85,20 @@ public class WorldState {
 		} else {
 			condition = EXPLORED;
 		}
+
+		return reconsider;
 	}
 
 	public boolean hasEnemy() {
 		return perception.hasEnemy();
+	}
+
+	public boolean hasAgent() {
+		return perception.getAgent() != null;
+	}
+
+	public boolean hasAlly() {
+		return !hasEnemy() && hasAgent();
 	}
 
 	public boolean hasInjuredAgent() {
@@ -103,8 +141,8 @@ public class WorldState {
 		return condition;
 	}
 
-	public boolean hasEndPoint() {
-		return perception.hasEndPoint();
+	public boolean hasTeamBase() {
+		return perception.hasTeamBase();
 	}
 
 	public int getTimeOut() {
@@ -113,5 +151,13 @@ public class WorldState {
 
 	public void setTimeOut(int timeOut) {
 		this.timeOut = timeOut;
+	}
+
+	public boolean hasAnimal() {
+		return perception.hasAnimal();
+	}
+
+	public boolean isAbilityUseful() {
+		return perception.isAbilityUseful();
 	}
 }

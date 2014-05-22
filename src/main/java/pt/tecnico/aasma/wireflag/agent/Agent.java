@@ -14,6 +14,7 @@ import org.newdawn.slick.geom.Circle;
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
+import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -21,8 +22,8 @@ import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
-import pt.tecnico.aasma.wireflag.util.MapPosition;
-import pt.tecnico.aasma.wireflag.util.WorldPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
 public abstract class Agent implements IGameElement {
 
@@ -37,10 +38,10 @@ public abstract class Agent implements IGameElement {
 	protected final static int HIGHTATCK = 30;
 
 	/* life 0-100 */
-	protected final static int VLOW_LIFE = 10;
-	protected final static int LOW_LIFE = 20;
-	protected final static int FULL_LIFE = 100;
-	protected final static int LIFE_RECOVER = 10;
+	public final static int VLOW_LIFE = 10;
+	public final static int LOW_LIFE = 20;
+	public final static int FULL_LIFE = 100;
+	public final static int LIFE_RECOVER = 10;
 
 	/* fatigue 0-100 */
 	protected final static int HIGH_FATIGUE = 80;
@@ -70,15 +71,16 @@ public abstract class Agent implements IGameElement {
 	private float agentSpeed;
 	private int agentAttack;
 	private int fatigue;
-	private int life;
+	protected int life;
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
-	private AgentThread agentThread;
 	private BlockingQueue<Message> mailbox;
+	private Strategy strategy;
+	private AgentThread agentUpdateThread;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
-			Architecture arquitecture) {
+			Architecture arquitecture, Strategy strategy) {
 		random = new Random();
 		this.life = FULL_LIFE;
 		this.fatigue = LOW_FATIGUE;
@@ -87,8 +89,9 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
-		this.agentThread = new AgentThread(this);
 		this.mailbox = new LinkedBlockingQueue<Message>();
+		this.strategy = strategy;
+		this.agentUpdateThread = new AgentThread(this);
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
 		ill = AnimationLoader.getLoader().getIll();
@@ -140,11 +143,11 @@ public abstract class Agent implements IGameElement {
 		if (TimeController.getTime().isNight())
 			visibility--;
 
-		return visibility;
+		return Math.max(visibility, 1);
 	}
 
-	public AgentThread getAgentThread() {
-		return agentThread;
+	public AgentThread getAgentUpdateThread() {
+		return agentUpdateThread;
 	}
 
 	/* for each tile is created a perception */
@@ -153,8 +156,13 @@ public abstract class Agent implements IGameElement {
 
 		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
-		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
-		perception.setEndPoint(land.hasEndPoint());
+		if (land.hasAgent() && land.getAgent().isEnemy(teamId)) {
+			perception.setEnemy(pos);
+		}
+		perception.setTeamBase(land.hasTeamBase());
+		if (land.hasTeamBase()) {
+			perception.setTeamBaseId(land.getTeamBase().getTeamId());
+		}
 		perception.setAnimal(land.hasAnimal());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
@@ -176,7 +184,6 @@ public abstract class Agent implements IGameElement {
 		int visibility = getVisibilityRange();
 		int x = position.getMapPosition().getX();
 		int y = position.getMapPosition().getY();
-		int id = 0;
 
 		for (int j = y + visibility; j >= y - visibility; j--) {
 			for (int i = x - visibility; i <= x + visibility; i++) {
@@ -193,10 +200,9 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public List<Agent> getNearTeammates() {
-		List<Perception> perceptions = getPerceptions();
 		List<Agent> mates = new ArrayList<Agent>();
 
-		for (Perception perception : perceptions) {
+		for (Perception perception : getPerceptions()) {
 			Agent agent = perception.getAgent();
 			if (agent != null && agent.getTeamId() == teamId) {
 				mates.add(agent);
@@ -231,7 +237,7 @@ public abstract class Agent implements IGameElement {
 	 ***********************/
 
 	public void init() {
-		agentThread.init();
+		agentUpdateThread.init();
 	}
 
 	public void stop() {
@@ -272,10 +278,54 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(Agent agent) {
+	public void startPlay() {
+		strategy.startPlay();
+	}
+
+	public boolean applyStrategy() {
+		return strategy.getPlay();
+	}
+
+	public void updateLastOpponentPlay(boolean play) {
+		strategy.updateLastOpponentPlay(play);
+	}
+
+	public void confront(MapPosition enemyPos) {
+		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
+		boolean agentPlay;
+		boolean enemyPlay;
+
+		startPlay();
+		enemy.startPlay();
+
+		for (int i = 0; i < 3; i++) {
+			agentPlay = applyStrategy();
+			enemyPlay = enemy.applyStrategy();
+
+			if (agentPlay == enemyPlay == Strategy.COOPERATE) {
+				// do nothing ?????
+			} else {
+				if (agentPlay == Strategy.ATTACK) {
+					attack(enemyPos);
+				}
+
+				if (enemyPlay == Strategy.ATTACK) {
+					enemy.attack(position.getMapPosition());
+				}
+			}
+
+			updateLastOpponentPlay(enemyPlay);
+			enemy.updateLastOpponentPlay(agentPlay);
+		}
+	}
+
+	private void attack(MapPosition mapPosition) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
-		if (agent == null) {
+		Agent enemy = MapController.getMap().getLandscape(mapPosition)
+				.getAgent();
+
+		if (enemy == null) {
 			return;
 		}
 
@@ -294,7 +344,7 @@ public abstract class Agent implements IGameElement {
 			hitRate = agentAttack;
 		}
 
-		agent.modifyLife(-hitRate);
+		enemy.modifyLife(-hitRate);
 	}
 
 	public synchronized void modifyLife(int value) {
@@ -312,14 +362,23 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public void hunt(Animal prey) {
+	public void hunt(MapPosition nearPos, int xInc, int yInc) {
 		ballon = AnimationLoader.getLoader().getBow();
+
+		Animal prey = MapController
+				.getMap()
+				.getLandscape(
+						new MapPosition(nearPos.getX() + xInc, nearPos.getY()
+								+ yInc)).getAnimal();
 
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) {
 		 * e.printStackTrace(); }
 		 */
-		modifyLife(prey.kill());
+
+		if (prey != null) {
+			modifyLife(prey.kill());
+		}
 	}
 
 	/* this agent use its ability at MapPosition pos */
@@ -532,7 +591,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move down it moves and returns true. Returns false
 	 * otherwise.
 	 */
-	public boolean moveDown(int delta, MapPosition oldPos) {
+	private boolean moveDown(int delta, MapPosition oldPos) {
 		sprite = down;
 		ballon = AnimationLoader.getLoader().getDownArrow();
 
@@ -546,7 +605,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move up it moves and returns true. Returns false
 	 * otherwise.
 	 */
-	public boolean moveUp(int delta, MapPosition oldPos) {
+	private boolean moveUp(int delta, MapPosition oldPos) {
 		sprite = up;
 		ballon = AnimationLoader.getLoader().getUpArrow();
 
@@ -560,7 +619,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move to the right it moves and returns true. Returns
 	 * false otherwise.
 	 */
-	public boolean moveRight(int delta, MapPosition oldPos) {
+	private boolean moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
 		ballon = AnimationLoader.getLoader().getRightArrow();
 
@@ -574,7 +633,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move to the left it moves and returns true. Returns
 	 * false otherwise.
 	 */
-	public boolean moveLeft(int delta, MapPosition oldPos) {
+	private boolean moveLeft(int delta, MapPosition oldPos) {
 		sprite = left;
 		ballon = AnimationLoader.getLoader().getLeftArrow();
 
@@ -584,7 +643,7 @@ public abstract class Agent implements IGameElement {
 		return changePosition(delta, oldPos, newPos);
 	}
 
-	public synchronized boolean changePosition(int delta, MapPosition oldPos,
+	private synchronized boolean changePosition(int delta, MapPosition oldPos,
 			WorldPosition newPos) {
 
 		if (!isBlocked(newPos.getMapPosition())) {
@@ -619,23 +678,29 @@ public abstract class Agent implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 
+		// DeliberativeArchTest.run(g, (Deliberative) architecture);
+
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
-		Circle circle = new Circle(position.getX() + 15, position.getY() + 15,
+		Circle circle = new Circle(position.getX(), position.getY(),
 				getVisibilityRange() * MapController.getMap().getTileWidth()
 						* 1.5f);
 		g.draw(circle);
 		g.fill(circle);
 
-		sprite.draw(position.getX(), position.getY());
-		ballon.draw(position.getX() - 10, position.getY());
+		sprite.draw(position.getX() - sprite.getWidth() / 2, position.getY()
+				- sprite.getHeight() * 0.75f);
+		ballon.draw(position.getX() - sprite.getWidth() / 1.2f, position.getY()
+				- sprite.getHeight() * 0.9f);
 
 		g.setColor(new Color(1f, 1f, 1f, 1f));
-		g.drawString("hp:" + life, position.getX() + 3, position.getY() - 20);
-		g.drawString("fp:" + getFatigue() + "", position.getX() + 3,
-				position.getY() + 30);
-		g.drawString("T" + getTeamId() + "A" + getAgentId(),
-				position.getX() - 40, position.getY() + 30);
+		g.drawString("hp:" + life, position.getX() - sprite.getWidth() / 1.2f,
+				position.getY() - sprite.getHeight() * 1.4f);
+		g.drawString("fp:" + getFatigue() + "", position.getX(),
+				position.getY() + sprite.getHeight() * 0.1f);
+		g.drawString("T" + getTeamId() + "A" + getAgentId(), position.getX()
+				- sprite.getWidth() / 0.8f,
+				position.getY() + sprite.getHeight() * 0.1f);
 
 		if (isIll()) {
 			ill.draw(position.getX(), position.getY());

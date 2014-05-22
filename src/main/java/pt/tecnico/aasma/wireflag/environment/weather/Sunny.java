@@ -1,6 +1,6 @@
 package pt.tecnico.aasma.wireflag.environment.weather;
 
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Sunny extends Weather {
 
