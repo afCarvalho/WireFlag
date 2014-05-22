@@ -6,6 +6,7 @@ import java.util.Random;
 import pt.tecnico.aasma.wireflag.WireFlagGame;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 
@@ -424,5 +425,10 @@ public class Deliberative extends Architecture {
 		}
 
 		return acList;
+	}
+
+	@Override
+	public void processMessage(Message message) {
+		// TODO Auto-generated method stub
 	}
 }

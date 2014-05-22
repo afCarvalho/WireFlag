@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.team;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public abstract class Team {
 	
 	private DeliverySystem deliverySystem;
 
-	public Team(int id) throws SlickException {
+	public Team(int id) throws SlickException, IOException {
 		this.id = id;
 		this.members = new ArrayList<Agent>();
 		this.nextMemberID = 0;

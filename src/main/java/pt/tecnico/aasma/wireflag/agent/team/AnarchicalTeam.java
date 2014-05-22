@@ -1,16 +1,15 @@
 package pt.tecnico.aasma.wireflag.agent.team;
 
-import java.util.List;
+import java.io.IOException;
 
 import org.newdawn.slick.SlickException;
 
-import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.exception.InvalidTeamSizeException;
 
 public class AnarchicalTeam extends Team {
 
 	public AnarchicalTeam(int identifier)
-			throws InvalidTeamSizeException, SlickException {
+			throws InvalidTeamSizeException, SlickException, IOException {
 		super(identifier);
 	}
 
