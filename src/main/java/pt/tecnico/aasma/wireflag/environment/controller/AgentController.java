@@ -108,10 +108,10 @@ public class AgentController implements IController {
 				new AlwaysAttack());
 		// t2.addAgent(b2);
 		// t2.addAgent(d2);
-		t2.addAgent(p2);
+		//t2.addAgent(p2);
 		// t2.addAgent(s2);
-		t2.setTeamUp();
-		addTeam(t2);
+		//t2.setTeamUp();
+		//addTeam(t2);
 
 		/*
 		 * Team t3 = new DemocraticalTeam(getNextTeamId()); Agent d3 = new

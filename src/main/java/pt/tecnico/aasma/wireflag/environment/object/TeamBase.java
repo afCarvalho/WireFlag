@@ -1,6 +1,7 @@
 package pt.tecnico.aasma.wireflag.environment.object;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
@@ -11,12 +12,12 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public class TeamBase implements IGameElement {
 
 	private Animation teamBase;
-	private MapPosition endPos;
+	private MapPosition basePos;
 	private int teamId;
 
-	public TeamBase(MapPosition endPos, int teamId) {
+	public TeamBase(MapPosition basePos, int teamId) {
 		teamBase = AnimationLoader.getLoader().getTeamBase();
-		this.endPos = endPos;
+		this.basePos = basePos;
 		this.teamId = teamId;
 	}
 
@@ -31,7 +32,12 @@ public class TeamBase implements IGameElement {
 	public void render(Graphics g) {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
-		teamBase.draw(endPos.getX() * tileWidth, endPos.getY() * tileHeight);
+		teamBase.draw(basePos.getX() * tileWidth, basePos.getY() * tileHeight);
+
+		/*g.setColor(new Color(1f, 1f, 1f, 1f));
+		g.drawString("T:" + teamId, basePos.getWorldPosition().getX()
+				- teamBase.getWidth(), basePos.getWorldPosition().getY()
+				+ teamBase.getHeight());*/
 	}
 
 	@Override

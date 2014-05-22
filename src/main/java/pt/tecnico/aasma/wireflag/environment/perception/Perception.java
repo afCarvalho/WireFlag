@@ -14,6 +14,7 @@ public class Perception {
 	private boolean injuredAgent;
 	private int agentAttack; // TODO apagar
 	private boolean teamBase;
+	private int teamBaseId;
 	private boolean animal;
 	private boolean fire;
 	/* raining, sand storm, snow storm */
@@ -47,6 +48,10 @@ public class Perception {
 		return blocked;
 	}
 
+	public int getTeamBaseId() {
+		return teamBaseId;
+	}
+
 	/**
 	 * Gets the agent in the current position.
 	 * 
@@ -70,6 +75,10 @@ public class Perception {
 
 	public void setTeamBase(boolean value) {
 		this.teamBase = value;
+	}
+
+	public void setTeamBaseId(int value) {
+		this.teamBaseId = value;
 	}
 
 	public void setAnimal(boolean value) {

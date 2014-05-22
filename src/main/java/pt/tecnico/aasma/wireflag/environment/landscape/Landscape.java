@@ -71,6 +71,10 @@ public abstract class Landscape implements IGameElement {
 	public Agent getAgent() {
 		return agent;
 	}
+	
+	public TeamBase getTeamBase(){
+		return teamBase;
+	}
 
 	public int getVisibility() {
 		return visibility;

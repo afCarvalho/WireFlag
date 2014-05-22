@@ -155,6 +155,9 @@ public abstract class Agent implements IGameElement {
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
 		perception.setTeamBase(land.hasTeamBase());
+		if (land.hasTeamBase()) {
+			perception.setTeamBaseId(land.getTeamBase().getTeamId());
+		}
 		perception.setAnimal(land.hasAnimal());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
