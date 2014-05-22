@@ -12,8 +12,7 @@ public class CureIllIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		// TODO Auto-generated method stub
-		return 1;
+		return CURE;
 	}
 
 	@Override

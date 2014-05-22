@@ -17,12 +17,7 @@ public class BattleDesire implements Desire {
 				rateLife = state.getLife() / 2.0;
 			}
 
-			return Math.min(
-					20,
-					100
-							- rateLife
-							- state.getAgentPos().getDistanceFrom(
-									state.getEnemyState().getPosition()));
+			return 100 - rateLife;
 		} else {
 			return 0;
 		}

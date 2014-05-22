@@ -46,6 +46,6 @@ public class BattleIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 0;
+		return BATTLE;
 	}
 }

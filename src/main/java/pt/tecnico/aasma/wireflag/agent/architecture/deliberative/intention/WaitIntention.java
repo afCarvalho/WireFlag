@@ -12,8 +12,7 @@ public class WaitIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return WAIT;
 	}
 
 	@Override

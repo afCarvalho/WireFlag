@@ -38,6 +38,6 @@ public class HuntIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 6;
+		return HUNT;
 	}
 }

@@ -44,6 +44,6 @@ public class FleeIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 3;
+		return FLEE;
 	}
 }

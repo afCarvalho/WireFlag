@@ -46,7 +46,7 @@ public class Guard extends Agent {
 	public boolean isAbilityUseful(MapPosition pos) {
 		MapController.getMap().getLandscape(pos).hasTeamBase();
 
-		// TODO ve se tem enemy no campo de visao ou se o teamBase é o teamBase
+		// TODO ve se tem enemy no campo de visao ou se o teamBase e o teamBase
 		// da equipa
 
 		return false;

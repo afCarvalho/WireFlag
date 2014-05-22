@@ -9,9 +9,8 @@ public class FleeDesire implements Desire {
 
 	@Override
 	public double getRate(Beliefs state) {
-		if (state.getEnemyState().hasEnemy()
-				&& state.getLife() < Agent.LOW_LIFE) {
-			return 50;// TODO confirmar se este valor serve
+		if (state.getEnemyState().hasEnemy() && state.getLife() < Agent.LOW_LIFE) {
+			return 50;//TODO confirmar se este valor serve
 		} else {
 			return 0;
 		}

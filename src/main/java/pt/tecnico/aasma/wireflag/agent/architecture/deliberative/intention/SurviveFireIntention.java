@@ -1,19 +1,24 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.ExplorePlan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.SurviveFirePlan;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class ExploreIntention extends Intention {
+public class SurviveFireIntention extends Intention {
+
+	@Override
+	protected int getIntentionId() {
+		return FIRE;
+	}
 
 	@Override
 	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
-		return beliefs.getWorldExploredPercentage() == 100;
+		return !beliefs.getWorldState(beliefs.getAgentPos().getX(),
+				beliefs.getAgentPos().getY()).hasFire();
 	}
 
 	@Override
@@ -30,11 +35,7 @@ public class ExploreIntention extends Intention {
 
 	@Override
 	public Plan getPlan(Beliefs beliefs) {
-		return new ExplorePlan(beliefs);
+		return new SurviveFirePlan(beliefs);
 	}
 
-	@Override
-	protected int getIntentionId() {
-		return EXPLORE;
-	}
 }

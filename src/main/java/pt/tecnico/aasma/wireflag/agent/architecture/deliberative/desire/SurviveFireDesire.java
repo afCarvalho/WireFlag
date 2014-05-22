@@ -1,22 +1,24 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.AbilityIntention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.SurviveFireIntention;
 
-public class AbilityDesire implements Desire {
+public class SurviveFireDesire implements Desire {
 
 	@Override
 	public double getRate(Beliefs beliefs) {
-
-		if (beliefs.isAgentAbilityUseful()) {
-			return 70;
+		if (beliefs.getWorldState(beliefs.getAgentPos().getX(),
+				beliefs.getAgentPos().getY()).hasFire()) {
+			return 80;
+		} else {
+			return 0;
 		}
-		return 0;
 	}
 
 	@Override
 	public Intention getIntention() {
-		return new AbilityIntention();
+		return new SurviveFireIntention();
 	}
+
 }

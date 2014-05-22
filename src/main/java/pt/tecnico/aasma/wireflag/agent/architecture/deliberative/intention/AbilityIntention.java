@@ -40,6 +40,6 @@ public class AbilityIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 0;
+		return ABILITY;
 	}
 }

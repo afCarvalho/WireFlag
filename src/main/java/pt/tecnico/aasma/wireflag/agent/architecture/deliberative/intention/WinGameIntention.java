@@ -36,6 +36,6 @@ public class WinGameIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 9;
+		return WIN;
 	}
 }

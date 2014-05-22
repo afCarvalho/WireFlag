@@ -12,7 +12,7 @@ public class RestIntention extends Intention {
 
 	@Override
 	protected int getIntentionId() {
-		return 7;
+		return REST;
 	}
 
 	@Override
