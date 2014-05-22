@@ -153,7 +153,9 @@ public abstract class Agent implements IGameElement {
 
 		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
-		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
+		if (land.hasAgent() && land.getAgent().isEnemy(teamId)) {
+			perception.setEnemy(pos);
+		}
 		perception.setTeamBase(land.hasTeamBase());
 		if (land.hasTeamBase()) {
 			perception.setTeamBaseId(land.getTeamBase().getTeamId());
@@ -668,7 +670,7 @@ public abstract class Agent implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 
-		//DeliberativeArchTest.run(g, (Deliberative) architecture);
+		// DeliberativeArchTest.run(g, (Deliberative) architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));

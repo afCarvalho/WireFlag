@@ -29,7 +29,7 @@ public class WorldState {
 			perception.setTiredAgent(false);
 			perception.setInjuredAgent(false);
 			perception.setAgentAttack(0);
-			perception.setEnemy(false);
+			perception.setEnemy(null);
 			if (condition == NEWLY_DISCOVERED) {
 				condition = EXPLORED;
 			}
@@ -155,5 +155,9 @@ public class WorldState {
 
 	public boolean hasAnimal() {
 		return perception.hasAnimal();
+	}
+
+	public boolean isAbilityUseful() {
+		return perception.isAbilityUseful();
 	}
 }

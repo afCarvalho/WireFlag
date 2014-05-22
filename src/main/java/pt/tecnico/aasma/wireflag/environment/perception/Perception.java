@@ -9,10 +9,11 @@ public class Perception {
 	private MapPosition position;
 	private double landRating;
 	private boolean flag;
-	private boolean enemy;
+	private MapPosition enemyPos;
 	private boolean tiredAgent;
 	private boolean injuredAgent;
 	private int agentAttack; // TODO apagar
+	private boolean isAbilityUseful;
 	private boolean teamBase;
 	private int teamBaseId;
 	private boolean animal;
@@ -61,6 +62,10 @@ public class Perception {
 		return MapController.getMap().getLandscape(position).getAgent();
 	}
 
+	public MapPosition getEnemyPos() {
+		return enemyPos;
+	}
+
 	/***************
 	 *** SETTERS ***
 	 ***************/
@@ -69,8 +74,8 @@ public class Perception {
 		this.flag = value;
 	}
 
-	public void setEnemy(boolean value) {
-		this.enemy = value;
+	public void setEnemy(MapPosition value) {
+		this.enemyPos = value;
 	}
 
 	public void setTeamBase(boolean value) {
@@ -105,6 +110,10 @@ public class Perception {
 		this.agentAttack = agentAttack;
 	}
 
+	public void setIsAbilityUseful(boolean value) {
+		this.isAbilityUseful = value;
+	}
+
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 	}
@@ -118,7 +127,7 @@ public class Perception {
 	}
 
 	public boolean hasEnemy() {
-		return enemy;
+		return enemyPos != null;
 	}
 
 	public boolean hasTeamBase() {
@@ -127,6 +136,10 @@ public class Perception {
 
 	public boolean hasAnimal() {
 		return animal;
+	}
+
+	public boolean isAbilityUseful() {
+		return isAbilityUseful;
 	}
 
 	public boolean hasFire() {

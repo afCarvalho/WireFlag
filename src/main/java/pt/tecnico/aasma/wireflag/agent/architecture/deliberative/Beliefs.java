@@ -7,7 +7,7 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class Beliefs {
 
-	private MapPosition endPos;
+	private MapPosition teamBase;
 	private MapPosition flagPos;
 	private boolean teamHasFlag;
 	private WorldState[][] world;
@@ -21,6 +21,7 @@ public class Beliefs {
 	private boolean isAbilityUseful;
 	private boolean reconsider;
 	private int positionAvailable;
+	private MapPosition enemyPos;
 
 	public Beliefs() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
@@ -42,8 +43,8 @@ public class Beliefs {
 	/***************
 	 *** GETTERS ***
 	 ***************/
-	public MapPosition getEndPos() {
-		return endPos;
+	public MapPosition getTeamBase() {
+		return teamBase;
 	}
 
 	public MapPosition getAgentPos() {
@@ -60,6 +61,10 @@ public class Beliefs {
 
 	public MapPosition getFlagPos() {
 		return flagPos;
+	}
+
+	public MapPosition getEnemyPos() {
+		return enemyPos;
 	}
 
 	public int getLife() {
@@ -86,8 +91,8 @@ public class Beliefs {
 	 *** SETTERS ***
 	 ***************/
 
-	public void setEndPos(MapPosition endPos) {
-		this.endPos = endPos;
+	public void setTeamBasePos(MapPosition teamBase) {
+		this.teamBase = teamBase;
 	}
 
 	public void setFlagPos(MapPosition flagPos) {
@@ -98,21 +103,29 @@ public class Beliefs {
 		this.agent = a;
 	}
 
+	public void setEnemyPos(MapPosition pos) {
+		this.enemyPos = pos;
+	}
+
 	public void updateBeliefs() {
 		reconsider = false;
-		 //String message="";
+		// String message="";
 
 		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
 				flagPos = p.getPosition();
 			} else if (p.hasTeamBase()) {
-				endPos = p.getPosition();
+				teamBase = p.getPosition();
 			}
 			reconsider = world[p.getPosition().getX()][p.getPosition().getY()]
 					.setState(p) || reconsider;
 
 			isAbilityUseful = isAbilityUseful
 					|| agent.isAbilityUseful(p.getPosition());
+
+			if (p.hasEnemy()) {
+				enemyPos = p.getEnemyPos();
+			}
 		}
 
 		double exploredPercentage = 0;
@@ -123,13 +136,11 @@ public class Beliefs {
 				world[i][j].updateState();
 				positionAvailable = Math.max(world[i][j].getCondition(),
 						positionAvailable);
-			/*	if(world[i][j].hasAnimal()){
-					 message+= "A ";
-				}else if(world[i][j].hasAgent()) {
-					message+= "S ";
-				}else{
-					message+="N ";
-				}*/
+				/*
+				 * if(world[i][j].hasAnimal()){ message+= "A "; }else
+				 * if(world[i][j].hasAgent()) { message+= "S "; }else{
+				 * message+="N "; }
+				 */
 				// message+= world[i][j].getCondition() + " ";
 				// message+=positionAvailable + " ";
 				exploredPercentage += Math.abs(world[i][j].getCondition());
@@ -144,23 +155,12 @@ public class Beliefs {
 								.getDistanceFrom(getAgentPos())) {
 					animalState = world[i][j];
 				}
-
-				if (world[i][j].hasEnemy()
-						&& (getEnemyState() == null || !getEnemyState()
-								.hasEnemy())) {
-					enemyState = world[i][j];
-				} else if (world[i][j].hasEnemy()
-						&& world[i][j].getPosition().getDistanceFrom(
-								getAgentPos()) < enemyState.getPosition()
-								.getDistanceFrom(getAgentPos())) {
-					enemyState = world[i][j];
-				}
 			}
 			// message+="\n";
 		}
 
-		 //System.err.println(message);
-		 //System.out.println(" ");
+		// System.err.println(message);
+		// System.out.println(" ");
 
 		/*
 		 * System.out.println("PHASE 2 " + exploredPercentage + " out of " +
@@ -210,8 +210,8 @@ public class Beliefs {
 		return teamHasFlag;
 	}
 
-	public boolean hasEndPos() {
-		return endPos != null;
+	public boolean hasTeamBasePos() {
+		return teamBase != null;
 	}
 
 	public boolean shouldStop() {

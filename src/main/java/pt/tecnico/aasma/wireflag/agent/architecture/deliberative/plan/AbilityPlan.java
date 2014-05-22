@@ -16,20 +16,18 @@ public class AbilityPlan extends Plan {
 	@Override
 	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
 
-		MoveActionSequence seq;
+		ActionSequence seq;
 
 		if (actionSeq == null) {
-			seq = new MoveActionSequence(beliefs);
+			seq = new ActionSequence(beliefs);
 		} else {
-			seq = new MoveActionSequence(beliefs, actionSeq);
+			seq = new ActionSequence(beliefs, actionSeq);
 		}
 
-		if (beliefs.isAgentAbilityUseful()) {
+		if (beliefs.getWorldState(pos.getX(), pos.getY()).isAbilityUseful()) {
 			seq.addAction(new AbilityAction(pos));
 			seq.setFinished(true);
-		} else {
-			seq.addAction(new MoveAction(pos));
-		}
+		} 
 
 		actSequences.add(seq);
 	}

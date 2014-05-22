@@ -27,7 +27,7 @@ public class WinGamePlan extends Plan {
 		}
 
 		actSequences.add(seq);
-		if (beliefs.getEndPos().getDistanceFrom(pos) == 1) {
+		if (beliefs.getTeamBase().getDistanceFrom(pos) == 1) {
 			seq.addAction(new MoveAction(pos));
 
 			seq.addAction(new DropFlagAction(pos));
