@@ -203,7 +203,7 @@ public class AnimationLoader {
 		return rabbit;
 	}
 
-	public Animation getEndPoint() {
+	public Animation getTeamBase() {
 		return end;
 	}
 

@@ -24,7 +24,7 @@ public class AbilityPlan extends Plan {
 			seq = new MoveActionSequence(beliefs, actionSeq);
 		}
 
-		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasEnemy()) {
+		if (beliefs.isAgentAbilityUseful()) {
 			seq.addAction(new AbilityAction(pos));
 			seq.setFinished(true);
 		} else {

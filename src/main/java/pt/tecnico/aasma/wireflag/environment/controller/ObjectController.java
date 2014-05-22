@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
-import pt.tecnico.aasma.wireflag.environment.object.EndPoint;
+import pt.tecnico.aasma.wireflag.environment.object.TeamBase;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
@@ -37,15 +37,6 @@ public class ObjectController implements IController {
 		for (int i = 0; i < animals.length; i++) {
 			animals[i] = createAnimal();
 		}
-
-		MapPosition endPos = MapController.getMap().getRandomPosition();
-
-		while (MapController.getMap().isBlocked(endPos)) {
-			endPos = MapController.getMap().getRandomPosition();
-		}
-
-		MapController.getMap().getLandscape(endPos)
-				.setEndPoint(new EndPoint(endPos));
 
 		MapPosition flagPos = MapController.getMap().getRandomPosition();
 

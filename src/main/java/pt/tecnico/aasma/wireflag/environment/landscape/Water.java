@@ -65,8 +65,8 @@ public class Water extends Landscape {
 			animal.render(g);
 		}
 
-		if (hasEndPoint()) {
-			endPoint.render(g);
+		if (hasTeamBase()) {
+			teamBase.render(g);
 		}
 
 		Agent a = agent;

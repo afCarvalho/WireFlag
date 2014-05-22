@@ -95,7 +95,7 @@ public class MapController implements IController {
 		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
-		perception.setEndPoint(land.hasEndPoint());
+		perception.setTeamBase(land.hasTeamBase());
 		perception.setAnimal(land.hasAnimal());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
@@ -145,7 +145,7 @@ public class MapController implements IController {
 		Landscape land = getLandscape(p);
 
 		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent()
-				|| land.hasEndPoint();
+				|| land.hasTeamBase();
 	}
 
 	/*********************

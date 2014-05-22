@@ -24,9 +24,11 @@ public class FleePlan extends Plan {
 			seq = new MoveActionSequence(beliefs, actionSeq);
 		}
 
-		if (beliefs.getEnemyState().getPosition().getDistanceFrom(pos) < beliefs
-				.getAgentVisibilityRange()
-				|| beliefs.getLife() < Agent.LOW_LIFE) {
+		if (beliefs.getLife() < Agent.LOW_LIFE
+				|| Math.abs(beliefs.getEnemyState().getPosition().getX()
+						- pos.getX()) > beliefs.getAgentVisibilityRange()
+				|| Math.abs(beliefs.getEnemyState().getPosition().getY()
+						- pos.getY()) > beliefs.getAgentVisibilityRange()) {
 			seq.addAction(new MoveAction(pos));
 			actSequences.add(seq);
 		} else {

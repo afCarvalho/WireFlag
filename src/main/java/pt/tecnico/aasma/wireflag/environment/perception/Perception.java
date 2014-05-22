@@ -12,8 +12,9 @@ public class Perception {
 	private boolean enemy;
 	private boolean tiredAgent;
 	private boolean injuredAgent;
-	private int agentAttack; //TODO apagar
-	private boolean endPoint;
+	private int agentAttack; // TODO apagar
+	private boolean teamBase;
+	private int teamBaseId;
 	private boolean animal;
 	private boolean fire;
 	/* raining, sand storm, snow storm */
@@ -47,14 +48,18 @@ public class Perception {
 		return blocked;
 	}
 
-    /**
-     * Gets the agent in the current position.
-     *
-     * @return the agent
-     */
-    public Agent getAgent() {
-        return MapController.getMap().getLandscape(position).getAgent();
-    }
+	public int getTeamBaseId() {
+		return teamBaseId;
+	}
+
+	/**
+	 * Gets the agent in the current position.
+	 * 
+	 * @return the agent
+	 */
+	public Agent getAgent() {
+		return MapController.getMap().getLandscape(position).getAgent();
+	}
 
 	/***************
 	 *** SETTERS ***
@@ -68,8 +73,12 @@ public class Perception {
 		this.enemy = value;
 	}
 
-	public void setEndPoint(boolean value) {
-		this.endPoint = value;
+	public void setTeamBase(boolean value) {
+		this.teamBase = value;
+	}
+
+	public void setTeamBaseId(int value) {
+		this.teamBaseId = value;
 	}
 
 	public void setAnimal(boolean value) {
@@ -112,8 +121,8 @@ public class Perception {
 		return enemy;
 	}
 
-	public boolean hasEndPoint() {
-		return endPoint;
+	public boolean hasTeamBase() {
+		return teamBase;
 	}
 
 	public boolean hasAnimal() {

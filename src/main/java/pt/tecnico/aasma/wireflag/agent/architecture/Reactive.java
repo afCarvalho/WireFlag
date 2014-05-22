@@ -48,12 +48,13 @@ public class Reactive extends Architecture {
 		return perceptionsAdj;
 	}
 
-	/* if the agent has the flag and the end point is on an adjacent position */
+	/* if the agent has the flag and the team's base is on an adjacent position */
 	public boolean reactivePerception0(Agent agent, List<Perception> perceptions) {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					return true;
 				}
 			}
@@ -377,15 +378,16 @@ public class Reactive extends Architecture {
 	}
 
 	/*
-	 * if the agent has the flag and the end point is in it's visibility, then
-	 * agent approaches the end point
+	 * if the agent has the flag and the team's base is in it's visibility, then
+	 * agent approaches base
 	 */
 	public boolean reactivePerception12(Agent agent,
 			List<Perception> perceptions) {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					return true;
 				}
 			}
@@ -397,7 +399,8 @@ public class Reactive extends Architecture {
 	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()
+						&& perception.getTeamBaseId() == agent.getTeamId()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}
