@@ -8,6 +8,7 @@ import org.newdawn.slick.SlickException;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
+import pt.tecnico.aasma.wireflag.environment.object.TeamBase;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 import pt.tecnico.aasma.wireflag.util.position.WorldPosition;
 
@@ -127,6 +128,12 @@ public abstract class Team {
 			teamPosition = MapController.getMap().getRandomPosition();
 		}
 
+		/* put the team's base in the world */
+		MapController.getMap().getLandscape(teamPosition)
+				.setTeamBase(new TeamBase(teamPosition, id));
+		this.teamPosition.setX(teamPosition.getX() + 1);
+
+		/* put the team's agents in the world */
 		for (Agent agent : members) {
 			agent.setPos(new WorldPosition(teamPosition.getX() * tileWidth,
 					teamPosition.getY() * tileHeight));
@@ -141,7 +148,8 @@ public abstract class Team {
 		int nTiles = MapController.getMap().getNHorizontalTiles();
 		boolean res = true;
 
-		for (int i = 0; i < members.size(); i++) {
+		/* members plus team's base */
+		for (int i = 0; i < members.size() + 1; i++) {
 			res = (x + i < nTiles)
 					&& !MapController.getMap().isBlocked(
 							new MapPosition(x + i, y)) && res;

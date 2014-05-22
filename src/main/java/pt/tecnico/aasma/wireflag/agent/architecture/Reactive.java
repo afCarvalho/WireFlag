@@ -53,7 +53,7 @@ public class Reactive extends Architecture {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : getPerceptionsAdj(agent, perceptions)) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()) {
 					return true;
 				}
 			}
@@ -384,7 +384,7 @@ public class Reactive extends Architecture {
 
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()) {
 					return true;
 				}
 			}
@@ -396,7 +396,7 @@ public class Reactive extends Architecture {
 	public void doAction12(Agent agent, int delta, List<Perception> perceptions) {
 		if (agent.hasFlag()) {
 			for (Perception perception : perceptions) {
-				if (perception.hasEndPoint()) {
+				if (perception.hasTeamBase()) {
 					agent.approachTile(delta, perception.getPosition());
 					return;
 				}

@@ -105,7 +105,7 @@ public class Beliefs {
 		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
 				flagPos = p.getPosition();
-			} else if (p.hasEndPoint()) {
+			} else if (p.hasTeamBase()) {
 				endPos = p.getPosition();
 			}
 			reconsider = world[p.getPosition().getX()][p.getPosition().getY()]

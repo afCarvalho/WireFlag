@@ -36,7 +36,7 @@ public class Hybrid extends Architecture {
 	 */
 	private boolean isUrgentPerception(Agent agent, Perception perception) {
 
-		// endpoint da equipa && flag
+		// teamBase da equipa && flag
 		// fire na pos do agente
 		// extreme weather na pos do agente
 		// cansado
@@ -46,7 +46,7 @@ public class Hybrid extends Architecture {
 		// TODO muralha do inimigo
 
 		return agent.hasFlag()
-				&& perception.hasEndPoint()
+				&& perception.hasTeamBase()
 				|| agent.hasVeryLowLife()
 				|| agent.hasFatigue()
 				|| perception.hasEnemy()

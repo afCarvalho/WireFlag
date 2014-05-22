@@ -14,7 +14,7 @@ public class WinGamePlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
-		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasEndPoint()) {
+		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasTeamBase()) {
 			ActionSequence seq = new ActionSequence(beliefs, actionSeq);
 			seq.addAction(new DropFlagAction(pos));
 			seq.setFinished(true);

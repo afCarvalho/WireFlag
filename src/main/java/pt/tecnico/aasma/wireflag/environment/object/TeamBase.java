@@ -8,14 +8,20 @@ import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-public class EndPoint implements IGameElement {
+public class TeamBase implements IGameElement {
 
-	private Animation endPoint;
+	private Animation teamBase;
 	private MapPosition endPos;
+	private int teamId;
 
-	public EndPoint(MapPosition endPos) {
-		endPoint = AnimationLoader.getLoader().getEndPoint();
+	public TeamBase(MapPosition endPos, int teamId) {
+		teamBase = AnimationLoader.getLoader().getTeamBase();
 		this.endPos = endPos;
+		this.teamId = teamId;
+	}
+
+	public int getTeamId() {
+		return teamId;
 	}
 
 	/*********************
@@ -25,7 +31,7 @@ public class EndPoint implements IGameElement {
 	public void render(Graphics g) {
 		int tileWidth = MapController.getMap().getTileWidth();
 		int tileHeight = MapController.getMap().getTileHeight();
-		endPoint.draw(endPos.getX() * tileWidth, endPos.getY() * tileHeight);
+		teamBase.draw(endPos.getX() * tileWidth, endPos.getY() * tileHeight);
 	}
 
 	@Override

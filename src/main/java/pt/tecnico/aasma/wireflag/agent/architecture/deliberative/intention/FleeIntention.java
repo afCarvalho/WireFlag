@@ -13,10 +13,14 @@ public class FleeIntention extends Intention {
 
 	@Override
 	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
-		return beliefs.getLife() > Agent.LOW_LIFE
-				|| beliefs.getEnemyState().getPosition()
-						.getDistanceFrom(beliefs.getAgentPos()) > beliefs
-						.getAgentVisibilityRange();
+
+		return beliefs.getLife() < Agent.LOW_LIFE
+				|| Math.abs(beliefs.getEnemyState().getPosition().getX()
+						- beliefs.getAgentPos().getX()) > beliefs
+							.getAgentVisibilityRange()
+				|| Math.abs(beliefs.getEnemyState().getPosition().getY()
+						- beliefs.getAgentPos().getY()) > beliefs
+							.getAgentVisibilityRange();
 	}
 
 	@Override

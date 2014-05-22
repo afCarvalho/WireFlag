@@ -70,7 +70,7 @@ public abstract class Agent implements IGameElement {
 	private float agentSpeed;
 	private int agentAttack;
 	private int fatigue;
-	private int life;
+	protected int life;
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
@@ -154,7 +154,7 @@ public abstract class Agent implements IGameElement {
 		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
 		perception.setEnemy(land.hasAgent() && land.getAgent().isEnemy(teamId));
-		perception.setEndPoint(land.hasEndPoint());
+		perception.setTeamBase(land.hasTeamBase());
 		perception.setAnimal(land.hasAnimal());
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());

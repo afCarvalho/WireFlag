@@ -68,7 +68,7 @@ public class WorldState {
 			reconsider = true;
 		} else if (perception.hasFlag() != p.hasFlag()) {
 			reconsider = true;
-		} else if (perception.hasEndPoint() != p.hasEndPoint()) {
+		} else if (perception.hasTeamBase() != p.hasTeamBase()) {
 			reconsider = true;
 		} else if (perception.hasEnemy() != p.hasEnemy()) {
 			reconsider = true;
@@ -141,8 +141,8 @@ public class WorldState {
 		return condition;
 	}
 
-	public boolean hasEndPoint() {
-		return perception.hasEndPoint();
+	public boolean hasTeamBase() {
+		return perception.hasTeamBase();
 	}
 
 	public int getTimeOut() {
