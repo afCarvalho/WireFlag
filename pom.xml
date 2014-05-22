@@ -12,8 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.data>/resources/data</project.data>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+		<!-- <maven.compiler.source>1.7</maven.compiler.source> <maven.compiler.target>1.7</maven.compiler.target> -->
 	</properties>
 
 	<build>
@@ -29,8 +28,8 @@
 						<argument>-d64</argument>
 						<argument>-Djava.library.path=${project.build.directory}/natives/</argument>
 						<argument>-Dmap=${project.data}/map/</argument>
-                        <argument>-Dstate=${project.data}/state/</argument>
-                        <argument>-Dweather=${project.data}/weather/</argument>
+						<argument>-Dstate=${project.data}/state/</argument>
+						<argument>-Dweather=${project.data}/weather/</argument>
 						<argument>-Dobject=${project.data}/object/</argument>
 						<argument>-Danimal=${project.data}/animal/</argument>
 						<argument>-Dagent=${project.data}/agent/</argument>
@@ -82,6 +81,11 @@
 			<groupId>com.ninjacave</groupId>
 			<artifactId>ibxm</artifactId>
 			<version>2013.06.03</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 
