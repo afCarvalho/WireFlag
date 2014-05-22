@@ -25,7 +25,7 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-d64</argument>
+						<!--<argument>-d64</argument>-->
 						<argument>-Djava.library.path=${project.build.directory}/natives/</argument>
 						<argument>-Dmap=${project.data}/map/</argument>
 						<argument>-Dstate=${project.data}/state/</argument>

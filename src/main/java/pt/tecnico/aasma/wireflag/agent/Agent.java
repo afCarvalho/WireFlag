@@ -210,7 +210,7 @@ public abstract class Agent implements IGameElement {
 		}
 		return mates;
 	}
-	
+
 	public BlockingQueue<Message> getMailbox() {
 		return this.mailbox;
 	}
@@ -290,7 +290,7 @@ public abstract class Agent implements IGameElement {
 		strategy.updateLastOpponentPlay(play);
 	}
 
-	public void confront(MapPosition enemyPos) {
+	public synchronized void confront(MapPosition enemyPos) {
 		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
 		boolean agentPlay;
 		boolean enemyPlay;
@@ -302,20 +302,21 @@ public abstract class Agent implements IGameElement {
 			agentPlay = applyStrategy();
 			enemyPlay = enemy.applyStrategy();
 
-			if (agentPlay == enemyPlay == Strategy.COOPERATE) {
-				// do nothing ?????
-			} else {
-				if (agentPlay == Strategy.ATTACK) {
-					attack(enemyPos);
-				}
+			if (agentPlay == Strategy.ATTACK) {
+				attack(enemyPos);
+			}
 
-				if (enemyPlay == Strategy.ATTACK) {
-					enemy.attack(position.getMapPosition());
-				}
+			if (enemyPlay == Strategy.ATTACK) {
+				enemy.attack(position.getMapPosition());
 			}
 
 			updateLastOpponentPlay(enemyPlay);
 			enemy.updateLastOpponentPlay(agentPlay);
+
+			// negociacao
+			// o que ganha e se o outro se quer negociar
+			// pode dar a bandeira ou mudar de equipa
+			// else novo confronto
 		}
 	}
 
