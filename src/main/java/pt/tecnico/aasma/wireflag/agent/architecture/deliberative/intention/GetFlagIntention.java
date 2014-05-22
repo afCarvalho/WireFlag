@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
@@ -14,13 +15,13 @@ public class GetFlagIntention extends Intention {
 	}
 
 	@Override
-	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
+	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
 		//System.err.println("HAS FLAG " + beliefs.carriesFlag());
 		return beliefs.carriesFlag();
 	}
 
 	@Override
-	public boolean impossible(List<Action> actions, Beliefs beliefs) {
+	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
 		MapPosition pos;
 		for (Action action : actions) {
 			pos = action.getPos();

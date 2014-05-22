@@ -51,9 +51,10 @@ public abstract class Plan {
 		 * !usedPerception[pos.getX()][pos.getY()] + " " +
 		 * !actionSeq.isFinished());
 		 */
+		//System.err.println(!usedPerception[pos.getX()][pos.getY()]);
 		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
 				&& !actionSeq.isFinished()) {
-			// System.err.println("EFFECTIVELY ADDED");
+			 //System.err.println("EFFECTIVELY ADDED");
 			createNewAction(pos, actionSeq);
 			// usedPerception[pos.getX() + x][pos.getY() + y] = true;
 		}
@@ -89,7 +90,7 @@ public abstract class Plan {
 			// + a.isFinished() + " " + beliefs.hasNewPosition() + " " +
 			// beliefs.hasUnknownPosition());
 
-			// System.err.println("REMOVED ONE");
+			 //System.err.println("REMOVED ONE");
 
 			if (a.isFinished()
 					&& (bestSequence == null || a.getSequenceValue() > bestSequence
@@ -98,14 +99,15 @@ public abstract class Plan {
 
 				if (a.getSequenceValue() >= 0) {
 					bestSequence = a;
-					// System.err.println("SET BEST");
+					 //System.err.println("SET BEST");
 				}
 			} else if (bestSequence != null
 					&& (a.getActions().size() > bestSequence.getActions()
 							.size())) {
-				// System.err.println("CONTINUE");
+				// System.err.println("CONTINUE1");
 				continue;
 			} else if (a.getSequenceValue() < 0 || a.getActions().size() > 25) {
+				//System.err.println("CONTINUE2");
 				continue;
 			}
 
@@ -124,13 +126,15 @@ public abstract class Plan {
 
 		// System.err.println(bestSequence);
 
-		/*if (bestSequence != null) {
+		if (bestSequence != null) {
 			DeliberativeArchTest.setActions(bestSequence.getActions().clone());
-		}*/
+		}
 
 		if (bestSequence == null) {
+			//System.out.println("NULL LIST");
 			return new LinkedList<Action>();
 		} else {
+			//System.out.println("LIST WITH " + bestSequence.getActions().size());
 			return bestSequence.getActions();
 		}
 

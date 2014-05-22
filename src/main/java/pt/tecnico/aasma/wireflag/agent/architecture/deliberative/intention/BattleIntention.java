@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
@@ -12,13 +13,13 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public class BattleIntention extends Intention {
 
 	@Override
-	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
+	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
 
 		return !beliefs.getEnemyState().hasEnemy();
 	}
 
 	@Override
-	public boolean impossible(List<Action> actions, Beliefs beliefs) {
+	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
 		MapPosition pos;
 
 		if (!beliefs.getEnemyState().hasEnemy()) {

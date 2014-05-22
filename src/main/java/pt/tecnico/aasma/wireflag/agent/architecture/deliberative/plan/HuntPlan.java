@@ -3,7 +3,9 @@ package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.HuntAction;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.MoveAction;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.MoveActionSequence;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class HuntPlan extends Plan {
@@ -14,14 +16,37 @@ public class HuntPlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
-		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasAnimal()) {
-			ActionSequence seq = new ActionSequence(beliefs, actionSeq);
-			seq.addAction(new HuntAction(pos));
-			seq.setFinished(true);
-			actSequences.add(seq);
+
+		ActionSequence seq;
+
+		if (actionSeq == null) {
+			seq = new MoveActionSequence(beliefs);
 		} else {
-			ExplorePlan.createExploreAction(actSequences, beliefs, pos,
-					actionSeq);
+			seq = new MoveActionSequence(beliefs, actionSeq);
+		}
+		
+		actSequences.add(seq);
+		if (beliefs.getAnimalState().getPosition().getDistanceFrom(pos) == 1) {
+
+			seq.addAction(new MoveAction(pos));
+
+			int xInc = beliefs.getAnimalState().getPosition().getX()
+					- pos.getX();
+			int yInc = beliefs.getAnimalState().getPosition().getY()
+					- pos.getY();
+
+			seq.addAction(new HuntAction(pos, xInc, yInc));
+			seq.setFinished(true);
+		} else {
+			/*
+			 * System.err .println("MOVE " + pos.getX() + " " + pos.getY() + " "
+			 * + beliefs.getWorldState(pos.getX(), pos.getY()) .hasAnimal() +
+			 * beliefs.getWorldState(pos.getX(), pos.getY()) .isBlocked());
+			 */
+			// System.err.println("MOVE");
+
+			seq.addAction(new MoveAction(pos));
+
 		}
 	}
 }

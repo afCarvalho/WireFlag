@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
@@ -18,12 +19,12 @@ public class HealIntention extends Intention {
 	}
 
 	@Override
-	public boolean suceeded(List<Action> actions, Beliefs beliefs) {
+	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
 		return beliefs.getLife() == 100;
 	}
 
 	@Override
-	public boolean impossible(List<Action> actions, Beliefs beliefs) {
+	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
 		boolean result = beliefs.getLife() <= agentLife;
 		agentLife = beliefs.getLife();
 		return result;

@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.Graphics;
 
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.OldAction;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;

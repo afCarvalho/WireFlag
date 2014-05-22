@@ -75,7 +75,7 @@ public abstract class Agent implements IGameElement {
 	private Flag flag;
 	private Architecture architecture;
 	private Strategy strategy;
-	private AgentThread agentThread;
+	private AgentThread agentUpdateThread;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture, Strategy strategy) {
@@ -88,7 +88,7 @@ public abstract class Agent implements IGameElement {
 		this.agentId = agentId;
 		this.architecture = arquitecture;
 		this.strategy = strategy;
-		this.agentThread = new AgentThread(this);
+		this.agentUpdateThread = new AgentThread(this);
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
 		ill = AnimationLoader.getLoader().getIll();
@@ -143,8 +143,8 @@ public abstract class Agent implements IGameElement {
 		return Math.max(visibility, 1);
 	}
 
-	public AgentThread getAgentThread() {
-		return agentThread;
+	public AgentThread getAgentUpdateThread() {
+		return agentUpdateThread;
 	}
 
 	/* for each tile is created a perception */
@@ -176,7 +176,6 @@ public abstract class Agent implements IGameElement {
 		int visibility = getVisibilityRange();
 		int x = position.getMapPosition().getX();
 		int y = position.getMapPosition().getY();
-		int id = 0;
 
 		for (int j = y + visibility; j >= y - visibility; j--) {
 			for (int i = x - visibility; i <= x + visibility; i++) {
@@ -193,10 +192,9 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public List<Agent> getNearTeammates() {
-		List<Perception> perceptions = getPerceptions();
 		List<Agent> mates = new ArrayList<Agent>();
 
-		for (Perception perception : perceptions) {
+		for (Perception perception : getPerceptions()) {
 			Agent agent = perception.getAgent();
 			if (agent != null && agent.getTeamId() == teamId) {
 				mates.add(agent);
@@ -227,7 +225,7 @@ public abstract class Agent implements IGameElement {
 	 ***********************/
 
 	public void init() {
-		agentThread.init();
+		agentUpdateThread.init();
 	}
 
 	public void stop() {
@@ -309,7 +307,7 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
-	public void attack(MapPosition mapPosition) {
+	private void attack(MapPosition mapPosition) {
 		ballon = AnimationLoader.getLoader().getAttack();
 
 		Agent enemy = MapController.getMap().getLandscape(mapPosition)
@@ -352,11 +350,14 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public void hunt(MapPosition animalPos) {
+	public void hunt(MapPosition nearPos, int xInc, int yInc) {
 		ballon = AnimationLoader.getLoader().getBow();
 
-		Animal prey = MapController.getMap().getLandscape(animalPos)
-				.getAnimal();
+		Animal prey = MapController
+				.getMap()
+				.getLandscape(
+						new MapPosition(nearPos.getX() + xInc, nearPos.getY()
+								+ yInc)).getAnimal();
 
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) {
@@ -578,7 +579,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move down it moves and returns true. Returns false
 	 * otherwise.
 	 */
-	public boolean moveDown(int delta, MapPosition oldPos) {
+	private boolean moveDown(int delta, MapPosition oldPos) {
 		sprite = down;
 		ballon = AnimationLoader.getLoader().getDownArrow();
 
@@ -592,7 +593,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move up it moves and returns true. Returns false
 	 * otherwise.
 	 */
-	public boolean moveUp(int delta, MapPosition oldPos) {
+	private boolean moveUp(int delta, MapPosition oldPos) {
 		sprite = up;
 		ballon = AnimationLoader.getLoader().getUpArrow();
 
@@ -606,7 +607,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move to the right it moves and returns true. Returns
 	 * false otherwise.
 	 */
-	public boolean moveRight(int delta, MapPosition oldPos) {
+	private boolean moveRight(int delta, MapPosition oldPos) {
 		sprite = right;
 		ballon = AnimationLoader.getLoader().getRightArrow();
 
@@ -620,7 +621,7 @@ public abstract class Agent implements IGameElement {
 	 * if the agent can move to the left it moves and returns true. Returns
 	 * false otherwise.
 	 */
-	public boolean moveLeft(int delta, MapPosition oldPos) {
+	private boolean moveLeft(int delta, MapPosition oldPos) {
 		sprite = left;
 		ballon = AnimationLoader.getLoader().getLeftArrow();
 
@@ -630,7 +631,7 @@ public abstract class Agent implements IGameElement {
 		return changePosition(delta, oldPos, newPos);
 	}
 
-	public synchronized boolean changePosition(int delta, MapPosition oldPos,
+	private synchronized boolean changePosition(int delta, MapPosition oldPos,
 			WorldPosition newPos) {
 
 		if (!isBlocked(newPos.getMapPosition())) {
@@ -664,7 +665,7 @@ public abstract class Agent implements IGameElement {
 	@Override
 	public void render(Graphics g) {
 
-		DeliberativeArchTest.run(g, (Deliberative) architecture);
+		//DeliberativeArchTest.run(g, (Deliberative) architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));

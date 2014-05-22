@@ -87,7 +87,7 @@ public class AgentController implements IController {
 				new AlwaysAttack());
 		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
 				new Deliberative(), new AlwaysAttack());
-		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(), new Hybrid(),
+		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
 		// t1.addAgent(b1);
 		// t1.addAgent(d1);
@@ -149,12 +149,17 @@ public class AgentController implements IController {
 	public void update(int delta) {
 		for (Team t : getTeams()) {
 			for (Agent a : t.getMembers()) {
-				a.getAgentThread().setDelta(delta);
+				a.getAgentUpdateThread().setDelta(delta);
 			}
 		}
 	}
 
 	@Override
 	public void render(Graphics g) {
+		for (Team t : getTeams()) {
+			for (Agent a : t.getMembers()) {
+				a.render(g);
+			}
+		}
 	}
 }

@@ -8,7 +8,8 @@ public class HuntDesire implements Desire {
 
 	@Override
 	public double getRate(Beliefs beliefs) {
-		if (beliefs.getAnimalState().hasAnimal()) {
+		if (beliefs.getAnimalState() != null
+				&& beliefs.getAnimalState().hasAnimal()) {
 			return 100
 					- (beliefs.getLife() / 2.0)
 					- beliefs.getAgentPos().getDistanceFrom(

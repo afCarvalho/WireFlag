@@ -11,8 +11,10 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.Desire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.ExploreDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.GetFlagDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HealDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HuntDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.RestDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WaitDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WinGameDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 
@@ -34,7 +36,8 @@ public class Deliberative extends Architecture {
 		 * CureIllDesire(), new WinGameDesire() };
 		 */
 		desires = new Desire[] { new ExploreDesire(), new RestDesire(),
-				new GetFlagDesire(), new WaitDesire() };
+				new GetFlagDesire(), new WaitDesire(), new HuntDesire(),
+				new WinGameDesire() };
 	}
 
 	public Beliefs getBeliefs() {
@@ -57,7 +60,7 @@ public class Deliberative extends Architecture {
 			}
 		}
 
-		//System.err.println("HIGHEST RATE " + desireRate);
+		// System.err.println("HIGHEST RATE " + desireRate);
 
 		return intention;
 	}
@@ -69,24 +72,26 @@ public class Deliberative extends Architecture {
 		if (actions.isEmpty() || actualIntention.impossible(actions, beliefs)
 				|| actualIntention.suceeded(actions, beliefs)) {
 
-			/*if (actualIntention != null) {
-				System.err.println(actions.isEmpty() + " "
-						+ actualIntention.impossible(actions, beliefs) + " "
-						+ actualIntention.suceeded(actions, beliefs));
-			}*/
+			/*
+			 * if (actualIntention != null) {
+			 * System.err.println(actions.isEmpty() + " " +
+			 * actualIntention.impossible(actions, beliefs) + " " +
+			 * actualIntention.suceeded(actions, beliefs)); }
+			 */
 
 			actualIntention = getIntention();
-			//System.err.println("LETS GET A PLAN");
+			// System.err.println("LETS GET A PLAN");
 			Plan plan = actualIntention.getPlan(beliefs);
-			//System.err.println("LETS GET ACTIONS");
+			// System.err.println("LETS GET ACTIONS");
 			actions = plan.makePlan(beliefs.getAgentPos());
 
-			/*System.err.println("PLANING " + actualIntention.getId()
-					+ " DONE WITH " + actions.size() + " ACTIONS "
-					+ actualIntention.impossible(actions, beliefs) + " "
-					+ actualIntention.suceeded(actions, beliefs) + " "
-					+ actions.isEmpty() + " " + actions.size());*/
-
+			/*
+			 * System.err.println("PLANING " + actualIntention.getId() +
+			 * " DONE WITH " + actions.size() + " ACTIONS " +
+			 * actualIntention.impossible(actions, beliefs) + " " +
+			 * actualIntention.suceeded(actions, beliefs) + " " +
+			 * actions.isEmpty() + " " + actions.size());
+			 */
 		}
 
 		if (actions.size() > 0) {

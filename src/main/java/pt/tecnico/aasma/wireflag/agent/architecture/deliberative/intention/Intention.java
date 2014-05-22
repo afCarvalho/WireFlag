@@ -1,5 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
@@ -10,9 +11,9 @@ public abstract class Intention {
 
 	protected abstract int getIntentionId();
 
-	public abstract boolean suceeded(List<Action> actions, Beliefs beliefs);
+	public abstract boolean suceeded(LinkedList<Action> actions, Beliefs beliefs);
 
-	public abstract boolean impossible(List<Action> actions, Beliefs beliefs);
+	public abstract boolean impossible(LinkedList<Action> actions, Beliefs beliefs);
 
 	public abstract Plan getPlan(Beliefs beliefs);
 

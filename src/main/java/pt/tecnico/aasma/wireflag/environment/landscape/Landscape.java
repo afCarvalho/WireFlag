@@ -237,8 +237,8 @@ public abstract class Landscape implements IGameElement {
 			endPoint.render(g);
 		}
 
-		if (hasAgent()) {
+		/*if (hasAgent()) {
 			agent.render(g);
-		}
+		}*/
 	}
 }

@@ -100,7 +100,7 @@ public class Beliefs {
 
 	public void updateBeliefs() {
 		reconsider = false;
-		// String message="";
+		 //String message="";
 
 		for (Perception p : agent.getPerceptions()) {
 			if (p.hasFlag()) {
@@ -123,6 +123,13 @@ public class Beliefs {
 				world[i][j].updateState();
 				positionAvailable = Math.max(world[i][j].getCondition(),
 						positionAvailable);
+			/*	if(world[i][j].hasAnimal()){
+					 message+= "A ";
+				}else if(world[i][j].hasAgent()) {
+					message+= "S ";
+				}else{
+					message+="N ";
+				}*/
 				// message+= world[i][j].getCondition() + " ";
 				// message+=positionAvailable + " ";
 				exploredPercentage += Math.abs(world[i][j].getCondition());
@@ -152,7 +159,8 @@ public class Beliefs {
 			// message+="\n";
 		}
 
-		// System.err.println(message);
+		 //System.err.println(message);
+		 //System.out.println(" ");
 
 		/*
 		 * System.out.println("PHASE 2 " + exploredPercentage + " out of " +
