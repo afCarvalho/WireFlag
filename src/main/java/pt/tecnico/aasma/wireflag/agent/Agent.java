@@ -1,11 +1,19 @@
 package pt.tecnico.aasma.wireflag.agent;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
+import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
@@ -15,10 +23,6 @@ import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
 import pt.tecnico.aasma.wireflag.util.WorldPosition;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public abstract class Agent implements IGameElement {
 
@@ -71,6 +75,7 @@ public abstract class Agent implements IGameElement {
 	private Flag flag;
 	private Architecture architecture;
 	private AgentThread agentThread;
+	private BlockingQueue<Message> mailbox;
 
 	public Agent(float agentSpeed, int agentAttack, int teamId, int agentId,
 			Architecture arquitecture) {
@@ -83,6 +88,7 @@ public abstract class Agent implements IGameElement {
 		this.agentId = agentId;
 		this.architecture = arquitecture;
 		this.agentThread = new AgentThread(this);
+		this.mailbox = new LinkedBlockingQueue<Message>();
 
 		ballon = AnimationLoader.getLoader().getUpArrow();
 		ill = AnimationLoader.getLoader().getIll();
@@ -197,6 +203,10 @@ public abstract class Agent implements IGameElement {
 			}
 		}
 		return mates;
+	}
+	
+	public BlockingQueue<Message> getMailbox() {
+		return this.mailbox;
 	}
 
 	/***************

@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
+import pt.tecnico.aasma.wireflag.agent.communication.DeliverySystem;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.util.MapPosition;
@@ -37,11 +38,14 @@ public abstract class Team {
 	private int nextMemberID;
 
 	private MapPosition teamPosition;
+	
+	private DeliverySystem deliverySystem;
 
 	public Team(int id) throws SlickException {
 		this.id = id;
 		this.members = new ArrayList<Agent>();
 		this.nextMemberID = 0;
+		this.deliverySystem = new DeliverySystem(id);
 
 		/*
 		 * if (members.size() < MINIMUM_TEAM_SIZE) { throw new
@@ -79,6 +83,7 @@ public abstract class Team {
 			return;
 		}
 		members.add(agent);
+		deliverySystem.subscribe(agent);
 	}
 
 	/**
@@ -94,6 +99,7 @@ public abstract class Team {
 		}
 
 		members.remove(agent);
+		deliverySystem.unsubscribe(agent);
 	}
 
 	/**
@@ -147,6 +153,14 @@ public abstract class Team {
 							new MapPosition(x + i, y)) && res;
 		}
 		return res;
+	}
+
+	public final DeliverySystem getDeliverySystem() {
+		return deliverySystem;
+	}
+
+	public final void setDeliverySystem(DeliverySystem deliverySystem) {
+		this.deliverySystem = deliverySystem;
 	}
 
 	/**
