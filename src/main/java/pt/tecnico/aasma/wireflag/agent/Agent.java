@@ -612,7 +612,12 @@ public abstract class Agent implements IGameElement {
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
-		architecture.processMessage(mailbox.poll());
+		List<Message> messages = new ArrayList<Message>();
+		Message message;
+		while ((message = mailbox.poll()) != null) {
+			messages.add(message);
+		}
+		architecture.processMessages(messages);
 		moveFlag();
 	}
 
