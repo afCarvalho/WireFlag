@@ -27,8 +27,7 @@ public class AbilityPlan extends Plan {
 		if (beliefs.getWorldState(pos.getX(), pos.getY()).isAbilityUseful()) {
 			seq.addAction(new AbilityAction(pos));
 			seq.setFinished(true);
-		} 
-
-		actSequences.add(seq);
+			actSequences.add(seq);
+		}
 	}
 }

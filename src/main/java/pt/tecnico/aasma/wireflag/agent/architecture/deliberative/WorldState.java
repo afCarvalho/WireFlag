@@ -30,6 +30,7 @@ public class WorldState {
 			perception.setInjuredAgent(false);
 			perception.setAgentAttack(0);
 			perception.setEnemy(null);
+			perception.setIsAbilityUseful(false);
 			if (condition == NEWLY_DISCOVERED) {
 				condition = EXPLORED;
 			}

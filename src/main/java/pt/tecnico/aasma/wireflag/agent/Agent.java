@@ -164,6 +164,7 @@ public abstract class Agent implements IGameElement {
 		perception.setFire(land.hasFire());
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
 		perception.setBlocked(isBlocked(pos));
+		perception.setIsAbilityUseful(isAbilityUseful(pos));
 		if (land.hasAgent()) {
 			perception.setAgentAttack(land.getAgent().getAgentAttack());
 			perception.setTiredAgent(land.getAgent().hasFatigue());
@@ -669,8 +670,7 @@ public abstract class Agent implements IGameElement {
 
 	@Override
 	public void render(Graphics g) {
-
-		// DeliberativeArchTest.run(g, (Deliberative) architecture);
+		//DeliberativeArchTest.run(g, (Deliberative) architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));

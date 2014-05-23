@@ -6,13 +6,17 @@ import java.util.Random;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.AbilityDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.CureIllDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.Desire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.ExploreDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.FleeDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.GetFlagDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HealDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HuntDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.RestDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.SurviveFireDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.SurviveWeatherDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WaitDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WinGameDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
@@ -37,7 +41,9 @@ public class Deliberative extends Architecture {
 		 */
 		desires = new Desire[] { new ExploreDesire(), new RestDesire(),
 				new GetFlagDesire(), new WaitDesire(), new HuntDesire(),
-				new WinGameDesire() };
+				new WinGameDesire(), new HealDesire(),
+				new SurviveWeatherDesire(), new SurviveFireDesire(),
+				new CureIllDesire(), new AbilityDesire(), new FleeDesire() };
 	}
 
 	public Beliefs getBeliefs() {
@@ -69,6 +75,12 @@ public class Deliberative extends Architecture {
 		beliefs.setAgent(agent);
 		beliefs.updateBeliefs();
 
+		/*
+		 * if (actualIntention != null) { System.out.println(actions.isEmpty() +
+		 * " " + actualIntention.impossible(actions, beliefs) + " " +
+		 * actualIntention.suceeded(actions, beliefs)); }
+		 */
+
 		if (actions.isEmpty() || actualIntention.impossible(actions, beliefs)
 				|| actualIntention.suceeded(actions, beliefs)) {
 
@@ -92,6 +104,7 @@ public class Deliberative extends Architecture {
 			 * actualIntention.suceeded(actions, beliefs) + " " +
 			 * actions.isEmpty() + " " + actions.size());
 			 */
+
 		}
 
 		if (actions.size() > 0) {

@@ -70,7 +70,6 @@ public class EndGameController implements IController {
 			}
 		}
 
-		System.out.println("ALTERNATIVE WAY");
 		WireFlagGame.win(winnerTeam);
 	}
 

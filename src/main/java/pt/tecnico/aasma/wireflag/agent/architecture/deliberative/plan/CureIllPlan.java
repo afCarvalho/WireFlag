@@ -22,10 +22,12 @@ public class CureIllPlan extends Plan {
 			seq = new ActionSequence(beliefs, actionSeq);
 		}
 
-		while (seq.getSequenceValue() < 85 - beliefs.getLife()) {
+		while (seq.getSequenceValue() < 90 - beliefs.getLife()) {
 			seq.addAction(new StopAction(beliefs, pos));
 		}
 		seq.setFinished(true);
-		actSequences.addLast(seq);
+		if (seq.getActions().size() > 0) {
+			actSequences.addLast(seq);
+		}
 	}
 }

@@ -24,14 +24,13 @@ public class HealIntention extends Intention {
 
 	@Override
 	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
-		boolean result = beliefs.getLife() <= agentLife;
+		boolean result = beliefs.getLife() < agentLife;
 		agentLife = beliefs.getLife();
 		return result;
 	}
 
 	@Override
 	public Plan getPlan(Beliefs beliefs) {
-		// TODO Auto-generated method stub
 		return new HealPlan(beliefs);
 	}
 

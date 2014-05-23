@@ -109,6 +109,7 @@ public class Beliefs {
 
 	public void updateBeliefs() {
 		reconsider = false;
+		isAbilityUseful = false;
 		// String message="";
 
 		for (Perception p : agent.getPerceptions()) {
@@ -121,7 +122,8 @@ public class Beliefs {
 					.setState(p) || reconsider;
 
 			isAbilityUseful = isAbilityUseful
-					|| agent.isAbilityUseful(p.getPosition());
+					|| world[p.getPosition().getX()][p.getPosition().getY()]
+							.isAbilityUseful();
 
 			if (p.hasEnemy()) {
 				enemyPos = p.getEnemyPos();
