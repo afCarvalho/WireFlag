@@ -8,6 +8,9 @@ import pt.tecnico.aasma.wireflag.agent.architecture.Hybrid;
 import pt.tecnico.aasma.wireflag.agent.architecture.Reactive;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.strategies.type.AlwaysAttack;
+import pt.tecnico.aasma.wireflag.agent.strategies.type.Joss;
+import pt.tecnico.aasma.wireflag.agent.strategies.type.Tester;
+import pt.tecnico.aasma.wireflag.agent.strategies.type.TitForTat;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
 import pt.tecnico.aasma.wireflag.agent.type.BomberMan;
@@ -83,24 +86,20 @@ public class AgentController implements IController {
 		try {
 			t1 = new DemocraticalTeam(getNextTeamId());
 			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive(),
-					new AlwaysAttack());
+					new Tester());
 			Agent b1 = new BomberMan(t1.getID(), t1.getMemberID(),
-					new Reactive(), new AlwaysAttack());
+					new Reactive(), new Joss());
 			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive(),
-					new AlwaysAttack());
+					new TitForTat());
 			Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
 					new Reactive(), new AlwaysAttack());
-			Agent h1 = new Soldier(t1.getID(), t1.getMemberID(),
-					new Reactive(), new AlwaysAttack());
-			t1.addAgent(b1);
-			t1.addAgent(h1);
-			t1.addAgent(p1);
 			t1.addAgent(d1);
-			// t1.addAgent(h1);
+			t1.addAgent(b1);
+			t1.addAgent(p1);
+			t1.addAgent(s1);
 			t1.setTeamUp();
 			addTeam(t1);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -108,11 +107,11 @@ public class AgentController implements IController {
 		try {
 			t2 = new DemocraticalTeam(getNextTeamId());
 			Agent d2 = new Doctor(t2.getID(), t2.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+					new Deliberative(), new Tester());
 			Agent b2 = new BomberMan(t2.getID(), t2.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+					new Deliberative(), new Joss());
 			Agent p2 = new Patrol(t2.getID(), t2.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+					new Deliberative(), new TitForTat());
 			Agent s2 = new Soldier(t2.getID(), t2.getMemberID(),
 					new Deliberative(), new AlwaysAttack());
 			t2.addAgent(b2);
@@ -122,21 +121,21 @@ public class AgentController implements IController {
 			t2.setTeamUp();
 			addTeam(t2);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		Team t3;
 		try {
 			t3 = new DemocraticalTeam(getNextTeamId());
-			Agent d3 = new BomberMan(t3.getID(), t3.getMemberID(),
-					new Reactive(), new AlwaysAttack());
+			Agent d3 = new Doctor(t3.getID(), t3.getMemberID(), new Hybrid(),
+					new AlwaysAttack());
 			Agent b3 = new BomberMan(t3.getID(), t3.getMemberID(),
-					new Reactive(), new AlwaysAttack());
-			Agent p3 = new BomberMan(t3.getID(), t3.getMemberID(),
-					new Reactive(), new AlwaysAttack());
-			Agent s3 = new BomberMan(t3.getID(), t3.getMemberID(),
-					new Reactive(), new AlwaysAttack());
+					new Hybrid(), new AlwaysAttack());
+			Agent p3 = new Patrol(t3.getID(), t3.getMemberID(), new Hybrid(),
+					new TitForTat());
+			Agent s3 = new Soldier(t3.getID(), t3.getMemberID(), new Hybrid(),
+					new AlwaysAttack());
+			t3.addAgent(d3);
 			t3.addAgent(b3);
 			t3.addAgent(p3);
 			t3.addAgent(s3);

@@ -227,11 +227,11 @@ public abstract class Agent implements IGameElement {
 	 *** SETTERS ***
 	 ***************/
 
-	public void setTeamId(int id) {
+	/*public void setTeamId(int id) {
 		AgentController.getAgents().getTeamById(this.teamId).removeAgent(this);
 		AgentController.getAgents().getTeamById(id).addAgent(this);
 		this.teamId = id;
-	}
+	}*/
 
 	public void setPos(WorldPosition pos) {
 		position = pos;
@@ -327,7 +327,7 @@ public abstract class Agent implements IGameElement {
 			if (result == FLAG) {
 				agent.switchFlag(this);
 			} else {
-				agent.setTeamId(teamId);
+				//agent.setTeamId(teamId);
 			}
 
 			return true;
@@ -365,8 +365,6 @@ public abstract class Agent implements IGameElement {
 
 			updateLastOpponentPlay(enemyPlay);
 			enemy.updateLastOpponentPlay(agentPlay);
-
-			
 
 			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
 				return;
