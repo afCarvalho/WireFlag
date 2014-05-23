@@ -20,6 +20,10 @@ public class Fire implements IGameElement {
 		this.duration = duration;
 		fire = AnimationLoader.getLoader().getFire();
 	}
+	
+	public void incDuration(int value){
+		duration += value;
+	}
 
 	/************************
 	 *** STATE PREDICATES ***

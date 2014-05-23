@@ -10,7 +10,8 @@ public class FleeDesire implements Desire {
 	public double getRate(Beliefs beliefs) {
 		if (beliefs.getEnemyState() != null
 				&& beliefs.getEnemyState().hasEnemy() && beliefs.getLife() < 50) {
-			return 100 - beliefs.getLife() - beliefs.getFatigue();
+			return Math.max(100, 100 - beliefs.getLife() - beliefs.getFatigue()
+					+ beliefs.getPercentageOfDefeats());
 		} else {
 			return 0;
 		}
@@ -20,5 +21,4 @@ public class FleeDesire implements Desire {
 	public Intention getIntention() {
 		return new FleeIntention();
 	}
-
 }

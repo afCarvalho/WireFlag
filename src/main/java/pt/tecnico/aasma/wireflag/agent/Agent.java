@@ -127,6 +127,14 @@ public abstract class Agent implements IGameElement {
 		return agentAttack;
 	}
 
+	public double getPercentageOfVictories() {
+		return strategy.getPercentageOfVictories();
+	}
+
+	public double getPercentageOfDefeats() {
+		return strategy.getPercentageOfDefeats();
+	}
+
 	public int getLife() {
 		return life;
 	}
@@ -309,6 +317,14 @@ public abstract class Agent implements IGameElement {
 		strategy.updateLastOpponentPlay(play);
 	}
 
+	public void incVictories() {
+		strategy.incVictories();
+	}
+
+	public void incDefeats() {
+		strategy.incDefeats();
+	}
+
 	public int wantNegotiation() {
 		if (hasLowLife()) {
 			if (hasFlag()) {
@@ -367,9 +383,13 @@ public abstract class Agent implements IGameElement {
 			enemy.updateLastOpponentPlay(agentPlay);
 
 			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
+				incVictories();
+				enemy.incDefeats();
 				notify();
 				return;
 			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
+				enemy.incVictories();
+				incDefeats();
 				notify();
 				return;
 			}
