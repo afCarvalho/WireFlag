@@ -562,13 +562,12 @@ public class Reactive extends Architecture {
 	}
 
 	public void makeAction(Agent agent, int delta) {
-		/*
-		 * for (Message message : getMessages()) { this.processMessage(message);
-		 * }
-		 * 
-		 * perceptions.addAll(agent.getPerceptions());
-		 */
+
 		perceptions = agent.getPerceptions();
+
+		for (Message message : getMessages()) {
+			this.processMessage(message);
+		}
 
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
