@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -54,6 +53,11 @@ public abstract class Agent implements IGameElement {
 	public final static int RIGHT = 2;
 	public final static int LEFT = 3;
 
+	/* negotiation */
+	private final int NO_NEGOTIATE = 0;
+	private final int TEAM = 1;
+	private final int FLAG = 2;
+
 	protected Animation up;
 	protected Animation down;
 	protected Animation right;
@@ -75,7 +79,6 @@ public abstract class Agent implements IGameElement {
 	private boolean isIll;
 	private Flag flag;
 	private Architecture architecture;
-	private BlockingQueue<Message> mailbox;
 	private Strategy strategy;
 	private AgentThread agentUpdateThread;
 
@@ -89,7 +92,6 @@ public abstract class Agent implements IGameElement {
 		this.teamId = teamId;
 		this.agentId = agentId;
 		this.architecture = arquitecture;
-		this.mailbox = new LinkedBlockingQueue<Message>();
 		this.strategy = strategy;
 		this.agentUpdateThread = new AgentThread(this);
 
@@ -211,9 +213,9 @@ public abstract class Agent implements IGameElement {
 		}
 		return mates;
 	}
-	
+
 	public BlockingQueue<Message> getMailbox() {
-		return this.mailbox;
+		return this.architecture.getMailbox();
 	}
 
 	/***************
@@ -279,6 +281,15 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
+	public void switchFlag(Agent agent) {
+		agent.setFlag(flag);
+		flag = null;
+	}
+
+	private void setFlag(Flag flag) {
+		this.flag = flag;
+	}
+
 	public void startPlay() {
 		strategy.startPlay();
 	}
@@ -291,10 +302,38 @@ public abstract class Agent implements IGameElement {
 		strategy.updateLastOpponentPlay(play);
 	}
 
-	public void confront(MapPosition enemyPos) {
+	public int wantNegotiation() {
+		if (hasLowLife()) {
+			if (hasFlag()) {
+				return FLAG;
+			} else {
+				return TEAM;
+			}
+		} else {
+			return NO_NEGOTIATE;
+		}
+	}
+
+	public boolean negotiate(Agent agent) {
+		int result = agent.wantNegotiation();
+		if (result != NO_NEGOTIATE) {
+			if (result == FLAG) {
+				agent.switchFlag(this);
+			} else {
+				agent.setTeamId(teamId);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+	public synchronized void confront(MapPosition enemyPos) {
 		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
 		boolean agentPlay;
 		boolean enemyPlay;
+		boolean isAgentWinner = false;
+		boolean isEnemyWinner = false;
 
 		startPlay();
 		enemy.startPlay();
@@ -303,20 +342,24 @@ public abstract class Agent implements IGameElement {
 			agentPlay = applyStrategy();
 			enemyPlay = enemy.applyStrategy();
 
-			if (agentPlay == enemyPlay == Strategy.COOPERATE) {
-				// do nothing ?????
-			} else {
-				if (agentPlay == Strategy.ATTACK) {
-					attack(enemyPos);
-				}
+			if (agentPlay == Strategy.ATTACK) {
+				attack(enemyPos);
+				isAgentWinner = true;
+			}
 
-				if (enemyPlay == Strategy.ATTACK) {
-					enemy.attack(position.getMapPosition());
-				}
+			if (enemyPlay == Strategy.ATTACK) {
+				enemy.attack(position.getMapPosition());
+				isEnemyWinner = true;
 			}
 
 			updateLastOpponentPlay(enemyPlay);
 			enemy.updateLastOpponentPlay(agentPlay);
+
+			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
+				return;
+			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
+				return;
+			}
 		}
 	}
 
@@ -672,12 +715,6 @@ public abstract class Agent implements IGameElement {
 
 	public void update(int delta) {
 		architecture.makeAction(this, delta);
-		List<Message> messages = new ArrayList<Message>();
-		Message message;
-		while ((message = mailbox.poll()) != null) {
-			messages.add(message);
-		}
-		architecture.processMessages(messages);
 		moveFlag();
 	}
 

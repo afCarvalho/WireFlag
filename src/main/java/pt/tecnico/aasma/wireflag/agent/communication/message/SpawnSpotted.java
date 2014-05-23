@@ -1,6 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.communication.message;
 
-import pt.tecnico.aasma.wireflag.util.MapPosition;
+import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class SpawnSpotted {
 	
@@ -12,5 +12,4 @@ public class SpawnSpotted {
 		this.position = position;
 		this.teamIdentifier = teamIdentifier;
 	}
-
 }

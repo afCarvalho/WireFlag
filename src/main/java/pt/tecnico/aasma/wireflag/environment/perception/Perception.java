@@ -21,9 +21,13 @@ public class Perception {
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
 	private boolean blocked;
+	
+	public Perception(MapPosition position) {
+		this.position = position;
+	}
 
 	public Perception(MapPosition position, double landRating) {
-		this.position = position;
+		this(position);
 		this.landRating = landRating;
 	}
 

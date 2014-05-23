@@ -1,7 +1,6 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 import pt.tecnico.aasma.wireflag.agent.Agent;
@@ -133,7 +132,7 @@ public class Deliberative extends Architecture {
 	}
 
 	@Override
-	public void processMessages(List<Message> message) {
+	protected void processMessage(Message message) {
 		// TODO Auto-generated method stub
 	}
 }
