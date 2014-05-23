@@ -50,11 +50,7 @@ public class Patrol extends Agent {
 	 */
 	@Override
 	public boolean isAbilityUseful(MapPosition pos) {
-		Agent agent = MapController.getMap().getLandscape(pos).getAgent();
-
-		/*
-		 * if (agent != null) { return getTeamId() != agent.getTeamId(); }
-		 */
+		// Nothing to do here
 
 		return false;
 	}
@@ -66,12 +62,7 @@ public class Patrol extends Agent {
 	/* this agent use its ability at MapPosition pos */
 	@Override
 	public void useAbility(MapPosition pos) {
-		ballon = AnimationLoader.getLoader().getStar();
-		// TODO se precisar de aceder a algum agente deve-se
-		// obte-los aqui antes do if por causa da sincronizacao
-
-		// if (isAbilityUseful(pos)) {
-		// TODO comunica a todos os agentes da equipa que viu o enemy
-		// }
+		// ballon = AnimationLoader.getLoader().getStar();
+		// Nothing to do here
 	}
 }

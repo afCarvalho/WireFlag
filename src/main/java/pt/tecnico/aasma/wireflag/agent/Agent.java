@@ -326,7 +326,8 @@ public abstract class Agent implements IGameElement {
 	}
 
 	public int wantNegotiation() {
-		if (hasLowLife()) {
+		if (hasLowLife()
+				|| getPercentageOfDefeats() > getPercentageOfVictories() * 2) {
 			if (hasFlag()) {
 				return FLAG;
 			} else {
