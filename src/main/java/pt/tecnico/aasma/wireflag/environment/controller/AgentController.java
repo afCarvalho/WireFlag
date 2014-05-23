@@ -92,7 +92,7 @@ public class AgentController implements IController {
 					new Deliberative(), new AlwaysAttack());
 			// t1.addAgent(b1);
 			// t1.addAgent(d1);
-			// t1.addAgent(p1);
+			t1.addAgent(p1);
 			t1.addAgent(s1);
 			// t1.addAgent(h1);
 			t1.setTeamUp();
