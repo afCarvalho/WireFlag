@@ -28,6 +28,6 @@ public abstract class Architecture {
 		return messages;
 	}
 
-	public abstract void processMessage(Message message);
+	protected abstract void processMessage(Message message);
 
 }

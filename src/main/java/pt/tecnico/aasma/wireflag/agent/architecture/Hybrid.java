@@ -81,7 +81,7 @@ public class Hybrid extends Architecture {
 	}
 
 	@Override
-	public void processMessage(Message message) {
+	protected void processMessage(Message message) {
 		// TODO Auto-generated method stub
 		
 	}
