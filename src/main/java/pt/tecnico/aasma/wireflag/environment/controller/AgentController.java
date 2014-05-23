@@ -78,40 +78,53 @@ public class AgentController implements IController {
 
 	@Override
 	public void init() throws SlickException, InvalidTeamSizeException {
-		Team t1 = new DemocraticalTeam(getNextTeamId());
-		Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent b1 = new Guard(t1.getID(), t1.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
-				new Deliberative(), new AlwaysAttack());
-		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(),
-				new Deliberative(), new AlwaysAttack());
-		t1.addAgent(b1);
-		t1.addAgent(h1);
-		t1.addAgent(p1);
-		t1.addAgent(d1);
-		// t1.addAgent(h1);
-		t1.setTeamUp();
-		addTeam(t1);
 
-		Team t2 = new DemocraticalTeam(getNextTeamId());
-		Agent d2 = new Doctor(t2.getID(), t2.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent b2 = new Guard(t2.getID(), t2.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent p2 = new Patrol(t2.getID(), t2.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		Agent s2 = new Soldier(t2.getID(), t2.getMemberID(),
-				new Deliberative(), new AlwaysAttack());
-		t2.addAgent(b2);
-		t2.addAgent(d2);
-		t2.addAgent(p2);
-		t2.addAgent(s2);
-		t2.setTeamUp();
-		addTeam(t2);
+		Team t1;
+		try {
+			t1 = new DemocraticalTeam(getNextTeamId());
+			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent b1 = new Guard(t1.getID(), t1.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent h1 = new Soldier(t1.getID(), t1.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			t1.addAgent(b1);
+			t1.addAgent(h1);
+			t1.addAgent(p1);
+			t1.addAgent(d1);
+			// t1.addAgent(h1);
+			t1.setTeamUp();
+			addTeam(t1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Team t2;
+		try {
+			t2 = new DemocraticalTeam(getNextTeamId());
+			Agent d2 = new Doctor(t2.getID(), t2.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent b2 = new Guard(t2.getID(), t2.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent p2 = new Patrol(t2.getID(), t2.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			Agent s2 = new Soldier(t2.getID(), t2.getMemberID(),
+					new Deliberative(), new AlwaysAttack());
+			t2.addAgent(b2);
+			t2.addAgent(d2);
+			t2.addAgent(p2);
+			t2.addAgent(s2);
+			t2.setTeamUp();
+			addTeam(t2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		/*
 		 * Team t3 = new DemocraticalTeam(getNextTeamId()); Agent d3 = new
