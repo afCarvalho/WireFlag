@@ -11,7 +11,7 @@ public class HuntDesire implements Desire {
 		if (beliefs.getAnimalState() != null
 				&& beliefs.getAnimalState().hasAnimal()) {
 			return 100
-					- (beliefs.getLife() / 2.0)
+					- beliefs.getLife()
 					- beliefs.getAgentPos().getDistanceFrom(
 							beliefs.getAnimalState().getPosition());
 		} else {

@@ -1,6 +1,5 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan;
 
-import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.MoveAction;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.sequence.ActionSequence;
@@ -24,15 +23,27 @@ public class FleePlan extends Plan {
 			seq = new MoveActionSequence(beliefs, actionSeq);
 		}
 
-		if (beliefs.getLife() < Agent.LOW_LIFE
-				|| Math.abs(beliefs.getEnemyState().getPosition().getX()
-						- pos.getX()) > beliefs.getAgentVisibilityRange()
-				|| Math.abs(beliefs.getEnemyState().getPosition().getY()
-						- pos.getY()) > beliefs.getAgentVisibilityRange()) {
+		int enemyAgentDiffX = Math.abs(beliefs.getEnemyState().getPosition()
+				.getX()
+				- beliefs.getAgentPos().getX());
+		int enemyActualDiffX = Math.abs(beliefs.getEnemyState().getPosition()
+				.getX()
+				- pos.getX());
+		int enemyAgentDiffY = Math.abs(beliefs.getEnemyState().getPosition()
+				.getY()
+				- beliefs.getAgentPos().getY());
+		int enemyActualDiffY = Math.abs(beliefs.getEnemyState().getPosition()
+				.getY()
+				- pos.getY());
+
+		if (enemyActualDiffX > 2 * enemyAgentDiffX
+				|| enemyActualDiffY > 2 * enemyAgentDiffY) {
 			seq.addAction(new MoveAction(pos));
 			actSequences.add(seq);
-		} else {
 			seq.setFinished(true);
+		} else {
+			seq.addAction(new MoveAction(pos));
+			actSequences.add(seq);
 		}
 	}
 }
