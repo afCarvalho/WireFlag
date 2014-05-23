@@ -121,10 +121,13 @@ public class Reactive extends Architecture {
 	 */
 	public boolean reactivePerception3(Agent agent) {
 
-		for (Perception perception : perceptions) {
-			if (perception.getAgent().getAgentId() != agent.getAgentId()
-					&& !perception.hasEnemy()) {
-				return true;
+		if (agent.hasVeryLowLife()) {
+			for (Perception perception : perceptions) {
+				if (perception.getAgent() != null
+						&& perception.getAgent().getAgentId() != agent
+								.getAgentId() && !perception.hasEnemy()) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -132,14 +135,17 @@ public class Reactive extends Architecture {
 
 	public void doAction3(Agent agent, int delta) {
 
-		for (Perception perception : perceptions) {
-			if (perception.getAgent().getAgentId() != agent.getAgentId()
-					&& !perception.hasEnemy()) {
-				Message msg = new Message(agent, new Halt(), false, false);
-				AgentController.getAgents().getTeamById(agent.getTeamId())
-						.getDeliverySystem().addMessage(msg);
-				while (agent.getLife() < 100) {
-					agent.stop();
+		if (agent.hasVeryLowLife()) {
+			for (Perception perception : perceptions) {
+				if (perception.getAgent() != null
+						&& perception.getAgent().getAgentId() != agent
+								.getAgentId() && !perception.hasEnemy()) {
+					Message msg = new Message(agent, new Halt(), false, false);
+					AgentController.getAgents().getTeamById(agent.getTeamId())
+							.getDeliverySystem().addMessage(msg);
+					while (agent.getLife() < 100) {
+						agent.stop();
+					}
 				}
 			}
 		}
@@ -456,6 +462,20 @@ public class Reactive extends Architecture {
 	public void doAction14(Agent agent, int delta) {
 		for (Perception perception : perceptions) {
 			if (perception.hasFlag()) {
+				for (Perception perception1 : perceptions) {
+					if (perception1.getAgent() != null
+							&& perception1.getAgent().getAgentId() != agent
+									.getAgentId()
+							&& perception1.getAgent().getTeamId() == agent
+									.getTeamId()) {
+						Message msg = new Message(agent, new FlagSpotted(
+								perception.getPosition(), false,
+								agent.getTeamId()), false, false);
+						AgentController.getAgents()
+								.getTeamById(agent.getTeamId())
+								.getDeliverySystem().addMessage(msg);
+					}
+				}
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}
@@ -552,11 +572,13 @@ public class Reactive extends Architecture {
 	}
 
 	public void makeAction(Agent agent, int delta) {
-		for (Message message : getMessages()) {
-			this.processMessage(message);
-		}
-
-		perceptions.addAll(agent.getPerceptions());
+		/*
+		 * for (Message message : getMessages()) { this.processMessage(message);
+		 * }
+		 * 
+		 * perceptions.addAll(agent.getPerceptions());
+		 */
+		perceptions = agent.getPerceptions();
 
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
