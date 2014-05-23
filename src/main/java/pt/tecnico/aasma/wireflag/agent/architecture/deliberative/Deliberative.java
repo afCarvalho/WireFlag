@@ -7,6 +7,7 @@ import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.action.Action;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.AbilityDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.BattleDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.CureIllDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.Desire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.ExploreDesire;
@@ -22,6 +23,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WinGameD
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 
 public class Deliberative extends Architecture {
 
@@ -35,16 +37,13 @@ public class Deliberative extends Architecture {
 		beliefs = new Beliefs();
 		actions = new LinkedList<Action>();
 		random = new Random();
-		/*
-		 * desires = new Desire[] { new BattleDesire(), new ExploreDesire(), new
-		 * FleeDesire(), new GetFlagDesire(), new HuntDesire(), new
-		 * CureIllDesire(), new WinGameDesire() };
-		 */
+
 		desires = new Desire[] { new ExploreDesire(), new RestDesire(),
 				new GetFlagDesire(), new WaitDesire(), new HuntDesire(),
 				new WinGameDesire(), new HealDesire(),
 				new SurviveWeatherDesire(), new SurviveFireDesire(),
-				new CureIllDesire(), new AbilityDesire(), new FleeDesire() };
+				new CureIllDesire(), new AbilityDesire(), new FleeDesire(),
+				new BattleDesire() };
 	}
 
 	public Beliefs getBeliefs() {
@@ -74,6 +73,8 @@ public class Deliberative extends Architecture {
 
 	public void makeAction(Agent agent, int delta) {
 		beliefs.setAgent(agent);
+		beliefs.setBasePos(AgentController.getAgents()
+				.getTeamById(agent.getTeamId()).getTeamBasePos());
 		beliefs.updateBeliefs();
 
 		/*

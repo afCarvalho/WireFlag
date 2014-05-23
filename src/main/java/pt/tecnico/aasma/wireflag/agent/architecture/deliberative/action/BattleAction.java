@@ -7,13 +7,19 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public class BattleAction extends Action {
 
-	public BattleAction(MapPosition position) {
+	int xInc;
+	int yInc;
+
+	public BattleAction(MapPosition position, int xInc, int yInc) {
 		super(position);
+		this.xInc = xInc;
+		this.yInc = yInc;
 	}
 
 	@Override
 	public boolean act(Beliefs beliefs, Agent agent, int delta) {
-		agent.confront(beliefs.getEnemyState().getPosition());
+		agent.confront(new MapPosition(position.getX() + xInc, position.getY()
+				+ yInc));
 		return true;
 	}
 }

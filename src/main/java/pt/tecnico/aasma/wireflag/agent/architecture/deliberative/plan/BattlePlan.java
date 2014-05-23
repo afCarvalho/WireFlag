@@ -23,11 +23,19 @@ public class BattlePlan extends Plan {
 		} else {
 			seq = new MoveActionSequence(beliefs, actionSeq);
 		}
-		
+
 		actSequences.add(seq);
 
-		if (beliefs.getWorldState(pos.getX(), pos.getY()).hasEnemy()) {
-			seq.addAction(new BattleAction(pos));
+		if (beliefs.getEnemyState() != null
+				&& beliefs.getEnemyState().getPosition().getDistanceFrom(pos) == 1) {
+			seq.addAction(new MoveAction(pos));
+
+			int xInc = beliefs.getEnemyState().getPosition().getX()
+					- pos.getX();
+			int yInc = beliefs.getEnemyState().getPosition().getY()
+					- pos.getY();
+
+			seq.addAction(new BattleAction(pos, xInc, yInc));
 			seq.setFinished(true);
 		} else {
 			seq.addAction(new MoveAction(pos));

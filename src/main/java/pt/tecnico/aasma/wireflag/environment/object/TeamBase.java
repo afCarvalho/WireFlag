@@ -34,10 +34,10 @@ public class TeamBase implements IGameElement {
 		int tileHeight = MapController.getMap().getTileHeight();
 		teamBase.draw(basePos.getX() * tileWidth, basePos.getY() * tileHeight);
 
-		/*g.setColor(new Color(1f, 1f, 1f, 1f));
-		g.drawString("T:" + teamId, basePos.getWorldPosition().getX()
-				- teamBase.getWidth(), basePos.getWorldPosition().getY()
-				+ teamBase.getHeight());*/
+		g.setColor(new Color(new Color(Color.white)));
+		g.drawString("T:" + teamId,
+				basePos.getX() * tileWidth + teamBase.getWidth()/4.0f,
+				basePos.getY() * tileHeight + teamBase.getHeight());
 	}
 
 	@Override

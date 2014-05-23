@@ -15,23 +15,23 @@ public class BattleIntention extends Intention {
 	@Override
 	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
 
-		return !beliefs.getEnemyState().hasEnemy();
+		return beliefs.getEnemyState() != null
+				&& !beliefs.getEnemyState().hasEnemy();
 	}
 
 	@Override
 	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
 		MapPosition pos;
 
-		if (!beliefs.getEnemyState().hasEnemy()) {
+		if (beliefs.getEnemyState() != null
+				&& !beliefs.getEnemyState().hasEnemy()) {
 			return true;
 		}
 
 		for (Action action : actions) {
 			pos = action.getPos();
 
-			if (beliefs.blockedWay(pos.getX(), pos.getY())
-					&& !beliefs.getEnemyState().getPosition()
-							.isSamePosition(pos)) {
+			if (beliefs.blockedWay(pos.getX(), pos.getY())) {
 				return true;
 			}
 		}

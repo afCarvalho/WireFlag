@@ -26,10 +26,6 @@ public abstract class Team {
 	 * The constant that represents the minimum number of elements that a team
 	 * must have, besides the leader.
 	 */
-	// private static final int MINIMUM_TEAM_SIZE = 4;
-
-	/** The team leader. */
-	private Agent leader;
 
 	/** The list of members in the team. */
 	private ArrayList<Agent> members;
@@ -40,8 +36,10 @@ public abstract class Team {
 	private int nextMemberID;
 
 	private MapPosition teamPosition;
-	
+
 	private DeliverySystem deliverySystem;
+
+	private MapPosition teamBasePos;
 
 	public Team(int id) throws SlickException, IOException {
 		this.id = id;
@@ -54,15 +52,6 @@ public abstract class Team {
 		 * InvalidTeamSizeException(identifier, members.size()); }
 		 */
 
-	}
-
-	/**
-	 * Returns the team leader.
-	 * 
-	 * @return the leader
-	 */
-	public final Agent getLeader() {
-		return leader;
 	}
 
 	/**
@@ -95,11 +84,6 @@ public abstract class Team {
 	 *            the member to be removed
 	 */
 	public final void removeMember(Agent agent) {
-		if (leader.equals(agent)) {
-			electLeader();
-			return;
-		}
-
 		members.remove(agent);
 		deliverySystem.unsubscribe(agent);
 	}
@@ -134,14 +118,11 @@ public abstract class Team {
 		while (!isValidTeamPosition()) {
 			teamPosition = MapController.getMap().getRandomPosition();
 		}
+		teamBasePos = new MapPosition(teamPosition.getX(), teamPosition.getY());
 
 		/* put the team's base in the world */
-		MapController
-				.getMap()
-				.getLandscape(teamPosition)
-				.setTeamBase(
-						new TeamBase(new MapPosition(teamPosition.getX(),
-								teamPosition.getY()), id));
+		MapController.getMap().getLandscape(teamPosition)
+				.setTeamBase(new TeamBase(teamBasePos, id));
 		this.teamPosition.setX(teamPosition.getX() + 1);
 
 		/* put the team's agents in the world */
@@ -183,12 +164,7 @@ public abstract class Team {
 	 * @return the list containing all the agents.
 	 */
 	public List<Agent> toList() {
-		ArrayList<Agent> agents = new ArrayList<Agent>();
-
-		agents.add(leader);
-		agents.addAll(members);
-
-		return agents;
+		return members;
 	}
 
 	public int getMemberID() {
@@ -206,4 +182,8 @@ public abstract class Team {
 	 * @return the result of the voting
 	 */
 	protected abstract boolean vote();
+
+	public MapPosition getTeamBasePos() {
+		return teamBasePos;
+	}
 }

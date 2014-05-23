@@ -8,13 +8,15 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Inten
 public class BattleDesire implements Desire {
 
 	@Override
-	public double getRate(Beliefs state) {
-		if (state.getEnemyState().hasEnemy()) {
+	public double getRate(Beliefs beliefs) {
+		if (beliefs.getEnemyState() != null
+				&& beliefs.getEnemyState().hasEnemy()) {
 			double rateLife = 0;
-			if (state.getLife() < Agent.LOW_LIFE) {
-				rateLife = state.getLife() * 4.0;
+
+			if (beliefs.getLife() < Agent.LOW_LIFE) {
+				rateLife = beliefs.getLife() * 4.0;
 			} else {
-				rateLife = state.getLife() / 2.0;
+				rateLife = beliefs.getLife() / 2.0;
 			}
 
 			return 100 - rateLife;

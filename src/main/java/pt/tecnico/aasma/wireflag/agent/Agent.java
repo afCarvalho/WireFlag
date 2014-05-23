@@ -339,6 +339,10 @@ public abstract class Agent implements IGameElement {
 		boolean isAgentWinner = false;
 		boolean isEnemyWinner = false;
 
+		if (enemy == null) {
+			return;
+		}
+
 		startPlay();
 		enemy.startPlay();
 
@@ -360,11 +364,15 @@ public abstract class Agent implements IGameElement {
 			enemy.updateLastOpponentPlay(agentPlay);
 
 			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
+				notify();
 				return;
 			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
+				notify();
 				return;
 			}
 		}
+
+		notify();
 	}
 
 	private void attack(MapPosition mapPosition) {
@@ -438,14 +446,12 @@ public abstract class Agent implements IGameElement {
 	public abstract int habilityRate(int nInjured, int nTired, int nEnemy,
 			boolean flag);
 
-	public void hunt(MapPosition nearPos, int xInc, int yInc) {
+	public void hunt(MapPosition pos) {
 		ballon = AnimationLoader.getLoader().getBow();
 
-		Animal prey = MapController
-				.getMap()
-				.getLandscape(
-						new MapPosition(nearPos.getX() + xInc, nearPos.getY()
-								+ yInc)).getAnimal();
+		Animal prey = MapController.getMap()
+				.getLandscape(new MapPosition(pos.getX(), pos.getY()))
+				.getAnimal();
 
 		/*
 		 * try { Thread.sleep(250); } catch (InterruptedException e) {

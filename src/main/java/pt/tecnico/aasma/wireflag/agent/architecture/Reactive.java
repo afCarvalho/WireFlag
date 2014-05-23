@@ -196,8 +196,7 @@ public class Reactive extends Architecture {
 	public void doAction6(Agent agent, int delta) {
 		for (Perception perception : getPerceptionsAdj(agent)) {
 			if (perception.hasAnimal()) {
-				agent.hunt(new MapPosition(perception.getPosition().getX() - 1,
-						perception.getPosition().getY()), 1, 0);
+				agent.hunt(perception.getPosition());
 				return;
 			}
 		}

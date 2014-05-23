@@ -16,11 +16,10 @@ public class WinGameDesire implements Desire {
 
 	@Override
 	public double getRate(Beliefs state) {
-		MapPosition endPos = state.getFlagPos();
 		MapPosition agentPos = state.getAgentPos();
 
-		if (state.carriesFlag() && state.hasTeamBasePos()) {
-			return 100 - endPos.getDistanceFrom(agentPos)/4;
+		if (state.carriesFlag()) {
+			return 100 - state.getTeamBase().getDistanceFrom(agentPos) / 3.0;
 		} else {
 			return 0;
 		}

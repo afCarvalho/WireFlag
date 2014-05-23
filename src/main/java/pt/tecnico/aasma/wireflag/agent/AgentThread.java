@@ -33,7 +33,9 @@ public class AgentThread implements Runnable {
 
 	public synchronized void stop() {
 		try {
-			this.wait();
+			while (!active) {
+				this.wait();
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

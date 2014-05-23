@@ -17,7 +17,8 @@ public class HuntAction extends Action {
 
 	@Override
 	public boolean act(Beliefs beliefs, Agent agent, int delta) {
-		agent.hunt(position, xInc, yInc);
+		agent.hunt(new MapPosition(position.getX() + xInc, position.getY()
+				+ yInc));
 		return true;
 	}
 }
