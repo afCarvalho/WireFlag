@@ -13,7 +13,6 @@ public class MoveAction extends Action {
 
 	@Override
 	public boolean act(Beliefs beliefs, Agent agent, int delta) {
-
 		agent.approachTile(delta, position);
 		beliefs.countKm();
 

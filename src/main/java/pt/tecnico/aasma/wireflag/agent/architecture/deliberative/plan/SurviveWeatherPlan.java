@@ -15,12 +15,12 @@ public class SurviveWeatherPlan extends Plan {
 
 	@Override
 	public void createNewAction(MapPosition pos, ActionSequence actionSeq) {
-		MoveActionSequence seq;
+		ActionSequence seq;
 
 		if (actionSeq == null) {
-			seq = new MoveActionSequence(beliefs);
+			seq = new ActionSequence(beliefs);
 		} else {
-			seq = new MoveActionSequence(beliefs, actionSeq);
+			seq = new ActionSequence(beliefs, actionSeq);
 		}
 
 		seq.addAction(new MoveAction(pos));
