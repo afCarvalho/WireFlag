@@ -119,6 +119,7 @@ public class Beliefs {
 			isAbilityUseful = isAbilityUseful
 					|| world[p.getPosition().getX()][p.getPosition().getY()]
 							.isAbilityUseful();
+
 			if (p.hasEnemy()) {
 				enemyState = getWorldState(p.getPosition().getX(), p
 						.getPosition().getY());

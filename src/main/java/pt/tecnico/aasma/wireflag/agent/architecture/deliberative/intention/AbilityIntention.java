@@ -15,21 +15,11 @@ public class AbilityIntention extends Intention {
 
 	@Override
 	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
-
 		return !beliefs.isAgentAbilityUseful();
 	}
 
 	@Override
 	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
-		MapPosition pos;
-		for (Action action : actions) {
-			pos = action.getPos();
-
-			if (beliefs.blockedWay(pos.getX(), pos.getY())) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 

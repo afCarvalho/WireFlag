@@ -19,7 +19,7 @@ public class WinGameDesire implements Desire {
 		MapPosition agentPos = state.getAgentPos();
 
 		if (state.carriesFlag()) {
-			return 100 - state.getTeamBase().getDistanceFrom(agentPos) / 3.0;
+			return 100 - state.getTeamBase().getDistanceFrom(agentPos) / 2.0;
 		} else {
 			return 0;
 		}

@@ -10,7 +10,7 @@ public class AbilityDesire implements Desire {
 	public double getRate(Beliefs beliefs) {
 
 		if (beliefs.isAgentAbilityUseful()) {
-			return 70;
+			return 85;
 		}
 		return 0;
 	}

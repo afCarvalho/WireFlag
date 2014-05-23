@@ -47,11 +47,8 @@ public class BomberMan extends Agent {
 	public boolean isAbilityUseful(MapPosition pos) {
 		TeamBase base = MapController.getMap().getLandscape(pos).getTeamBase();
 
-		if (base != null && base.getTeamId() != getTeamId() && !base.isOnFire()) {
-			return true;
-		}
-
-		return false;
+		return base != null && base.getTeamId() != getTeamId()
+				&& !base.isOnFire();
 	}
 
 	/***********************
@@ -64,10 +61,6 @@ public class BomberMan extends Agent {
 		ballon = AnimationLoader.getLoader().getStar();
 
 		if (isAbilityUseful(pos)) {
-			/*
-			 * try { Thread.sleep(250); } catch (InterruptedException e) { //
-			 * TODO Auto-generated catch block e.printStackTrace(); }
-			 */
 			MapController.getMap().getLandscape(pos).getTeamBase().turnOnFire();
 		}
 	}

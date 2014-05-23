@@ -78,4 +78,8 @@ public class TeamBase implements IGameElement {
 	@Override
 	public void update(int delta) {
 	}
+
+	public MapPosition getBasePos() {
+		return basePos;
+	}
 }

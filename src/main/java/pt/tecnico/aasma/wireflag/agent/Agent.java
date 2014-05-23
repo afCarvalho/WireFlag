@@ -335,7 +335,7 @@ public abstract class Agent implements IGameElement {
 		return false;
 	}
 
-	public synchronized void confront(MapPosition enemyPos) {
+	public void confront(MapPosition enemyPos) {
 		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
 		boolean agentPlay;
 		boolean enemyPlay;
@@ -366,16 +366,16 @@ public abstract class Agent implements IGameElement {
 			updateLastOpponentPlay(enemyPlay);
 			enemy.updateLastOpponentPlay(agentPlay);
 
+			
+
 			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
-				notify();
 				return;
 			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
-				notify();
 				return;
 			}
+
 		}
 
-		notify();
 	}
 
 	private void attack(MapPosition mapPosition) {
