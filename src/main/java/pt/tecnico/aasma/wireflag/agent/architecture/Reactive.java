@@ -17,9 +17,11 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public class Reactive extends Architecture {
 
 	/* total number of behaviors */
-	protected final static int BEHAVIOR_SIZE = 18;
-	
+	protected final static int BEHAVIOR_SIZE = 19;
+
 	private List<Perception> perceptions;
+
+	private boolean doHalt = false;
 
 	public Reactive() {
 		perceptions = new ArrayList<Perception>();
@@ -342,8 +344,8 @@ public class Reactive extends Architecture {
 	public boolean reactivePerception11(Agent agent) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		Perception aheadPerception = getPerceptionPos(
-				actualPos.getAheadPosition(agent.getDirection()));
+		Perception aheadPerception = getPerceptionPos(actualPos
+				.getAheadPosition(agent.getDirection()));
 
 		if (aheadPerception != null
 				&& (aheadPerception.hasFire() || aheadPerception
@@ -362,8 +364,8 @@ public class Reactive extends Architecture {
 	public void doAction11(Agent agent, int delta) {
 		MapPosition actualPos = agent.getPos().getMapPosition();
 
-		Perception aheadPerception = getPerceptionPos(
-				actualPos.getAheadPosition(agent.getDirection()));
+		Perception aheadPerception = getPerceptionPos(actualPos
+				.getAheadPosition(agent.getDirection()));
 
 		if (aheadPerception.hasFire() || aheadPerception.hasExtremeWeather()) {
 			for (Perception perceptionAdj : getPerceptionsAdj(agent)) {
@@ -476,11 +478,25 @@ public class Reactive extends Architecture {
 		}
 	}
 
+	/* if a teammate asks agent to stop */
+	public boolean reactivePerception16(Agent agent) {
+
+		return doHalt;
+	}
+
+	public void doAction16(Agent agent, int delta) {
+
+		if (doHalt) {
+			agent.stop();
+			return;
+		}
+	}
+
 	/*
 	 * Rule: Position ahead blocked. Returns true if the agent can move ahead,
 	 * and false otherwise.
 	 */
-	public boolean reactivePerception16(Agent agent) {
+	public boolean reactivePerception17(Agent agent) {
 
 		MapPosition actualPosition = agent.getPos().getMapPosition();
 		MapPosition aheadPosition = actualPosition.getAheadPosition(agent
@@ -490,17 +506,17 @@ public class Reactive extends Architecture {
 	}
 
 	/* position ahead blocked */
-	public void doAction16(Agent agent, int delta) {
+	public void doAction17(Agent agent, int delta) {
 		agent.moveDifferentDirection(delta);
 	}
 
 	/* true case */
-	public boolean reactivePerception17(Agent agent) {
+	public boolean reactivePerception18(Agent agent) {
 		return true;
 	}
 
 	/* true case */
-	public void doAction17(Agent agent, int delta) {
+	public void doAction18(Agent agent, int delta) {
 		agent.moveSameDirection(delta);
 	}
 
@@ -510,7 +526,7 @@ public class Reactive extends Architecture {
 		}
 
 		perceptions.addAll(agent.getPerceptions());
-		
+
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {
 			try {
@@ -524,8 +540,7 @@ public class Reactive extends Architecture {
 					this.getClass()
 							.getDeclaredMethod("doAction" + i, Agent.class,
 									int.class)
-							.invoke(this,
-									new Object[] { agent, delta });
+							.invoke(this, new Object[] { agent, delta });
 					// Debug begin
 					/*
 					 * System.err.println("Time: " +
@@ -538,6 +553,7 @@ public class Reactive extends Architecture {
 					 */
 					// Debug end
 
+					doHalt = false;
 					return;
 				}
 			} catch (IllegalArgumentException e) {
@@ -566,12 +582,12 @@ public class Reactive extends Architecture {
 			perception.setTeamBase(true);
 			perception.setTeamBaseId(((SpawnSpotted) content).teamIdentifier);
 		} else if (content instanceof Halt) {
-			// Do Action
+			doHalt = true;
 			return;
 		} else {
 			return;
 		}
-		
+
 		perceptions.add(perception);
 	}
 }
