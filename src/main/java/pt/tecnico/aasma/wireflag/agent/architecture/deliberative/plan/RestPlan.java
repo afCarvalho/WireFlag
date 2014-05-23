@@ -26,6 +26,8 @@ public class RestPlan extends Plan {
 			seq.addAction(new StopAction(beliefs, pos));
 		}
 		seq.setFinished(true);
-		actSequences.addLast(seq);
+		if (seq.getActions().size() > 0) {
+			actSequences.addLast(seq);
+		}
 	}
 }

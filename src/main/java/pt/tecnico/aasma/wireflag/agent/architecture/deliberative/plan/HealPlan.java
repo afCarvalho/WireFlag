@@ -22,10 +22,13 @@ public class HealPlan extends Plan {
 			seq = new ActionSequence(beliefs, actionSeq);
 		}
 
-		while (5 * seq.getSequenceValue() < 100 - beliefs.getLife()) {
+		while (seq.getSequenceValue() < 100 - beliefs.getLife()) {
 			seq.addAction(new StopAction(beliefs, pos));
 		}
+
 		seq.setFinished(true);
-		actSequences.addLast(seq);
+		if (seq.getActions().size() > 0) {
+			actSequences.addLast(seq);
+		}
 	}
 }

@@ -21,7 +21,8 @@ public class Beliefs {
 	private boolean isAbilityUseful;
 	private boolean reconsider;
 	private int positionAvailable;
-	private MapPosition enemyPos;
+
+	// private MapPosition enemyPos;
 
 	public Beliefs() {
 		horizontalSize = MapController.getMap().getNHorizontalTiles();
@@ -63,10 +64,6 @@ public class Beliefs {
 		return flagPos;
 	}
 
-	public MapPosition getEnemyPos() {
-		return enemyPos;
-	}
-
 	public int getLife() {
 		return agent.getLife();
 	}
@@ -103,12 +100,10 @@ public class Beliefs {
 		this.agent = a;
 	}
 
-	public void setEnemyPos(MapPosition pos) {
-		this.enemyPos = pos;
-	}
-
 	public void updateBeliefs() {
 		reconsider = false;
+		isAbilityUseful = false;
+		enemyState = null;
 		// String message="";
 
 		for (Perception p : agent.getPerceptions()) {
@@ -121,10 +116,11 @@ public class Beliefs {
 					.setState(p) || reconsider;
 
 			isAbilityUseful = isAbilityUseful
-					|| agent.isAbilityUseful(p.getPosition());
-
+					|| world[p.getPosition().getX()][p.getPosition().getY()]
+							.isAbilityUseful();
 			if (p.hasEnemy()) {
-				enemyPos = p.getEnemyPos();
+				enemyState = getWorldState(p.getPosition().getX(), p
+						.getPosition().getY());
 			}
 		}
 
@@ -155,6 +151,7 @@ public class Beliefs {
 								.getDistanceFrom(getAgentPos())) {
 					animalState = world[i][j];
 				}
+
 			}
 			// message+="\n";
 		}

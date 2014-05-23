@@ -12,7 +12,7 @@ public class CureIllDesire implements Desire {
 		int rate = 0;
 
 		if (beliefs.isIll()) {
-			rate = 100 - beliefs.getLife() + 20;
+			rate = 100 - beliefs.getLife() / 10;
 		}
 
 		return rate;

@@ -14,27 +14,19 @@ public class FleeIntention extends Intention {
 
 	@Override
 	public boolean suceeded(LinkedList<Action> actions, Beliefs beliefs) {
-
-		return beliefs.getLife() < Agent.LOW_LIFE
-				|| Math.abs(beliefs.getEnemyState().getPosition().getX()
-						- beliefs.getAgentPos().getX()) > beliefs
-							.getAgentVisibilityRange()
-				|| Math.abs(beliefs.getEnemyState().getPosition().getY()
-						- beliefs.getAgentPos().getY()) > beliefs
-							.getAgentVisibilityRange();
+		return beliefs.getEnemyState() == null;
 	}
 
 	@Override
 	public boolean impossible(LinkedList<Action> actions, Beliefs beliefs) {
 		MapPosition pos;
-		boolean result = false;
 		for (Action action : actions) {
 			pos = action.getPos();
-
-			result = result || beliefs.blockedWay(pos.getX(), pos.getY());
+			if (beliefs.blockedWay(pos.getX(), pos.getY())) {
+				return true;
+			}
 		}
-
-		return result;
+		return false;
 	}
 
 	@Override

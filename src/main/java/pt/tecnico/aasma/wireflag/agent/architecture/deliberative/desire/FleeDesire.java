@@ -1,6 +1,5 @@
 package pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire;
 
-import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Beliefs;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.FleeIntention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
@@ -8,9 +7,10 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Inten
 public class FleeDesire implements Desire {
 
 	@Override
-	public double getRate(Beliefs state) {
-		if (state.getEnemyState().hasEnemy() && state.getLife() < Agent.LOW_LIFE) {
-			return 50;//TODO confirmar se este valor serve
+	public double getRate(Beliefs beliefs) {
+		if (beliefs.getEnemyState() != null
+				&& beliefs.getEnemyState().hasEnemy() && beliefs.getLife() < 50) {
+			return 100 - beliefs.getLife() - beliefs.getFatigue();
 		} else {
 			return 0;
 		}

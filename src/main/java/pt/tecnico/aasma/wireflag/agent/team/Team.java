@@ -136,8 +136,12 @@ public abstract class Team {
 		}
 
 		/* put the team's base in the world */
-		MapController.getMap().getLandscape(teamPosition)
-				.setTeamBase(new TeamBase(teamPosition, id));
+		MapController
+				.getMap()
+				.getLandscape(teamPosition)
+				.setTeamBase(
+						new TeamBase(new MapPosition(teamPosition.getX(),
+								teamPosition.getY()), id));
 		this.teamPosition.setX(teamPosition.getX() + 1);
 
 		/* put the team's agents in the world */

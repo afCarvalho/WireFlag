@@ -26,7 +26,8 @@ public class SurviveFireIntention extends Intention {
 		MapPosition pos;
 		for (Action action : actions) {
 			pos = action.getPos();
-			if (beliefs.blockedWay(pos.getX(), pos.getY())) {
+			if (beliefs.blockedWay(pos.getX(), pos.getY())
+					&& !beliefs.getWorldState(pos.getX(), pos.getY()).hasFire()) {
 				return true;
 			}
 		}

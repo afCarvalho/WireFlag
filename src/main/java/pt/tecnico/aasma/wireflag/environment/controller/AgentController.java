@@ -79,39 +79,39 @@ public class AgentController implements IController {
 	@Override
 	public void init() throws SlickException, InvalidTeamSizeException {
 		Team t1 = new DemocraticalTeam(getNextTeamId());
-		Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive(),
+		Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
-		Agent b1 = new Guard(t1.getID(), t1.getMemberID(), new Reactive(),
+		Agent b1 = new Guard(t1.getID(), t1.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
-		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive(),
+		Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
 		Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
 				new Deliberative(), new AlwaysAttack());
-		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(), new Deliberative(),
-				new AlwaysAttack());
-		// t1.addAgent(b1);
-		// t1.addAgent(d1);
-		// t1.addAgent(p1);
-		t1.addAgent(s1);
+		Agent h1 = new Soldier(t1.getID(), t1.getMemberID(),
+				new Deliberative(), new AlwaysAttack());
+		t1.addAgent(b1);
+		t1.addAgent(h1);
+		t1.addAgent(p1);
+		t1.addAgent(d1);
 		// t1.addAgent(h1);
 		t1.setTeamUp();
 		addTeam(t1);
 
 		Team t2 = new DemocraticalTeam(getNextTeamId());
-		Agent d2 = new Doctor(t2.getID(), t2.getMemberID(), new Reactive(),
+		Agent d2 = new Doctor(t2.getID(), t2.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
-		Agent b2 = new Guard(t2.getID(), t2.getMemberID(), new Reactive(),
+		Agent b2 = new Guard(t2.getID(), t2.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
 		Agent p2 = new Patrol(t2.getID(), t2.getMemberID(), new Deliberative(),
 				new AlwaysAttack());
-		Agent s2 = new Soldier(t2.getID(), t2.getMemberID(), new Reactive(),
-				new AlwaysAttack());
-		// t2.addAgent(b2);
-		// t2.addAgent(d2);
-		//t2.addAgent(p2);
-		// t2.addAgent(s2);
-		//t2.setTeamUp();
-		//addTeam(t2);
+		Agent s2 = new Soldier(t2.getID(), t2.getMemberID(),
+				new Deliberative(), new AlwaysAttack());
+		t2.addAgent(b2);
+		t2.addAgent(d2);
+		t2.addAgent(p2);
+		t2.addAgent(s2);
+		t2.setTeamUp();
+		addTeam(t2);
 
 		/*
 		 * Team t3 = new DemocraticalTeam(getNextTeamId()); Agent d3 = new
@@ -166,7 +166,9 @@ public class AgentController implements IController {
 	public void render(Graphics g) {
 		for (Team t : getTeams()) {
 			for (Agent a : t.getMembers()) {
-				a.render(g);
+				if (a.isAlive()) {
+					a.render(g);
+				}
 			}
 		}
 	}
