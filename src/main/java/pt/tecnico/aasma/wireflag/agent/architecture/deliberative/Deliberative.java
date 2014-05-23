@@ -23,6 +23,17 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.WinGameD
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Intention;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.plan.Plan;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
+import pt.tecnico.aasma.wireflag.agent.communication.message.Attack;
+import pt.tecnico.aasma.wireflag.agent.communication.message.CoverSpawn;
+import pt.tecnico.aasma.wireflag.agent.communication.message.Defend;
+import pt.tecnico.aasma.wireflag.agent.communication.message.Explore;
+import pt.tecnico.aasma.wireflag.agent.communication.message.FlagSpotted;
+import pt.tecnico.aasma.wireflag.agent.communication.message.Halt;
+import pt.tecnico.aasma.wireflag.agent.communication.message.HaveFlag;
+import pt.tecnico.aasma.wireflag.agent.communication.message.LostFlag;
+import pt.tecnico.aasma.wireflag.agent.communication.message.MoveTo;
+import pt.tecnico.aasma.wireflag.agent.communication.message.ShareMap;
+import pt.tecnico.aasma.wireflag.agent.communication.message.SpawnSpotted;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 
 public class Deliberative extends Architecture {
@@ -75,6 +86,11 @@ public class Deliberative extends Architecture {
 		beliefs.setAgent(agent);
 		beliefs.setBasePos(AgentController.getAgents()
 				.getTeamById(agent.getTeamId()).getTeamBasePos());
+
+		for (Message message : getMessages()) {
+			processMessage(message);
+		}
+
 		beliefs.updateBeliefs();
 
 		/*
@@ -135,6 +151,31 @@ public class Deliberative extends Architecture {
 
 	@Override
 	protected void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		Object content = message.getContent();
+		if (content instanceof FlagSpotted) {
+			beliefs.setFlagPos(((FlagSpotted) content).position);
+		} else if (content instanceof HaveFlag) {
+			beliefs.setFlagPos(((HaveFlag) content).position);
+			beliefs.setTeamHasFlag(true);
+		} else if (content instanceof LostFlag) {
+			beliefs.setFlagPos(((LostFlag) content).position);
+			beliefs.setTeamHasFlag(false);
+		} else if (content instanceof SpawnSpotted) {
+			// TODO
+		} else if (content instanceof CoverSpawn) {
+			// TODO
+		} else if (content instanceof ShareMap) {
+			// TODO
+		} else if (content instanceof Halt) {
+			// TODO
+		} else if (content instanceof MoveTo) {
+			// TODO
+		} else if (content instanceof Explore) {
+			// TODO
+		} else if (content instanceof Attack) {
+			// TODO 
+		} else if (content instanceof Defend) {
+			// TODO
+		}
 	}
 }
