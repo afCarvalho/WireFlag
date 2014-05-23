@@ -10,7 +10,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
 import pt.tecnico.aasma.wireflag.agent.strategies.type.AlwaysAttack;
 import pt.tecnico.aasma.wireflag.agent.team.DemocraticalTeam;
 import pt.tecnico.aasma.wireflag.agent.team.Team;
-import pt.tecnico.aasma.wireflag.agent.type.Guard;
+import pt.tecnico.aasma.wireflag.agent.type.BomberMan;
 import pt.tecnico.aasma.wireflag.agent.type.Doctor;
 import pt.tecnico.aasma.wireflag.agent.type.Patrol;
 import pt.tecnico.aasma.wireflag.agent.type.Soldier;
@@ -84,8 +84,8 @@ public class AgentController implements IController {
 			t1 = new DemocraticalTeam(getNextTeamId());
 			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive(),
 					new AlwaysAttack());
-			Agent b1 = new Guard(t1.getID(), t1.getMemberID(), new Reactive(),
-					new AlwaysAttack());
+			Agent b1 = new BomberMan(t1.getID(), t1.getMemberID(),
+					new Reactive(), new AlwaysAttack());
 			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive(),
 					new AlwaysAttack());
 			Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
@@ -109,7 +109,7 @@ public class AgentController implements IController {
 			t2 = new DemocraticalTeam(getNextTeamId());
 			Agent d2 = new Doctor(t2.getID(), t2.getMemberID(),
 					new Deliberative(), new AlwaysAttack());
-			Agent b2 = new Guard(t2.getID(), t2.getMemberID(),
+			Agent b2 = new BomberMan(t2.getID(), t2.getMemberID(),
 					new Deliberative(), new AlwaysAttack());
 			Agent p2 = new Patrol(t2.getID(), t2.getMemberID(),
 					new Deliberative(), new AlwaysAttack());
@@ -121,6 +121,27 @@ public class AgentController implements IController {
 			t2.addAgent(s2);
 			t2.setTeamUp();
 			addTeam(t2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Team t3;
+		try {
+			t3 = new DemocraticalTeam(getNextTeamId());
+			Agent d3 = new BomberMan(t3.getID(), t3.getMemberID(),
+					new Reactive(), new AlwaysAttack());
+			Agent b3 = new BomberMan(t3.getID(), t3.getMemberID(),
+					new Reactive(), new AlwaysAttack());
+			Agent p3 = new BomberMan(t3.getID(), t3.getMemberID(),
+					new Reactive(), new AlwaysAttack());
+			Agent s3 = new BomberMan(t3.getID(), t3.getMemberID(),
+					new Reactive(), new AlwaysAttack());
+			t3.addAgent(b3);
+			t3.addAgent(p3);
+			t3.addAgent(s3);
+			t3.setTeamUp();
+			addTeam(t3);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

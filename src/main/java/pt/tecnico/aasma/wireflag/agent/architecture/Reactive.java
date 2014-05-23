@@ -461,20 +461,11 @@ public class Reactive extends Architecture {
 	public void doAction14(Agent agent, int delta) {
 		for (Perception perception : perceptions) {
 			if (perception.hasFlag()) {
-				for (Perception perception1 : perceptions) {
-					if (perception1.getAgent() != null
-							&& perception1.getAgent().getAgentId() != agent
-									.getAgentId()
-							&& perception1.getAgent().getTeamId() == agent
-									.getTeamId()) {
-						Message msg = new Message(agent, new FlagSpotted(
-								perception.getPosition(), false,
-								agent.getTeamId()), false, false);
-						AgentController.getAgents()
-								.getTeamById(agent.getTeamId())
-								.getDeliverySystem().addMessage(msg);
-					}
-				}
+				Message msg = new Message(agent, new FlagSpotted(
+						perception.getPosition(), false, -1), false, false);
+				AgentController.getAgents().getTeamById(agent.getTeamId())
+						.getDeliverySystem().addMessage(msg);
+
 				agent.approachTile(delta, perception.getPosition());
 				return;
 			}

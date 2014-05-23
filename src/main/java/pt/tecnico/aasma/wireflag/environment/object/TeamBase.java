@@ -1,5 +1,8 @@
 package pt.tecnico.aasma.wireflag.environment.object;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -14,15 +17,47 @@ public class TeamBase implements IGameElement {
 	private Animation teamBase;
 	private MapPosition basePos;
 	private int teamId;
+	private List<Fire> fires;
 
 	public TeamBase(MapPosition basePos, int teamId) {
 		teamBase = AnimationLoader.getLoader().getTeamBase();
 		this.basePos = basePos;
 		this.teamId = teamId;
+		fires = new ArrayList<Fire>();
 	}
 
 	public int getTeamId() {
 		return teamId;
+	}
+
+	public boolean isOnFire() {
+		return !fires.isEmpty();
+	}
+
+	public void turnOnFire() {
+		int x = basePos.getX();
+		int y = basePos.getY();
+		fires = new ArrayList<Fire>();
+		MapPosition firePos;
+		Fire fire;
+
+		for (int j = y + 1; j >= y - 1; j--) {
+			for (int i = x - 1; i <= x + 1; i++) {
+				if (j < MapController.getMap().getNVerticalTiles()
+						&& i < MapController.getMap().getNHorizontalTiles()
+						&& j > 0 && i > 0) {
+
+					firePos = new MapPosition(i, j);
+					fire = new Fire(1000, firePos);
+					fires.add(fire);
+					MapController.getMap().getLandscape(firePos).setFire(fire);
+				}
+			}
+		}
+	}
+
+	public void turnOffFire() {
+		fires = new ArrayList<Fire>();
 	}
 
 	/*********************
@@ -36,7 +71,7 @@ public class TeamBase implements IGameElement {
 
 		g.setColor(new Color(new Color(Color.white)));
 		g.drawString("T:" + teamId,
-				basePos.getX() * tileWidth + teamBase.getWidth()/4.0f,
+				basePos.getX() * tileWidth + teamBase.getWidth() / 4.0f,
 				basePos.getY() * tileHeight + teamBase.getHeight());
 	}
 
