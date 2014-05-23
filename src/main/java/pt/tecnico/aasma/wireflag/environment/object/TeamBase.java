@@ -2,6 +2,7 @@ package pt.tecnico.aasma.wireflag.environment.object;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -48,7 +49,7 @@ public class TeamBase implements IGameElement {
 						&& j > 0 && i > 0) {
 
 					firePos = new MapPosition(i, j);
-					fire = new Fire(1000, firePos);
+					fire = new Fire(10000, firePos);
 					fires.add(fire);
 					MapController.getMap().getLandscape(firePos).setFire(fire);
 				}
@@ -77,6 +78,13 @@ public class TeamBase implements IGameElement {
 
 	@Override
 	public void update(int delta) {
+		if (!fires.isEmpty()) {
+			if (new Random().nextInt(4) == 0) {
+				for (Fire fire : fires) {
+					fire.incDuration(10000);
+				}
+			}
+		}
 	}
 
 	public MapPosition getBasePos() {

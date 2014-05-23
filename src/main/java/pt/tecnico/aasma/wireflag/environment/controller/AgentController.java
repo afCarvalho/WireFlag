@@ -147,14 +147,6 @@ public class AgentController implements IController {
 		}
 
 		/*
-		 * Team t3 = new DemocraticalTeam(getNextTeamId()); Agent d3 = new
-		 * Doctor(t3.getID(), t3.getMemberID(), new Reactive()); Agent b3 = new
-		 * Guard(t3.getID(), t3.getMemberID(), new Reactive()); Agent p3 = new
-		 * Patrol(t3.getID(), t3.getMemberID(), new Reactive()); Agent s3 = new
-		 * Soldier(t3.getID(), t3.getMemberID(), new Reactive());
-		 * t3.addAgent(b3); t3.addAgent(d3); t3.addAgent(p3); t3.addAgent(s3);
-		 * t3.setTeamUp(); addTeam(t3);
-		 * 
 		 * Team t4 = new DemocraticalTeam(getNextTeamId()); Agent d4 = new
 		 * Doctor(t4.getID(), t4.getMemberID(), new Reactive()); Agent b4 = new
 		 * Guard(t4.getID(), t4.getMemberID(), new Reactive()); Agent p4 = new

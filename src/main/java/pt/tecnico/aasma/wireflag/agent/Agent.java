@@ -127,6 +127,14 @@ public abstract class Agent implements IGameElement {
 		return agentAttack;
 	}
 
+	public double getPercentageOfVictories() {
+		return strategy.getPercentageOfVictories();
+	}
+
+	public double getPercentageOfDefeats() {
+		return strategy.getPercentageOfDefeats();
+	}
+
 	public int getLife() {
 		return life;
 	}
@@ -227,11 +235,12 @@ public abstract class Agent implements IGameElement {
 	 *** SETTERS ***
 	 ***************/
 
-	/*public void setTeamId(int id) {
-		AgentController.getAgents().getTeamById(this.teamId).removeAgent(this);
-		AgentController.getAgents().getTeamById(id).addAgent(this);
-		this.teamId = id;
-	}*/
+	/*
+	 * public void setTeamId(int id) {
+	 * AgentController.getAgents().getTeamById(this.teamId).removeAgent(this);
+	 * AgentController.getAgents().getTeamById(id).addAgent(this); this.teamId =
+	 * id; }
+	 */
 
 	public void setPos(WorldPosition pos) {
 		position = pos;
@@ -309,8 +318,17 @@ public abstract class Agent implements IGameElement {
 		strategy.updateLastOpponentPlay(play);
 	}
 
+	public void incVictories() {
+		strategy.incVictories();
+	}
+
+	public void incDefeats() {
+		strategy.incDefeats();
+	}
+
 	public int wantNegotiation() {
-		if (hasLowLife()) {
+		if (hasLowLife()
+				|| getPercentageOfDefeats() > getPercentageOfVictories() * 2) {
 			if (hasFlag()) {
 				return FLAG;
 			} else {
@@ -327,7 +345,7 @@ public abstract class Agent implements IGameElement {
 			if (result == FLAG) {
 				agent.switchFlag(this);
 			} else {
-				//agent.setTeamId(teamId);
+				// agent.setTeamId(teamId);
 			}
 
 			return true;
@@ -367,8 +385,12 @@ public abstract class Agent implements IGameElement {
 			enemy.updateLastOpponentPlay(agentPlay);
 
 			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
+				incVictories();
+				enemy.incDefeats();
 				return;
 			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
+				enemy.incVictories();
+				incDefeats();
 				return;
 			}
 

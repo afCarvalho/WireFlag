@@ -9,7 +9,9 @@ import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.agent.communication.message.FlagSpotted;
 import pt.tecnico.aasma.wireflag.agent.communication.message.Halt;
+import pt.tecnico.aasma.wireflag.agent.communication.message.HaveFlag;
 import pt.tecnico.aasma.wireflag.agent.communication.message.SpawnSpotted;
+import pt.tecnico.aasma.wireflag.agent.type.Patrol;
 import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
@@ -70,7 +72,6 @@ public class Reactive extends Architecture {
 	}
 
 	public void doAction0(Agent agent, int delta) {
-		System.out.println("NORMAL WAY");
 		WireFlagGame.win(agent.getTeamId());
 	}
 
@@ -86,6 +87,10 @@ public class Reactive extends Architecture {
 
 		if (getPerceptionPos(actualPos).hasFlag()) {
 			agent.catchFlag();
+			Message msg = new Message(agent, new HaveFlag(actualPos), true,
+					false);
+			AgentController.getAgents().getTeamById(agent.getTeamId())
+					.getDeliverySystem().addMessage(msg);
 		}
 	}
 
@@ -461,8 +466,12 @@ public class Reactive extends Architecture {
 	public void doAction14(Agent agent, int delta) {
 		for (Perception perception : perceptions) {
 			if (perception.hasFlag()) {
+				boolean isPatrol = false;
+				if (agent instanceof Patrol) {
+					isPatrol = true;
+				}
 				Message msg = new Message(agent, new FlagSpotted(
-						perception.getPosition(), false, -1), false, false);
+						perception.getPosition(), false, -1), true, isPatrol);
 				AgentController.getAgents().getTeamById(agent.getTeamId())
 						.getDeliverySystem().addMessage(msg);
 
@@ -562,13 +571,12 @@ public class Reactive extends Architecture {
 	}
 
 	public void makeAction(Agent agent, int delta) {
-		/*
-		 * for (Message message : getMessages()) { this.processMessage(message);
-		 * }
-		 * 
-		 * perceptions.addAll(agent.getPerceptions());
-		 */
+
 		perceptions = agent.getPerceptions();
+
+		for (Message message : getMessages()) {
+			this.processMessage(message);
+		}
 
 		/* if a behavior is applicable then do the correspondent action */
 		for (int i = 0; i < BEHAVIOR_SIZE; i++) {

@@ -85,6 +85,14 @@ public class Beliefs {
 		return enemyState;
 	}
 
+	public double getPercentageOfVictories() {
+		return agent.getPercentageOfVictories();
+	}
+
+	public double getPercentageOfDefeats() {
+		return agent.getPercentageOfDefeats();
+	}
+
 	/***************
 	 *** SETTERS ***
 	 ***************/

@@ -11,17 +11,38 @@ public abstract class Strategy {
 	protected boolean lastOpponentPlay;
 	protected int playNumber;
 
+	private int numPlays;
+	private int numVictories;
+	private int numDefeats;
+
 	public Strategy() {
 		// Nothing to do here
 	}
 
+	public double getPercentageOfVictories() {
+		return numVictories * 100.0 / numPlays;
+	}
+
+	public double getPercentageOfDefeats() {
+		return numDefeats * 100.0 / numPlays;
+	}
+
 	public void startPlay() {
 		playNumber = INITIAL_PLAY;
+		numPlays++;
 	}
 
 	public abstract boolean getPlay();
 
 	public void updateLastOpponentPlay(boolean play) {
 		lastOpponentPlay = play;
+	}
+
+	public void incVictories() {
+		numVictories++;
+	}
+
+	public void incDefeats() {
+		numDefeats++;
 	}
 }

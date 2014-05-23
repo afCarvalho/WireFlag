@@ -19,7 +19,8 @@ public class BattleDesire implements Desire {
 				rateLife = beliefs.getLife() / 2.0;
 			}
 
-			return 100 - rateLife;
+			return Math.max(100,
+					100 - rateLife + beliefs.getPercentageOfVictories());
 		} else {
 			return 0;
 		}

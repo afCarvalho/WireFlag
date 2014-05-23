@@ -36,18 +36,8 @@ public class Hybrid extends Architecture {
 	 * @return true, if is urgent perception
 	 */
 	private boolean isUrgentPerception(Agent agent, Perception perception) {
-
-		// teamBase da equipa && flag
-		// fire na pos do agente
-		// extreme weather na pos do agente
-		// cansado
-		// vida
-		// enemy
-
-		// TODO muralha do inimigo
-
-		return agent.hasFlag()
-				&& perception.hasTeamBase()
+		return (agent.hasFlag() && perception.hasTeamBase() && perception
+				.getTeamBaseId() == agent.getTeamId())
 				|| agent.hasVeryLowLife()
 				|| agent.hasFatigue()
 				|| perception.hasEnemy()
@@ -68,21 +58,23 @@ public class Hybrid extends Architecture {
 	 */
 	public void makeAction(Agent agent, int delta) {
 		List<Perception> perceptions = agent.getPerceptions();
+		boolean isUrgent = false;
 
 		for (Perception perception : perceptions) {
-			if (isUrgentPerception(agent, perception)) {
-				reactiveLayer.makeAction(agent, delta);
-				/* updates the deliberative architecture's state */
-				deliberativeLayer.getBeliefs().updateBeliefs();
-			} else {
-				deliberativeLayer.makeAction(agent, delta);
-			}
+			isUrgent = isUrgent || isUrgentPerception(agent, perception);
+		}
+
+		if (isUrgent) {
+			reactiveLayer.makeAction(agent, delta);
+			/* updates the deliberative architecture's state */
+			deliberativeLayer.getBeliefs().updateBeliefs();
+		} else {
+			deliberativeLayer.makeAction(agent, delta);
 		}
 	}
 
 	@Override
 	protected void processMessage(Message message) {
-		// TODO Auto-generated method stub
-		
+		// Nothing to do here
 	}
 }
