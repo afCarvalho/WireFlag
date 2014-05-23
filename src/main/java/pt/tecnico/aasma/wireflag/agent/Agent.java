@@ -14,9 +14,11 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
+import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
 import pt.tecnico.aasma.wireflag.environment.landscape.Landscape;
+import pt.tecnico.aasma.wireflag.environment.landscape.Water;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
@@ -132,7 +134,7 @@ public abstract class Agent implements IGameElement {
 		return fatigue;
 	}
 
-	public float getAgentSpeed(MapPosition pos) {
+	private float getAgentSpeed(MapPosition pos) {
 		return agentSpeed * (100 - fatigue) * 1.0f / 100
 				* MapController.getMap().getMovementSpeed(pos);
 	}
@@ -158,7 +160,9 @@ public abstract class Agent implements IGameElement {
 
 		Perception perception = new Perception(pos, land.getRating());
 		perception.setFlag(land.hasFlag());
-		if (land.hasAgent() && land.getAgent().isEnemy(teamId)) {
+		Agent landAgent = land.getAgent();
+
+		if (landAgent != null && landAgent.isEnemy(teamId)) {
 			perception.setEnemy(pos);
 		}
 		perception.setTeamBase(land.hasTeamBase());
@@ -170,10 +174,10 @@ public abstract class Agent implements IGameElement {
 		perception.setExtremeWeather(land.getWeather().isExtremeWeather());
 		perception.setBlocked(isBlocked(pos));
 		perception.setIsAbilityUseful(isAbilityUseful(pos));
-		if (land.hasAgent()) {
-			perception.setAgentAttack(land.getAgent().getAgentAttack());
-			perception.setTiredAgent(land.getAgent().hasFatigue());
-			perception.setInjuredAgent(land.getAgent().hasLowLife());
+		if (landAgent != null) {
+			perception.setAgentAttack(landAgent.getAgentAttack());
+			perception.setTiredAgent(landAgent.hasFatigue());
+			perception.setInjuredAgent(landAgent.hasLowLife());
 		}
 
 		return perception;
@@ -394,7 +398,35 @@ public abstract class Agent implements IGameElement {
 	public synchronized void modifyLife(int value) {
 		life = Math.max(0, life + value);
 		life = Math.min(life, 100);
+
+		if (!isAlive()) {
+			EndGameController.getEnd().decreaseNAliveAgents();
+			dropFlag();
+			MapController.getMap().getLandscape(position.getMapPosition())
+					.setAgent(null);
+		}
+
 		this.notify();
+	}
+
+	public void takePenalty() {
+		Landscape land = MapController.getMap().getLandscape(
+				position.getMapPosition());
+		modifyFatigue(land.getFatigue());
+		if (land.hasFire()) {
+			modifyLife(-20);
+		}
+		if (land.getWeather().isExtremeWeather()) {
+			modifyLife(-land.getWeather().getLifeDamage());
+
+			if (new Random().nextInt(100) > 80) {
+				setIll(true);
+			}
+		}
+
+		if (isIll()) {
+			modifyLife(-15);
+		}
 	}
 
 	public synchronized void modifyFatigue(int value) {
@@ -468,10 +500,14 @@ public abstract class Agent implements IGameElement {
 		Landscape land = MapController.getMap().getLandscape(p);
 		boolean posBlocked = MapController.getMap().isBlocked(p);
 
-		return posBlocked
-				&& (!land.hasAgent() || land.hasAgent()
-						&& land.getAgent().getAgentId() != getAgentId() || land
-						.getAgent().getTeamId() != getTeamId());
+		Agent agent = land.getAgent();
+
+		if (agent != null) {
+			return posBlocked
+					&& (agent.getAgentId() != getAgentId() || agent.getTeamId() != getTeamId());
+		} else {
+			return posBlocked;
+		}
 	}
 
 	/*
@@ -700,7 +736,7 @@ public abstract class Agent implements IGameElement {
 			MapController.getMap().getLandscape(position).setAgent(this);
 
 			if (!oldPos.isSamePosition(position.getMapPosition())) {
-				MapController.getMap().getLandscape(position).takePenalty();
+				takePenalty();
 			}
 
 			return true;
@@ -720,7 +756,7 @@ public abstract class Agent implements IGameElement {
 
 	@Override
 	public void render(Graphics g) {
-		//DeliberativeArchTest.run(g, (Deliberative) architecture);
+		// DeliberativeArchTest.run(g, (Deliberative) architecture);
 
 		g.setColor(new Color(1f, life * 1.0f / 100,
 				((100 - fatigue) * 1.0f) / 100, 0.4f));
@@ -746,6 +782,12 @@ public abstract class Agent implements IGameElement {
 
 		if (isIll()) {
 			ill.draw(position.getX(), position.getY());
+		}
+
+		if (MapController.getMap().getLandscape(position.getMapPosition()) instanceof Water) {
+			Animation boat = AnimationLoader.getLoader().getBoat();
+			boat.draw(position.getX() - boat.getWidth() / 2, position.getY()
+					- boat.getHeight() / 2);
 		}
 	}
 }

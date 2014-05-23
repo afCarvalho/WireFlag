@@ -68,12 +68,5 @@ public class Water extends Landscape {
 		if (hasTeamBase()) {
 			teamBase.render(g);
 		}
-
-		Agent a = agent;
-
-		if (a != null) {
-			a.render(g);
-			boat.draw(a.getPos().getX(), a.getPos().getY());
-		}
 	}
 }

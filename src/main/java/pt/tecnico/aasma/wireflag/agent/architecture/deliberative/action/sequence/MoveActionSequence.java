@@ -31,13 +31,14 @@ public class MoveActionSequence extends ActionSequence {
 	@Override
 	public double getSequenceValue() {
 		double distance = beliefs.getAgentPos().getDistanceFrom(getTailPos()) + 1;
-		/*if (distance > 1) {
-			System.err.println("VALUE " + value + " DANGEr " + dangerValue
-					+ " N ACTIONS " + actions.size() + " DISTANCE " + distance
-					+ " RESULT " + (value * dangerValue)
-					/ (actions.size() + distance));
-
-		}*/
+		/*
+		 * if (distance > 1) { System.err.println("VALUE " + value + " DANGEr "
+		 * + dangerValue + " N ACTIONS " + actions.size() + " DISTANCE " +
+		 * distance + " RESULT " + (value * dangerValue) / (actions.size() +
+		 * distance));
+		 * 
+		 * }
+		 */
 
 		return (value * dangerValue) / (actions.size() * distance);
 	}
@@ -47,10 +48,7 @@ public class MoveActionSequence extends ActionSequence {
 	}
 
 	private double getDangerUtility(MapPosition pos) {
-		WorldState wState = beliefs.getWorldState(pos.getX(), pos.getY());
-
-		if (wState.hasFire() || wState.hasExtremeWeather()
-				|| wState.isBlocked()) {
+		if (beliefs.blockedWay(pos.getX(), pos.getY())) {
 			return -1;
 		} else {
 			return 1;

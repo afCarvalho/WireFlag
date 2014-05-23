@@ -13,7 +13,7 @@ public class GetFlagDesire implements Desire {
 		MapPosition agentPos = beliefs.getAgentPos();
 
 		if (beliefs.hasFlagPos() && !beliefs.carriesFlag()) {
-			return 100 - flagPos.getDistanceFrom(agentPos);
+			return 100 - flagPos.getDistanceFrom(agentPos)/4;
 		} else {
 			return 0;
 		}

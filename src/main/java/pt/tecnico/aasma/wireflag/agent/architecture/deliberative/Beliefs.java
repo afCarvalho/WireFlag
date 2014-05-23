@@ -226,7 +226,8 @@ public class Beliefs {
 	public boolean blockedWay(int x, int y) {
 		WorldState world = getWorldState(x, y);
 		return world.hasExtremeWeather() || world.hasAnimal()
-				|| world.hasFire() || world.isBlocked();
+				|| world.hasFire() || world.isBlocked() || world.hasAgent()
+				&& !world.getPosition().isSamePosition(getAgentPos());
 	}
 
 	public boolean reconsider() {

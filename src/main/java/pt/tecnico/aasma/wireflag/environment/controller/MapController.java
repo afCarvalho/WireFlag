@@ -94,8 +94,8 @@ public class MapController implements IController {
 	public boolean isBlocked(MapPosition p) {
 		Landscape land = getLandscape(p);
 
-		return getMovementSpeed(p) == 0 || land.hasAnimal() || land.hasAgent()
-				|| land.hasTeamBase();
+		return getMovementSpeed(p) == 0 || land.hasAnimal()
+				|| land.getAgent() != null || land.hasTeamBase();
 	}
 
 	/*********************

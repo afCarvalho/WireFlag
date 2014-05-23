@@ -12,6 +12,7 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.Desire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.ExploreDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.FleeDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.GetFlagDesire;
+import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HealDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.HuntDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.RestDesire;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.desire.SurviveFireDesire;

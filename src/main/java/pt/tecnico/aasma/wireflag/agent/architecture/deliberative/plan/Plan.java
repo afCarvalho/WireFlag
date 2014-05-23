@@ -126,9 +126,9 @@ public abstract class Plan {
 
 		// System.err.println(bestSequence);
 
-		if (bestSequence != null) {
+		/*if (bestSequence != null) {
 			DeliberativeArchTest.setActions(bestSequence.getActions().clone());
-		}
+		}*/
 
 		if (bestSequence == null) {
 			//System.out.println("NULL LIST");

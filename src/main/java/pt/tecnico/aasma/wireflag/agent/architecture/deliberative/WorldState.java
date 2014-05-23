@@ -71,11 +71,6 @@ public class WorldState {
 			reconsider = true;
 		} else if (perception.hasTeamBase() != p.hasTeamBase()) {
 			reconsider = true;
-		} else if (perception.hasEnemy() != p.hasEnemy()) {
-			reconsider = true;
-		} else if ((!perception.hasEnemy() && perception.getAgent() != null) != (!p
-				.hasEnemy() && p.getAgent() != null)) {
-			reconsider = true;
 		}
 
 		perception = p;

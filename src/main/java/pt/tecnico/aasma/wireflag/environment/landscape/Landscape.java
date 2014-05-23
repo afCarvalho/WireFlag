@@ -1,24 +1,16 @@
 package pt.tecnico.aasma.wireflag.environment.landscape;
 
-import java.util.Random;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.Agent;
-import pt.tecnico.aasma.wireflag.agent.AgentThread;
-import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
-import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
-import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
-import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.object.Animal;
-import pt.tecnico.aasma.wireflag.environment.object.TeamBase;
 import pt.tecnico.aasma.wireflag.environment.object.Fire;
 import pt.tecnico.aasma.wireflag.environment.object.Flag;
+import pt.tecnico.aasma.wireflag.environment.object.TeamBase;
 import pt.tecnico.aasma.wireflag.environment.weather.Sunny;
 import pt.tecnico.aasma.wireflag.environment.weather.Weather;
-import pt.tecnico.aasma.wireflag.util.AnimationLoader;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
 public abstract class Landscape implements IGameElement {
@@ -71,8 +63,8 @@ public abstract class Landscape implements IGameElement {
 	public Agent getAgent() {
 		return agent;
 	}
-	
-	public TeamBase getTeamBase(){
+
+	public TeamBase getTeamBase() {
 		return teamBase;
 	}
 
@@ -124,10 +116,6 @@ public abstract class Landscape implements IGameElement {
 	 *** STATE PREDICATES ***
 	 ************************/
 
-	public boolean hasAgent() {
-		return agent != null;
-	}
-
 	public boolean hasFlag() {
 		return flag != null;
 	}
@@ -167,24 +155,6 @@ public abstract class Landscape implements IGameElement {
 		}
 	}
 
-	public void takePenalty() {
-		agent.modifyFatigue(fatigue);
-		if (hasFire()) {
-			agent.modifyLife(-20);
-		}
-		if (getWeather().isExtremeWeather()) {
-			agent.modifyLife(-getWeather().getLifeDamage());
-
-			if (new Random().nextInt(100) > 80) {
-				agent.setIll(true);
-			}
-		}
-
-		if (agent.isIll()) {
-			agent.modifyLife(-15);
-		}
-	}
-
 	public abstract Animal createAnimal();
 
 	/********************
@@ -208,12 +178,6 @@ public abstract class Landscape implements IGameElement {
 
 		if (hasFire() && !fire.isActive()) {
 			fire = null;
-		}
-
-		if (hasAgent() && !agent.isAlive()) {
-			EndGameController.getEnd().decreaseNAliveAgents();
-			agent.dropFlag();
-			setAgent(null);
 		}
 
 		weather.update(delta);
@@ -240,9 +204,9 @@ public abstract class Landscape implements IGameElement {
 		if (hasTeamBase()) {
 			teamBase.render(g);
 		}
+	}
 
-		/*if (hasAgent()) {
-			agent.render(g);
-		}*/
+	public int getFatigue() {
+		return fatigue;
 	}
 }
