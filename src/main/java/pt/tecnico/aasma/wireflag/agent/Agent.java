@@ -54,6 +54,11 @@ public abstract class Agent implements IGameElement {
 	public final static int RIGHT = 2;
 	public final static int LEFT = 3;
 
+	/* negotiation */
+	private final int NO_NEGOTIATE = 0;
+	private final int TEAM = 1;
+	private final int FLAG = 2;
+
 	protected Animation up;
 	protected Animation down;
 	protected Animation right;
@@ -278,6 +283,15 @@ public abstract class Agent implements IGameElement {
 		}
 	}
 
+	public void switchFlag(Agent agent) {
+		agent.setFlag(flag);
+		flag = null;
+	}
+
+	private void setFlag(Flag flag) {
+		this.flag = flag;
+	}
+
 	public void startPlay() {
 		strategy.startPlay();
 	}
@@ -290,10 +304,38 @@ public abstract class Agent implements IGameElement {
 		strategy.updateLastOpponentPlay(play);
 	}
 
+	public int wantNegotiation() {
+		if (hasLowLife()) {
+			if (hasFlag()) {
+				return FLAG;
+			} else {
+				return TEAM;
+			}
+		} else {
+			return NO_NEGOTIATE;
+		}
+	}
+
+	public boolean negotiate(Agent agent) {
+		int result = agent.wantNegotiation();
+		if (result != NO_NEGOTIATE) {
+			if (result == FLAG) {
+				agent.switchFlag(this);
+			} else {
+				agent.setTeamId(teamId);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 	public synchronized void confront(MapPosition enemyPos) {
 		Agent enemy = MapController.getMap().getLandscape(enemyPos).getAgent();
 		boolean agentPlay;
 		boolean enemyPlay;
+		boolean isAgentWinner = false;
+		boolean isEnemyWinner = false;
 
 		startPlay();
 		enemy.startPlay();
@@ -304,19 +346,22 @@ public abstract class Agent implements IGameElement {
 
 			if (agentPlay == Strategy.ATTACK) {
 				attack(enemyPos);
+				isAgentWinner = true;
 			}
 
 			if (enemyPlay == Strategy.ATTACK) {
 				enemy.attack(position.getMapPosition());
+				isEnemyWinner = true;
 			}
 
 			updateLastOpponentPlay(enemyPlay);
 			enemy.updateLastOpponentPlay(agentPlay);
 
-			// negociacao
-			// o que ganha e se o outro se quer negociar
-			// pode dar a bandeira ou mudar de equipa
-			// else novo confronto
+			if (isAgentWinner && !isEnemyWinner && negotiate(enemy)) {
+				return;
+			} else if (!isAgentWinner && isEnemyWinner && enemy.negotiate(this)) {
+				return;
+			}
 		}
 	}
 
