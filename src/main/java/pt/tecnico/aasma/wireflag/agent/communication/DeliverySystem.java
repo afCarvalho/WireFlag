@@ -17,9 +17,9 @@ import pt.tecnico.aasma.wireflag.util.Logger;
  * agents.
  */
 public class DeliverySystem extends Thread {
-	
+
 	private Logger logger;
-	
+
 	private BlockingQueue<Message> messages;
 
 	private ArrayList<Agent> subscribers;
@@ -27,7 +27,8 @@ public class DeliverySystem extends Thread {
 	private int teamIdentifier;
 
 	public DeliverySystem(int teamIdentifier) throws IOException {
-		this.logger = new Logger("Team" + teamIdentifier + ".messages", "Team " + teamIdentifier);
+		this.logger = new Logger("Team" + teamIdentifier + ".messages", "Team "
+				+ teamIdentifier);
 		this.messages = new LinkedBlockingQueue<Message>();
 		this.subscribers = new ArrayList<Agent>();
 		this.teamIdentifier = teamIdentifier;
@@ -49,12 +50,7 @@ public class DeliverySystem extends Thread {
 	}
 
 	public void addMessage(Message message) {
-		try {
-			messages.put(message);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		messages.offer(message);
 		logger.write("Adding new message " + message.toString());
 	}
 
@@ -62,8 +58,9 @@ public class DeliverySystem extends Thread {
 		try {
 			Message message = messages.take();
 			Agent sender = message.getSender();
-			
-			String log = "Delivering new message from " + sender.getAgentId() + "\nReceivers:";
+
+			String log = "Delivering new message from " + sender.getAgentId()
+					+ "\nReceivers:";
 
 			if (message.isGlobal() && sender instanceof Patrol) {
 				deliverGlobalMessage(message, sender);

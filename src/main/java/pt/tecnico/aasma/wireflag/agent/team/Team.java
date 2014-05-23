@@ -64,26 +64,16 @@ public abstract class Team {
 	}
 
 	/**
-	 * Adds a new member to the team.
-	 * 
-	 * @param agent
-	 *            the agent to be added
-	 */
-	public final void addMember(Agent agent) {
-		if (members.contains(agent)) {
-			return;
-		}
-		members.add(agent);
-		deliverySystem.subscribe(agent);
-	}
-
-	/**
 	 * Removes the member. If it is the leader then it's elected a new one.
 	 * 
 	 * @param agent
 	 *            the member to be removed
 	 */
-	public final void removeMember(Agent agent) {
+	public final void removeAgent(Agent agent) {
+		//if (leader.equals(agent)) {
+		//	electLeader();
+		//	return;
+		//}
 		members.remove(agent);
 		deliverySystem.unsubscribe(agent);
 	}
@@ -106,7 +96,11 @@ public abstract class Team {
 	}
 
 	public void addAgent(Agent agent) {
+		if (members.contains(agent)) {
+			return;
+		}
 		members.add(agent);
+		deliverySystem.subscribe(agent);
 		EndGameController.getEnd().increaseNAliveAgents();
 	}
 
