@@ -14,6 +14,7 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
@@ -227,6 +228,8 @@ public abstract class Agent implements IGameElement {
 	 ***************/
 
 	public void setTeamId(int id) {
+		AgentController.getAgents().getTeamById(this.teamId).removeAgent(this);
+		AgentController.getAgents().getTeamById(id).addAgent(this);
 		this.teamId = id;
 	}
 
