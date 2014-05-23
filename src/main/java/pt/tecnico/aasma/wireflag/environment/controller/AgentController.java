@@ -82,16 +82,16 @@ public class AgentController implements IController {
 		Team t1;
 		try {
 			t1 = new DemocraticalTeam(getNextTeamId());
-			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
-			Agent b1 = new Guard(t1.getID(), t1.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
-			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive(),
+					new AlwaysAttack());
+			Agent b1 = new Guard(t1.getID(), t1.getMemberID(), new Reactive(),
+					new AlwaysAttack());
+			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive(),
+					new AlwaysAttack());
 			Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+					new Reactive(), new AlwaysAttack());
 			Agent h1 = new Soldier(t1.getID(), t1.getMemberID(),
-					new Deliberative(), new AlwaysAttack());
+					new Reactive(), new AlwaysAttack());
 			t1.addAgent(b1);
 			t1.addAgent(h1);
 			t1.addAgent(p1);
