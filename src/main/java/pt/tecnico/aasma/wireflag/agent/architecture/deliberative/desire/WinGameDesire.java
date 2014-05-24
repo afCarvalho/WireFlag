@@ -5,13 +5,6 @@ import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.Inten
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.intention.WinGameIntention;
 import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 
-/**
- * 
- * @author Jmcc - Falta perceber se vale a pena truncar a distancia a 20, de
- *         modo a que o rate nunca baixe de 80
- * 
- */
-
 public class WinGameDesire implements Desire {
 
 	@Override

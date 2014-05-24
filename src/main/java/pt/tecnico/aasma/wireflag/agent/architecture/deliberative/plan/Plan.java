@@ -43,98 +43,46 @@ public abstract class Plan {
 	public void addAction(ActionSequence actionSeq, int x, int y) {
 		MapPosition pos = new MapPosition(actionSeq.getTailPos().getX() + x,
 				actionSeq.getTailPos().getY() + y);
-
-		// System.err.println("X " + x + " Y " + y);
-
-		/*
-		 * System.err.println(pos.isValid() + " " +
-		 * !usedPerception[pos.getX()][pos.getY()] + " " +
-		 * !actionSeq.isFinished());
-		 */
-		//System.err.println(!usedPerception[pos.getX()][pos.getY()]);
 		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
 				&& !actionSeq.isFinished()) {
-			 //System.err.println("EFFECTIVELY ADDED");
 			createNewAction(pos, actionSeq);
-			// usedPerception[pos.getX() + x][pos.getY() + y] = true;
 		}
 	}
 
 	public LinkedList<Action> makePlan(MapPosition initialPosition) {
-		// System.err.println("LETS PLAN");
 
 		createNewAction(initialPosition, null);
 
-		ActionSequence bestSequence = null;// = actSequences.getFirst();
-
-		// System.err.println("LETS START PLANNING");
+		ActionSequence bestSequence = null;
 
 		while (!actSequences.isEmpty()) {
-
-			// System.err.println("INSIDE LOOP");
-
-			/*
-			 * System.err.println("START --------------"); for (ActionSequence
-			 * seq : actSequences) { String message = ""; for (Action ac :
-			 * seq.getActions()) { message += ac.getPos().getX() + " " +
-			 * ac.getPos().getY() + " "; } System.err.println(message + " " +
-			 * seq.isFinished() + " " + seq.getSequenceValue()); }
-			 * 
-			 * System.err.println("END ---------------");
-			 */
 
 			ActionSequence a = actSequences.removeFirst();
 			usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = true;
 
-			// System.err.println("PLANNING " + actSequences.size() + " "
-			// + a.isFinished() + " " + beliefs.hasNewPosition() + " " +
-			// beliefs.hasUnknownPosition());
-
-			 //System.err.println("REMOVED ONE");
-
 			if (a.isFinished()
 					&& (bestSequence == null || a.getSequenceValue() > bestSequence
 							.getSequenceValue())) {
-				// System.err.println("TRYING...");
-
 				if (a.getSequenceValue() >= 0) {
 					bestSequence = a;
-					 //System.err.println("SET BEST");
 				}
 			} else if (bestSequence != null
 					&& (a.getActions().size() > bestSequence.getActions()
 							.size())) {
-				// System.err.println("CONTINUE1");
 				continue;
 			} else if (a.getSequenceValue() < 0 || a.getActions().size() > 25) {
-				//System.err.println("CONTINUE2");
 				continue;
 			}
-
-			// System.err.println("ADD NEW");
 
 			shuffleArray(coords);
 			for (int i : coords) {
 				addAction(a, xCoords[i], yCoords[i]);
 			}
-
-			/*
-			 * addAction(a, 1, 0); addAction(a, -1, 0); addAction(a, 0, 1);
-			 * addAction(a, 0, -1);
-			 */
 		}
 
-		// System.err.println(bestSequence);
-
-		/*if (bestSequence != null) {
-			DeliberativeArchTest.setActions(bestSequence.getActions().clone());
-		}*/
-
 		if (bestSequence == null) {
-			//System.out.println("NULL LIST");
 			return new LinkedList<Action>();
 		} else {
-			//System.out.println("LIST WITH " + bestSequence.getActions().size());
 			return bestSequence.getActions();
 		}
 

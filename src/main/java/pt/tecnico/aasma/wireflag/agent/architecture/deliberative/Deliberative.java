@@ -65,19 +65,12 @@ public class Deliberative extends Architecture {
 		double desireRate = 0;
 		Intention intention = null;
 
-		// int i = 0;
-
 		for (Desire desire : desires) {
-			// System.out.println("DESIRE RATE " + i++ + " " +
-			// desire.getRate(beliefs));
-
 			if (desire.getRate(beliefs) > desireRate) {
 				desireRate = desire.getRate(beliefs);
 				intention = desire.getIntention();
 			}
 		}
-
-		// System.err.println("HIGHEST RATE " + desireRate);
 
 		return intention;
 	}
@@ -93,35 +86,12 @@ public class Deliberative extends Architecture {
 
 		beliefs.updateBeliefs();
 
-		/*
-		 * if (actualIntention != null) { System.out.println(actions.isEmpty() +
-		 * " " + actualIntention.impossible(actions, beliefs) + " " +
-		 * actualIntention.suceeded(actions, beliefs)); }
-		 */
-
 		if (actions.isEmpty() || actualIntention.impossible(actions, beliefs)
 				|| actualIntention.suceeded(actions, beliefs)) {
 
-			/*
-			 * if (actualIntention != null) {
-			 * System.err.println(actions.isEmpty() + " " +
-			 * actualIntention.impossible(actions, beliefs) + " " +
-			 * actualIntention.suceeded(actions, beliefs)); }
-			 */
-
 			actualIntention = getIntention();
-			// System.err.println("LETS GET A PLAN");
 			Plan plan = actualIntention.getPlan(beliefs);
-			// System.err.println("LETS GET ACTIONS");
 			actions = plan.makePlan(beliefs.getAgentPos());
-
-			/*
-			 * System.err.println("PLANING " + actualIntention.getId() +
-			 * " DONE WITH " + actions.size() + " ACTIONS " +
-			 * actualIntention.impossible(actions, beliefs) + " " +
-			 * actualIntention.suceeded(actions, beliefs) + " " +
-			 * actions.isEmpty() + " " + actions.size());
-			 */
 
 		}
 
@@ -129,19 +99,15 @@ public class Deliberative extends Architecture {
 			Action action = actions.removeFirst();
 			if (!action.act(beliefs, agent, delta)) {
 				actions.addFirst(action);
-				// System.err.println("ADD ACTION");
 			}
-			// System.err.println("IT NOW HAS " + actions.size());
 		}
 
 		beliefs.updateBeliefs();
 
 		if (beliefs.reconsider()) {
-			// System.err.println("RECONSIDER");
 			Intention intention = getIntention();
 			if (!intention.isSame(actualIntention)
 					|| actualIntention.impossible(actions, beliefs)) {
-				// System.err.println("REPLAN");
 				actualIntention = intention;
 				Plan plan = actualIntention.getPlan(beliefs);
 				actions = plan.makePlan(beliefs.getAgentPos());

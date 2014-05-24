@@ -24,7 +24,7 @@ public class HuntPlan extends Plan {
 		} else {
 			seq = new MoveActionSequence(beliefs, actionSeq);
 		}
-		
+
 		actSequences.add(seq);
 		if (beliefs.getAnimalState().getPosition().getDistanceFrom(pos) == 1) {
 
@@ -38,15 +38,7 @@ public class HuntPlan extends Plan {
 			seq.addAction(new HuntAction(pos, xInc, yInc));
 			seq.setFinished(true);
 		} else {
-			/*
-			 * System.err .println("MOVE " + pos.getX() + " " + pos.getY() + " "
-			 * + beliefs.getWorldState(pos.getX(), pos.getY()) .hasAnimal() +
-			 * beliefs.getWorldState(pos.getX(), pos.getY()) .isBlocked());
-			 */
-			// System.err.println("MOVE");
-
 			seq.addAction(new MoveAction(pos));
-
 		}
 	}
 }

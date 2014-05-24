@@ -37,16 +37,12 @@ public class ExplorePlan extends Plan {
 		actSequences.add(seq);
 
 		if (beliefs.hasNewPosition()) {
-			//System.err.println("NEW ");
-			//		+ beliefs.getWorldState(pos.getX(), pos.getY()).isNewlyDiscovered() );
 			if (beliefs.getWorldState(pos.getX(), pos.getY())
 					.isNewlyDiscovered()) {
 				seq.setFinished(true);
 			}
 		} else if (beliefs.hasUnknownPosition()) {
-			//System.err.println("UNKNOWN ");// + getNUnknownAdjacent(beliefs, pos));
-			if (getNUnknownAdjacent(beliefs, pos)/*getNUnknownAdjacent(beliefs, pos)*/) {
-				//System.err.println("FINISHED");
+			if (getNUnknownAdjacent(beliefs, pos)) {
 				seq.setFinished(true);
 			}
 		}

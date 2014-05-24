@@ -34,7 +34,6 @@ public class AbilityPlan extends Plan {
 						&& j > 0 && i > 0) {
 					seq.addAction(new AbilityAction(new MapPosition(i, j)));
 				}
-
 			}
 		}
 
