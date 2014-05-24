@@ -5,6 +5,7 @@ import java.util.List;
 import pt.tecnico.aasma.wireflag.agent.Agent;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.agent.architecture.deliberative.Deliberative;
+import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.perception.Perception;
 
 /**
@@ -64,6 +65,7 @@ public class Hybrid extends Architecture {
 			isUrgent = isUrgent || isUrgentPerception(agent, perception);
 		}
 
+		deliberativeLayer.getBeliefs().setAgent(agent);
 		if (isUrgent) {
 			reactiveLayer.makeAction(agent, delta);
 			/* updates the deliberative architecture's state */
