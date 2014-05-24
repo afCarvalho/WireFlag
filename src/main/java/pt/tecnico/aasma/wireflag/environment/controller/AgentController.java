@@ -86,11 +86,11 @@ public class AgentController implements IController {
 		try {
 			t1 = new DemocraticalTeam(getNextTeamId());
 			Agent d1 = new Doctor(t1.getID(), t1.getMemberID(), new Reactive(),
-					new Tester());
+					new AlwaysAttack());
 			Agent b1 = new BomberMan(t1.getID(), t1.getMemberID(),
-					new Reactive(), new Joss());
+					new Reactive(), new AlwaysAttack());
 			Agent p1 = new Patrol(t1.getID(), t1.getMemberID(), new Reactive(),
-					new TitForTat());
+					new AlwaysAttack());
 			Agent s1 = new Soldier(t1.getID(), t1.getMemberID(),
 					new Reactive(), new AlwaysAttack());
 			t1.addAgent(d1);
