@@ -14,7 +14,6 @@ import pt.tecnico.aasma.wireflag.IGameElement;
 import pt.tecnico.aasma.wireflag.agent.architecture.Architecture;
 import pt.tecnico.aasma.wireflag.agent.communication.Message;
 import pt.tecnico.aasma.wireflag.agent.strategies.Strategy;
-import pt.tecnico.aasma.wireflag.environment.controller.AgentController;
 import pt.tecnico.aasma.wireflag.environment.controller.EndGameController;
 import pt.tecnico.aasma.wireflag.environment.controller.MapController;
 import pt.tecnico.aasma.wireflag.environment.controller.TimeController;
@@ -184,6 +183,8 @@ public abstract class Agent implements IGameElement {
 		perception.setBlocked(isBlocked(pos));
 		perception.setIsAbilityUseful(isAbilityUseful(pos));
 		if (landAgent != null) {
+			perception.setAgent(true);
+			perception.setAgentId(landAgent.getAgentId());
 			perception.setAgentAttack(landAgent.getAgentAttack());
 			perception.setTiredAgent(landAgent.hasFatigue());
 			perception.setInjuredAgent(landAgent.hasLowLife());
@@ -219,10 +220,15 @@ public abstract class Agent implements IGameElement {
 		List<Agent> mates = new ArrayList<Agent>();
 
 		for (Perception perception : getPerceptions()) {
-			Agent agent = perception.getAgent();
-			if (agent != null && agent.getTeamId() == teamId) {
-				mates.add(agent);
+			if (perception.hasAgent()) {
+				Agent agent = MapController.getMap()
+						.getLandscape(perception.getPosition()).getAgent();
+
+				if (agent != null && agent.getTeamId() == teamId) {
+					mates.add(agent);
+				}
 			}
+
 		}
 		return mates;
 	}

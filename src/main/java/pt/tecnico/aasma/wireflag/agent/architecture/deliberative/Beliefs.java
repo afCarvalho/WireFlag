@@ -160,7 +160,7 @@ public class Beliefs {
 			}
 		}
 
-		worldExploredPercentage = (exploredPercentage / horizontalSize * verticalSize) / 100;
+		worldExploredPercentage = 100*(exploredPercentage / ((horizontalSize * verticalSize)*1.0));
 	}
 
 	public double getWorldExploredPercentage() {

@@ -23,6 +23,7 @@ public class WorldState {
 	public void updateState() {
 
 		if (timeOut == 0) {
+			perception.setAgent(false);
 			perception.setExtremeWeather(false);
 			perception.setFire(false);
 			perception.setAnimal(false);
@@ -90,7 +91,7 @@ public class WorldState {
 	}
 
 	public boolean hasAgent() {
-		return perception.getAgent() != null;
+		return perception.hasAgent();
 	}
 
 	public boolean hasAlly() {

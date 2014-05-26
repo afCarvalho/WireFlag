@@ -31,7 +31,7 @@ public class MoveActionSequence extends ActionSequence {
 	public double getSequenceValue() {
 		double distance = beliefs.getAgentPos().getDistanceFrom(getTailPos()) + 1;
 
-		return (value * dangerValue) / (actions.size() * distance);
+		return 100 * (value * dangerValue) / (actions.size() * distance);
 	}
 
 	private double getLandUtility(MapPosition pos) {

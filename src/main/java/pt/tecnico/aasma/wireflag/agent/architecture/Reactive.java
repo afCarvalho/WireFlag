@@ -128,9 +128,9 @@ public class Reactive extends Architecture {
 
 		if (agent.hasVeryLowLife()) {
 			for (Perception perception : perceptions) {
-				if (perception.getAgent() != null
-						&& perception.getAgent().getAgentId() != agent
-								.getAgentId() && !perception.hasEnemy()) {
+				if (perception.hasAgent()
+						&& perception.getAgentId() != agent.getAgentId()
+						&& !perception.hasEnemy()) {
 					return true;
 				}
 			}
@@ -142,9 +142,9 @@ public class Reactive extends Architecture {
 
 		if (agent.hasVeryLowLife()) {
 			for (Perception perception : perceptions) {
-				if (perception.getAgent() != null
-						&& perception.getAgent().getAgentId() != agent
-								.getAgentId() && !perception.hasEnemy()) {
+				if (perception.hasAgent()
+						&& perception.getAgentId() != agent.getAgentId()
+						&& !perception.hasEnemy()) {
 					Message msg = new Message(agent, new Halt(), false, false);
 					AgentController.getAgents().getTeamById(agent.getTeamId())
 							.getDeliverySystem().addMessage(msg);

@@ -203,6 +203,6 @@ public class MapPosition {
 		return getX() > -1
 				&& getX() < MapController.getMap().getNHorizontalTiles()
 				&& getY() > -1
-				&& getY() < MapController.getMap().getNHorizontalTiles();
+				&& getY() < MapController.getMap().getNVerticalTiles();
 	}
 }

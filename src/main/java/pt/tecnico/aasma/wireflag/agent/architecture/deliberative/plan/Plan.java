@@ -12,29 +12,26 @@ import pt.tecnico.aasma.wireflag.util.position.MapPosition;
 public abstract class Plan {
 
 	protected LinkedList<ActionSequence> actSequences;
-	private boolean usedPerception[][];
+	private double[][] usedPerception;
 	Beliefs beliefs;
-	MapPosition initiPosition;
 	int xCoords[];
 	int yCoords[];
 	int coords[];
-	Random random;
 
 	public Plan(Beliefs beliefs) {
 		xCoords = new int[] { 1, -1, 0, 0 };
 		yCoords = new int[] { 0, 0, 1, -1 };
 		coords = new int[] { 0, 1, 2, 3 };
 
-		random = new Random();
 		actSequences = new LinkedList<ActionSequence>();
-		usedPerception = new boolean[beliefs.getHorizontalSize()][beliefs
+		usedPerception = new double[beliefs.getHorizontalSize()][beliefs
 				.getVerticalSize()];
 		this.beliefs = beliefs;
 
 		for (int i = 0; i < beliefs.getHorizontalSize(); i++) {
 			for (int j = 0; j < beliefs.getVerticalSize(); j++) {
 				if (beliefs.getWorldState(i, j).isBlocked()) {
-					usedPerception[i][j] = true;
+					usedPerception[i][j] = 0.001;
 				}
 			}
 		}
@@ -43,7 +40,7 @@ public abstract class Plan {
 	public void addAction(ActionSequence actionSeq, int x, int y) {
 		MapPosition pos = new MapPosition(actionSeq.getTailPos().getX() + x,
 				actionSeq.getTailPos().getY() + y);
-		if (pos.isValid() && !usedPerception[pos.getX()][pos.getY()]
+		if (pos.isValid() && !(usedPerception[pos.getX()][pos.getY()] > 0)
 				&& !actionSeq.isFinished()) {
 			createNewAction(pos, actionSeq);
 		}
@@ -56,9 +53,13 @@ public abstract class Plan {
 		ActionSequence bestSequence = null;
 
 		while (!actSequences.isEmpty()) {
-
 			ActionSequence a = actSequences.removeFirst();
-			usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = true;
+
+			if (usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] < a
+					.getSequenceValue()) {
+				usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = a
+						.getSequenceValue();
+			}
 
 			if (a.isFinished()
 					&& (bestSequence == null || a.getSequenceValue() > bestSequence
@@ -70,7 +71,7 @@ public abstract class Plan {
 					&& (a.getActions().size() > bestSequence.getActions()
 							.size())) {
 				continue;
-			} else if (a.getSequenceValue() < 0 || a.getActions().size() > 25) {
+			} else if (a.getSequenceValue() < 0) {
 				continue;
 			}
 

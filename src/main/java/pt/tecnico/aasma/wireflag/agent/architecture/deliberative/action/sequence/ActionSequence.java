@@ -20,7 +20,10 @@ public class ActionSequence {
 
 	@SuppressWarnings("unchecked")
 	public ActionSequence(Beliefs beliefs, ActionSequence sequence) {
-		this.actions = (LinkedList<Action>) sequence.getActions().clone();
+		this(beliefs);
+		for (Action ac : sequence.getActions()) {
+			this.actions.add(ac);
+		}
 		value = sequence.value;
 		this.beliefs = beliefs;
 	}

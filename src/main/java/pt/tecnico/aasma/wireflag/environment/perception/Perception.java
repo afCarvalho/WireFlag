@@ -21,7 +21,9 @@ public class Perception {
 	/* raining, sand storm, snow storm */
 	private boolean extremeWeather;
 	private boolean blocked;
-	
+	private boolean hasAgent;
+	private int agentId;
+
 	public Perception(MapPosition position) {
 		this.position = position;
 	}
@@ -57,17 +59,12 @@ public class Perception {
 		return teamBaseId;
 	}
 
-	/**
-	 * Gets the agent in the current position.
-	 * 
-	 * @return the agent
-	 */
-	public Agent getAgent() {
-		return MapController.getMap().getLandscape(position).getAgent();
-	}
-
 	public MapPosition getEnemyPos() {
 		return enemyPos;
+	}
+
+	public int getAgentId() {
+		return agentId;
 	}
 
 	/***************
@@ -122,9 +119,25 @@ public class Perception {
 		this.blocked = blocked;
 	}
 
+	public void setAgent(boolean hasAgent) {
+		this.hasAgent = hasAgent;
+	}
+
+	public void setAgentId(int id) {
+		this.agentId = id;
+	}
+
 	/************************
 	 *** STATE PREDICATES ***
 	 ************************/
+	/**
+	 * Gets the agent in the current position.
+	 * 
+	 * @return the agent
+	 */
+	public boolean hasAgent() {
+		return hasAgent;
+	}
 
 	public boolean hasFlag() {
 		return flag;

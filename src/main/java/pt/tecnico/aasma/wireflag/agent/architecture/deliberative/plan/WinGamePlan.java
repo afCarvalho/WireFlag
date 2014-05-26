@@ -31,16 +31,9 @@ public class WinGamePlan extends Plan {
 			seq.addAction(new DropFlagAction(pos));
 			seq.setFinished(true);
 			actSequences.add(seq);
-		} else if (seq.getActions().size() == 0
-				|| beliefs.getTeamBase().getDistanceFrom(pos) < beliefs
-						.getTeamBase().getDistanceFrom(seq.getTailPos())) {
-
+		} else {
 			seq.addAction(new MoveAction(pos));
 			actSequences.add(seq);
-
-			if (seq.getActions().size() > 2) {
-				seq.setFinished(true);
-			}
 		}
 	}
 }
