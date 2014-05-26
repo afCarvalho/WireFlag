@@ -55,10 +55,12 @@ public abstract class Plan {
 		while (!actSequences.isEmpty()) {
 			ActionSequence a = actSequences.removeFirst();
 
-			if (usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] < a
-					.getSequenceValue()) {
-				usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = a
-						.getSequenceValue();
+			if (usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] < Math
+					.max(0.001, a.getSequenceValue())) {
+				usedPerception[a.getTailPos().getX()][a.getTailPos().getY()] = Math
+						.max(0.001, a.getSequenceValue());
+			} else {
+				continue;
 			}
 
 			if (a.isFinished()

@@ -70,10 +70,10 @@ public abstract class Team {
 	 *            the member to be removed
 	 */
 	public final void removeAgent(Agent agent) {
-		//if (leader.equals(agent)) {
-		//	electLeader();
-		//	return;
-		//}
+		// if (leader.equals(agent)) {
+		// electLeader();
+		// return;
+		// }
 		members.remove(agent);
 		deliverySystem.unsubscribe(agent);
 	}
@@ -134,8 +134,12 @@ public abstract class Team {
 		int nTiles = MapController.getMap().getNHorizontalTiles();
 		boolean res = true;
 
+		if (x == 0) {
+			return false;
+		}
+
 		/* members plus team's base */
-		for (int i = 0; i < members.size() + 1; i++) {
+		for (int i = -1; i < members.size() + 1; i++) {
 			res = (x + i < nTiles)
 					&& !MapController.getMap().isBlocked(
 							new MapPosition(x + i, y)) && res;
